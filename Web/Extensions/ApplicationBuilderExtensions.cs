@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using System.Globalization;
 using System.Linq;
 
@@ -68,12 +69,21 @@ namespace Web.Extensions
         internal static IApplicationBuilder Initialize(this IApplicationBuilder app, Microsoft.Extensions.Configuration.IConfiguration _configuration)
         {
             using var serviceScope = app.ApplicationServices.CreateScope();
+            var loggerFactory = serviceScope.ServiceProvider.GetService<ILoggerFactory>();
+            var logger = loggerFactory?.CreateLogger("ApplicationBuilderExtensions");
 
             var initializers = serviceScope.ServiceProvider.GetServices<IDatabaseSeeder>();
 
             foreach (var initializer in initializers)
             {
-                initializer.Initialize();
+                try
+                {
+                    initializer.Initialize();
+                }
+                catch (Exception ex)
+                {
+                    logger?.LogError(ex, "Database initialization failed for {SeederType}", initializer.GetType().FullName);
+                }
             }
 
             return app;

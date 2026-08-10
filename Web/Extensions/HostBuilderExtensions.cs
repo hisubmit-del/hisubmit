@@ -8,11 +8,17 @@ internal static class HostBuilderExtensions
 {
     internal static IHostBuilder UseSerilog(this IHostBuilder builder)
     {
+        var environmentName = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")
+            ?? Environment.GetEnvironmentVariable("DOTNET_ENVIRONMENT")
+            ?? "Production";
+
         var configuration = new ConfigurationBuilder()
-            .AddJsonFile("appsettings.Development.json")
-            .AddJsonFile("appsettings.json")
+            .SetBasePath(Directory.GetCurrentDirectory())
+            .AddJsonFile("appsettings.json", optional: true, reloadOnChange: false)
+            .AddJsonFile($"appsettings.{environmentName}.json", optional: true, reloadOnChange: false)
             .AddEnvironmentVariables()
             .Build();
+
         Log.Logger = new LoggerConfiguration().ReadFrom.Configuration(configuration).CreateLogger();
         SerilogHostBuilderExtensions.UseSerilog(builder);
         return builder;

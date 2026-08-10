@@ -249,10 +249,16 @@ app.UseExceptionHandling(app.Environment);
 app.UseHttpsRedirection();
 app.UseMiddleware<ErrorHandlerMiddleware>();
 //app.UseBlazorFrameworkFiles();
+var filesPath = Path.Combine(app.Environment.ContentRootPath, "Files");
+if (!Directory.Exists(filesPath))
+{
+    Directory.CreateDirectory(filesPath);
+}
+
 app.UseStaticFiles();
 app.UseStaticFiles(new StaticFileOptions
 {
-    FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), @"Files")),
+    FileProvider = new PhysicalFileProvider(filesPath),
     RequestPath = new PathString("/Files")
 });
 

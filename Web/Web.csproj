@@ -72,6 +72,10 @@
     <None Update="libwkhtmltox.so">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="appsettings.Development.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </None>
   </ItemGroup>
 
 </Project>
