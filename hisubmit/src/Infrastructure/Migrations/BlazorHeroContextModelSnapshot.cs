@@ -711,8 +711,8 @@ namespace HiSubmit.Infrastructure.Migrations
                     b.Property<int>("EventCategoryId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("GoldFee")
-                        .HasColumnType("int");
+                    b.Property<double?>("GoldFee")
+                        .HasColumnType("float");
 
                     b.Property<string>("LastModifiedBy")
                         .HasColumnType("nvarchar(max)");
@@ -720,11 +720,11 @@ namespace HiSubmit.Infrastructure.Migrations
                     b.Property<DateTime?>("LastModifiedOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("StandardFee")
-                        .HasColumnType("int");
+                    b.Property<double?>("StandardFee")
+                        .HasColumnType("float");
 
-                    b.Property<int?>("StudentFee")
-                        .HasColumnType("int");
+                    b.Property<double?>("StudentFee")
+                        .HasColumnType("float");
 
                     b.HasKey("Id");
 

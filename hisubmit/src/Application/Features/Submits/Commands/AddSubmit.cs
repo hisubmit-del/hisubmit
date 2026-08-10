@@ -73,7 +73,7 @@ public class AddSubmitCommandHandler : IRequestHandler<AddSubmitCommand, Result<
             .FirstOrDefaultAsync(cancellationToken);
 
 
-        var sumPrice = 0;
+        var sumPrice = 0.0;
 
 
         var deadLineCategories = new List<SubmitDeadLineCategories>();
@@ -89,7 +89,7 @@ public class AddSubmitCommandHandler : IRequestHandler<AddSubmitCommand, Result<
 
                 deadLineCategories.Add(new SubmitDeadLineCategories()
                 {
-                    Price = minPrice.Value,
+                    Price = Convert.ToInt32(minPrice.Value.Value),
                     FeeType = minPrice.Key,
                     DeadlineEventCategoryId = deadlineId
                 });
@@ -120,11 +120,11 @@ public class AddSubmitCommandHandler : IRequestHandler<AddSubmitCommand, Result<
     }
 
 
-    private KeyValuePair<FeeType, int?>
+    private KeyValuePair<FeeType, double?>
         GetMinPrice(DeadlineEventCategory deadLineCategory,
             Project project, FeeStatus feeStatus)
     {
-        var prices = new Dictionary<FeeType, int?>();
+        var prices = new Dictionary<FeeType, double?>();
 
         if (deadLineCategory.StandardFee != null)
             prices.Add(FeeType.Standard, deadLineCategory.StandardFee.Value);

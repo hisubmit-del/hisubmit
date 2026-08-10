@@ -299,7 +299,7 @@ public partial class FestivalCategorySelected
 
     private void CalculateSumPrice()
     {
-        var sum = 0;
+        var sum = 0.0;
         foreach (var sdc in SelectedDeadLineCategories)
         {
             Console.WriteLine(sdc.SelectedFeeType);

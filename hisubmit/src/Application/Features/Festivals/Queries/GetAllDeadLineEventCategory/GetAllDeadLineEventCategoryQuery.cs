@@ -171,7 +171,7 @@ public class GetAllDeadLineEventCategoryQueryHandler : IRequestHandler<GetAllDea
     private  FeeType GetMinPrice(GetAllDeadLineEventCategoryResponse deadLineCategory,
             bool studentProject,FeeStatus feeStatus)
     {
-        var prices = new Dictionary<FeeType, int?> ();
+        var prices = new Dictionary<FeeType, double?> ();
 
         if(deadLineCategory.StandardFee !=null)
             prices.Add(FeeType.Standard, deadLineCategory.StandardFee);
