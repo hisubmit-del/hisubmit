@@ -375,3 +375,13 @@ FodyWeavers.xsd
 appsettings.Local.json
 appsettings.*.local.json
 secrets.json
+
+# Production deployment directory - exclude runtime-only subdirectories
+# (Logs and Files are created at runtime on the server; never commit user uploads)
+deployment/Logs/
+deployment/Files/
+deployment/private-files/
+
+# Exclude platform-specific native libs not needed on Windows IIS server
+deployment/*.dylib
+deployment/*.so
