@@ -7,17 +7,19 @@
         @foreach (var festival in _festivalResponse.Data)
         {
             <NavLink Href="@($"/festival/{festival.URL}")">
-                <img src="@festival.LogoURL" alt="@festival.Name"/>
+                <img src="@festival.LogoURL" alt="@festival.Name" loading="lazy"/>
             </NavLink>
         }
     </MudGrid>
 
     <MudGrid Class="footer-footer py-lg-1 px-lg-10">
         <MudAvatar Variant="Variant.Outlined" Class="mx-1">
-            <MudIconButton Icon="@Icons.Material.Filled.Email"/>
+            <MudIconButton Icon="@Icons.Material.Filled.Email"
+                           UserAttributes="@(new() { { "aria-label", "Contact HiSubmit by email" } })"/>
         </MudAvatar>
         <MudAvatar Variant="Variant.Outlined">
-            <MudIconButton Icon="@Icons.Custom.Brands.Telegram"/>
+            <MudIconButton Icon="@Icons.Custom.Brands.Telegram"
+                           UserAttributes="@(new() { { "aria-label", "Contact HiSubmit on Telegram" } })"/>
         </MudAvatar>
         <MudSpacer/>
         <div class="menu-items">
@@ -27,7 +29,7 @@
             }
         </div>
         <MudSpacer/>
-        <img alt="hisubmit-logo" src="/assets/img/logo.png" class="mx-auto"/>
+        <img alt="hisubmit-logo" src="/assets/img/logo.png" class="mx-auto" loading="lazy"/>
     </MudGrid>
     <div class="w-100 text-center justify-content-center">
         <MudText Typo="Typo.body1" Class="py-7">

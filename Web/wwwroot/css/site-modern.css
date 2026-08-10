@@ -1,0 +1,296 @@
+:root {
+    --brand-primary: #335c67;
+    --brand-primary-hover: #284850;
+    --brand-accent: #ff834d;
+    --brand-accent-hover: #f06d33;
+    --surface-base: #f5f7fb;
+    --surface-card: #ffffff;
+    --surface-muted: #eef3f6;
+    --text-strong: #17212b;
+    --text-muted: #5f6b7a;
+    --border-soft: rgba(51, 92, 103, 0.14);
+    --success-color: #1f9d74;
+    --warning-color: #d9901a;
+    --danger-color: #c64646;
+    --info-color: #3578e5;
+    --shadow-soft: 0 18px 50px rgba(23, 33, 43, 0.08);
+    --shadow-card: 0 12px 30px rgba(23, 33, 43, 0.08);
+    --radius-sm: 0.75rem;
+    --radius-md: 1rem;
+    --radius-lg: 1.5rem;
+    --radius-pill: 999px;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: "Open Sans", "Segoe UI", sans-serif;
+    background: linear-gradient(180deg, #fbfcfe 0%, #f4f7fb 100%);
+    color: var(--text-strong);
+}
+
+a {
+    text-decoration-thickness: 0.08em;
+    text-underline-offset: 0.16em;
+}
+
+a:hover {
+    color: var(--brand-primary-hover);
+}
+
+:focus-visible {
+    outline: 3px solid rgba(255, 131, 77, 0.35);
+    outline-offset: 2px;
+}
+
+.mud-button-root,
+.mud-chip,
+.mud-card,
+.mud-paper,
+.mud-alert,
+.mud-input-control,
+.festival-card,
+.festival-sponsored-box .img-box img,
+.side-menu,
+.site-header,
+.footer .footer-footer {
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.mud-button-root {
+    border-radius: var(--radius-pill) !important;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+}
+
+.mud-button-root:hover:not(.mud-disabled),
+.mud-chip:hover:not(.mud-disabled) {
+    transform: translateY(-1px);
+}
+
+.mud-paper,
+.mud-card,
+.festival-card,
+.festival-tabs .tab-pane,
+.news-desc {
+    border: 1px solid var(--border-soft);
+    box-shadow: var(--shadow-card);
+}
+
+.mud-paper,
+.mud-card {
+    border-radius: var(--radius-md) !important;
+}
+
+.mud-input > input,
+.mud-input-slot,
+.mud-select-input {
+    color: var(--text-strong);
+}
+
+.mud-input-outlined-border,
+.mud-input-filled {
+    border-radius: var(--radius-sm) !important;
+}
+
+.mud-input-control {
+    border-radius: var(--radius-sm);
+}
+
+.mud-alert {
+    border-radius: var(--radius-sm) !important;
+}
+
+.auth-page {
+    min-height: calc(100vh - 180px);
+    align-items: center;
+}
+
+.auth-card {
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(12px);
+    border-radius: var(--radius-lg) !important;
+    box-shadow: var(--shadow-soft);
+}
+
+.auth-form-title {
+    font-weight: 800;
+    letter-spacing: -0.02em;
+}
+
+.auth-form-subtitle {
+    color: var(--text-muted);
+}
+
+.site-header {
+    backdrop-filter: blur(18px);
+    background: rgba(255, 255, 255, 0.85);
+    border-bottom: 1px solid rgba(51, 92, 103, 0.1);
+}
+
+.main-header {
+    padding-inline: clamp(0.75rem, 2vw, 1.5rem);
+}
+
+.main-header .menu ul,
+.side-menu .menu ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.main-header .menu ul {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.side-menu {
+    width: min(88vw, 360px);
+    background: rgba(255, 255, 255, 0.98);
+    box-shadow: 0 24px 60px rgba(23, 33, 43, 0.18);
+}
+
+.side-menu .logo,
+.site-header .logo {
+    display: inline-flex;
+    align-items: center;
+}
+
+.side-menu-close {
+    position: absolute !important;
+    top: 0.75rem;
+    right: 0.75rem;
+}
+
+.festival-header h1,
+.news-title,
+.festival-meta-box h1 {
+    letter-spacing: -0.03em;
+    line-height: 1.05;
+}
+
+.festival-sponsored-box .img-box img,
+.festival-cards .festival-card img,
+.news-top img {
+    border-radius: var(--radius-md);
+}
+
+.festival-cards .festival-card,
+.festival-browser-container .festival-card {
+    border-radius: var(--radius-md);
+    overflow: hidden;
+}
+
+.festival-cards .festival-card:hover,
+.festival-browser-container .festival-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 40px rgba(23, 33, 43, 0.14);
+    border-color: rgba(255, 131, 77, 0.45);
+}
+
+.festival-filter-form .mud-input-control,
+.festival-filter-form .mud-picker .mud-input-control {
+    box-shadow: none !important;
+    border: 1px solid var(--border-soft);
+}
+
+.festival-filter-form .mud-grid-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+}
+
+.festival-filter-form p,
+.festival-filter-form .mud-typography {
+    color: var(--text-muted);
+    font-weight: 600;
+}
+
+.pagination ul {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0;
+    margin: 2rem 0 0;
+    list-style: none;
+}
+
+.pagination button {
+    min-width: 2.5rem;
+    height: 2.5rem;
+    border: 1px solid var(--border-soft);
+    background: var(--surface-card);
+    border-radius: 999px;
+    color: var(--text-strong);
+    font-weight: 700;
+}
+
+.pagination button:hover,
+.pagination button.current {
+    background: var(--brand-primary);
+    border-color: var(--brand-primary);
+    color: #fff;
+}
+
+.footer .footer-footer {
+    border-top: 1px solid var(--border-soft);
+    border-bottom: 1px solid var(--border-soft);
+    background: rgba(255, 255, 255, 0.82);
+}
+
+.overlay-gallery-box {
+    background: rgba(255, 255, 255, 0.98);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-soft);
+}
+
+@media (max-width: 991.98px) {
+    .auth-page {
+        min-height: auto;
+    }
+
+    .festival-filter-form {
+        padding-inline: 0.25rem;
+    }
+
+    .footer .menu-items {
+        width: 100%;
+        justify-content: center;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+}
+
+@media (max-width: 767.98px) {
+    .festival-header {
+        padding: 2rem 0 1rem;
+    }
+
+    .festival-header h1,
+    .news-title {
+        font-size: clamp(2rem, 7vw, 2.7rem) !important;
+    }
+
+    .mud-main-content {
+        padding-inline: 0.75rem !important;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}

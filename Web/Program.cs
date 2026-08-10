@@ -156,9 +156,7 @@ services.AddSingleton<HttpClient>(sp =>
 
     return new HttpClient(cookieHandler)
     {
-        //BaseAddress = new Uri(baseAddress)
-        BaseAddress = 
-            new Uri("https://hisubmit.com")
+        BaseAddress = baseUri
     };
 });
 

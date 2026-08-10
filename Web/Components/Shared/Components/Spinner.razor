@@ -1,35 +1,4 @@
 ﻿
-<div class="h-100 spinner-box ">
-     <div class="spinner ma-auto"></div>
+<div class="spinner-box" role="status" aria-live="polite" aria-label="Loading">
+    <div class="spinner"></div>
 </div>
-
-
-
-
- <style>
-     .spinner {
-    border: 16px solid #eeeeee;
-    border-top: 16px solid rgba(253,2,0,1);
-    border-radius: 50%;
-    width: 40px;
-    height:40px;
-    animation: spin 800ms linear infinite;
-    /*top: 40%;*/
-    /*left: 55%;*/
-    /*position: absolute;*/
-}
-.spinner-box{
-min-height: 320px;
-}
-
-@@keyframes spin {
-    0% {
-        transform: rotate(0deg)
-    }
-
-    100% {
-        transform: rotate(360deg)
-    }
-}
-
- </style>

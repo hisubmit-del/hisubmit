@@ -60,7 +60,7 @@
     {
         <MudText Typo="Typo.body1">@Title</MudText>
     }
-    <InputFile type="img,jpg,png" id="@_imageId" hidden OnChange="UploadImageAsync"/>
+    <InputFile accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp" id="@_imageId" hidden OnChange="UploadImageAsync"/>
 
     <MudIconButton
         Class="edit-button"
@@ -71,11 +71,14 @@
         Color="Color.Tertiary"/>
 
     
-    <MudIconButton Class="delete-button"
-                   Icon="@Icons.Material.Filled.Delete" 
-                   Size="Size.Small" Variant="Variant.Filled"
-                   OnClick="DeleteImageAsync"
-                   Color="Color.Tertiary" />
+    @if (!HideDeleteButton)
+    {
+        <MudIconButton Class="delete-button"
+                       Icon="@Icons.Material.Filled.Delete"
+                       Size="Size.Small" Variant="Variant.Filled"
+                       OnClick="DeleteImageAsync"
+                       Color="Color.Tertiary" />
+    }
     
 
     @if (!string.IsNullOrWhiteSpace(SuggestedSize))
@@ -89,6 +92,10 @@
     <div class="loading-cover">
         <MudProgressCircular Indeterminate="true" Color="Color.Tertiary" Class="ma-auto"/>
     </div>
+    }
+    @if (!string.IsNullOrWhiteSpace(_validationMessage))
+    {
+        <MudAlert Dense="true" Severity="Severity.Error" Variant="Variant.Outlined" Class="mt-2">@_validationMessage</MudAlert>
     }
 </div>
 
@@ -140,6 +147,14 @@
 
     private string _imageId;
     private bool _processing;
+    private string? _validationMessage;
+    private static readonly HashSet<string> AllowedExtensions = new(StringComparer.OrdinalIgnoreCase)
+    {
+        ".jpg",
+        ".jpeg",
+        ".png",
+        ".webp"
+    };
 
     protected override Task OnInitializedAsync()
     {
@@ -157,6 +172,7 @@
     {
         Url = string.Empty;
         UploadRequest = new UploadRequest();
+        _validationMessage = null;
         await DeleteImage.InvokeAsync(UploadRequest);
         await UrlChanged.InvokeAsync(Url);
         await UploadRequestChanged.InvokeAsync(UploadRequest);
@@ -170,14 +186,25 @@
         var file = e.File;
         var extension = Path.GetExtension(file.Name);
         var fileName = $"{Guid.NewGuid()}{extension}";
+        var maxAllowedSize = MaxSize > 0 ? MaxSize : 10 * 1024 * 1024;
+        _validationMessage = null;
+        _processing = true;
 
-        if (file.Size > 10 * 1024 * 1024)
+        if (!AllowedExtensions.Contains(extension) || !file.ContentType.StartsWith("image/", StringComparison.OrdinalIgnoreCase))
         {
-            await _dialogService.ShowMessageBox("Maximum File Size: 10 MB", "Please select a file smaller than 10 megabytes. Files exceeding this limit will not be uploaded.");
+            _validationMessage = Localize["Please select a JPG, PNG, or WEBP image."];
+            _processing = false;
             return;
         }
 
-        using var stream = file.OpenReadStream(maxAllowedSize: 10 * 1024 * 1024); // 10MB max
+        if (file.Size > maxAllowedSize)
+        {
+            _validationMessage = Localize["Please select a file smaller than {0} MB.", Math.Max(1, maxAllowedSize / 1024 / 1024)];
+            _processing = false;
+            return;
+        }
+
+        using var stream = file.OpenReadStream(maxAllowedSize: maxAllowedSize);
 
         using var ms = new MemoryStream();
         await stream.CopyToAsync(ms);
@@ -194,8 +221,10 @@
         ImageAlt = UploadRequest.FileName;
 
         await UploadRequestChanged.InvokeAsync(UploadRequest);
-        await UrlChanged.InvokeAsync($"data:image/png;base64,{Convert.ToBase64String(buffer)}");
+        Url = $"data:{file.ContentType};base64,{Convert.ToBase64String(buffer)}";
+        await UrlChanged.InvokeAsync(Url);
         await ImageAltChanged.InvokeAsync(ImageAlt);
+        _processing = false;
     }
 
 

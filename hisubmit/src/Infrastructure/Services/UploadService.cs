@@ -1,8 +1,8 @@
-﻿using HiSubmit.Application.Extensions;
+using HiSubmit.Application.Extensions;
 using HiSubmit.Application.Interfaces.Services;
 using HiSubmit.Application.Requests;
+using System;
 using System.IO;
-using System.Net.Security;
 using System.Threading.Tasks;
 using Hisubmit.Client.SharedModels.Requests;
 
@@ -22,19 +22,14 @@ namespace HiSubmit.Infrastructure.Services
             {
                 var folder = request.UploadType.ToDescriptionString();
                 var folderName = Path.Combine("Files", folder);
-                var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
-                bool exists = Directory.Exists(pathToSave);
-                if (!exists)
-                {
-                    Directory.CreateDirectory(pathToSave);
-                }
-                var fileName = request.FileName.Trim('"');
-                var fullPath = Path.Combine(pathToSave, fileName);
+                var pathToSave = GetOrCreateFolderPath(folderName);
+                var fileName = SanitizeFileName(request.FileName);
+                var fullPath = EnsurePathWithinRoot(pathToSave, Path.Combine(pathToSave, fileName));
                 var dbPath = Path.Combine(folderName, fileName);
-                if (File.Exists(dbPath))
+                if (File.Exists(fullPath))
                 {
                     dbPath = NextAvailableFilename(dbPath);
-                    fullPath = NextAvailableFilename(fullPath);
+                    fullPath = EnsurePathWithinRoot(pathToSave, NextAvailableFilename(fullPath));
                 }
                 using (var stream = new FileStream(fullPath, FileMode.Create))
                 {
@@ -97,7 +92,8 @@ namespace HiSubmit.Infrastructure.Services
         {
             if (!string.IsNullOrWhiteSpace(request.RelativeDirectory))
             {
-                var absoluteDirectory = Path.Combine(Directory.GetCurrentDirectory(), request.RelativeDirectory);
+                var rootDirectory = Directory.GetCurrentDirectory();
+                var absoluteDirectory = EnsurePathWithinRoot(rootDirectory, Path.Combine(rootDirectory, request.RelativeDirectory));
                 if (File.Exists(absoluteDirectory))
                 {
                     File.Delete(absoluteDirectory);
@@ -119,8 +115,8 @@ namespace HiSubmit.Infrastructure.Services
                 return false;
             }
 
-            var fileName = request.Name.Trim('"');
-            var fullPath = Path.Combine(pathToSave, fileName);
+            var fileName = SanitizeFileName(request.Name);
+            var fullPath = EnsurePathWithinRoot(pathToSave, Path.Combine(pathToSave, fileName));
             return File.Exists(fullPath);
         }
 
@@ -130,9 +126,9 @@ namespace HiSubmit.Infrastructure.Services
             var folderName = Path.Combine("Files", folder);
             var pathToDelete = Path.Combine(Directory.GetCurrentDirectory(), folderName);
 
-            var fileName = request.Name.Trim('"');
-            var fullPath = Path.Combine(pathToDelete, fileName);
-            bool exists = File.Exists(pathToDelete);
+            var fileName = SanitizeFileName(request.Name);
+            var fullPath = EnsurePathWithinRoot(pathToDelete, Path.Combine(pathToDelete, fileName));
+            bool exists = File.Exists(fullPath);
             if (exists)
             {
                 File.Delete(fullPath);
@@ -145,18 +141,44 @@ namespace HiSubmit.Infrastructure.Services
         {
             var folder = request.UploadType.ToDescriptionString();
             var folderName = Path.Combine("Files", folder);
+            var pathToSave = GetOrCreateFolderPath(folderName);
+            var fileName = SanitizeFileName(request.File.FileName);
+            var fullPath = EnsurePathWithinRoot(pathToSave, Path.Combine(pathToSave, fileName));
+
+            using var fileStream = new FileStream(fullPath, FileMode.Append, FileAccess.Write, FileShare.None);
+            await request.File.CopyToAsync(fileStream);
+        }
+
+        private static string GetOrCreateFolderPath(string folderName)
+        {
             var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
-            bool exists = Directory.Exists(pathToSave);
-            if (!exists)
+            if (!Directory.Exists(pathToSave))
             {
                 Directory.CreateDirectory(pathToSave);
             }
-            var fileName = request.File.FileName.Trim('"');
-            var fullPath = Path.Combine(pathToSave, fileName);
 
-            using var fileStream = new FileStream(fullPath, FileMode.Append, FileAccess.Write, FileShare.None);
-            using var bw = new BinaryWriter(fileStream);
-            await request.File.CopyToAsync(fileStream);
+            return pathToSave;
+        }
+
+        private static string SanitizeFileName(string? fileName)
+        {
+            var safeFileName = Path.GetFileName((fileName ?? string.Empty).Trim('"'));
+            return string.IsNullOrWhiteSpace(safeFileName)
+                ? $"{Guid.NewGuid():N}.bin"
+                : safeFileName;
+        }
+
+        private static string EnsurePathWithinRoot(string rootPath, string candidatePath)
+        {
+            var fullRootPath = Path.GetFullPath(rootPath);
+            var fullCandidatePath = Path.GetFullPath(candidatePath);
+
+            if (!fullCandidatePath.StartsWith(fullRootPath, StringComparison.OrdinalIgnoreCase))
+            {
+                throw new InvalidOperationException("Invalid file path.");
+            }
+
+            return fullCandidatePath;
         }
 
         // private void TryCreateFilesFolder()

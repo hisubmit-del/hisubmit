@@ -3,7 +3,8 @@
 <MudButton @ref="_button" Disabled="@(Processing || Disabled)"  
            ButtonType="@ButtonType" Size="Size" FullWidth="FullWidth"
            IconColor="IconColor" OnClick="OnClickEvent" Variant="Variant"
-           Style="@Style" Class="@Class" Color="@Color" StartIcon="@StartIcon">
+           Style="@Style" Class="@Class" Color="@Color" StartIcon="@StartIcon"
+           aria-busy="@Processing">
     
     @if (Processing)
     {
@@ -15,4 +16,3 @@
         @ChildContent
     }
 </MudButton>
-

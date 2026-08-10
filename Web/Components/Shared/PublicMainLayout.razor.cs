@@ -37,14 +37,15 @@ public partial class PublicMainLayout
         if (user == null) return;
         if (user.Identity?.IsAuthenticated == true)
         {
-            //CurrentUserId = user.GetUserId();
-            //FirstName = user.GetFirstName();
-            //if (FirstName.Length > 0)
-            //{
-            //    FirstLetterOfName = FirstName[0];
-            //}
-            //SecondName = user.GetLastName();
-            //Email = user.GetEmail();
+            CurrentUserId = user.GetUserId();
+            FirstName = user.GetFirstName();
+            if (!string.IsNullOrWhiteSpace(FirstName))
+            {
+                FirstLetterOfName = FirstName[0];
+            }
+
+            SecondName = user.GetLastName();
+            Email = user.GetEmail();
             var imageResponse = await _accountManager.GetProfilePictureAsync(CurrentUserId);
             if (imageResponse.Succeeded)
             {
@@ -58,7 +59,10 @@ public partial class PublicMainLayout
                 await AuthenticationManager.Logout();
             }
 
-            await hubConnection.SendAsync(ApplicationConstants.SignalR.OnConnect, CurrentUserId);
+            if (hubConnection.State == HubConnectionState.Connected)
+            {
+                await hubConnection.SendAsync(ApplicationConstants.SignalR.OnConnect, CurrentUserId);
+            }
         }
     }
     [Inject]

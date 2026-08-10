@@ -1,10 +1,10 @@
-﻿using HiSubmit.Application.Exceptions;
-using HiSubmit.Client.SharedModels.Wrapper;
-using System.Net;
-using System.Text.Json;
 using Microsoft.AspNetCore.Hosting.Server.Features;
 using Microsoft.AspNetCore.Hosting.Server;
 using Microsoft.AspNetCore.Http.Extensions;
+using HiSubmit.Application.Exceptions;
+using HiSubmit.Client.SharedModels.Wrapper;
+using System.Net;
+using System.Text.Json;
 
 namespace Web.Middlewares
 {
@@ -32,31 +32,23 @@ namespace Web.Middlewares
             catch (Exception error)
             {
                 var addressFeature = _server.Features.Get<IServerAddressesFeature>();
-                string baseAddress;
-
-                _logger.LogError(addressFeature.Addresses.First());
-
+                var requestUrl = context.Request.GetDisplayUrl();
+                var serverAddress = addressFeature?.Addresses.FirstOrDefault();
 
                 var response = context.Response;
                 response.ContentType = "application/json";
-                var responseModel = await Result<string>.FailAsync(error.Message);
+                var responseMessage = error is ApiException or KeyNotFoundException
+                    ? error.Message
+                    : "An unexpected error occurred while processing your request.";
+                var responseModel = await Result<string>.FailAsync(responseMessage);
 
                 _logger.LogError(
-                    "🛑🛑🛑🛑🛑🛑🛑🛑🛑🛑🛑🛑🛑🛑🛑🛑🛑🛑🛑🛑🛑🛑🛑🛑🛑\n" +
-                    "⏰ TIMESTAMP: {Timestamp}\n" +
-                    "🚨 ERROR TYPE: {ErrorType}\n" +
-                    "――――――――――――――――――――---------------------――――――――――――――――――――――――\n" +
-                    "📌 MESSAGE:\n{ErrorMessage}\n\n" +
-                    "――――――――――――――――――――――----------------------――――――――――――――――――――――\n" +
-                    "🔧 STACK TRACE:\n{StackTrace}\n\n" +
-                    "――――――――――――――――――-----------------------――――――――――――――――――――――――――\n" +
-                    "🔍 INNER EXCEPTION:\n{InnerException}\n\n" +
-                    "🛑🛑🛑🛑🛑🛑🛑🛑🛑🛑🛑🛑🛑🛑🛑🛑🛑🛑🛑🛑🛑🛑🛑🛑🛑",
-                    DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff"),
-                    error.GetType().Name,
-                    error.Message,
-                    error.StackTrace ?? "NO STACK TRACE",
-                    error.InnerException?.ToString() ?? "NO INNER EXCEPTION"
+                    error,
+                    "Unhandled request error. Method: {Method}, Path: {Path}, RequestUrl: {RequestUrl}, ServerAddress: {ServerAddress}",
+                    context.Request.Method,
+                    context.Request.Path,
+                    requestUrl,
+                    serverAddress ?? "unknown"
                 );
 
                 switch (error)

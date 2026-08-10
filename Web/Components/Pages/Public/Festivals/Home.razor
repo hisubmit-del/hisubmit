@@ -246,7 +246,7 @@
     <div class="mud-grid mud-grid-spacing-xs-6 justify-start mt-10 festival-cards">
         @if (_loaded)
         {
-            if (_loaded && _pagedData != null)
+            if (_pagedData != null && _pagedData.Any())
             {
                 foreach (var item in _pagedData)
                 {
@@ -254,7 +254,7 @@
                         <MudCard class="@(item.FeeStatus == FeeStatus.Special ? "festival-card bg-Gold" : "festival-card")">
                             <MudCardContent>
                                 <div style="height: 220px" class="d-flex  flex-grow-1 gap-4 justify-center d-relative ">
-                                    <img src="@item.LogoURL" alt="@item.Name" class="align-self-center" style="max-width: 100%;max-height: 100%" />
+                                    <img src="@item.LogoURL" alt="@item.Name" loading="lazy" class="align-self-center" style="max-width: 100%;max-height: 100%" />
                                     @if (item.SelectedQualifiersId != null && item.SelectedQualifiersId.Any())
                                     {
                                         var qualify =
@@ -344,6 +344,12 @@
 
                 <Pagination ChangedCurrentPage="ChangePage"
                             TotalPage="_festivalResponse!.TotalPages" CurrentPage="@PageNumber" />
+            }
+            else
+            {
+                <MudAlert Severity="Severity.Info" Variant="Variant.Outlined" Class="w-100 mt-4">
+                    No festivals matched your current filters. Try broadening your search criteria.
+                </MudAlert>
             }
         }
         else

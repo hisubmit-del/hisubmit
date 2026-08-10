@@ -17,7 +17,7 @@ namespace Web.Components.Pages.Public.Festivals;
 
 
 
-public partial class Home
+public partial class Home : IDisposable
 {
     #region Inject
     [Inject] private IJSRuntime Js { get; set; }
@@ -50,7 +50,6 @@ public partial class Home
 
     private Task PersistFestival()
     {
-        ApplicationState.PersistAsJson("fetchData", _festivalResponse);
         ApplicationState.PersistAsJson("focuses", _focuses);
         ApplicationState.PersistAsJson("artCategories", _artCategories);
         ApplicationState.PersistAsJson("prerender", _prerender);
@@ -117,25 +116,16 @@ public partial class Home
 
     private async Task LoadFestivals(GetAllFestivalRequest request)
     {
-        if (ApplicationState.TryTakeFromJson
-                <PaginatedResult<GetAllFestivalResponse>>
-                ("fetchData", out var stored))
+        var response = await FestivalManager.GetAllFestival(request);
+        if (response.Succeeded)
         {
-            _festivalResponse = stored;
-            _pagedData = _festivalResponse.Data;
+            _festivalResponse = response;
+            _pagedData = response.Data;
         }
         else
         {
-            var response = 
-                await FestivalManager.GetAllFestival(request);
-            if (response.Succeeded)
-            {
-                _festivalResponse = response;
-                _pagedData = response.Data;
-            }
-            else
-                foreach (var message in response.Messages)
-                    _snackBar.Add(message, Severity.Error);
+            foreach (var message in response.Messages)
+                _snackBar.Add(message, Severity.Error);
         }
     }
 
@@ -272,17 +262,9 @@ public partial class Home
     {       
         InvokeAsync(async () =>
         {
-            var response = 
-                await FestivalManager.GetAllFestival(_advancedSearch);
-            if (response.Succeeded)
-            {
-                _festivalResponse = response;
-                _pagedData = response.Data;
-            }
-            else
-                foreach (var message in response.Messages)
-                    _snackBar.Add(message, Severity.Error);
-
+            _advancedSearch.PageNumber = 1;
+            PageNumber = 1;
+            await LoadFestivals(_advancedSearch);
             StateHasChanged();
         });
         _timer.Stop();
@@ -313,5 +295,10 @@ public partial class Home
     //    = item=>@<p>item.</p> ;
 
     //public static RenderFragment RenderFregmentInfo="<p>AMir Mohammadi</p>";
-}
 
+    public void Dispose()
+    {
+        _timer?.Dispose();
+        _subscription.Dispose();
+    }
+}

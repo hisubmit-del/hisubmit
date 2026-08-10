@@ -1,6 +1,6 @@
 ﻿@if (TotalPage > 1)
 {
-    <div class="pagination">
+    <nav class="pagination" aria-label="Pagination">
     <ul>
         @* <li class="first"> *@
         @*     <a href="#" onclick="@(()=>ChangeCurrentPage(CurrentPage+1))"> *@
@@ -19,31 +19,36 @@
         @if (CurrentPage != 1)
        {
            <li class="prev">
-               <span href="#" onclick="@(()=>ChangeCurrentPage(CurrentPage-1))"> 
+               <button type="button" aria-label="Previous page" @onclick="@(()=>ChangeCurrentPage(CurrentPage-1))">
                    <svg xmlns="http://www.w3.org/2000/svg" width="8" height="14" viewBox="0 0 12 19.714">
                        <path id="Prew" d="M17.543,12l2.171-2.171L9.861,0,0,9.829,2.171,12,9.861,4.31Z"
                              transform="translate(0 19.714) rotate(-90)" fill="#051622"/>
                    </svg>
-               </span>
+               </button>
            </li>
        }
-      @for (var i = 1; i < TotalPage; i++)
+      @for (var i = 1; i <= TotalPage; i++)
       {
           var i1 = i;
-          <li onclick="@(()=>ChangeCurrentPage(i1))" ><span class="@(i1==CurrentPage?"current":"")">@i1</span></li>
+          <li>
+              <button type="button"
+                      class="@(i1==CurrentPage?"current":"")"
+                      aria-current="@(i1 == CurrentPage ? "page" : null)"
+                      @onclick="@(()=>ChangeCurrentPage(i1))">@i1</button>
+          </li>
       }
-        @* <li><span>...</span></li> *@
+       @* <li><span>...</span></li> *@
       @if (CurrentPage != TotalPage)
       {
-          <li class="next"><span onclick="@(()=>ChangeCurrentPage(CurrentPage+1))" href="#">
+          <li class="next"><button type="button" aria-label="Next page" @onclick="@(()=>ChangeCurrentPage(CurrentPage+1))">
               <svg xmlns="http://www.w3.org/2000/svg" width="8" height="14" viewBox="0 0 12 19.714">
                   <path id="Next" d="M17.543,12l2.171-2.171L9.861,0,0,9.829,2.171,12,9.861,4.31Z"
                         transform="translate(12) rotate(90)" fill="#051622"/>
               </svg>
-          </span></li>
+          </button></li>
       }
     </ul>
-</div>
+</nav>
 
 
 }
