@@ -1,0 +1,120 @@
+﻿@inject IStringLocalizer<AddEditProjectCredit> localizer
+
+
+<MudCard Elevation="25">
+    <MudCardHeader>
+        <CardHeaderContent>
+            <MudText Typo="Typo.h3">@localizer["Credits"]</MudText>
+        </CardHeaderContent>
+    </MudCardHeader>
+    @if (!_loaded)
+    {
+        <MudContainer MaxWidth="MaxWidth.Medium" Style="height:300px">
+            <Spinner></Spinner>
+        </MudContainer>
+    }
+    else
+    {
+        <MudCardContent>
+            <MudContainer MaxWidth="MaxWidth.Medium">
+                <MudGrid>
+                    <MudItem xs="12" sm="12" md="12">
+                        <EditForm OnValidSubmit="SaveAsync" EditContext="_editContext">
+                            <FluentValidationValidator @ref="_fluentValidationValidator"></FluentValidationValidator>
+                            <MudGrid>
+                                @foreach (var credit in _model.Credits)
+                                {
+                                    <MudGrid Class="mb-6">
+                                        <MudItem xs="12" Style="position:relative;">
+                                            <MudCard Elevation="4" Class="px-1 pl-lg-6 pb-6">
+
+                                                <MudGrid>
+                                                    <MudItem xs="12" md="6">
+                                                        <MudTextField @bind-Value="@credit.Title" Label="@localizer["Title"]"
+                                                                      Placeholder="Director"
+                                                                      For="@(() => credit.Title)" Variant="Variant.Filled"
+                                                                      Margin="Margin.Dense" Class="mb-3" />
+                                                    </MudItem>
+                                                    @*  <MudItem xs="12" md="6">
+                                            <MudIconButton OnClick="()=>DeleteCredit(credit)" Icon="@Icons.Material.Filled.Delete" Color="Color.Error"></MudIconButton>
+                                            </MudItem>*@
+                                                </MudGrid>
+                                                <MudGrid >
+                                                    @foreach (var person in credit.ProjectItemPeople)
+                                                    {
+                                                        <MudItem xs="12">
+                                                            <MudPaper Style="position:relative" Class="ml-lg-5 mr-lg-5 mt-5  pb-lg-1 border-l-4 border-solid mud-border-primary pa-2 pa-lg-4">
+                                                                <MudGrid>
+                                                                    <MudItem Class="absolute  object-right-top" Style="bottom:4px;right:4px;">
+                                                                        <MudButton Size="Size.Small" Style="text-transform:none" StartIcon="@Icons.Material.Filled.Delete"
+                                                                                   OnClick="() => DeletePerson(person, credit)" Color="Color.Error">
+                                                                            @localizer["Delete person"]
+                                                                        </MudButton>
+                                                                    </MudItem>
+                                                                    <MudItem xs="12" md="6">
+                                                                        <MudTextField @bind-Value="@person.Name" Label="@localizer["Name"]"
+                                                                                      For="@(() => person.Name)" 
+                                                                                      Placeholder="John Peterson"
+                                                                                      Variant="Variant.Outlined" Margin="Margin.Dense" />
+                                                                    </MudItem>
+                                                                    <MudItem xs="12" md="6">
+                                                                        <MudTextField @bind-Value="@person.Email" Label="@localizer["Email"]"
+                                                                                      For="@(() => person.Email)" Variant="Variant.Outlined"
+                                                                                      Margin="Margin.Dense" Placeholder="john@gmail.com" />
+                                                                    </MudItem>
+                                                                    <MudItem xs="12" md="6" Class="mb-9">
+                                                                        <MudTextField @bind-Value="@person.PriorCredit" Label="@localizer["Prior Credit"]"
+                                                                                      For="@(() => person.PriorCredit)" Variant="Variant.Outlined"
+                                                                                      Placeholder="Enter Your Credit"
+                                                                                      Margin="Margin.Dense" />
+                                                                    </MudItem>
+                                                                </MudGrid>
+                                                            </MudPaper>
+                                                        </MudItem>
+                                                    }
+                                                    <MudItem xs="12">
+                                                          <MudButton EndIcon="@Icons.Material.Filled.Add"
+                                                                                                                       Color="Color.Info" Class="ml-5 m-md-1" OnClick="() => AddPerson(credit)">
+                                                                                                                @localizer["Add Person"]
+                                                                                                            </MudButton>
+                                                    </MudItem>
+                                                </MudGrid>
+                                                <MudItem Class="absolute  object-right-top" Style="bottom:24px;right:24px;">
+                                                    <MudButton Size="Size.Small" OnClick="() => DeleteCredit(credit)" Variant="Variant.Text"
+                                                               Icon="@Icons.Material.Filled.Delete" Color="Color.Error">
+                                                        @localizer["Delete Credit"]
+                                                    </MudButton>
+                                                </MudItem>
+                                            </MudCard>
+                                        </MudItem>
+                                    </MudGrid>
+                                }
+                                <MudButton EndIcon="@Icons.Material.Filled.Add"
+                                           Variant="Variant.Text" Style="text-transform:none" Class="mb-5 mt-5"
+                                           OnClick="AddCredit" Color="Color.Info">Add Credits</MudButton>
+                            </MudGrid>
+                        </EditForm>
+                    </MudItem>
+                </MudGrid>
+            </MudContainer>
+        </MudCardContent>
+        <MudPaper  Elevation="0" Class="d-flex justify-end flex-grow-1 ">
+            <MudPaper Elevation="0" Class="mr-2 mb-2">
+                <MudButtonGroup OverrideStyles="false" Color="Color.Info" Variant="Variant.Filled">
+                    
+                    <LoadingButton Processing="_processing" Variant="Variant.Filled"
+                                   ButtonType="ButtonType.Submit" OnClick="SaveAsync"
+                                   StartIcon="@Icons.Material.Filled.Save" Color="Color.Info">
+                        @localizer["Save"]
+                    </LoadingButton>
+
+                    <MudButton Variant="Variant.Filled" OnClick="GoNext"
+                               EndIcon="@Icons.Material.Filled.ArrowRight"
+                               Color="Color.Secondary"> @localizer["Next"]</MudButton>
+                </MudButtonGroup>
+              
+            </MudPaper>
+        </MudPaper>
+    }
+</MudCard>
+

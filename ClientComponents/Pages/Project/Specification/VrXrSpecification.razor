@@ -1,0 +1,192 @@
+﻿@inject IStringLocalizer<VrXrSpecification> Localize
+
+<MudCardContent>
+    <MudContainer MaxWidth="MaxWidth.Medium" Class="px-0">
+        <MudGrid>
+            @if (!_loaded)
+            {
+                <Spinner></Spinner>
+            }
+            else
+            {
+                <MudItem xs="12" sm="12" md="12">
+                    <EditForm OnValidSubmit="SaveAsync" EditContext="@_editContext">
+                        <FluentValidationValidator @ref="_fluentValidationValidator"/>
+                        <MudGrid>
+                            <MudItem xs="12">
+                                <MudGrid>
+                                    @foreach (var type in _subProjectTypesItem)
+                                    {
+                                        <MudItem xs="6" md="4" lg="3">
+                                            <MudCheckBox T="bool" Size="Size.Small" @bind-Value="@type.IsSelected" Color="Color.Default">@type.Name</MudCheckBox>
+                                        </MudItem>
+                                    }
+                                </MudGrid>
+                            </MudItem>
+                            <MudItem xs="12" md="6">
+                                <MudGrid >
+                                    <MudItem xs="12" md="2">
+                                        <MudText Typo="Typo.subtitle1">
+                                            @Localize["Genre"]:
+                                        </MudText>
+                                    </MudItem>
+                                    <MudItem xs="12" md="10">
+                                        <ChipsetTextField @bind-Value="@Model.Genre" Label="Genres" HelperText="Separate genres with the - character"/>
+                                    </MudItem>
+                                </MudGrid>
+                            </MudItem>
+                            <MudItem xs="12">
+                                <MudGrid>
+                                    <MudItem xs="4" md="2">
+                                        <MudText Typo="Typo.subtitle2">Run times:</MudText>
+                                    </MudItem>
+                                    <MudItem xs="8" md="10" >
+                                        <MudGrid>
+                                            <MudItem xs="12" md="4">
+                                                <MudTextField @bind-Value="Model.RunTimeHours" For="@(() => Model.RunTimeHours)" 
+                                                              Label="@Localize["RunTime Hours"]" Variant="Variant.Filled" Margin="Margin.Dense"/>
+                                            </MudItem>
+                                            <MudItem xs="12" md="4">
+                                                <MudTextField @bind-Value="Model.RunTimeMinutes" For="@(() => Model.RunTimeMinutes)" Label="@Localize["RunTime Minutes"]" Variant="Variant.Filled" Margin="Margin.Dense"/>
+                                            </MudItem>
+                                            <MudItem xs="12" md="4">
+                                                <MudTextField @bind-Value="Model.RunTimeSecounds" For="@(() => Model.RunTimeSecounds)" Label="@Localize["RunTime Secound"]" Variant="Variant.Filled" Margin="Margin.Dense"/>
+                                            </MudItem>
+                                        </MudGrid>
+                                    </MudItem>
+                                </MudGrid>
+                            </MudItem>
+
+                            <MudItem xs="12">
+                                <MudSwitch T="bool" Size="Size.Small" For="@(() => Model.VariableRunTime)" @bind-Value="@Model.VariableRunTime" Color="Color.Secondary">@Localize["Variable RunTime"]</MudSwitch>
+                            </MudItem>
+                            @if (Model.VariableRunTime)
+                            {
+                                <MudItem xs="12">
+                                    <MudGrid>
+                                        <MudItem xs="2">
+                                            <MudText Typo="Typo.subtitle1">Minimum Run times:</MudText>
+                                        </MudItem>
+                                        <MudItem xs="10">
+                                            <MudGrid>
+                                                <MudItem xs="12" md="4">
+                                                    <MudTextField @bind-Value="Model.MinRunTimeHours" For="@(() => Model.MinRunTimeHours)" Label="@Localize["Minimum Run Time Hours "]" Variant="Variant.Filled" Margin="Margin.Dense"/>
+                                                </MudItem>
+                                                <MudItem xs="12" md="4">
+                                                    <MudTextField @bind-Value="Model.MinRunTimeMinutes" For="@(() => Model.MinRunTimeMinutes)" Label="@Localize["Minimum RunTime Minutes"]" Variant="Variant.Filled" Margin="Margin.Dense"/>
+                                                </MudItem>
+                                                <MudItem xs="12" md="4">
+                                                    <MudTextField @bind-Value="Model.MinRunTimeSecounds" For="@(() => Model.MinRunTimeSecounds)" Label="@Localize["Minimum RunTime Secound"]" Variant="Variant.Filled" Margin="Margin.Dense"/>
+                                                </MudItem>
+                                            </MudGrid>
+                                        </MudItem>
+                                    </MudGrid>
+                                </MudItem>
+
+                                <MudItem xs="12">
+                                    <MudGrid>
+                                        <MudItem xs="2">
+                                            <MudText Typo="Typo.subtitle1">Average Run times:</MudText>
+                                        </MudItem>
+                                        <MudItem xs="10">
+                                            <MudGrid>
+                                                <MudItem xs="12" md="4">
+                                                    <MudTextField @bind-Value="Model.AvgTimeHours" For="@(() => Model.AvgTimeHours)" Label="@Localize["Average RunTime Hours"]" Variant="Variant.Filled" Margin="Margin.Dense"/>
+                                                </MudItem>
+                                                <MudItem xs="12" md="4">
+                                                    <MudTextField @bind-Value="Model.AvgTimeMinutes" For="@(() => Model.AvgTimeMinutes)" Label="@Localize["Average RunTime Minutes"]" Variant="Variant.Filled" Margin="Margin.Dense"/>
+                                                </MudItem>
+                                                <MudItem xs="12" md="4">
+                                                    <MudTextField @bind-Value="Model.AvgTimeSecounds" For="@(() => Model.AvgTimeSecounds)" Label="@Localize["Average RunTime Secound"]" Variant="Variant.Filled" Margin="Margin.Dense"/>
+                                                </MudItem>
+                                            </MudGrid>
+                                        </MudItem>
+                                    </MudGrid>
+                                </MudItem>
+
+
+                                <MudItem xs="12">
+                                    <MudGrid>
+                                        <MudItem xs="2">
+                                            <MudText Typo="Typo.subtitle1">Maximum Run times:</MudText>
+                                        </MudItem>
+                                        <MudItem xs="10">
+                                            <MudGrid>
+                                                <MudItem xs="12" md="4">
+                                                    <MudTextField @bind-Value="Model.MaxTimeHours" For="@(() => Model.MaxTimeHours)" Label="@Localize["Maximum RunTime Hours"]" Variant="Variant.Filled" Margin="Margin.Dense"/>
+                                                </MudItem>
+                                                <MudItem xs="12" md="4">
+                                                    <MudTextField @bind-Value="Model.MaxTimeMinutes" For="@(() => Model.MaxTimeMinutes)" Label="@Localize["Maximum RunTime Minutes"]" Variant="Variant.Filled" Margin="Margin.Dense"/>
+                                                </MudItem>
+                                                <MudItem xs="12" md="4">
+                                                    <MudTextField @bind-Value="Model.MaxTimeSecounds" For="@(() => Model.MaxTimeSecounds)" Label="@Localize["Maximum RunTime Secound"]" Variant="Variant.Filled" Margin="Margin.Dense"/>
+                                                </MudItem>
+                                            </MudGrid>
+                                        </MudItem>
+                                    </MudGrid>
+                                </MudItem>
+                            }
+                            <MudItem xs="12" md="6">
+                                <MudDatePicker PickerVariant="PickerVariant.Dialog" @bind-Date="Model.CompletionDate" For="@(() => Model.CompletionDate)" Label="@Localize["Compelation Date"]" Variant="Variant.Filled" Margin="Margin.Dense"/>
+                            </MudItem>
+                            <MudItem xs="12">
+                                <MudGrid>
+                                    <MudItem xs="12" md="6">
+                                        <MudTextField @bind-Value="Model.ProductionBudget" For="@(() => Model.ProductionBudget)" Label="@Localize["Production Budget"]" Variant="Variant.Filled" Margin="Margin.Dense"/>
+                                    </MudItem>
+                                    <MudItem xs="12" md="6">
+                                        <MudSelect T="int?" @bind-Value="Model.MonetaryUnitId" For="@(() => Model.MonetaryUnitId)" Label="@Localize["Monetary unit"]">
+                                            @foreach (var unit in _monetaryUnits)
+                                            {
+                                                <MudSelectItem Value="unit.Id as int?">@unit.Name</MudSelectItem>
+                                            }
+                                        </MudSelect>
+                                    </MudItem>
+                                </MudGrid>
+                            </MudItem>
+
+                            <MudItem xs="12" md="6">
+                                <MudAutocomplete T="int" Label="@Localize["Origin Country"]" For="@(() => Model.OriginCountryId)" @bind-Value="Model.OriginCountryId" ResetValueOnEmptyText="true" SearchFunc="@SearchCountries" Variant="Variant.Filled" Margin="Margin.Dense" ToStringFunc="@(i => Countries.FirstOrDefault(b => b.Id == i)?.Name ?? string.Empty)" OffsetY="true"/>
+                            </MudItem>
+
+                            <MudItem xs="12" md="6">
+                                <MudGrid >
+                                    <MudItem xs="12" md="2">
+                                        <MudText Typo="Typo.subtitle1">
+                                            @Localize["Languages"]:
+                                        </MudText>
+                                    </MudItem>
+                                    <MudItem xs="12" md="10">
+                                        <ChipsetTextField @bind-Value="@Model.Language" Label="Languages" HelperText="Separate Language with the - character"/>
+                                    </MudItem>
+                                </MudGrid>
+                            </MudItem>
+                            @* <MudItem xs="12" md="6"> *@
+                            @*     <MudCheckBox T="bool" Size="Size.Small" For="@(()=>_model.StudentProject)" @bind-Value="@_model.StudentProject" Color="Color.Default">@localizer["Student project"]</MudCheckBox> *@
+                            @* </MudItem> *@
+                        </MudGrid>
+                    </EditForm>
+                </MudItem>
+            }
+        </MudGrid>
+    </MudContainer>
+</MudCardContent>
+<MudPaper Class="d-flex justify-end flex-grow-1 " Elevation="0">
+    <MudPaper Class="mr-2 mb-2" Elevation="0">
+         <MudButtonGroup Variant="Variant.Filled" Color="Color.Info" OverrideStyles="false">
+             <MudButton Variant="Variant.Filled" ButtonType="ButtonType.Submit" OnClick="SaveAsync" 
+                        StartIcon="@Icons.Material.Filled.Save" Color="Color.Info">
+            @if (_processing)
+            {
+                <MudProgressCircular Color="Color.Tertiary" Class="ms-n1" Size="Size.Small" Indeterminate="true"/>
+            }
+            else
+            {
+                @Localize["Save"]
+            }
+        </MudButton>
+             <MudButton Variant="Variant.Filled" OnClick="GoNext" 
+                        EndIcon="@Icons.Material.Filled.ArrowRight" Color="Color.Secondary"> @Localize["Next"]</MudButton>
+         </MudButtonGroup>
+    </MudPaper>
+</MudPaper>

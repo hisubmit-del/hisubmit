@@ -1,0 +1,80 @@
+﻿<div class="slider " id="@Id"></div>
+
+
+@code {
+    [Inject] private IJSRuntime Js { get; set; }
+
+    [Parameter] public string Id { get; set; }
+
+    private int _min;
+
+    [Parameter]
+    public int Min
+    {
+        get => _min;
+        set
+        {
+            _min = value;
+            // MinChanged.InvokeAsync(_min);
+        }
+    }
+
+
+    private int _max = 100;
+
+    [Parameter]
+    public int Max
+    {
+        get => _max;
+        set
+        {
+            _max = value;
+            //MaxChanged.InvokeAsync(_max);
+        }
+    }
+
+    [Parameter] public int? MinVal { get; set; }
+    [Parameter] public int? MaxVal { get; set; }
+
+    [Parameter] public EventCallback<int?> MinValChanged { get; set; }
+    [Parameter] public EventCallback<int?> MaxValChanged { get; set; }
+
+    [Parameter] public int Step { get; set; } = 5;
+
+    private DotNetObjectReference<CustomeSlider> _ref;
+
+
+    private async Task SetDotNetReference()
+    {
+        _ref = DotNetObjectReference.Create(this);
+        await Js.InvokeVoidAsync("GLOBALB.SetNoUiSliderReference", _ref, Id);
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await SetDotNetReference();
+            await Js.InvokeVoidAsync("CreateNoUiSlider", Id, Step, Min, Max);
+        }
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+
+    [JSInvokable("ChangeSliderValues")]
+    public async Task ChangeSliderValues(int?[] values)
+    {
+        Console.WriteLine(values[0] + " " + values[1]);
+        if (values[0] != MinVal)
+        {
+            MinVal = values[0];
+            await MinValChanged.InvokeAsync(MinVal);
+        }
+        if (values[1] != MaxVal)
+        {
+            MaxVal = values[1];
+            await MaxValChanged.InvokeAsync(MaxVal);
+        }
+    }
+}

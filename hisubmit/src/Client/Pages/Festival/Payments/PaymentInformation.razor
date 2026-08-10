@@ -1,0 +1,136 @@
+﻿@page "/festival/payment-information"
+@using HiSubmit.Client.SharedModels.Extensions
+@using HiSubmit.Client.Shared.Components.Payments
+@using HiSubmit.Client.Pages.Festival.Payments.Components
+@using Hisubmit.Client.SharedModels.Enums.Festivals
+@inherits HiSubmit.Client.Shared.Components.Base.BaseFestival
+
+@inject IStringLocalizer<PaymentInformation> Localizer
+
+<MudGrid class="mt-lg-2 pa-2">
+    <MudItem xs="4" lg="4">
+      
+        @if (_information != null)
+        {
+            <MudPaper Class="pa-2 h-100 position-relative" Elevation="25" >
+                  <MudText Typo="Typo.h5" Color="Color.Primary" Class="my-3">
+                            @Localizer["Payment Information"]
+                        </MudText>
+                <EditForm Model="@_information" 
+                    OnSubmit="SaveAsync">
+                    <FluentValidationValidator @ref="_fluentValidationValidator"/>
+                    <MudGrid Justify="Justify.Center">
+                        <MudItem xs="12" Class="mb-3">
+                            <MudSelect Disabled="_readOnly"
+                                T="FestivalPaymentType" 
+                                Variant="Variant.Filled"
+                                @bind-Value="_information.Type" 
+                                Label="@Localizer["ItemType"]">
+                                @foreach (FestivalPaymentType type in Enum.GetValues(typeof(FestivalPaymentType)))
+                                {
+                                    <MudSelectItem Value="@(type)">
+                                        @type.ToDisplay()
+                                        </MudSelectItem>
+                                }
+                            </MudSelect>
+                        </MudItem>
+                    </MudGrid>
+                    <MudItem xs="12">
+                         <CustomDivider/>
+                    </MudItem>
+                    <MudGrid Justify="Justify.Center">
+                        @{
+                            if (_information.Type == FestivalPaymentType.Paypal)
+                            {
+                                <MudItem xs="12">
+                                    <MudTextField Disabled="_readOnly" 
+                                                  Variant="Variant.Filled"
+                                                  @bind-Value="_information.PaypalEmail" 
+                                                  For="() => _information.PaypalEmail"
+                                                  Label="Paypal Email Address">
+                                    </MudTextField>
+                                </MudItem>
+                            }
+                            if (_information.Type == FestivalPaymentType.DebitCard)
+                            {
+                                <MudItem xs="12">
+                                    <MudGrid>
+                                        <MudItem xs="12">
+                                            <MudTextField Disabled="_readOnly" 
+                                                          Variant="Variant.Filled" 
+                                                          Mask="@(new PatternMask("0000 0000 0000 0000"))" 
+                                                          Label="Credit Card Number"
+                                                          @bind-Value="_information.CardNumber" Clearable/>
+                                        </MudItem>
+                                        <MudItem xs="5">
+                                            <MudTextField Disabled="_readOnly" 
+                                                          Variant="Variant.Filled" 
+                                                          Mask="@(new DateMask("MM/YY", 'Y', 'M'))"
+                                                          Label="Expires"
+                                                          @bind-Value="_information.Expires"/>
+                                        </MudItem>
+                                        <MudItem xs="2"/>
+                                        <MudItem xs="5">
+                                            <MudTextField Disabled="_readOnly" 
+                                                          Variant="Variant.Filled" 
+                                                          Mask="@(new PatternMask("000"))" 
+                                                          Label="CVC"
+                                                          @bind-Value="_information.CVC"/>
+                                        </MudItem>
+                                    </MudGrid>
+                                </MudItem>
+                            }
+                        }
+                        <MudSpacer/>
+                        <MudGrid Justify="Justify.Center" 
+                                 Class="mb-0 position-absolute bottom-0">
+                            <MudItem xs="12" md="8">
+                                
+                                @if (_readOnly)
+                                {
+                                    <MudButton Class="my-3" Variant="Variant.Filled"
+                                            OnClick="@(()=>_readOnly=false)" 
+                                            FullWidth="true"  
+                                            StartIcon="@Icons.Material.Filled.Edit">
+                                            Edit
+                                            </MudButton>
+                                }
+                                else
+                                {
+                                    <LoadingButton Processing="_processing" 
+                                                   Variant="Variant.Filled" 
+                                                   Class="my-3 d-inline" 
+                                                   ButtonType="ButtonType.Submit"
+                                                   StartIcon="@Icons.Material.Filled.Save"
+                                                   Color="Color.Primary">
+                                        Save
+                                    </LoadingButton>
+                                    <MudButton  Class="my-3 d-inline" 
+                                                Variant="Variant.Filled"
+                                                OnClick="@(()=>_readOnly=true)"  
+                                                StartIcon="@Icons.Material.Filled.Cancel">
+                                                Cancel
+                                                </MudButton>
+                                }
+                                
+                            </MudItem>
+                        </MudGrid>
+                    </MudGrid>
+                </EditForm>
+            </MudPaper>
+        }
+    </MudItem>
+    <MudItem xs="12" lg="8">
+        @if (SelectedFestivalId != 0)
+        {
+            <FestivalPaymentItemsList FestivalId="SelectedFestivalId" IsAdmin="false"/>
+        }
+    </MudItem>
+</MudGrid>
+
+@if (SelectedFestivalId != 0)
+{
+    <FestivalPaymentState FestivalId="SelectedFestivalId"/>
+    <IncomeItems  FestivalId="SelectedFestivalId"/>
+}
+

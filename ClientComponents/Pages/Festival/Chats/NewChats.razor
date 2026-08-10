@@ -1,0 +1,55 @@
+﻿@page "/festival/Chat"
+@page "/festival/Chat/{RoomId:int}"
+
+@using ClientComponents.Shared.Components.Chats
+@inject IStringLocalizer<NewChats> Localize
+@inherits BaseFestival
+<MudContainer MaxWidth="MaxWidth.Large">
+    <div class="d-flex flex-grow-1 flex-row">
+        <ChatBox @ref="_chatBox" ChatMessage="_chatMessageCommand" RoomId="@RoomId" ImageUrl="@SelectedRoomImageUrl"
+                 Messages="Messages" @bind-OpenContact="_openContact" CFullName="@SelectedRoomTitle" OnSendMessage="AddMessage" />
+
+        <MudHidden Breakpoint="Breakpoint.SmAndDown">
+            <MudPaper Elevation="25" Class="pa-3 ml-6" MinWidth="350px">
+                <MudTextField Immediate="true" @bind-Value="_searchString" Label="Search" Variant="Variant.Text"
+                              Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Search" />
+
+                <MudToolBar Dense="true">
+                    <MudText Typo="Typo.h6" Inline="true" Class="mr-2">#</MudText>
+                    <MudText Typo="Typo.h6">@Localize["Chat"]</MudText>
+                </MudToolBar>
+                <div class="d-flex flex-column px-4" style="max-height:70vh;min-height:70vh; overflow:scroll;">
+                    <MudList T="string" Clickable="true">
+                        @foreach (var user in _contactsAndRooms.Where(p => p.RoomId != null &&                                                                       (string.IsNullOrWhiteSpace(_searchString)||p.FullName.Contains(_searchString))))
+                        {
+                            <ChatContactBox Contact="user" OnClickContact="LoadUserChat" />
+                        }
+                        <CustomDivider />Contacts
+                        @foreach (var user in _contactsAndRooms.Where(p => p.RoomId == null&&
+                        (string.IsNullOrWhiteSpace(_searchString)||p.FullName.Contains(_searchString))))
+                        {
+                            <ChatContactBox Contact="user" OnClickContact="LoadUserChat" />
+                        }
+                    </MudList>
+                </div>
+            </MudPaper>
+        </MudHidden>
+    </div>
+    <MudDrawer Elevation="1" Variant="@DrawerVariant.Temporary" @bind-Open="_openContact">
+        <div class="pa-3">
+            <MudList T="string" Clickable="true">
+                @foreach (var user in _contactsAndRooms.Where(p => p.RoomId != null&&
+                (string.IsNullOrWhiteSpace(_searchString)||p.FullName.Contains(_searchString))))
+                {
+                    <ChatContactBox Contact="user" OnClickContact="LoadUserChat" />
+                }
+                <CustomDivider />Contacts
+                @foreach (var user in _contactsAndRooms.Where(p => p.RoomId == null&&
+                (string.IsNullOrWhiteSpace(_searchString)||p.FullName.Contains(_searchString))))
+                {
+                    <ChatContactBox Contact="user" OnClickContact="LoadUserChat" />
+                }
+            </MudList>
+        </div>
+    </MudDrawer>
+</MudContainer>

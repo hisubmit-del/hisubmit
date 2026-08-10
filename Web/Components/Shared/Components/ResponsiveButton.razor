@@ -1,0 +1,67 @@
+﻿@inherits MudButton
+<MudHidden Breakpoint="Breakpoint.MdAndDown">
+    <MudButton @ref="_button" Disabled="@(Processing || Disabled)"
+               ButtonType="@ButtonType" Size="Size" FullWidth="FullWidth"
+               Href="@Href"
+               IconColor="IconColor" OnClick="OnClickEvent" Variant="Variant"
+               Style="@Style" Class="@Class" Color="@Color" StartIcon="@StartIcon">
+
+        @if (Processing)
+        {
+            <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true"/>
+            <MudText Class="ms-2">@ProcessingTitle</MudText>
+        }
+        else
+        {
+            @ChildContent
+        }
+    </MudButton>
+</MudHidden>
+
+<MudHidden Breakpoint="Breakpoint.LgAndUp">
+
+    @if (Processing)
+    {
+        <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true"/>
+    }
+    else
+    {
+        <MudIconButton Disabled="@(Processing || Disabled)"
+                       ButtonType="@ButtonType" Size="Size"
+                       OnClick="OnClickEvent" Variant="Variant"
+                       Href="@Href"
+                       Style="@Style" Class="@Class" Color="@Color" 
+                       Icon="@StartIcon">
+        </MudIconButton>
+    }
+</MudHidden>
+
+@code{
+
+    [Parameter] public bool Processing { get; set; } = false;
+    [Parameter] public string ProcessingTitle { get; set; } = "Processing";
+    [Parameter] public Color ProcessingColor { get; set; } = Color.Default;
+
+    private MudButton _button;
+
+    protected override Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (_button !=null && !string.IsNullOrWhiteSpace(EndIcon))
+        {
+            _button.EndIcon = EndIcon;
+        }
+
+        if (_button !=null && !string.IsNullOrWhiteSpace(StartIcon))
+        {
+            _button.StartIcon = StartIcon;
+        }
+
+        return base.OnAfterRenderAsync(firstRender);
+    }
+
+    private async Task OnClickEvent()
+    {
+        await OnClick.InvokeAsync();
+    }
+
+}

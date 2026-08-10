@@ -1,0 +1,24 @@
+﻿@inject IRoleManager _roleManager;
+
+
+@inherits LayoutComponentBase
+@inject IStringLocalizer<MainLayout> Localize
+
+
+<component type="typeof(Microsoft.AspNetCore.Components.Web.HeadOutlet)" render-mode="ServerPrerendered" />
+
+<audio id="notification" src="/media/notification.mp3"/>
+
+<MudThemeProvider Theme="_currentTheme"/>
+<MudDialogProvider/>
+<MudSnackbarProvider/>
+
+
+<MudLayout>
+    <PublicHeader Items="@(_menuItemDto.Where(p => p.Position == MenuItemPosition.Header).ToList())"
+        LogoutClicked="Logout" FirstLetterOfName="@FirstLetterOfName" ImageDataUrl="@ImageDataUrl"/>
+    <CascadingValue Value="hubConnection">
+        @Body
+    </CascadingValue>
+    <PublicFooter Items="@(_menuItemDto.Where(p => p.Position == MenuItemPosition.Footer).ToList())"/>
+</MudLayout>

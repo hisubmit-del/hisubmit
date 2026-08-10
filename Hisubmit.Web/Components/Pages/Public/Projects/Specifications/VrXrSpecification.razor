@@ -1,0 +1,123 @@
+﻿@using Hisubmit.Client.SharedModels.Extensions
+@using Hisubmit.Client.SharedModels.Features.SubProjectTypes.Queries.GetAll
+@using HiSubmit.Client.Infrastructure.Managers.SubProjectTypes
+@using Hisubmit.Client.SharedModels.Features.Projects.Queries.GetVrXrSpecificationDetail
+
+
+  @if (Model != null)
+  {
+      <MudGrid Class="project-detail">
+            <MudItem xs="12" lg="4">
+                <MudText Typo="Typo.h6">Runtime</MudText>
+                <MudList T="string" Dense="true">
+                    <MudListItem T="string" Icon="@Icons.Material.Filled.ChevronRight">@($"{Model.RunTimeHours}:{Model.RunTimeMinutes}:{Model.RunTimeSecounds}")</MudListItem>
+                </MudList>
+
+                <MudText Typo="Typo.h6">Completion Date</MudText>
+                <MudList Dense="true" T="string">
+                    <MudListItem T="string" Icon="@Icons.Material.Filled.ChevronRight">@Model.CompletionDate.ToLongDate()</MudListItem>
+                </MudList>
+
+                <MudText Typo="Typo.h6"> Production Countries</MudText>
+                <MudList T="string" Dense="true">
+                    
+                        <MudListItem T="string"  Icon="@Icons.Material.Filled.ChevronRight">@Model.OriginCountryName</MudListItem>
+                    
+                </MudList>
+
+            </MudItem>
+            <MudItem xs="12" lg="4">
+                <MudText Typo="Typo.h6">Language</MudText>
+                <MudList T="string" Dense="true">
+                    @if (Model.Language is { Length: > 0 })
+                    {
+                        foreach (var s in Model.Language.Split('-').ToList())
+                        {
+                            <MudListItem T="string" Icon="@Icons.Material.Filled.ChevronRight">@s</MudListItem>
+                        }
+                    }
+
+                </MudList>
+
+
+                <MudText Typo="Typo.h6">Genre</MudText>
+                <MudList T="string" Dense="true">
+                    @if (Model.Genre is { Length: > 0 })
+                    {
+                        foreach (var s in Model.Genre.Split('-').ToList())
+                        {
+                            <MudListItem T="string" Icon="@Icons.Material.Filled.ChevronRight">@s</MudListItem>
+                        }
+                    }
+                </MudList>
+
+            </MudItem>
+            <MudItem xs="12" lg="4">
+                <MudText Typo="Typo.h6">Category</MudText>
+                <MudList T="string" Dense="true">
+                    @foreach (var s in _categories)
+                    {
+                        <MudListItem T="string" Icon="@Icons.Material.Filled.ChevronRight">@s</MudListItem>
+                    }
+                </MudList>
+
+                <MudText Typo="Typo.h6">Production Budget</MudText>
+                <MudList T="string" Dense="true">
+                    <MudListItem T="string" Icon="@Icons.Material.Filled.ChevronRight">@Model.ProductionBudget</MudListItem>
+
+                </MudList>
+                @* <MudText Typo="Typo.h6">Aspect ratio</MudText> *@
+                @* <MudList Dense="true"> *@
+                @*     <MudListItem Icon="@Icons.Material.Filled.ChevronRight">@Model.uni</MudListItem> *@
+                @* </MudList> *@
+            </MudItem>
+        </MudGrid>
+  }
+
+@code {
+    [Parameter]
+    public GetVrXrSpecificationDetailResponse Model { get; set; }
+    
+    
+    [Inject] public ISubProjectTypeManager SubProjectTypeManager { get; set; }
+
+    
+    private List<string> _categories = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+    }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if ( Model!=null)
+        {
+            await LoadCategories();
+        }
+        await base.OnParametersSetAsync();
+    }
+    
+
+    private async Task LoadCategories()
+    {
+        if (Model.SubProjectTypeIds is not { Count: >0 })
+            return;
+        var response = await SubProjectTypeManager.GetAllAsync(new GetAllSubProjectTypeQuery
+        {
+            ProjectType =ProjectType.VR_XR,
+            SubIdString = string.Join("-", Model.SubProjectTypeIds)
+        });
+        if (response.Succeeded)
+        {
+            _categories = response.Data.Select(p => p.Name).ToList();
+        }
+        else
+        {
+            foreach (var message in response.Messages)
+            {
+                _snackBar.Add(message, Severity.Error);
+            }
+        }
+    }
+}

@@ -1,0 +1,29 @@
+﻿@page "/festival/seo"
+@inherits BaseFestival
+@inject IStringLocalizer<SeoForm> Localizer
+
+<MudContainer MaxWidth="MaxWidth.Medium">
+    <MudGrid>
+        <MudItem xs="12">
+            <MudCard Elevation="25">
+                <MudContainer MaxWidth="MaxWidth.Medium" Class="mb-3 p-lg-2 ">
+                    <HeroTitle Title="Seo Setting For festival Page"></HeroTitle>
+                    <MudText Typo="Typo.body1" Class="mb-2">
+                        On this page, you determine the SEO settings of the main page of the festival.
+                    </MudText>
+                    <MudText Typo="Typo.body1" Class="mb-2">
+                        SEO or search engine optimization is used to help search engines to display the desired results to users.
+                    </MudText>
+                    <MudText Typo="Typo.body1">
+                        By using these settings, you can introduce the festival page and, as a result, your festival to more users
+                    </MudText>
+                    <EditForm Model="_seoTags" OnSubmit="SaveAsync">
+                        <FluentValidationValidator @ref="_fluentValidationValidator" />
+                        <AddEditSeoTagForm Model="_seoTags" />
+                        <LoadingButton Class="my-2" Processing="_processing" Variant="Variant.Filled" Color="Color.Primary" ButtonType="ButtonType.Submit">@Localizer["Save"]</LoadingButton>
+                    </EditForm>
+                </MudContainer>
+            </MudCard>
+        </MudItem>
+    </MudGrid>
+</MudContainer>

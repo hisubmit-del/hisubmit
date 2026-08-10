@@ -1,0 +1,55 @@
+﻿@inject IStringLocalizer<ProjectAwardAndDistribution> Localize
+
+@using ClientComponents.Pages.Project.Awards
+
+<MudCard Elevation="25">
+    <MudCardHeader>
+        <CardHeaderContent>
+            <MudText Typo="Typo.h3">@Localize["Award and Distribution"]</MudText>
+        </CardHeaderContent>
+    </MudCardHeader>
+    @if (!_loaded)
+    {
+        <MudContainer MaxWidth="MaxWidth.Medium" Style="height:300px">
+            <Spinner></Spinner>
+        </MudContainer>
+    }
+    else
+    {
+        <MudCardContent>
+            <MudContainer MaxWidth="MaxWidth.Medium" Class="px-0">
+                <MudGrid>
+                    @if (ProjectType != ProjectType.Film)
+                    {
+                        <MudItem xs="12">
+                            <ProjectAwards @ref="ProjectAwards"></ProjectAwards>
+                        </MudItem>
+                    }
+                    else
+                    {
+                        <MudItem xs="12">
+                            <ProjectScreenAwards @ref="ProjectScreenAwards"></ProjectScreenAwards>
+                        </MudItem>
+                    }
+                    <MudItem xs="12">
+                        <ProjectDistribuationInformation @ref="ProjectDistributionInformation"></ProjectDistribuationInformation>
+                    </MudItem>
+                </MudGrid>
+            </MudContainer>
+        </MudCardContent>
+        <MudPaper Class="d-flex justify-end flex-grow-1" Elevation="0">
+            <MudPaper Class="mr-2 mb-2" Elevation="0">
+                 <MudButtonGroup Variant="Variant.Filled" OverrideStyles="false" >
+                <LoadingButton Processing="_processing" Variant="Variant.Filled"
+                               ButtonType="ButtonType.Submit"
+                               OnClick="SaveAsync"
+                               StartIcon="@Icons.Material.Filled.Save" Color="Color.Info">
+                    @Localize["Save"]
+                </LoadingButton>
+                <MudButton Variant="Variant.Filled" OnClick="GoNext" EndIcon="@Icons.Material.Filled.ArrowRight" 
+                           Color="Color.Secondary"> @Localize["Next"]</MudButton>
+                 </MudButtonGroup>
+            </MudPaper>
+        </MudPaper>
+    }
+</MudCard>

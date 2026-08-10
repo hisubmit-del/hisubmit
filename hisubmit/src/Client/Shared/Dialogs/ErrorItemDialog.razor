@@ -1,0 +1,38 @@
+﻿@namespace HiSubmit.Client.Shared.Dialogs
+@inject IStringLocalizer<ErrorItemDialog> localizer
+<MudDialog>
+    <TitleContent>
+        <MudText Typo="Typo.h5">
+            <MudIcon Icon="@Icons.Material.Filled.Error" Color="Color.Error" Class="mr-3 mb-n1"/>
+            The operation is not possible
+        </MudText>
+    </TitleContent>
+    <DialogContent>
+        <MudPaper Class="ma-2">
+            <MudList T="string" Clickable="false" Dense="true" DisableGutters="false">
+                @foreach (var message in Messages)
+                {
+                    <MudListItem T="string" Text="@message" IconColor="Color.Error" Icon="@Icons.Material.Filled.Bookmark"/>
+                }
+            </MudList>
+        </MudPaper>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel">@localizer["Ok"]</MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+
+    [CascadingParameter]
+    IMudDialogInstance MudDialog { get; set; }
+
+    [Parameter]
+    public List<string> Messages { get; set; }
+
+    private void Cancel()
+    {
+        MudDialog.Close();
+    }
+
+}

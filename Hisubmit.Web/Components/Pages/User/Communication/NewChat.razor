@@ -1,0 +1,46 @@
+﻿@page "/Chat"
+@page "/Chat/{RoomId:int}"
+@using HiSubmit.Web.Components.Shared.Components.Chats
+@inject IStringLocalizer<NewChat> Localize
+@inherits BaseUserPages
+<div class="d-flex flex-grow-1 flex-row">
+    <ChatBox @bind-OpenContact="_openContact" @ref="_chatBox" ChatMessage="_chatMessageCommand" RoomId="@RoomId" ImageUrl="@SelectedRoomImageUrl"
+             Messages="Messages" CFullName="@SelectedRoomTitle" OnSendMessage="AddMessage"/>
+
+    <MudHidden Breakpoint="Breakpoint.SmAndDown">
+        <MudPaper Elevation="25" Class="pa-3 ml-6" MinWidth="350px">
+            <MudToolBar Dense="true">
+                <MudText Typo="Typo.h6" Inline="true" Class="mr-2">#</MudText>
+                <MudText Typo="Typo.h6">@Localize["Chat"]</MudText>
+            </MudToolBar>
+            <div class="d-flex flex-column px-4" style="max-height:70vh;min-height:70vh; overflow:scroll;">
+                <MudList Clickable="true" T="string">
+                    @foreach (var user in _contactsAndRooms.Where(p => p.RoomId != null))
+                    {
+                        <ChatContactBox Contact="user" OnClickContact="LoadUserChat"/>
+                    }
+                    <CustomDivider/>Contacts
+                    @foreach (var user in _contactsAndRooms.Where(p => p.RoomId == null))
+                    {
+                        <ChatContactBox Contact="user" OnClickContact="LoadUserChat"/>
+                    }
+                </MudList>
+            </div>
+        </MudPaper>
+    </MudHidden>
+</div>
+<MudDrawer Elevation="1" @bind-Open="_openContact" Anchor="Anchor.Right" Variant="@DrawerVariant.Temporary">
+    <div class="pa-3">
+        <MudList T="string" Clickable="true">
+            @foreach (var user in _contactsAndRooms.Where(p => p.RoomId != null))
+            {
+                <ChatContactBox Contact="user" OnClickContact="LoadUserChat"/>
+            }
+            <CustomDivider/>Contacts
+            @foreach (var user in _contactsAndRooms.Where(p => p.RoomId == null))
+            {
+                <ChatContactBox Contact="user" OnClickContact="LoadUserChat"/>
+            }
+        </MudList>
+    </div>
+</MudDrawer>

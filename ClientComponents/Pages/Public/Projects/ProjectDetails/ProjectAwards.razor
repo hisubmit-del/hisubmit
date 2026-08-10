@@ -1,0 +1,122 @@
+﻿@using HiSubmit.Client.SharedModels.Extensions
+
+<h4 class="sponsored-festival-title my-2"> Screenings/Awards</h4>    
+
+<div class="gallery-tab-slider mb-5 pb-4 mt-5">
+    <div class="tab-content" id="gallery-tab-slider-tabContent">
+          <div class="tab-pane fade show active" id="pills-about" role="tabpanel"
+               aria-labelledby="pills-about-tab">
+              <div class="gallery-slider " id="award-project-slider">
+                  @foreach (var award in ScreenAwards)
+                  {
+                      <MudCard Style="@($"background:{Colors.BlueGray.Lighten5}")">
+                          <MudItem xs="6" lg="4" Class="text-end my-auto">
+                              <MudAvatar Size="Size.Large">
+                                  <MudImage Src="@award.ImageUrl" Alt="@award.Title"></MudImage>
+                              </MudAvatar>
+                          </MudItem>
+                          <MudItem xs="6" lg="8" Class="pl-0 d-flex flex-column flex-grow-1 ">
+                              <MudText Typo="Typo.h6">@award.Title</MudText>
+                              <MudText Typo="Typo.subtitle2">@award.AwardSelection</MudText>
+                              <MudText Typo="Typo.subtitle2">@award.ScreeningDate.Year</MudText>
+                          </MudItem>
+                      </MudCard>
+                  }
+                  @foreach (var award in Awards)
+                  {
+                      <MudCard  Style="@($"background:{Colors.BlueGray.Lighten5}")">
+                          <MudItem xs="6" lg="4" Class="text-end my-auto">
+                              <MudAvatar Size="Size.Large">
+                                  <MudImage Src="@award.ImageUrl" Alt="@award.Title"></MudImage>
+                              </MudAvatar>
+                          </MudItem>
+                          <MudItem xs="6" lg="8" Class="pl-0 d-flex flex-column flex-grow-1">
+                              <MudText Typo="Typo.h6">@award.Title</MudText>
+                              <MudText Typo="Typo.subtitle2">@award.AwardsWon</MudText>
+                              <MudText Typo="Typo.subtitle2">@award.Location</MudText>
+                          </MudItem>
+                      </MudCard>
+                  }
+
+              </div>
+</div>
+    </div>
+</div>
+@* <div class="my-3"> *@
+@*         <h4 class="sponsored-festival-title my-2"> Screenings/Awards</h4>     *@
+@*     <div class="screen-awards row"> *@
+@*         @foreach (var award in ScreenAwards) *@
+@*         { *@
+@*             <div Class="screen-award-item col-lg-3 col-12"> *@
+@*                 <MudGrid> *@
+@*                     <MudItem xs="6" lg="4" Class="text-end my-auto"> *@
+@*                         <MudAvatar Size="Size.Large"> *@
+@*                             <MudImage Src="@award.ImageUrl" Alt="@award.Title"></MudImage> *@
+@*                         </MudAvatar> *@
+@*                     </MudItem> *@
+@*                     <MudItem xs="6" lg="8" Class="pl-0 d-flex flex-column flex-grow-1 "> *@
+@*                         <MudText Typo="Typo.h6">@award.Title</MudText> *@
+@*                         <MudText Typo="Typo.subtitle2">@award.AwardSelection</MudText> *@
+@*                         <MudText Typo="Typo.subtitle2">@award.ScreeningDate.Year</MudText> *@
+@*                     </MudItem> *@
+@*                 </MudGrid> *@
+@* *@
+@*             </div> *@
+@*         } *@
+@*         @foreach (var award in Awards) *@
+@*         { *@
+@*             <div Class="screen-award-item col-lg-3 col-12"> *@
+@*                 <MudGrid> *@
+@*                     <MudItem xs="6" lg="4" Class="text-end my-auto"> *@
+@*                         <MudAvatar Size="Size.Large"> *@
+@*                             <MudImage Src="@award.ImageUrl" Alt="@award.Title"></MudImage> *@
+@*                         </MudAvatar> *@
+@*                     </MudItem> *@
+@*                     <MudItem xs="6" lg="8" Class="pl-0 d-flex flex-column flex-grow-1"> *@
+@*                         <MudText Typo="Typo.h6">@award.Title</MudText> *@
+@*                         <MudText Typo="Typo.subtitle2">@award.AwardsWon</MudText> *@
+@*                         <MudText Typo="Typo.subtitle2">@award.Location</MudText> *@
+@*                     </MudItem> *@
+@*                 </MudGrid> *@
+@* *@
+@*             </div> *@
+@*         } *@
+@* *@
+@*     </div> *@
+@* </div> *@
+@* <div class="row pa-3"> *@
+@*     @foreach (var screenWard in ScreenAwards) *@
+@*     { *@
+@*         <div class="col-md-6"> *@
+@*             <div class="title-text border-dotted"> *@
+@*                 <DividerNameValue BackGround="#f7fafa" *@
+@*                                   Name="Title" Value="@screenWard.Title"/> *@
+@*                 <DividerNameValue BackGround="#f7fafa" *@
+@*                                   Name="Country" Value="@screenWard.CountryName"/> *@
+@*                 <DividerNameValue BackGround="#f7fafa" *@
+@*                                   Name="City" Value="@screenWard.City"/> *@
+@*                 <DividerNameValue BackGround="#f7fafa" *@
+@*                                   Name="Screen Date" Value="@screenWard.ScreeningDate.ToLongDate()"/> *@
+@*                 <DividerNameValue BackGround="#f7fafa" *@
+@*                                   Name="Premiere" Value="@screenWard.Premiere"/> *@
+@*                 <DividerNameValue BackGround="#f7fafa" *@
+@*                                   Name="Award/Select" Value="@screenWard.AwardSelection"/> *@
+@*             </div> *@
+@*         </div> *@
+@*     } *@
+@*     @foreach (var award in Awards) *@
+@*     { *@
+@*         <div class="col-md-6"> *@
+@*             <div class="title-text border-dotted"> *@
+@*                 <DividerNameValue BackGround="#f7fafa" *@
+@*                                   Name="Title" Value="@award.Title"/> *@
+@*                 <DividerNameValue BackGround="#f7fafa" *@
+@*                                   Name="Country" Value="@award.Location"/> *@
+@*                 <DividerNameValue BackGround="#f7fafa" *@
+@*                                   Name="City" Value="@award.AwardsWon"/> *@
+@*                 <DividerNameValue BackGround="#f7fafa" *@
+@*                                   Name="Screen Date" Value="@award.Date.ToLongDate()"/> *@
+@*             </div> *@
+@*         </div> *@
+@*     } *@
+@* </div> *@

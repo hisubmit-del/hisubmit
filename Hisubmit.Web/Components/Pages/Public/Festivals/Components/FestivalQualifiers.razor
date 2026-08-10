@@ -1,0 +1,31 @@
+﻿@using Hisubmit.Client.SharedModels.Features.FestivalQualifyers.Queries.GetAll
+
+@if(Qualifiers.Any())
+{
+    <MudCard Class="mt-2 pb-3 pt-2 border-radius-20 ">
+        <div Class="mt-2 text-center">
+            <MudText Typo="Typo.h5" Align="Align.Center" Class="mb-2">Qualifiers</MudText>
+        </div>
+        <div class="side-box contact w-100">
+
+            <ul class="contact-list mt-4">
+
+                @foreach (var item in Qualifiers)
+                {
+                    <li class="d-flex justify-space-between">
+                        <MudImage Height="40" Style="max-width:100%" Src="@item.LogoName"></MudImage>
+                        @* <MudText Typo="Typo.caption">@item.Name</MudText> *@
+                    </li>
+                }
+              
+            </ul>
+        </div>
+
+    </MudCard>
+}
+
+@code{
+    
+    [Parameter] public List<GetAllFestivalQualifiersResponse> Qualifiers { get; set; } = new();
+
+}

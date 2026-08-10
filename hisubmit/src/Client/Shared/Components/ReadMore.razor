@@ -1,0 +1,41 @@
+﻿@if (MarkUpString)
+{
+    <p>
+        @if (MarkUpString)
+        {
+            @((MarkupString)_displayText)
+        }
+        else
+        {
+            @(_displayText)
+        }
+        @if (_showMore)
+        {
+            <MudText Color="Color.Primary"></MudText>
+            <MudButton DisableElevation="true"
+                       Variant="Variant.Text"
+                       OnClick="ToggleShow"
+                       EndIcon="@Icons.Material.Filled.KeyboardDoubleArrowUp"
+                       Color="Color.Primary">
+                hide
+            </MudButton>
+        }
+        else
+        {
+            <MudButton DisableElevation="true"
+                       Variant="Variant.Text"
+                       class=""
+                       OnClick="ToggleShow"
+                       EndIcon="@Icons.Material.Filled.KeyboardDoubleArrowDown"
+                       Color="Color.Primary">
+                show more
+            </MudButton>
+        }
+    </p>
+}
+else
+{
+    <p>
+        @_displayText
+    </p>
+}

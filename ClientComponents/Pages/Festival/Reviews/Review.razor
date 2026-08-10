@@ -1,0 +1,62 @@
+﻿@page "/festival/reviews"
+@using global::Hisubmit.Client.SharedModels.Features.Reviews.Queries
+@inject IStringLocalizer<Review> Localize;
+@inherits BaseFestival
+<style>
+    .mud-table-container {
+        overflow: auto;
+    }
+</style>
+
+<HeroTitle Title="@Localize["Reviews"]" Description="@Localize["List of Reviews of participants in the festival "]"/>
+
+<MudTable Loading="!_loaded" LoadingProgressColor="Color.Secondary" class="default-light-table" 
+          Elevation="25" Items="_pagedDate" TotalItems="_totalItems"
+          ServerData="@(new Func<TableState,CancellationToken, Task<TableData<GetAllReviewResponse>>>(ServerReload))" 
+          Hover="true" Dense="true" Bordered="false" Striped="true" @ref="_table">
+    <ToolBarContent>
+        <div class="justify-center mud-text-align-center">
+            <MudHidden Breakpoint="Breakpoint.LgAndUp">
+                <MudIconButton DisableElevation Variant="Variant.Filled" OnClick="@(() => OnSearch(""))" 
+                               Icon="@Icons.Material.Filled.Refresh" Color="Color.Secondary"/>
+            </MudHidden>
+            <MudHidden Breakpoint="Breakpoint.MdAndDown">
+                <MudButton DisableElevation Variant="Variant.Filled" OnClick="@(() => OnSearch(""))" 
+                           StartIcon="@Icons.Material.Filled.Refresh" IconColor="Color.Surface"
+                           Color="Color.Secondary">@Localize["Reload"]</MudButton>
+            </MudHidden>
+        </div>
+        <MudSpacer/>
+        <MudTextField T="string" ValueChanged="@(OnSearch)"
+                      Placeholder="@Localize["Search"]" Adornment="Adornment.Start"
+                      AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+    </ToolBarContent>
+    <HeaderContent>
+        <MudTh>@Localize["Rate"]</MudTh>
+        <MudTh>@Localize["Text"]</MudTh>
+        <MudTh>@Localize["User"]</MudTh>
+        <MudTh Style="text-align:center">@Localize["Actions"]</MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="Rate">
+            <MudRating ReadOnly="true" SelectedValue="@context.Rate"/>
+        </MudTd>
+           <MudTd DataLabel="Text">
+                    <MudText Typo="Typo.caption">@context.Text</MudText>
+                </MudTd>
+        <MudTd DataLabel="User">
+            <MudHighlighter Text="@context.UserFullName" HighlightedText="@_searchString"/>
+        </MudTd>
+        <MudTd DataLabel="Actions">
+            <MudHidden Breakpoint="Breakpoint.LgAndUp">
+                <MudIconButton Icon="@Icons.Material.Filled.Send" Title="Send Message" OnClick="() => SendMessage(context.UserId)"/>
+            </MudHidden>
+            <MudHidden Breakpoint="Breakpoint.MdAndDown">
+                <MudButton OnClick="() => SendMessage(context.UserId)" StartIcon="@Icons.Material.Filled.Send">Send Message</MudButton>
+            </MudHidden>
+        </MudTd>
+    </RowTemplate>
+    <PagerContent>
+        <TablePager/>
+    </PagerContent>
+</MudTable>

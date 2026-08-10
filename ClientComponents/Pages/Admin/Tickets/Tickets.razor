@@ -1,0 +1,124 @@
+﻿@page "/admin/festival/tickets/{FestivalId:int}"
+@page "/admin/festival/tickets"
+
+@inject IStringLocalizer<Tickets> Localize
+@using global::Hisubmit.Client.SharedModels.Features.Tickets.Queries.GetAllTicket
+@using HiSubmit.Client.SharedModels.Extensions
+@using HiSubmit.Client.SharedModels.Extensions
+@inherits BaseAdminPages
+
+<MudContainer MaxWidth="MaxWidth.Large">
+    <HeroTitle Title="@Localize["Tickets"]" Description="@Localize["your festival ticket"]" />
+    @if (!_loaded)
+    {
+        <MudProgressCircular Color="Color.Primary" Indeterminate="true" />
+    }
+    else
+    {
+        <MudTable class="default-table" Loading="!_loaded"
+                  LoadingProgressColor="Color.Secondary" Elevation="25"
+                  Items="PagedDate" TotalItems="_totalItems" ServerData="@(new Func<TableState, CancellationToken, Task<TableData<GetAllTicketResponse>>>(ServerReload))"
+                  Hover="true" Dense="true" Bordered="false" Striped="true" @ref="_table">
+            <ToolBarContent>
+                <MudHidden Breakpoint="Breakpoint.LgAndUp">
+                    <div class="justify-center mud-text-align-center">
+                        <MudIconButton DisableElevation Variant="Variant.Filled" OnClick="@(() => OnSearch(""))"
+                                       Icon="@Icons.Material.Filled.Refresh" Color="Color.Secondary" />
+                    </div>
+                </MudHidden>
+                <MudHidden Breakpoint="Breakpoint.MdAndDown">
+
+                    <div class="justify-center mud-text-align-center">
+                        <MudButton DisableElevation Variant="Variant.Filled" OnClick="@(() => OnSearch(""))"
+                                   StartIcon="@Icons.Material.Filled.Refresh" IconColor="Color.Surface"
+                                   Color="Color.Secondary">
+                            @Localize["Reload"]
+                        </MudButton>
+                    </div>
+                </MudHidden>
+                <MudSpacer />
+                <MudTextField T="string" ValueChanged="@(OnSearch)" Placeholder="@Localize["Search"]"
+                              Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search"
+                              IconSize="Size.Medium" Class="mt-0">
+                </MudTextField>
+            </ToolBarContent>
+            <HeaderContent>
+                <MudTh>
+                    <MudTableSortLabel T="GetAllTicketResponse" SortLabel="ProjectTitle">@Localize["Title"]</MudTableSortLabel>
+                </MudTh>
+                <MudTh>
+                    <MudTableSortLabel T="GetAllTicketResponse" SortLabel="Owner">@Localize["Venue"]</MudTableSortLabel>
+                </MudTh>
+                <MudTh>
+                    <MudTableSortLabel T="GetAllTicketResponse" SortLabel="Owner">@Localize["Available Capacity"]</MudTableSortLabel>
+                </MudTh>
+                <MudTh>
+                    <MudTableSortLabel T="GetAllTicketResponse" SortLabel="Submit Date">@Localize["Start Date"]</MudTableSortLabel>
+                </MudTh>
+                <MudTh>@Localize["Cost"]</MudTh>
+                <MudTh>
+                    @Localize["Enable"]
+                </MudTh>
+                <MudTh>
+                    Actions
+                </MudTh>
+                @* <FestivalIdAuthorizeView Policy="@Permissions.Ticket.Edit"> *@
+                @*     <MudTh Style="text-align:center">@Localize["Actions"]</MudTh> *@
+                @* </FestivalIdAuthorizeView> *@
+            </HeaderContent>
+            <RowTemplate>
+                <MudTd DataLabel="Title">
+                    <MudHighlighter Text="@context.Title" HighlightedText="@_searchString" />
+                </MudTd>
+                <MudTd DataLabel="venue">
+                    <MudHighlighter Text="@context.VenueName" HighlightedText="@_searchString" />
+                </MudTd>
+                <MudTd DataLabel="Available Capacity">
+                    <MudHighlighter Text="@context.AvailableCapacity.ToString()" HighlightedText="@_searchString" />
+                </MudTd>
+                <MudTd DataLabel="Start Date">
+                    <MudHighlighter Text="@context.OpenDate.ToLongDate()" HighlightedText="@_searchString" />
+                </MudTd>
+                <MudTd DataLabel="Cost">
+                    <MudHighlighter Text="@context.Cost.ToString("C2")" HighlightedText="@_searchString" />
+                </MudTd>
+                <MudTd DataLabel="Is Enable">
+                    <MudSwitch T="bool" Value="@context.IsEnable"
+                               ThumbIcon="@(context.IsEnable == true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)"
+                               ThumbIconColor="@(context.IsEnable == true ? Color.Tertiary : Color.Error)"
+                               Color="Color.Success" T="bool" ValueChanged="(t) => ChangeChecked(context.Id, t)">
+                    </MudSwitch>
+                </MudTd>
+
+                <MudTd DataLabel="Actions">
+                    <MudHidden Breakpoint="Breakpoint.MdAndDown">
+                        <MudIconButton Icon="@Icons.Material.Filled.Edit" Size="Size.Small" Title="Edit Ticket"
+                                       Href="@($"/festival/ticket/{context.Id}")"
+                                       Color="Color.Default"></MudIconButton>
+                        @* <MudIconButton Icon="@Icons.Material.Filled.Delete" Disabled="@(context.OpenDate < DateTime.Now)" *@
+                        @*                Size="Size.Small" Title="Delete Ticket"  *@
+                        @*                OnClick="() => DeleteTicket(context.Id, context.Title)"  *@
+                        @*                Color="Color.Default"></MudIconButton> *@
+                    </MudHidden>
+                    <MudHidden Breakpoint="Breakpoint.LgAndUp">
+                        <MudMenu Label="@Localize["Actions"]" Variant="Variant.Filled" DisableElevation="true"
+                                 EndIcon="@Icons.Material.Filled.KeyboardArrowDown" IconColor="Color.Secondary"
+                                 Direction="Direction.Left" OffsetX="true">
+                            <MudMenuItem OnTouch="() => EditTicket(context.Id)"
+                                         Href="@($"/festival/ticket/{context.Id}")">
+                                @Localize["Edit"]
+                            </MudMenuItem>
+                            @* <MudMenuItem OnTouch="() => DeleteTicket(context.Id, context.Title)" *@
+                            @*              OnClick="@(() => DeleteTicket(context.Id, context.Title))"> *@
+                            @*     @Localize["Delete"] *@
+                            @* </MudMenuItem> *@
+                        </MudMenu>
+                    </MudHidden>
+                </MudTd>
+            </RowTemplate>
+            <PagerContent>
+                <TablePager />
+            </PagerContent>
+        </MudTable>
+    }
+</MudContainer>

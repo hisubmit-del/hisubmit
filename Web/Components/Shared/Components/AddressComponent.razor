@@ -1,0 +1,19 @@
+﻿@inject IStringLocalizer<AddressComponent> localizer
+
+<MudGrid>
+    <MudItem xs="12" md="6" Style="margin-bottom:2px">
+        <MudAutocomplete T="int" Label="@localizer["Country"]"  For="@(() => Address.CountryId)" @bind-Value="Address.CountryId" ResetValueOnEmptyText="true" MaxItems="null" SearchFunc="@SearchCountries" Variant="Variant.Filled" Margin="Margin.Dense" ToStringFunc="@(i => Countries.FirstOrDefault(b => b.Id == i)?.Name ?? string.Empty)" OffsetY="true" />
+    </MudItem>
+    <MudItem xs="12" md="6" Style="margin-bottom:2px">
+        <MudTextField @bind-Value="Address.State" For="@(() => Address.State)" Label="@localizer["State"]" Variant="Variant.Filled" Margin="Margin.Dense" />
+    </MudItem>
+    <MudItem xs="12" md="6" Style="margin-bottom:2px">
+        <MudTextField @bind-Value="Address.City" For="@(() => Address.City)" Label="@localizer["City"]" Variant="Variant.Filled" Margin="Margin.Dense" />
+    </MudItem>
+    <MudItem xs="12" md="6" Style="margin-bottom:2px">
+        <MudTextField @bind-Value="Address.PostalCode" For="@(() => Address.PostalCode)" InputType="InputType.Number" Label="@localizer["PostalCode"]" Variant="Variant.Filled" Margin="Margin.Dense" />
+    </MudItem>
+    <MudItem xs="12" Style="margin-bottom:2px">
+        <MudTextField @bind-Value="Address.Text" For="@(() => Address.Text)" Label="@localizer["Address"]" Variant="Variant.Filled" Margin="Margin.Dense" />
+    </MudItem>
+</MudGrid>

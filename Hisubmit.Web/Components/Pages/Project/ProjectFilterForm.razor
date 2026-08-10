@@ -1,0 +1,40 @@
+﻿@using Hisubmit.Client.SharedModels.Extensions
+@inject IStringLocalizer<ProjectFilterForm> Localize
+
+<EditForm Model="@Model">
+    <MudGrid>
+        <MudItem xs="12" md="3">
+            <MudTextField T="string" Margin="Margin.Dense" Label="@Localize["Title"]"
+                          Variant="Variant.Text" @bind-Value="@Model.Title">
+            </MudTextField>
+        </MudItem>
+        <MudItem xs="12" md="3">
+            <MudSelect T="ProjectType?" @bind-Value="Model.ProjectType" Label="@Localize["Project ItemType"]"
+                       Variant="Variant.Text">
+                <MudSelectItem Value="@(null as ProjectType?)">@Localize["All ItemType"]</MudSelectItem>
+                @foreach (ProjectType? status in Enum.GetValues(typeof(ProjectType)))
+                {
+                    <MudSelectItem Value="@(status as ProjectType?)">@status.ToDisplay()</MudSelectItem>
+                }
+            </MudSelect>
+        </MudItem>
+        <MudItem xs="12" md="3">
+            <MudSelect T="bool?" @bind-Value="Model.StudentProject" Label="@Localize["Student Project"]"
+                       Variant="Variant.Text">
+                <MudSelectItem Value="@(null as bool?)">@Localize["Both"]</MudSelectItem>
+                <MudSelectItem Value="@(true as bool?)">@Localize["Yes"]</MudSelectItem>
+                <MudSelectItem Value="@(false as bool?)">@Localize["No"]</MudSelectItem>
+            </MudSelect>
+        </MudItem>
+        <MudItem xs="12">
+            <div class="d-flex justify-end">
+                <MudButton ButtonType="ButtonType.Button"
+                           OnClick="Serach"
+                           Variant="Variant.Filled" Color="Color.Info"
+                           EndIcon="@Icons.Material.Filled.Search">
+                    Search
+                </MudButton>
+            </div>
+        </MudItem>
+    </MudGrid>
+</EditForm>

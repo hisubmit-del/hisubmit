@@ -1,0 +1,279 @@
+﻿@inject IStringLocalizer<FestivalDetail> Localize
+
+<MudCard Elevation="25">
+<MudCardHeader>
+    <CardHeaderContent>
+        <MudText Typo="Typo.h3">@Localize["Event Details"]</MudText>
+    </CardHeaderContent>
+</MudCardHeader>
+@if (!Loaded)
+{
+    <MudContainer MaxWidth="MaxWidth.Medium" Style="height:300px">
+        <Spinner></Spinner>
+    </MudContainer>
+}
+else
+{
+    <MudCardContent>
+    @* <MudContainer MaxWidth="MaxWidth.Medium"> *@
+        <MudGrid>
+            @if (!IsAdmin)
+            {
+                if (_model.FestivalStatus == FestivalStatus.UnderInvestigation)
+                {
+                    <MudItem xs="12" Class="mb-2">
+                        <MudAlert Severity="Severity.Warning"> Your festival information is under review.pleas wait ...</MudAlert>
+                    </MudItem>
+                }
+
+                if (_model.FestivalStatus == FestivalStatus.NotConfirmed)
+                {
+                    <MudItem xs="12" Class="mb-2">
+                        <MudAlert Severity="Severity.Error"> Your festival information is not verified please correct them.</MudAlert>
+                    </MudItem>
+                }
+            }
+            <MudItem xs="12" sm="12" md="12" Class="mx-0 mx-md-20 mx-lg-20">
+                <EditForm OnValidSubmit="SaveAsync" EditContext="_EditForm" >
+                    <FluentValidationValidator @ref="_fluentValidationValidator"/>
+                    <MudGrid >
+
+                        <MudItem xs="12" md="6">
+                            <MudItem Style="margin-bottom:40px;">
+                                <MudTextField @bind-Value="_model.Name" Label="@Localize["Event Name"]"
+                                              id="fes-from"
+                                              For="@(() => _model.Name)" Variant="Variant.Filled" Margin="Margin.Dense"/>
+                            </MudItem>
+                            <MudGrid>
+                                <MudItem xs="12" md="6" Class="text-center">
+                                    <ImageUploader @bind-Url="@_model.LogoURL"
+                                                       SuggestedSize="200*200"
+                                                   Title="@Localize["Logo"]"
+                                                   @bind-UploadRequest="@_model.UploadRequest"/>
+                                </MudItem>
+
+                                <MudItem xs="12" md="6" Class="text-center">
+                                    <ImageUploader @bind-Url="@_model.RewardLogoURL"
+                                                   SuggestedSize="130*70"
+                                                   Title="@Localize["Award Logo"]"
+                                                   @bind-UploadRequest="@_model.RewardLogoUploadRequest"/>
+                                </MudItem>
+
+                                <MudItem xs="12">
+                                    <MudTextField @bind-Value="_model.RewardsName" Label="@Localize["Award name"]"
+                                                  Required="true"
+                                                  HelperText="@Localize["For example, the golden palm and the golden bear"]"
+                                                  For="@(() => _model.RewardsName)" Variant="Variant.Filled" Margin="Margin.Dense"/>
+                                </MudItem>
+                            </MudGrid>
+                        </MudItem>
+                        <MudItem xs="12" md="6">
+                            <MudItem xs="12" Style="margin-bottom:40px">
+                                <MudNumericField For="@(() => _model.YearsRunning)" 
+                                                 Required="true"
+                                                 Min="1" @bind-Value="_model.YearsRunning"
+                                                 Label="@Localize["Years Running"]" Variant="Variant.Filled" Margin="Margin.Dense"/>
+                            </MudItem>
+                            <MudGrid>
+                                <MudItem lg="3">
+                                    <MudText Typo="Typo.subtitle2">Event type:</MudText>
+                                </MudItem>
+                                <MudItem lg="9">
+                                    <MudPaper Square="true" Elevation="1">
+                                        <MudStack>
+                                            <MudCheckBox T="bool" Dense="true" Size="Size.Small"
+                                                         Disabled="@(_model.OnlineFestival)" @bind-Value="_model.FilmFestival"
+                                                         Color="Color.Default">
+                                                @Localize["Film festival /Theatre festival "]
+                                            </MudCheckBox>
+                                            <MudCheckBox T="bool" Dense="true" Size="Size.Small" @bind-Value="_model.ScreenWritingWriter"
+                                                         Color="Color.Default">
+                                                @Localize["Script/Screen Writing Writer"]
+                                            </MudCheckBox>
+                                            <MudCheckBox T="bool" Dense="true" Size="Size.Small" @bind-Value="_model.MusicContest"
+                                                         Color="Color.Default">
+                                                @Localize["Music Contest"]
+                                            </MudCheckBox>
+                                            <MudCheckBox T="bool" Dense="true" Size="Size.Small" @bind-Value="_model.ArtFestival"
+                                                         Color="Color.Default">
+                                                @Localize["Art"]
+                                            </MudCheckBox>
+                                            <MudCheckBox T="bool" Dense="true" Size="Size.Small" @bind-Value="_model.PhotographicContest"
+                                                         Color="Color.Default">
+                                                @Localize["Photographic Contest"]
+                                            </MudCheckBox>
+                                            <MudCheckBox T="bool" Dense="true" Size="Size.Small" Disabled="@(_model.FilmFestival)"
+                                                         @bind-Value="_model.OnlineFestival" Color="Color.Default">
+                                                @Localize["Online festival"]
+                                            </MudCheckBox>
+                                        </MudStack>
+                                    </MudPaper>
+                                </MudItem>
+                            </MudGrid>
+                        </MudItem>
+                          <MudItem xs="12">
+                                                     <MudDivider Class="my-1" DividerType="DividerType.Middle"/>
+                                               </MudItem>
+                        <MudItem xs="12" lg="2">
+                            <MudText Typo="Typo.subtitle2">
+                                Event Description
+                            </MudText>
+
+                        </MudItem>
+                        <MudItem xs="12" lg="10" Class="h-100">
+
+                            <CustomeRichTextEditor
+                                ElementId="DescriptionEditor"
+                                SimpleOption="true"
+                                EnableLink="false"
+                                @bind-Body="@_model.Description"/>
+
+                            <ValidationMessage class="text-danger p-2" For="() => _model.Description"/>
+                        </MudItem>
+                        <MudItem xs="12">
+                              <MudDivider Class="my-1" DividerType="DividerType.Middle"/>
+                        </MudItem>
+                        <MudItem xs="12" lg="2">
+                            <MudText Typo="Typo.subtitle2">
+                                Award and Prizes
+                            </MudText>
+                        </MudItem>
+                        <MudItem xs="12" lg="10" Class="h-100">
+                            <CustomeRichTextEditor
+                                ElementId="AwardEditor"
+                                SimpleOption="true"
+                                EnableLink="false"
+                                @bind-Body="@_model.Rewards"/>
+                            <ValidationMessage class="text-danger p-2" For="() => _model.Rewards"/>
+                        </MudItem>
+                            <MudItem xs="12">
+                                                       <MudDivider Class="my-1" DividerType="DividerType.Middle"/>
+                                                 </MudItem>
+                        <MudItem xs="12" lg="2">
+                            <MudText Typo="Typo.subtitle2">
+                                Rules And Terms
+                            </MudText>
+                        </MudItem>
+                        <MudItem xs="12" lg="10" Class="h-100">
+                            <CustomeRichTextEditor
+                                ElementId="RulesEditor"
+                                SimpleOption="true"
+                                EnableLink="false"
+                                @bind-Body="@_model.Rules"/>
+                            <ValidationMessage class="text-danger p-2" For="() => _model.Rules"/>
+                        </MudItem>
+                    </MudGrid>
+                    <MudItem xs="12" Class="mt-5 mt-md-3 mb-3">
+                        <MudGrid>
+                            <MudItem xs="12" md="6">
+                                <MudSelect Variant="Variant.Filled" T="string" @bind-SelectedValues="QualifyersSelectedId"
+                                           ToStringFunc="@((id) => Qualifiers.FirstOrDefault(i => i.Id.ToString() == id)!.Name)"
+                                           Label="@Localize["Approved by"]" MultiSelection="true">
+
+                                    @foreach (var qualifier in Qualifiers)
+                                    {
+                                        <MudSelectItem T="string" Value="@qualifier.Id.ToString()">
+
+                                            <MudImage src="@qualifier.LogoName" Height="14" Width="20"
+                                                      Alt="@qualifier.Name" Elevation="25" Class="rounded-sm"/>
+                                            @qualifier.Name
+                                        </MudSelectItem>
+                                    }
+                                </MudSelect>
+                            </MudItem>
+                            @if (QualifyersSelectedId.Any())
+                            {
+                                <MudItem xs="12" md="6">
+                                    <TitleWithIcon Icon="@Icons.Material.Filled.FilePresent">
+                                        @(_model.ApprovedLicenseURL?.Split('\\').LastOrDefault())</TitleWithIcon>
+
+                                    <InputFile id="approvedLicenseUrl" hidden OnChange="UploadApprovedLicenseFileAsync"/>
+                                    <div>
+                                        <MudButton HtmlTag="label"
+                                                   Variant="Variant.Text"
+                                                   Color="Color.Primary"
+                                                   Size="Size.Small"
+                                                   StartIcon="@Icons.Material.Filled.CloudUpload"
+                                                   for="approvedLicenseUrl">
+                                            @Localize["Upload "]
+                                        </MudButton>
+
+                                        @if (!string.IsNullOrEmpty(_model.ApprovedLicenseURL))
+                                        {
+                                            <MudButton Variant="Variant.Text"
+                                                       Color="Color.Error"
+                                                       StartIcon="@Icons.Material.Filled.Delete"
+                                                       OnClick="DeleteApprovedLicenseFileAsync"
+                                                       Size="Size.Small">
+                                                @Localize["Delete"]
+                                            </MudButton>
+                                        }
+                                    </div>
+                                </MudItem>
+                            }
+                        </MudGrid>
+                    </MudItem>
+                    <MudItem xs="12">
+                        <MudGrid>
+                            <MudItem xs="12" md="2" Class="d-flex align-content-center flex-wrap">
+                                <MudText Typo="Typo.subtitle2" >
+                                    key Enable
+                                </MudText>
+                            </MudItem>
+                            <MudItem xs="12" md="10">
+                                <MudGrid>
+                                    <MudItem xs="6" md="6" lg="3">
+                                        <MudTextField @bind-Value="_model.AudienceAttendence" For="@(() => _model.AudienceAttendence)"
+                                                      Label="@Localize["Audience Attendance"]" Variant="Variant.Filled"
+                                                      InputMode="InputMode.numeric" Margin="Margin.Dense"/>
+                                    </MudItem>
+                                    <MudItem xs="6" md="6" lg="3">
+                                        <MudTextField @bind-Value="_model.EstimatedSubmissions" For="@(() => _model.EstimatedSubmissions)"
+                                                      Label="@Localize["Estimation Submisiion"]" Variant="Variant.Filled"
+                                                      InputMode="InputMode.numeric" Margin="Margin.Dense"/>
+                                    </MudItem>
+                                    <MudItem xs="6" md="6" lg="3">
+                                        <MudTextField @bind-Value="_model.ProjectsSelected" For="@(() => _model.ProjectsSelected)"
+                                                      Label="@Localize["Projected Selected"]" Variant="Variant.Filled"
+                                                      InputMode="InputMode.numeric" Margin="Margin.Dense"/>
+                                    </MudItem>
+                                    <MudItem xs="6" md="6" lg="3">
+                                        <MudTextField @bind-Value="_model.AwardsPresented" For="@(() => _model.AwardsPresented)"
+                                                      Label="@Localize["Awards Presented"]" Variant="Variant.Filled"
+                                                      InputMode="InputMode.numeric" Margin="Margin.Dense"/>
+                                    </MudItem>
+                                </MudGrid>
+                            </MudItem>
+                        </MudGrid>
+                    </MudItem>
+                </EditForm>
+            </MudItem>
+            <MudItem xs="12" sm="12" md="12" Class="mx-md-20 mx-lg-20">
+                <EventOrganizer ReadOnlyMood="_model.ChangesNotAllowed"
+                                IsAdmin="IsAdmin" FestivalId="FestivalId">
+                </EventOrganizer>
+            </MudItem>
+        </MudGrid>
+    @* </MudContainer> *@
+    </MudCardContent>
+    <MudPaper Class="d-flex justify-end flex-grow-1 ">
+        <MudPaper Class="mr-2 mb-2">
+            <MudButtonGroup Variant="Variant.Filled" OverrideStyles="false">
+                @if (!IsAdmin)
+                {
+                    <ResponsiveButton Processing="_processing" Disabled="_model.ChangesNotAllowed"
+                                   Variant="Variant.Filled" ButtonType="ButtonType.Submit"
+                                   OnClick="SaveAsync" StartIcon="@Icons.Material.Filled.Save" Color="Color.Info">
+                        @Localize["Save"]
+                    </ResponsiveButton>
+                }
+                <MudButton Variant="Variant.Filled" OnClick="GoNext"
+                           EndIcon="@Icons.Material.Filled.ArrowRight"
+                           Color="Color.Secondary">
+                    @Localize["Next"]
+                </MudButton>
+            </MudButtonGroup>
+        </MudPaper>
+    </MudPaper>
+}
+</MudCard>

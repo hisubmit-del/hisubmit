@@ -1,0 +1,36 @@
+﻿@page "/admin/staticpage"
+@page "/admin/staticpage/{PageId:int}"
+@inherits BaseAdminPages
+@inject IStringLocalizer<AddEditStaticPage> Localizer
+<MudGrid>
+    <MudItem xs="12">
+        <MudCard Elevation="25">
+            <MudContainer MaxWidth="MaxWidth.Medium">
+                <EditForm Model="_staticPage" OnSubmit="SaveAsync">
+                    <FluentValidationValidator @ref="_fluentValidationValidator"/>
+                    <MudGrid>
+                        <MudItem xs="12" md="6">
+                            <MudTextField @bind-Value="_staticPage.Title" For="() => _staticPage.Title" Label="@Localizer["Title"]" Variant="Variant.Filled"></MudTextField>
+                        </MudItem>
+                        <MudItem xs="12" md="6">
+                            <MudTextField @bind-Value="_staticPage.Link" For="() => _staticPage.Link" Label="@Localizer["Link"]" Variant="Variant.Filled"></MudTextField>
+                        </MudItem>
+                    </MudGrid>
+                    <MudGrid>
+                        <MudItem xs="12">
+                            <MudSwitch T="bool" Size="Size.Small" @bind-Value="@_staticPage.IsEnable" For="() => _staticPage.IsEnable" Label="@Localizer["Show In Site"]" Color="Color.Secondary"/>
+                        </MudItem>
+                    </MudGrid>
+                    <MudGrid>
+                        <MudItem xs="12" Class="h-100">
+                            <CustomeRichTextEditor MinHeight="360px"  @bind-Body="@_staticPage.Content"/>
+                        </MudItem>
+                    </MudGrid>
+                    <AddEditSeoTagForm Model="@_staticPage.SeoTag" />
+                    
+                    <LoadingButton FullWidth="true" Class="my-2" Processing="_processing" Variant="Variant.Filled" Color="Color.Primary" ButtonType="ButtonType.Submit">@Localizer["Save"]</LoadingButton>
+                </EditForm>
+            </MudContainer>
+        </MudCard>
+    </MudItem>
+</MudGrid>

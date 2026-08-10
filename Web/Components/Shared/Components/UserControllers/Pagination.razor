@@ -1,0 +1,73 @@
+﻿@if (TotalPage > 1)
+{
+    <div class="pagination">
+    <ul>
+        @* <li class="first"> *@
+        @*     <a href="#" onclick="@(()=>ChangeCurrentPage(CurrentPage+1))"> *@
+        @*         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="14" viewBox="0 0 22 19.714"> *@
+        @*             <g id="Group_38128" data-name="Group 38128" transform="translate(-494 -2360)"> *@
+        @*                 <path id="Prew" d="M17.543,12l2.171-2.171L9.861,0,0,9.829,2.171,12,9.861,4.31Z" *@
+        @*                       transform="translate(504 2379.714) rotate(-90)" fill="#9b9b9b"/> *@
+        @*                 <path id="Prew-2" data-name="Prew" *@
+        @*                       d="M17.543,12l2.171-2.171L9.861,0,0,9.829,2.171,12,9.861,4.31Z" *@
+        @*                       transform="translate(494 2379.714) rotate(-90)" fill="#9b9b9b"/> *@
+        @*             </g> *@
+        @*         </svg> *@
+        @*     </a> *@
+        @* </li> *@
+        
+        @if (CurrentPage != 1)
+       {
+           <li class="prev">
+               <span href="#" onclick="@(()=>ChangeCurrentPage(CurrentPage-1))"> 
+                   <svg xmlns="http://www.w3.org/2000/svg" width="8" height="14" viewBox="0 0 12 19.714">
+                       <path id="Prew" d="M17.543,12l2.171-2.171L9.861,0,0,9.829,2.171,12,9.861,4.31Z"
+                             transform="translate(0 19.714) rotate(-90)" fill="#051622"/>
+                   </svg>
+               </span>
+           </li>
+       }
+      @for (var i = 1; i < TotalPage; i++)
+      {
+          var i1 = i;
+          <li onclick="@(()=>ChangeCurrentPage(i1))" ><span class="@(i1==CurrentPage?"current":"")">@i1</span></li>
+      }
+        @* <li><span>...</span></li> *@
+      @if (CurrentPage != TotalPage)
+      {
+          <li class="next"><span onclick="@(()=>ChangeCurrentPage(CurrentPage+1))" href="#">
+              <svg xmlns="http://www.w3.org/2000/svg" width="8" height="14" viewBox="0 0 12 19.714">
+                  <path id="Next" d="M17.543,12l2.171-2.171L9.861,0,0,9.829,2.171,12,9.861,4.31Z"
+                        transform="translate(12) rotate(90)" fill="#051622"/>
+              </svg>
+          </span></li>
+      }
+    </ul>
+</div>
+
+
+}
+@code{
+
+    [Parameter]
+    public  int TotalPage { get; set; }
+    
+    [Parameter]
+    public  int CurrentPage { get; set; }
+    [Parameter]
+    
+    public EventCallback<int> ChangedCurrentPage { get; set; }
+
+    protected async override Task OnInitializedAsync()
+    {
+        if (CurrentPage == 0) CurrentPage = 1;
+        await base.OnInitializedAsync();
+    }
+
+    private async Task ChangeCurrentPage(int pageNumber)
+    {
+        CurrentPage = pageNumber;
+        await ChangedCurrentPage.InvokeAsync(pageNumber);
+        StateHasChanged();
+    }
+}

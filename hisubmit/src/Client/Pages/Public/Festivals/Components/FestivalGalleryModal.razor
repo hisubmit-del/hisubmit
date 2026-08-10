@@ -1,0 +1,15 @@
+﻿
+<MudDialog>
+    <DialogContent>
+        <MudGrid Justify="Justify.Center">
+            <MudItem xs="12" md="10" Class="text-center" Style="margin-top: 5%;margin-bottom: 5%">
+                <MudImage  Style="max-width: 100%" Src="@ImageUrl"></MudImage>
+            </MudItem>
+        </MudGrid>
+    </DialogContent>
+</MudDialog>
+@code{
+
+    [Parameter]
+    public  string ImageUrl { get; set; }
+}

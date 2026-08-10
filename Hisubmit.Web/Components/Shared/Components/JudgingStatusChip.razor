@@ -1,0 +1,37 @@
+﻿
+@using Hisubmit.Client.SharedModels.Extensions
+@switch (SelectedJudgingStatus)
+{
+    case JudgingStatus.Undecided:
+        <MudChip T="string" Color="Color.Default" Variant="Variant.Text" Size="Size.Small" Text="@SelectedJudgingStatus.ToDisplay()"/>
+        break;
+    case JudgingStatus.Selected:
+            <MudChip T="string" Color="Color.Primary" Variant="Variant.Text" Size="Size.Small" Text="@SelectedJudgingStatus.ToDisplay()"/>
+            break;
+    case JudgingStatus.NotSelected:
+        <MudChip T="string" Color="Color.Error" Variant="Variant.Text" Size="Size.Small" Text="@SelectedJudgingStatus.ToDisplay()"/>
+        break;
+    case JudgingStatus.Nominee:
+        <MudChip T="string" Color="Color.Surface" Variant="Variant.Text" Size="Size.Small" Text="@SelectedJudgingStatus.ToDisplay()"/>
+        break;
+    case JudgingStatus.SemiFinalist:
+        <MudChip T="string" Color="Color.Success" Variant="Variant.Text" Size="Size.Small" Text="@SelectedJudgingStatus.ToDisplay()"/>
+        break;
+    case JudgingStatus.AwardWinner:
+        <MudChip T="string" Color="Color.Info" Variant="Variant.Text" Size="Size.Small" Text="@SelectedJudgingStatus.ToDisplay()"/>
+        break;
+    case JudgingStatus.HonorableMention:
+        <MudChip T="string" Color="Color.Tertiary" Variant="Variant.Text" Size="Size.Small" Text="@SelectedJudgingStatus.ToDisplay()"/>
+        break;           
+    case JudgingStatus.QuarterFinalist:
+        <MudChip T="string" Color="Color.Success" Variant="Variant.Text" Size="Size.Small" Text="@SelectedJudgingStatus.ToDisplay()"/>
+        break;  
+    case JudgingStatus.Finalist:
+        <MudChip T="string" Color="Color.Secondary" Variant="Variant.Text" Size="Size.Small" Text="@SelectedJudgingStatus.ToDisplay()"/>
+        break;
+}
+
+@code {
+    [Parameter]
+    public  JudgingStatus SelectedJudgingStatus { get; set; }
+}

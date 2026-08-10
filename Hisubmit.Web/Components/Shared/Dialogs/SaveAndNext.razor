@@ -1,0 +1,61 @@
+﻿@namespace HiSubmit.Web.Components.Shared.Dialogs
+@inject IStringLocalizer<SaveAndNext> Localize
+<MudDialog >
+    <TitleContent>
+        <MudText Typo="Typo.h5">
+            <MudIcon Icon="@Icons.Material.Filled.Edit" Color="Color.Warning" Class="mr-3 mb-n1"/>
+            @Localize["Warning"]
+        </MudText>
+    </TitleContent>
+    <DialogContent>
+        <MudText>@Localize["You have unsaved changes, do you want to save them?"]</MudText>
+    </DialogContent>
+    <DialogActions >
+        <MudHidden Breakpoint="Breakpoint.MdAndDown">
+            <MudStack Row="true" Justify="Justify.SpaceBetween">
+                <MudButton OnClick="Cancel">@Localize["Cancel"]</MudButton>
+                <MudButton Color="Color.Warning" Variant="Variant.Filled"
+                           OnClick="Next">@Localize["Next(without saving)"]</MudButton>
+                @if (SaveButton)
+                {
+                    <MudButton Color="Color.Info" Variant="Variant.Filled" 
+                               OnClick="Save">@Localize["Save & Next"]</MudButton>
+                }
+            </MudStack>
+        </MudHidden>
+        <MudHidden Breakpoint="Breakpoint.LgAndUp">
+            <MudStack Spacing="2" Justify="Justify.Center" Class="w-100">
+                <MudButton FullWidth="true" Color="Color.Warning"   Size="Size.Small"
+                           Variant="Variant.Filled" OnClick="Next">@Localize["Next(without saving)"]</MudButton>
+                @if (SaveButton)
+                {
+                    <MudButton FullWidth="true" Color="Color.Primary" 
+                               Size="Size.Small"
+                               Variant="Variant.Filled" OnClick="Save">@Localize["Save & Next"]</MudButton>
+                }
+                <MudButton FullWidth="true"  Size="Size.Small" OnClick="Cancel">@Localize["Cancel"]</MudButton>
+            </MudStack>
+        </MudHidden>
+    </DialogActions>
+</MudDialog>
+
+@code {
+
+    [CascadingParameter]
+    IMudDialogInstance MudDialog { get; set; }
+
+    [Parameter]
+    public bool SaveButton { get; set; }
+
+    void Next()
+    {
+        MudDialog.Close(DialogResult.Ok("Next"));
+    }
+
+    void Save()
+    {
+        MudDialog.Close(DialogResult.Ok("SaveAndNext"));
+    }
+
+    void Cancel() => MudDialog.Close();
+}

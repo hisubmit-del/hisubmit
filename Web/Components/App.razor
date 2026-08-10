@@ -1,0 +1,60 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <base href="/" />
+    <link rel="stylesheet" href="bootstrap/bootstrap.min.css" />
+    <link rel="stylesheet" href="app.css" />
+    <link rel="stylesheet" href="Web.styles.css" />
+    <link rel="icon" type="image/png" href="favicon.ico" />
+    <base href="/" />
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
+    <link href="lib/noUiSlider/nouislider.min.css" rel="stylesheet" />
+    <link href="_content/MudBlazor/MudBlazor.min.css?v=8.8.0" rel="stylesheet" />
+    <link rel="stylesheet" href="/assets/css/responsive.css" asp-append-version="true" />
+    <link href="/css/loader.css" asp-append-version="true" rel="stylesheet" />
+    <link href="/css/style.css" asp-append-version="true" rel="stylesheet" />
+    <link href="/css/animate.min.css" asp-append-version="true" rel="stylesheet" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="apple-touch-icon" href="\media\logo\logohisubm.png">
+    <link rel="icon" href="\media\logo\logohisubm.png" sizes="16x16" type="image/png">
+
+    <HeadOutlet @rendermode="RenderModeForPage" />
+
+</head>
+
+<body>
+    <Routes @rendermode="RenderModeForPage" />
+    <script src="_framework/blazor.web.js"></script>
+
+    <script src="js/scroll.js"></script>
+    <script src="js/sounds.js"></script>
+    <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+
+    <script src="_content/MudBlazor/MudBlazor.min.js?v=8.8.0"></script>
+    <script src="/assets/js/jquery.min.js"></script>
+    <script src="/assets/js/slick.min.js"></script>
+    <script src="/lib/nouislider/nouislider.min.js"></script>
+    <script src="/js/slick.min.js"></script>
+    <script src="/assets/js/main.js"></script>
+    <script src="js/file.js" asp-append-version="true"></script>
+    <script src="js/richtext.js"></script>
+    <script src="js/NoUiSlider.js"></script>
+    <script src="js/paypal.js" asp-append-version="true"></script>
+</body>
+
+</html>
+
+@code {
+    [CascadingParameter]
+    private HttpContext HttpContext { get; set; } = default!;
+
+    private IComponentRenderMode? RenderModeForPage => HttpContext.Request.Path.StartsWithSegments("/Account")
+    ? null
+    : InteractiveServer;
+}
+

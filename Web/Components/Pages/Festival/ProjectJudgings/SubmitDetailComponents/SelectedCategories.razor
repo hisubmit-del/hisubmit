@@ -1,0 +1,51 @@
+﻿@* <MudGrid Class="my-2"> *@
+    <MudItem xs="12" lg="6">
+        <MudCard>
+            <MudCardHeader>
+                <CardHeaderContent>
+                    <MudText Color="Color.Primary"
+                             Typo="Typo.h6">
+                        Selected Category
+                    </MudText>
+                </CardHeaderContent>
+            </MudCardHeader>
+            <MudCardContent>
+                <MudSimpleTable Elevation="0">
+                    <thead>
+                    <th>Category</th>
+                    <th>Deadline</th>
+                    <th>Price</th>
+                    <th>Fee ItemType</th>
+                    </thead>
+
+                    <tbody>
+                    @if (_submitCategories == null || !_submitCategories.Any())
+                    {
+                        <MudAlert>There are no Items</MudAlert>
+                    }
+                    else
+                    {
+                        @foreach (var categoryDeadLine in _submitCategories)
+                        {
+                            <tr>
+                                <td>@categoryDeadLine.EventCategoryName</td>
+                                <td>@categoryDeadLine.DeadlineName</td>
+                                <td>@categoryDeadLine.Price.ToString("C2")</td>
+                                <td>@categoryDeadLine.FeeType</td>
+                            </tr>
+                        }
+                    }
+                    </tbody>
+                </MudSimpleTable>
+            </MudCardContent>
+        </MudCard>
+    </MudItem>
+    <MudItem xs="12" lg="6">
+        @if (_submitCategories != null && _submitCategories.Any())
+        {
+            <SubmitFormAnswers FestivalId="FestivalId"
+                               SubmitId="SubmitId"
+                               CategoriesId="_submitCategories.Select(p => p.DeadlineEventCategoryId).ToList()"/>
+        }
+    </MudItem>
+@* </MudGrid> *@

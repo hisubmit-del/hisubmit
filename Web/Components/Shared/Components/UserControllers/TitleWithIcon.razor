@@ -1,0 +1,19 @@
+﻿@inherits MudText
+
+@if (!string.IsNullOrWhiteSpace(Icon))
+{
+    <MudIcon  Icon="@Icon" Class="mr-1" Color="@IconColor" Size="IconSize"></MudIcon>
+}
+<MudText Typo="Typo" Color="Color" Align="Align"
+         Class="@Class" Inline="true" Style="@Style"
+         Tag="@Tag" GutterBottom="GutterBottom" UserAttributes="UserAttributes">
+    @ChildContent
+</MudText>
+
+@code {
+    [Parameter] public string? Icon { get; set; }
+
+    [Parameter] public Color IconColor { get; set; } = Color.Primary;
+
+    [Parameter] public Size IconSize { get; set; } = Size.Medium;
+}

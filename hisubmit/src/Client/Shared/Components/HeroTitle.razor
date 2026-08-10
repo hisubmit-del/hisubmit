@@ -1,0 +1,14 @@
+﻿@namespace HiSubmit.Client.Shared.Components
+<MudText Align="Align" Typo="Typo.h5" Color="Color.Primary" Class="mb-2">@Title</MudText>
+@if (!string.IsNullOrWhiteSpace(Description))
+{
+    <MudText  Class="mb-4">@Description</MudText>
+}
+@code
+{
+    [Parameter] public string Title { get; set; }
+    [Parameter] public string Description { get; set; }
+
+    [Parameter]
+    public Align Align { get; set; } = Align.Start;
+}

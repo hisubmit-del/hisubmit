@@ -1,0 +1,90 @@
+﻿@inject IStringLocalizer<FestivalFile> Localize
+
+<MudCard Elevation="25">
+    <MudCardHeader>
+        <CardHeaderContent>
+            <MudText Typo="Typo.h3">@Localize["festival File"]</MudText>
+        </CardHeaderContent>
+    </MudCardHeader>
+    @if (!_loaded)
+    {
+        <MudContainer MaxWidth="MaxWidth.Medium" Style="height:300px">
+            <Spinner></Spinner>
+        </MudContainer>
+    }
+    else
+    {
+        <MudCardContent>
+            <div class="px-0 mx-md-20 mx-lg-20">
+                <MudGrid>
+                   @if (!IsAdmin)
+                   {
+                       if (ReadOnlyMood)
+                       {
+                           <MudItem xs="12" Class="mb-2">
+                               <MudAlert Severity="Severity.Warning"> Your festival information is under review.</MudAlert>
+                           </MudItem>
+                       }
+                   }
+                </MudGrid>
+                <MudHidden Breakpoint="Breakpoint.MdAndUp">
+                    <MudButton Class="mb-2" Disabled="ReadOnlyMood" Variant="Variant.Filled" Color="Color.Default" OnClick="() => InvokeModal(0)" Size="Size.Medium"
+                               StartIcon="@Icons.Material.Filled.Add" IconColor="Color.Surface">
+                        @Localize["Add File"]
+                    </MudButton>
+                </MudHidden>
+                <MudTable Items="@Files" Class="default-table" Dense="true" Hover="true" Breakpoint="Breakpoint.Sm" LoadingProgressColor="Color.Info">
+                    <HeaderContent>
+                        <MudTh >@Localize["Name"]</MudTh>
+                        <MudTh >@Localize["Format"]</MudTh>
+                        <MudTh Style="text-align:end">
+                            <MudButton Disabled="ReadOnlyMood" Variant="Variant.Filled" Color="Color.Default" OnClick="() => InvokeModal(0)" Size="Size.Medium"
+                                       StartIcon="@Icons.Material.Filled.Add" IconColor="Color.Surface">
+                                @Localize["Add File"]
+                            </MudButton>
+                        </MudTh>
+                    </HeaderContent>
+                    <RowTemplate>
+                        <MudTd DataLabel="Name">@context.Name</MudTd>
+                        <MudTd DataLabel="Title">
+                            <MudChip T="string" Variant="Variant.Text" Size="Size.Small" Color="Color.Info">@context.FileFormat</MudChip>
+                        </MudTd>
+                        <MudTd DataLabel="Actions">
+                            <MudHidden Breakpoint="Breakpoint.LgAndUp">
+                                <MudMenu Label="@Localize["Actions"]" Variant="Variant.Filled" DisableElevation="true"
+                                         EndIcon="@Icons.Material.Filled.KeyboardArrowDown" IconColor="Color.Secondary" Direction="Direction.Left" OffsetX="true">
+
+                                    <MudMenuItem OnClick="() => InvokeModal(context.Id)">@Localize["Edit"]</MudMenuItem>
+                                    <MudMenuItem OnClick="() => DeleteAsync(context.Id, context.Name)">@Localize["Delete"]</MudMenuItem>
+                                </MudMenu>
+                            </MudHidden>
+                            <MudHidden Breakpoint="Breakpoint.MdAndDown">
+                                <MudIconButton Disabled="ReadOnlyMood" Icon="@Icons.Material.Filled.Edit" 
+                                               OnClick="@(() => InvokeModal(context.Id))" Size="Size.Small" 
+                                               aria-label="edit"></MudIconButton>
+                                <MudIconButton Disabled="ReadOnlyMood" Icon="@Icons.Material.Filled.Delete" 
+                                               OnClick="@(() => DeleteAsync(context.Id, @context.Name))" 
+                                               Size="Size.Small" aria-label="delete"></MudIconButton>
+                            </MudHidden>
+                        </MudTd>
+                    </RowTemplate>
+                </MudTable>
+           </div>
+         </MudCardContent>
+        <MudPaper Class="d-flex justify-end flex-grow-1 ">
+            <MudPaper Class="mr-2 mb-2">
+                <MudButtonGroup OverrideStyles="false">
+                    <ResponsiveButton Variant="Variant.Filled" OnClick="GoPrev"
+                               EndIcon="@Icons.Material.Filled.ArrowLeft"
+                               Color="Color.Secondary"> @Localize["Next"]</ResponsiveButton>
+
+                    <ResponsiveButton Variant="Variant.Filled" OnClick="GoNext"
+                               EndIcon="@Icons.Material.Filled.ArrowRight"
+                               Color="Color.Secondary"> @Localize["Next"]</ResponsiveButton>
+
+                </MudButtonGroup>
+
+            </MudPaper>
+        </MudPaper>
+    }
+</MudCard>

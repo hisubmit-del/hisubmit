@@ -1,0 +1,56 @@
+﻿@using global::Hisubmit.Client.SharedModels.Features.Products.Queries.GetAllPaged
+@using global::Hisubmit.Client.SharedModels.Features.SoldProducts.Commands
+@using global::Hisubmit.Client.SharedModels.Interfaces.Carts
+@using global::Hisubmit.Client.SharedModels.Features.Locatuions.Commands.AddEdit
+
+<MudCard Class="pa-1 pa-md-3 text-center">
+    <MudImage Src="@Product.ImageDataURL" Class="my-4" Height="200"/>
+    <MudCardContent>
+        <MudText Typo="Typo.h6" Class="Product-title">
+            <a href="@($"/product/{Product.Id}")">
+                @Product.Name
+            </a>
+        </MudText>
+        <MudText Color="Color.Success" Class="mt-2" Align="Align.Center" Typo="Typo.body1">
+            @Product.Price.ToString("C2")
+        </MudText>
+    </MudCardContent>
+    <MudCardActions>
+        <MudButton Variant="Variant.Text"
+                   OnClick="AddToCart"
+                   StartIcon="@Icons.Material.Filled.ShoppingCart"
+                   Color="Color.Success">
+            Add To Card
+        </MudButton>
+        <MudSpacer/>
+        <MudButton Href="@($"/product/{Product.Id}")" Variant="Variant.Text"> View Detail </MudButton>
+    </MudCardActions>
+</MudCard>
+
+@code{
+
+    [Parameter] public GetAllPagedProductsResponse Product { get; set; }
+
+    private async Task AddToCart()
+    {
+        var productSold = new AddProductSoldCommand
+        {
+            ProductId = Product.Id,
+            ProductType = Product.ProductType,
+            Address = new AddEditAddressCommand(),
+            Status = ProductSoldStatus.AwaitingPayment
+        };
+        var parameters = new DialogParameters
+        {
+            { nameof(AddProductSold.Product), productSold }
+        };
+        var options = new DialogOptions
+        {
+            FullWidth = true,
+            MaxWidth = MaxWidth.Small,
+            
+        };
+        _dialogService.Show<AddProductSold>("Add Product To Cart", parameters, options);
+    }
+
+}

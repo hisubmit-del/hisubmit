@@ -1,0 +1,54 @@
+﻿@namespace HiSubmit.Web.Components.Shared.Components
+@using Hisubmit.Client.SharedModels.Constants.Role
+<MudCard Elevation="0" Square="true" Style="background-color: transparent">
+    <MudCardHeader Class="pa-0">
+        <CardHeaderAvatar>
+            @if (string.IsNullOrEmpty(ImageDataUrl))
+            {
+                <MudAvatar Style="height:30px; width:30px;" Color="Color.Dark">@FirstLetterOfName</MudAvatar>
+            }
+            else
+            {
+                <MudAvatar  Style="height:30px; width:30px;">
+                    <MudImage Src="@ImageDataUrl" Alt="@FullName" />
+                </MudAvatar>
+            }
+        </CardHeaderAvatar>
+        <CardHeaderContent>
+            <MudText Typo="Typo.body2">@FullName</MudText>
+            <MudText Typo="Typo.caption" Align="Align.Center">@AccountType</MudText>
+        </CardHeaderContent>
+    </MudCardHeader>
+</MudCard>
+
+@code {
+
+    [Parameter]
+    public string ImageDataUrl { get; set; }
+
+    [Parameter]
+    public string FullName { get; set; }
+
+    [Parameter]
+    public int? FestivalId { get; set; }
+
+    public string AccountType { get; set; }
+
+    private char FirstLetterOfName { get; set; }
+
+
+
+    protected override async Task OnParametersSetAsync()
+    {
+        FirstLetterOfName = FullName[0];
+        var isAdmin = (await AuthenticationManager.CurrentUser()).IsInRole(RoleConstants.AdministratorRole);
+        if (FestivalId != null && FestivalId != 0)
+            AccountType = "festival";
+        else if (isAdmin)
+            AccountType = "Admin";
+        else
+            AccountType = "Artist";
+
+        await base.OnParametersSetAsync();
+    }
+}

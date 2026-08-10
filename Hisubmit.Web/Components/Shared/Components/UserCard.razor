@@ -1,0 +1,158 @@
+﻿@using HiSubmit.Web.Components.Shared.Components.ICons
+@namespace HiSubmit.Web.Components.Shared.Components
+
+@if (UserInHeader)
+{
+    if (_loaded)
+    {
+        <MudMenu AnchorOrigin="Origin.BottomRight" TransformOrigin="Origin.TopRight"
+                 Dense="true" Class="mt-1 ml-1">
+            @* Direction="Direction.Right" OffsetX="true" *@
+            <ActivatorContent>
+                @if (string.IsNullOrEmpty(SelectedImageUrl))
+                {
+                    <MudAvatar Color="Color.Dark">
+                        @SelectedFullName[0]
+                    </MudAvatar>
+                }
+                else
+                {
+                    <MudAvatar>
+                        <MudImage Src="@SelectedImageUrl" Class="h-none" Alt="@SelectedFullName"/>
+                    </MudAvatar>
+                }
+            </ActivatorContent>
+            <ChildContent>
+                <MudCard Elevation="0" Square="true" Class="user-card" Style="min-width: 200px;max-width:270px">
+                    <MudCardHeader>
+                        <CardHeaderContent>
+                            <div class="text-center">
+                                @if (_loaded)
+                                {
+                                    if (string.IsNullOrEmpty(SelectedImageUrl))
+                                    {
+                                        <MudAvatar Size="Size.Large" Color="Color.Dark">
+                                            @SelectedFullName[0]
+                                        </MudAvatar>
+                                    }
+                                    else
+                                    {
+                                        <MudAvatar Size="Size.Large">
+                                            <MudImage Src="@SelectedImageUrl" Class="h-none" Alt="@SelectedFullName"/>
+                                        </MudAvatar>
+                                    }
+                                }
+                                <MudText Class=" my-2" Typo="Typo.h5">@SelectedFullName
+                                   @if (_isGoldAccount)
+                                   {
+                                           <IGold Title="@_goldDescription" Height="25px" Width="25px" />
+                                   }
+                                    </MudText>
+                                <MudText Typo="Typo.caption">@SelectedEmail</MudText>
+                            </div>
+                        </CardHeaderContent>
+
+                    </MudCardHeader>
+                </MudCard>
+                @if (ShowAnotherAccount)
+                {
+                    <MudListItem T="string" OnClick="@(() => SelectAccount())">
+                        <SelectAccountBox FullName="@($"{FirstName} {SecondName}")"
+                                          FestivalId="null" ImageDataUrl="@ImageDataUrl"/>
+                    </MudListItem>
+                    <MudDivider/>
+                    if (FestivalId != 0 && Festival != null)
+                    {
+                        <MudListItem T="string" OnClick="@(() => SelectAccount(Festival.Id))">
+                            <SelectAccountBox FullName="@Festival.Name"
+                                              FestivalId="@FestivalId" ImageDataUrl="@Festival.LogoURL"/>
+                        </MudListItem>
+                        <MudDivider/>
+                    }
+
+                    if (FestivalNames != null)
+                    {
+                        foreach (var item in FestivalNames)
+                        {
+                            <MudListItem T="string" OnClick="@(() => SelectAccount(item.Id))">
+                                <SelectAccountBox FullName="@item.Name"
+                                                  FestivalId="@item.Id" ImageDataUrl="@item.LogoURL"/>
+                            </MudListItem>
+                            <MudDivider/>
+                        }
+                    }
+
+                    <MudListItem T="string" Text="Logout" Icon="@Icons.Material.Filled.Logout" OnClick="Logout"/>
+                }
+            </ChildContent>
+        </MudMenu>
+    }
+}
+else
+{
+    <div>
+        <MudCard Elevation="0" Square="true" Class="user-card">
+            <MudCardHeader>
+                <CardHeaderContent>
+                    <div class="text-center">
+                        @if (_loaded)
+                        {
+                            if (string.IsNullOrEmpty(SelectedImageUrl))
+                            {
+                                <MudAvatar Color="Color.Dark">@SelectedFullName[0]</MudAvatar>
+                            }
+                            else
+                            {
+                                <MudAvatar Style="height:50px; width:50px;">
+                                    <MudImage Src="@SelectedImageUrl" Alt="@SelectedFullName"/>
+                                </MudAvatar>
+                            }
+                        }
+                        <MudText Class=" my-2" Typo="Typo.h5">@SelectedFullName
+                            @if (_isGoldAccount)
+                            {
+                                <IGold Title="@_goldDescription" Height="25px" Width="25px" />
+                            }
+                            </MudText>
+                        <MudText Typo="Typo.caption">@SelectedEmail</MudText>
+                    </div>
+                    <div class="text-center user-card-icons">
+                        <MudIconButton Size="Size.Small" Href="@notifUrl" Title="Notifications" Icon="@Icons.Material.Filled.Notifications"/>
+                        <MudIconButton Size="Size.Small" Href="@messageUrl" Title="Messages" Icon="@Icons.Material.Filled.Message"/>
+                        @if (_selectedFestivalId == null)
+                        {
+                            <MudIconButton Size="Size.Small" Href="/account" Title="My Account" Icon="@Icons.Material.Filled.AccountBox"/>
+                        }
+                    </div>
+                </CardHeaderContent>
+            </MudCardHeader>
+        </MudCard>
+        @if (ShowAnotherAccount)
+        {
+            <MudListItem T="string" OnClick="@(() => SelectAccount())">
+                <SelectAccountBox FullName="@($"{FirstName} {SecondName}")" FestivalId="null" ImageDataUrl="@ImageDataUrl"/>
+            </MudListItem>
+            <MudDivider/>
+            if (FestivalId != 0 && Festival != null)
+            {
+                <MudListItem T="string" OnClick="@(() => SelectAccount(Festival.Id))">
+                    <SelectAccountBox FullName="@Festival.Name" FestivalId="FestivalId" ImageDataUrl="@Festival.LogoURL"/>
+                </MudListItem>
+                <MudDivider/>
+            }
+
+            if (FestivalNames != null)
+            {
+                foreach (var item in FestivalNames)
+                {
+                    <MudListItem T="string" OnClick="@(() => SelectAccount(item.Id))">
+                        <SelectAccountBox FullName="@item.Name" FestivalId="item.Id" ImageDataUrl="@item.LogoURL"/>
+                    </MudListItem>
+                    <MudDivider/>
+                }
+            }
+
+            <MudListItem T="string" Text="Logout" Icon="@Icons.Material.Filled.Logout" OnClick="Logout"/>
+        }
+    </div>
+}

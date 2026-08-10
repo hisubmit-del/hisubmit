@@ -1,0 +1,53 @@
+﻿
+@using HiSubmit.Client.SharedModels.Extensions
+@switch (CartItemType)
+{
+    case CartItemType.Submit:
+        <MudChip T="string" Variant="Variant.Text" Size="Size.Small" Color="Color.Info"
+                 Label="@Label">
+            @CartItemType.Submit.ToDisplay()
+        </MudChip>
+        break;
+    case CartItemType.Badge:
+        <MudChip T="string" Color="Color.Primary" Variant="Variant.Text" Size="Size.Small"
+                 Label="@Label">
+            @CartItemType.Badge.ToDisplay()
+        </MudChip>
+        break;
+    case CartItemType.Ticket:
+        <MudChip T="string" Color="Color.Secondary" Variant="Variant.Text" Size="Size.Small"
+                 Label="@Label">
+            @CartItemType.Ticket.ToDisplay()
+        </MudChip>
+        break;
+    case CartItemType.SpecialAccount:
+        <MudChip T="string" Color="Color.Success" Variant="Variant.Text" Size="Size.Small"
+                 Label="@Label">
+            @CartItemType.SpecialAccount.ToDisplay()
+        </MudChip>
+        break;
+    case CartItemType.ServiceFee:
+        <MudChip T="string" Color="Color.Dark" Variant="Variant.Text" Size="Size.Small"
+                 Label="@Label">
+            @CartItemType.ServiceFee.ToDisplay()
+        </MudChip>
+        break;
+    case CartItemType.Product:
+        <MudChip T="string" Color="Color.Secondary" Variant="Variant.Text" Size="Size.Small"
+                 Label="@Label">
+            @CartItemType.Product.ToDisplay()
+        </MudChip>
+        break;
+    default:
+        break;
+}
+
+@code{
+
+    [Parameter]
+    public CartItemType CartItemType { get; set; }
+
+    [Parameter]
+    public Boolean Label { get; set; } = true;
+
+}

@@ -1,0 +1,114 @@
+﻿@using global::Hisubmit.Client.SharedModels.Features.Festivals.Queries.GetAllShowHall
+@using Hisubmit.Client.SharedModels.Extensions
+@using global::Hisubmit.Client.SharedModels.Features.Festivals.Commands.AddEditShowHall
+@inject IStringLocalizer<AddTicketToCartModal> Localizer
+
+<EditForm Context="editFormContext" Model="@SoldTicket" OnValidSubmit="SaveAsync">
+    <FluentValidationValidator @ref="_fluentValidationValidator"/>
+    <MudDialog>
+        <TitleContent>
+            <MudText Typo="Typo.h6">
+                <MudIcon Icon="@Icons.Material.Filled.Add" Class="mr-3 mb-n1"/>
+                @Localizer["Add To Cart"]
+            </MudText>
+        </TitleContent>
+        <DialogContent>
+            <MudGrid>
+                <MudItem xs="12" md="6">
+                    <MudNumericField InputMode="InputMode.numeric"
+                                     Label="Count" 
+                                     Variant="Variant.Filled"
+                                     @bind-Value="SoldTicket.Count" 
+                                     For="() => SoldTicket.Count" 
+                                     Max="@MaxCount"/>
+                </MudItem>
+                <MudItem xs="12" md="6">
+                    <MudSelect Variant="Variant.Filled"
+                               T="int?" 
+                               @bind-value="@SelectedShowHallId" 
+                               Label="Show Hall"
+                               AnchorOrigin="Origin.BottomCenter">
+                               @* Text="@(_selectedShowHall!=null ?_selectedShowHall.Title : "")" *@
+                        @foreach (var showHall in _showHalls)
+                        {
+                            <MudSelectItem  Value="@(showHall.Id as int?)">
+                                @showHall.Title
+                            </MudSelectItem>
+                        }
+                    </MudSelect>
+                </MudItem>
+                <MudItem xs="12" md="12">
+                    <MudTable Items="@_selectedShowHall.ShowTimes" 
+                              T="ShowTimeDto" MultiSelection="true" 
+                              SelectedItems="SelectedItems" 
+                              SelectedItemsChanged="(j)=>DeleteBeforeItem(j)" 
+                              Dense="true">
+                        <HeaderContent>
+                            <MudTh>Name</MudTh>
+                            <MudTh>Date</MudTh>
+                            <MudTh>Start Time</MudTh>
+                            <MudTh>End Time</MudTh>
+                        </HeaderContent >
+                        <RowTemplate>
+                            <MudTd DataLabel="Nr">
+                                @context.Name
+                            </MudTd>
+                            <MudTd DataLabel="Sign">
+                                @context.OpenDate.ToLongDate()
+                            </MudTd>
+                            <MudTd DataLabel="Name">
+                                @context.OpenDate.ToLongTime()
+                            </MudTd>
+                            <MudTd DataLabel="Position">
+                                @context.CloseDate.ToLongTime()
+                            </MudTd>
+                        </RowTemplate>
+                    </MudTable>
+                </MudItem>
+
+                @* <MudRadioGroup @bind-SelectedOption="@SoldTicket.ShowTimeId"> *@
+                @*     @foreach (var showTime in _selectedShowHall.ShowTimes) *@
+                @*     { *@
+                @*         <MudRadio Option="@showTime.Id"> *@
+                @*             <tr> *@
+                @*                 <td DataLabel="Nr">@showTime.Name</td> *@
+                @*                 <td DataLabel="Sign">@showTime.OpenDate.ToLongDate()</td> *@
+                @*                 <td DataLabel="Name">@showTime.OpenDate.ToLongTime()</td> *@
+                @*                 <td DataLabel="Position">@showTime.CloseDate.ToLongTime()</td> *@
+                @*             </tr> *@
+                @*         </MudRadio> *@
+                @*     } *@
+                @* </MudRadioGroup> *@
+
+                <MudItem xs="12" md="6">
+                    <MudCheckBox T="bool" @bind-Value="@SoldTicket.ForOtherUser"
+                                 Color="Color.Primary">
+                        @Localizer["Buy for some one else"]
+                    </MudCheckBox>
+                </MudItem>
+
+                @if (SoldTicket.ForOtherUser)
+                {
+                    <MudItem xs="12" md="6">
+                        <MudTextField For="@(() => SoldTicket.OtherUserEmail)"
+                                      @bind-Value="SoldTicket.OtherUserEmail"
+                                      Label="@Localizer["Email"]"/>
+                    </MudItem>
+                }
+            </MudGrid>
+        </DialogContent>
+        <DialogActions>
+            <MudButton Variant="Variant.Filled"
+                       OnClick="Cancel">
+                @Localizer["Cancel"]
+            </MudButton>
+            <LoadingButton Processing="_processing"
+                           Variant="Variant.Filled"
+                           ButtonType="ButtonType.Submit"
+                           Color="Color.Info">
+                @Localizer["Add To Cart"]
+            </LoadingButton>
+        </DialogActions>
+    </MudDialog>
+</EditForm>
+

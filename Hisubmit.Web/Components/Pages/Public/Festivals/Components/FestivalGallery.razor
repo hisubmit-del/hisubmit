@@ -1,0 +1,55 @@
+﻿@using global::Hisubmit.Client.SharedModels.Features.Festivals.Queries.GetAllImages
+<div>
+    <h2 class="mb-5">Gallery</h2>
+    <div class="gallery-tab-slider mb-5 pb-4 mt-5">
+        <div class="tab-content" id="gallery-tab-slider-tabContent">
+            <div class="tab-pane fade show active" id="pills-about" role="tabpanel"
+                 aria-labelledby="pills-about-tab">
+                <div class="gallery-slider">
+                    @foreach (var image in Images.Where(p => !string.IsNullOrWhiteSpace(p.Url)))
+                    {
+                     @* <a href="@image.Url"> *@
+                        <img onclick="@(() => ShowModal(image.Url))" src="@image.Url" style="max-height: 112px" alt="@image.Title">
+                        // </a>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code{
+
+    [Parameter]
+    public List<GetAllFestivalImageResponse> Images { get; set; } = new();
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await base.OnAfterRenderAsync(firstRender);
+        if (firstRender)
+        {
+            await _jsRuntime.InvokeVoidAsync("CreateSlider");
+            await _jsRuntime.InvokeVoidAsync("CreateFestivalGallerySlider");
+           // await _jsRuntime.InvokeVoidAsync("CreateImageSlider");
+            //await _jsRuntime.InvokeVoidAsync("CreateOrganizerSlider");
+        }
+    }
+
+    private void ShowModal(string url)
+    {
+        var options = new DialogOptions
+        {
+            NoHeader = true,
+            FullWidth = true,
+            MaxWidth = MaxWidth.Medium,
+            CloseOnEscapeKey = true,
+            CloseButton = false
+        };
+        var parameters = new DialogParameters()
+        {
+            { nameof(FestivalGalleryModal.ImageUrl), url }
+        };
+        _dialogService.Show<FestivalGalleryModal>("Image", parameters, options);
+    }
+
+}

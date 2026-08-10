@@ -1,0 +1,9 @@
+﻿<MudPaper Elevation="0" Style="@($"height:{Height}px;width: 100%;position:relative")" Class="d-flex justify-center">
+    <MudProgressCircular Style="position: absolute;top: 40%;left: 40%;" Indeterminate="true" Color="Color.Secondary" Size="Size.Large"></MudProgressCircular>
+</MudPaper>
+
+@code {
+
+    [Parameter]
+    public int Height { get; set; } = 250;
+}

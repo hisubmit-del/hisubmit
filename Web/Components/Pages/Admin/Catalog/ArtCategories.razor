@@ -1,0 +1,94 @@
+﻿@page "/festival/artCategory"
+@attribute [Authorize(Policy = Permissions.ArtCategory.View)]
+@inject IStringLocalizer<ArtCategories> Localize
+@using global::Hisubmit.Client.SharedModels.Features.Brands.Queries.GetAll
+@inherits BaseAdminPages
+
+<MudContainer MaxWidth="MaxWidth.Large">
+    <HeroTitle Title="@Localize["Art Category"]" Description="@Localize["Manage Art Category List."]" />
+    @if (!_loaded)
+    {
+        <MudProgressCircular Color="Color.Primary" Indeterminate="true" />
+    }
+    else
+    {
+        <MudTable Hover="true" Elevation="25" Items="_categoryList" Dense="@_dense"
+                  SortLabel="Sort By"
+                  Bordered="@_bordered" Striped="@_striped" Filter="new Func<GetAllArtCategoryResponse, bool>(Search)" @bind-brand="_category">
+            <ToolBarContent>
+                <MudButtonGroup OverrideStyles="false">
+                    <ResponsiveButton Variant="Variant.Filled" OnClick="GetArtCategoryAsync"
+                                      StartIcon="@Icons.Material.Filled.Refresh"
+                                      Color="Color.Secondary">@Localize["Reload"]</ResponsiveButton>
+
+                    @if (_canCreateArtCategory)
+                    {
+                        <MudButton Variant="Variant.Filled"
+                                   Class="sticky-bottom-mobile"
+                                   Color="Color.Primary" OnClick="(() => InvokeModal())"
+                                   StartIcon="@Icons.Material.Filled.Add">
+                            @Localize["Add Art Category"]
+                        </MudButton>
+                    }
+                    @if (_canExportArtCategory)
+                    {
+                        <ResponsiveButton Variant="Variant.Filled"
+                                          OnClick="ExportToExcel" StartIcon="@Icons.Custom.FileFormats.FileExcel"
+                                          Color="Color.Surface">@Localize["Export"]</ResponsiveButton>
+                    }
+                </MudButtonGroup>
+                <MudSpacer />
+                @if (_canSearchArtCategory)
+                {
+                    <MudTextField @bind-Value="_searchString" Immediate="true"
+                                  Variant="Variant.Outlined" Margin="Margin.Dense"
+                                  Placeholder="Search On Art Category Title"
+                                  Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Search"
+                                  IconSize="Size.Medium"></MudTextField>
+                }
+            </ToolBarContent>
+            <HeaderContent>
+                <MudTh><MudTableSortLabel SortBy="new Func<GetAllArtCategoryResponse, object>(x => x.Name)">@Localize["Name"]</MudTableSortLabel></MudTh>
+                <MudTh><MudTableSortLabel SortBy="new Func<GetAllArtCategoryResponse, object>(x => x.Description)">@Localize["Description"]</MudTableSortLabel></MudTh>
+                <MudTh Style="text-align:right">@Localize["Actions"]</MudTh>
+            </HeaderContent>
+            <RowTemplate>
+                <MudTd DataLabel="Name">
+                    <MudHighlighter Text="@context.Name" HighlightedText="@_searchString" />
+                </MudTd>
+                <MudTd DataLabel="Description">
+                    <MudHighlighter Text="@context.Description" HighlightedText="@_searchString" />
+                </MudTd>
+                <MudTd DataLabel="Actions" Style="text-align: right">
+                    @if (_canEditArtCategory || _canDeleteArtCategory)
+                    {
+                        <MudMenu Label="@Localize["Actions"]" Variant="Variant.Filled" DisableElevation="true" EndIcon="@Icons.Material.Filled.KeyboardArrowDown" IconColor="Color.Secondary" Direction="Direction.Left" OffsetX="true">
+                            @if (_canEditArtCategory)
+                            {
+                                <MudMenuItem OnTouch="() => InvokeModal(context.Id)" OnClick="@(() => InvokeModal(context.Id))">@Localize["Edit"]</MudMenuItem>
+                            }
+                            @if (_canDeleteArtCategory)
+                            {
+                                <MudMenuItem OnTouch="@(() => Delete(context.Id))" OnClick="@(() => Delete(context.Id))">@Localize["Delete"]</MudMenuItem>
+                            }
+                        </MudMenu>
+                    }
+                    else
+                    {
+                        <MudButton Variant="Variant.Filled"
+                                   DisableElevation="true"
+                                   StartIcon="@Icons.Material.Filled.DoNotTouch"
+                                   IconColor="Color.Secondary"
+                                   Size="Size.Small"
+                                   Color="Color.Surface">
+                            @Localize["No Allowed Actions"]
+                        </MudButton>
+                    }
+                </MudTd>
+            </RowTemplate>
+            <PagerContent>
+                <TablePager />
+            </PagerContent>
+        </MudTable>
+    }
+</MudContainer>

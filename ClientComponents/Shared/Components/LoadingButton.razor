@@ -1,0 +1,18 @@
+﻿@inherits MudButton
+
+<MudButton @ref="_button" Disabled="@(Processing || Disabled)"  
+           ButtonType="@ButtonType" Size="Size" FullWidth="FullWidth"
+           IconColor="IconColor" OnClick="OnClickEvent" Variant="Variant"
+           Style="@Style" Class="@Class" Color="@Color" StartIcon="@StartIcon">
+    
+    @if (Processing)
+    {
+        <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true"/>
+        <MudText Class="ms-2">@ProcessingTitle</MudText>
+    }
+    else
+    {
+        @ChildContent
+    }
+</MudButton>
+

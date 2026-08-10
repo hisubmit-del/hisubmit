@@ -1,0 +1,106 @@
+﻿@page "/Product/{Id:int}/{Title}"
+@inherits BasePublicPages
+
+<SeoMetaTags PageId="@Id.ToString()" PageType="@PageType.Product" 
+             OgImageUrl=@($"https://hisubmit.com{_product.ImageDataURL}") />
+
+<MudContainer MaxWidth="MaxWidth.Large" Class="mt-10">
+    <MudGrid>
+        @if (_loaded)
+        {
+            <MudItem xs="12" md="9">
+                <MudCard Class="mr-md-4">
+                    <MudCardContent Class="p-md-6">
+                        <MudGrid>
+                            <MudItem xs="12" md="7" Class="text-center">
+                                <MudImage Class="max-w-100" Src="@_product.ImageDataURL" />
+
+                                <div class="gallery-tab-slider mb-5 pb-4 mt-5">
+                                    <div class="tab-content" id="gallery-tab-slider-tabContent">
+                                        <div class="tab-pane fade show active" id="pills-about" role="tabpanel"
+                                             aria-labelledby="pills-about-tab">
+                                            <div class="gallery-slider " id="product-gallery-slider2">
+                                                @foreach (var image in _product.ProductImages)
+                                                {
+                                                    <a href="@image.Url" class="mx-3">
+                                                        <img src="@image.Url" alt="gal1">
+                                                    </a>
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </MudItem>
+                            <MudItem xs="12" md="5" Class="text-center ">
+                                <div class="bg-gray product-fee-box pt-8 pb-4 px-2">
+                                    <MudText Typo="Typo.h1" Class="mb-8">
+                                        @_product.Name
+                                    </MudText>
+                                    <MudText Color="Color.Success" Class="mt-5" Typo="Typo.h6">@_product.Price.ToString("N0")</MudText>
+                                    <MudButton Variant="Variant.Filled" Class="mt-8"
+                                               FullWidth="true" Color="Color.Success"
+                                               OnClick="AddToCart"
+                                               EndIcon="@Icons.Material.Filled.ShoppingCart">
+                                        Add To Card
+                                    </MudButton>
+                                </div>
+                            </MudItem>
+                        </MudGrid>
+
+                        <MudText Typo="Typo.h2" Class="mb-8">
+                            @_product.Name
+                        </MudText>
+                        @* <MudChip T="string" Icon="@Icons.Material.Filled.FestivalId" Variant="Variant.Text">FestivalId name</MudChip> *@
+                        <MudGrid Class="mt-7 pa-5">
+                            @((MarkupString)_product.Description)
+                        </MudGrid>
+                    </MudCardContent>
+                </MudCard>
+
+                <MudButton Variant="Variant.Filled" Class="add-to-card-button-product-mobile"
+                           FullWidth="true" Color="Color.Success"
+                           OnClick="AddToCart"
+                           EndIcon="@Icons.Material.Filled.ShoppingCart">
+                    Add To Card
+                </MudButton>
+
+            </MudItem>
+            <MudItem xs="12" md="3">
+                <MudText Typo="Typo.h6" Class="side-title" Align="Align.Center">
+                    Other festival You May Like
+                </MudText>
+                <MudGrid Class="festival-sponsored-box festival-side-box" Spacing="3">
+                    @foreach (var festival in _festivalResponse.Data)
+                    {
+                        <MudItem xs="6" lg="6" Class="d-relative img-box">
+                            <img alt="image" src="@festival.LogoURL" />
+                            <MudButton Class="btn-view-festival"
+                                       Color="Color.Tertiary"
+                                       Href="@($"/festivalPage/{festival.URL}")"
+                                       Variant="Variant.Outlined">
+                                View festival
+                            </MudButton>
+                        </MudItem>
+                    }
+                </MudGrid>
+            </MudItem>
+
+            @if (_newsResponse is { Data.Count: > 0 })
+            {
+                <MudItem xs="12">
+                    <MudCard Elevation="1" Class="pa-md-3 mb-3">
+                        <MudText Typo="Typo.h5" Class="mb-5" Align="Align.Center">News</MudText>
+                        <MudGrid>
+                            @foreach (var n in _newsResponse.Data)
+                            {
+                                <MudItem xs="12" md="4">
+                                    <NewBox New="@n" ShowFestivalName="true"></NewBox>
+                                </MudItem>
+                            }
+                        </MudGrid>
+                    </MudCard>
+                </MudItem>
+            }
+        }
+    </MudGrid>
+</MudContainer>

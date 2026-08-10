@@ -1,0 +1,48 @@
+﻿@inject IStringLocalizer<AddJudgingButton> Localize
+
+<EditForm Model="@JudgingButtonModel" OnValidSubmit="SaveAsync">
+    <FluentValidationValidator @ref="_fluentValidationValidator" />
+    <MudDialog>
+        <TitleContent>
+            @{
+                if (JudgingButtonModel.Id == 0)
+                {
+                    <MudText Typo="Typo.h6">
+                        <MudIcon Icon="@Icons.Material.Filled.Add" Class="mr-3 mb-n1" />
+                        @Localize["Add Button"]
+                    </MudText>
+                }
+                else
+                {
+                    <MudText Typo="Typo.h6">
+                        <MudIcon Icon="@Icons.Material.Filled.Update" Class="mr-3 mb-n1" />
+                        @Localize["Update Button"]
+                    </MudText>
+                }
+            }
+        </TitleContent>
+        <DialogContent>
+            <MudGrid>
+                <MudItem xs="12" md="6">
+                    <MudTextField T="string" For="@(() => JudgingButtonModel.Name)"
+                                  @bind-Value="JudgingButtonModel.Name" Label="@Localize["Name"]" />
+                </MudItem>              
+            </MudGrid>
+        </DialogContent>
+        <DialogActions>
+            <MudButton DisableElevation Variant="Variant.Filled" OnClick="Cancel">@Localize["Cancel"]</MudButton>
+            @if (JudgingButtonModel.Id != 0)
+            {
+                <LoadingButton Processing="_processing" DisableElevation Variant="Variant.Filled"
+                               ButtonType="ButtonType.Submit" Disabled="@(!Validated)" 
+                               Color="Color.Secondary">@Localize["Update"]</LoadingButton>
+            }
+            else
+            {
+                <LoadingButton Processing="_processing" DisableElevation Variant="Variant.Filled"
+                               ButtonType="ButtonType.Submit" Disabled="@(!Validated)"
+                               Color="Color.Success">@Localize["Save"]</LoadingButton>
+            }
+        </DialogActions>
+    </MudDialog>
+</EditForm>

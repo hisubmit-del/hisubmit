@@ -1,0 +1,75 @@
+﻿@using global::Hisubmit.Client.SharedModels.Features.Submits.Queries.GetAllSubmitsQueries
+
+@using Hisubmit.Client.SharedModels.Extensions;
+
+<MudCard Class="pa-3 chart-box">
+    @if (!Loaded)
+    {
+        <CustomeProgress/>
+    }
+    else
+    { 
+        <MudChart Style="overflow: scroll" SelectedIndex="index"
+                  SelectedIndexChanged="ChangeTitle"
+                  ChartType="ChartType.Donut"
+                  InputData="@_data"  
+                  ChartOptions="@(new ChartOptions() { ChartPalette=ChartColors.LongChartPlate })"
+                  InputLabels="@_xLabels"
+                  Width="100%" 
+                  Height="240px">
+            <CustomGraphics>               
+                <text class="donut-inner-text" x="32%" y="35%" 
+                      style="letter-spacing:normal"  fill="black" font-family="Helvetica"
+                      font-size="2">@selectedTitle</text>
+                <text class="donut-inner-text" x="47%" y="50%"
+                      dominant-baseline="middle" text-anchor="middle"
+                      fill="black" font-family="Helvetica"
+                      font-size="5">@selectedCount</text>
+            </CustomGraphics>
+        </MudChart>
+    }
+</MudCard>
+
+@code{
+
+    [Parameter]
+    public List<GetAllSubmitsResponse> Submits { get; set; } = new();
+
+    [Parameter]
+    public bool Loaded { get; set; }
+
+    private string[] _xLabels = { };
+    private double[] _data = { };
+
+    private string selectedTitle = "All Submit";
+    private int selectedCount;
+    private int index;
+
+
+    protected override Task OnInitializedAsync()
+    {
+        GenerateSeries();
+        selectedCount = Submits.Count;
+        return base.OnInitializedAsync();
+    }
+
+    private void GenerateSeries()
+    {
+        var groupedJudgingStatusSubmit = Submits.GroupBy(p => p.JudgingStatus).ToArray();
+        _data = new double[groupedJudgingStatusSubmit.Count()];
+        _xLabels = new string[groupedJudgingStatusSubmit.Count()];
+
+
+        for (var i=0;i< groupedJudgingStatusSubmit.Count();i++)
+        {
+            var groupedSubmit = groupedJudgingStatusSubmit[i];
+            _xLabels[i] = groupedSubmit.Key.ToDisplay();
+            _data[i] = groupedSubmit.Count();
+        }
+    }
+    private void ChangeTitle(int index)
+    {
+        selectedTitle = _xLabels[index];
+        selectedCount =(int) _data[index];
+    }
+}

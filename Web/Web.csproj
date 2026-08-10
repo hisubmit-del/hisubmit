@@ -1,0 +1,77 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>aspnet-Web-3296f76f-1773-4bb0-b5e5-ac972cab79ba</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Remove="Components\Shared\Components\BlazorHeroLogo.razor" />
+    <Content Remove="wwwroot\lib\noUiSlider\nouislider.d.ts" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="8.0.16" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.16" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.16" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.16" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning" Version="5.0.0" />
+    <PackageReference Include="DinkToPdf" Version="1.0.8" />
+    <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.0" />
+	      <PackageReference Include="Blazored.FluentValidation" Version="2.1.0" />	    
+    <PackageReference Include="Hangfire" Version="1.8.10" />
+    <PackageReference Include="LazyCache.AspNetCore" Version="2.4.0" />
+    <PackageReference Include="MediatR" Version="12.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="8.0.4" />
+    <PackageReference Include="Extensions.MudBlazor.StaticInput" Version="3.*" />
+
+    <PackageReference Include="Serilog.Enrichers.Environment" Version="2.3.0" />
+    <PackageReference Include="Serilog.Extensions.Hosting" Version="8.0.0" />
+    <PackageReference Include="Serilog.Formatting.Compact" Version="2.0.0" />
+    <PackageReference Include="Serilog.Settings.Configuration" Version="8.0.0" />
+    <PackageReference Include="Serilog.Sinks.Async" Version="1.5.0" />
+    <PackageReference Include="Serilog.Sinks.Console" Version="5.0.1" />
+    <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
+
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\HiSubmit\src\Application\Application.csproj" />
+    <ProjectReference Include="..\HiSubmit\src\Client.Infrastructure\Client.Infrastructure.csproj" />
+    <ProjectReference Include="..\HiSubmit\src\Client.SharedModels\Client.SharedModels.csproj" />
+    <ProjectReference Include="..\HiSubmit\src\Infrastructure.Shared\Infrastructure.Shared.csproj" />
+    <ProjectReference Include="..\HiSubmit\src\Infrastructure\Infrastructure.csproj" />
+    <ProjectReference Include="..\HiSubmit\src\Shared\Shared.csproj" />
+    <!--<PackageReference Include="Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage" Version="8.0.16" />-->
+    <PackageReference Include="BlazorVideoPlayer" Version="3.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Components\StaticPages\" />
+    <Folder Include="Components\Pages\Admin\Festivals\Components\" />
+    <Folder Include="Files\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Components\Shared\Components\BlazorHeroLogo.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <TypeScriptCompile Include="wwwroot\lib\noUiSlider\nouislider.d.ts" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="libwkhtmltox.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="libwkhtmltox.dylib">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="libwkhtmltox.so">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>

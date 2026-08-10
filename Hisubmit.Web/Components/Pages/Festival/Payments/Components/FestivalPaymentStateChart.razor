@@ -1,0 +1,25 @@
+﻿<MudPaper Style="height: 100%" Class="pa-3">
+    <MudChart SelectedIndexChanged="ChangeTitle"
+              ChartOptions="@(new ChartOptions() { ChartPalette = ChartColors.ChartPlate1 })"
+              ChartType="ChartType.Donut" InputData="@_data"
+              InputLabels="@_labels"
+              Width="100%" Height="240px">
+        <CustomGraphics>
+            <text class="donut-inner-text" x="47%" y="35%"
+                  dominant-baseline="middle"
+                  text-anchor="middle" fill="black"
+                  font-family="Helvetica"
+                  font-size="2">
+                @_showTitle
+            </text>
+
+            <text class="donut-inner-text text-info"
+                  x="47%" y="50%" dominant-baseline="middle"
+                  text-anchor="middle" fill="black"
+                  font-family="Helvetica" font-size="4">
+                @_showTotal
+            </text>
+
+        </CustomGraphics>
+    </MudChart>
+</MudPaper>

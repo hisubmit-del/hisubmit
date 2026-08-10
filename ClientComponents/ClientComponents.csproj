@@ -1,0 +1,38 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
+  </PropertyGroup>
+
+  
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Pages\Admin\Festivals\Components\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Shared\Components\BlazorHeroLogo.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\HiSubmit\src\Client.Infrastructure\Client.Infrastructure.csproj" />
+    <ProjectReference Include="..\HiSubmit\src\Client.SharedModels\Client.SharedModels.csproj" />
+    <ProjectReference Include="..\HiSubmit\src\Infrastructure\Infrastructure.csproj" />
+    <PackageReference Include="Blazored.FluentValidation" Version="2.1.0" />
+
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="8.0.4" />
+
+	  <PackageReference Include="BlazorVideoPlayer" Version="3.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="8.0.4" />
+
+  </ItemGroup>
+
+
+
+</Project>

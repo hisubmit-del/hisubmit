@@ -1,0 +1,18 @@
+﻿@if (Items.Any())
+{
+    <MudMenu Icon="@Icons.Material.Filled.ShoppingCart" Dense="true" Direction="Direction.Right" OffsetY="true">
+        @foreach (var item in Items)
+        {
+            <MudMenuItem>
+                @item.Title :
+                <MudSpacer></MudSpacer>
+                @item.Price.ToString("N0")
+            </MudMenuItem>
+        }
+        <MudMenuItem>
+            Sum:
+            <MudSpacer></MudSpacer>
+            @Items.Sum(p=>p.Price).ToString("N0");
+        </MudMenuItem>
+    </MudMenu>
+}

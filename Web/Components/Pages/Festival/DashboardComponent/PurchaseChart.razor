@@ -1,0 +1,19 @@
+﻿<MudPaper Class="pa-3">
+
+    @if (!_loaded)
+    {
+        <CustomeProgress/>
+    }
+    else
+    {
+        <MudChart Style="overflow: scroll"
+                  ChartOptions="@_chartOptions"
+                  ChartType="ChartType.Line"  ChartSeries="@Series" XAxisLabels="@xLabels"
+                  Height="240px" Width="100%">
+            <CustomGraphics>
+                <MudPaper Style="@($"background-color:{Colors.Gray.Lighten5}")"></MudPaper>
+            </CustomGraphics>
+        </MudChart>
+    }
+
+</MudPaper>

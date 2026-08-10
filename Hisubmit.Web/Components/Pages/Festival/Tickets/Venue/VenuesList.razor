@@ -1,0 +1,188 @@
+﻿@page "/festival/venues"
+@inject IStringLocalizer<VenuesList> Localize
+@using global::Hisubmit.Client.SharedModels.Features.Festivals.Queries.GetAllVenue
+@using Hisubmit.Client.SharedModels.Extensions
+
+@inherits BaseFestival
+
+<MudContainer MaxWidth="MaxWidth.Medium">
+    @if (!_loaded)
+    {
+        <MudProgressCircular Color="Color.Primary" Indeterminate="true" />
+    }
+    else
+    {
+        <MudTable class="default-table" Elevation="25" Items="_pagedDate" TotalItems="_totalItems" ServerData="@(new Func<TableState,CancellationToken, Task<TableData<GetAllVenueResponse>>>(ServerReload))" Hover="false" Dense="true" Bordered="false" Striped="true" @ref="_table">
+            <ToolBarContent>
+                <MudHidden Breakpoint="Breakpoint.LgAndUp">
+                    <FestivalAuthorizeView Policy="@Permissions.Venue.Edit">
+                        <MudIconButton Class="mr-1" Variant="Variant.Filled" Color="Color.Primary" OnClick="AddVenue" Icon="@Icons.Material.Filled.Add" />
+                    </FestivalAuthorizeView>
+                    <MudIconButton Class="ml-1" DisableElevation Variant="Variant.Filled" OnClick="@(() => OnSearch(""))" Icon="@Icons.Material.Filled.Refresh" Color="Color.Secondary" />
+                </MudHidden>
+                <MudHidden Breakpoint="Breakpoint.MdAndDown">
+                    <FestivalAuthorizeView Policy="@Permissions.Venue.Edit">
+                        <MudButton Class="mr-1" Variant="Variant.Filled" Color="Color.Primary" OnClick="AddVenue" StartIcon="@Icons.Material.Filled.Add">@Localize["Add Venue"]</MudButton>
+                    </FestivalAuthorizeView>
+                    <MudButton Class="ml-1" DisableElevation Variant="Variant.Filled" OnClick="@(() => OnSearch(""))" StartIcon="@Icons.Material.Filled.Refresh" IconColor="Color.Surface" Color="Color.Secondary">@Localize["Reload"]</MudButton>
+                </MudHidden>
+                <MudSpacer />
+                <MudTextField T="string" ValueChanged="@(OnSearch)" Placeholder="@Localize["Search"]" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+
+            </ToolBarContent>
+            <HeaderContent>
+                <MudTh>
+                    <MudTableSortLabel T="GetAllVenueResponse" SortLabel="Name">@Localize["Name"]</MudTableSortLabel>
+                </MudTh>
+                <MudTh>
+                    <MudTableSortLabel T="GetAllVenueResponse" SortLabel="ItemType">@Localize["Venue ItemType"]</MudTableSortLabel>
+                </MudTh>
+                <MudTh>
+                    <MudTableSortLabel T="GetAllVenueResponse" SortLabel="NumberOfTheaters">@Localize["Number of theaters"]</MudTableSortLabel>
+                </MudTh>
+                <MudTh>@Localize["Address"]</MudTh>
+                <MudTh Style="text-align:center">@Localize["Actions"]</MudTh>
+            </HeaderContent>
+            <RowTemplate>
+                <MudTd DataLabel="Name">
+                    <MudHighlighter Text="@context.Name" HighlightedText="@_searchString" />
+                </MudTd>
+                <MudTd DataLabel="VenueItemType">
+                    <MudChip T="string" Text="@context.VenueType.ToDisplay()" Size="Size.Small"></MudChip>
+                </MudTd>
+                <MudTd DataLabel="NumberOfTheaters">
+                    <MudHighlighter Text="@context.ShowHallCount.ToString()" HighlightedText="@_searchString" />
+                </MudTd>
+                <MudTd DataLabel="Address">
+                    <MudHighlighter Text="@(context.Address.ToString())" HighlightedText="@_searchString" />
+                </MudTd>
+                <MudTd DataLabel="Actions">
+                    <MudHidden Breakpoint="Breakpoint.MdAndDown">
+                        @if (context.VenueType == VenueType.ShowLocation)
+                        {
+                            <FestivalAuthorizeView Policy="@Permissions.Venue.Edit">
+                                <MudIconButton Icon="@Icons.Material.Filled.Add" Size="Size.Small"
+                                               Title="Add Show Hall" OnClick="() => AddShowHall(context.Id)" Color="Color.Default"></MudIconButton>
+                            </FestivalAuthorizeView>
+                            <MudIconButton Icon="@Icons.Material.Filled.LibraryBooks" Title="Show Halls"
+                                           Size="Size.Small" OnClick="() => LoadVenueDetail(context.Id)" Color="Color.Default"></MudIconButton>
+                        }
+                        <FestivalAuthorizeView Policy="@Permissions.Venue.Edit">
+                            <MudIconButton Icon="@Icons.Material.Filled.Edit" Size="Size.Small" Title="Edit Venue" 
+                                           OnClick="() => EditVenue(context.Id)"></MudIconButton>
+                        </FestivalAuthorizeView>
+                    </MudHidden>
+                    <MudHidden Breakpoint="Breakpoint.LgAndUp">
+                        <MudMenu Label="@Localize["Actions"]" Variant="Variant.Filled" DisableElevation="true" 
+                                 EndIcon="@Icons.Material.Filled.KeyboardArrowDown" IconColor="Color.Secondary" Direction="Direction.Left" OffsetX="true">
+                            @if (context.VenueType == VenueType.ShowLocation)
+                            {
+                                <FestivalAuthorizeView Policy="@Permissions.Venue.Edit">
+                                    <MudMenuItem OnTouch="() => AddShowHall(context.Id)" OnClick="() => AddShowHall(context.Id)">Add Show Hall</MudMenuItem>
+                                </FestivalAuthorizeView>
+                                <MudMenuItem OnTouch="() => LoadVenueDetail(context.Id)" OnClick="() => LoadVenueDetail(context.Id)">Show Halls</MudMenuItem>
+                            }
+                            <FestivalAuthorizeView Policy="@Permissions.Venue.Edit">
+                                <MudMenuItem OnTouch="() => EditVenue(context.Id)" OnClick="() => EditVenue(context.Id)">Edit Venue</MudMenuItem>
+                            </FestivalAuthorizeView>
+                        </MudMenu>
+                    </MudHidden>
+                </MudTd>
+            </RowTemplate>
+            <ChildRowContent>
+                @if (ShowDetails[context.Id])
+                {
+                    <MudTr Class="py-3 px-1 ma-2">
+                        <MudTd colspan="5">
+                            @if (!_showHalls.Any())
+                            {
+                                <MudAlert Style="width: 100%" ContentAlignment="HorizontalAlignment.Center" Severity="Severity.Info">This place has no hall added</MudAlert>
+                            }
+                            else
+                            {
+                                <MudSimpleTable Style="overflow-x:scroll " Class="default-simple-table default-simple-table-border ma-2" Hover="false" Dense="true" Striped="false" Outlined="true">
+                                    <thead>
+                                        <tr>
+                                            <th>Hall</th>
+                                            <th>Showtime</th>
+                                            <th>Date</th>
+                                            <th>Start Time</th>
+                                            <th>End Time</th>
+                                            <th>actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @{
+                                            var showTimesGroupedHall = _showHalls.SelectMany(p => p.ShowTimes)
+                                        .GroupBy(p => p.ShowHallId).ToList();
+                                            foreach (var showTime in showTimesGroupedHall)
+                                            {
+                                                var lastHall = showTime == showTimesGroupedHall.Last();
+                                                @foreach (var s in showTime)
+                                                {
+                                                    var firstItem = showTime.First() == s;
+                                                    var lastItem = showTime.Last() == s;
+
+                                                    var showHallSpan = showTime.Count();
+
+                                                    <tr class="@(lastItem && !lastHall ? "primary-row" : "")">
+                                                        @if (firstItem)
+                                                        {
+                                                            var name = _showHalls.FirstOrDefault(p => p.Id == showTime.Key)?.Title;
+                                                            <td rowspan="@showHallSpan">
+                                                                <MudText Typo="Typo.subtitle2">@name</MudText>
+                                                            </td>
+                                                        }
+                                                        <td>@s.Name</td>
+                                                        <td>
+                                                            <MudText Typo="Typo.caption">
+                                                                @s.OpenDate.ToLongDate()
+                                                            </MudText>
+                                                        </td>
+                                                        <td>
+                                                            <MudText Typo="Typo.caption">
+                                                                @s.OpenDate.ToLongTime()
+                                                            </MudText>
+                                                        </td>
+                                                        <td>
+                                                            <MudText Typo="Typo.caption">
+                                                                @s.CloseDate.ToLongTime()
+                                                            </MudText>
+                                                        </td>
+                                                        @if (firstItem)
+                                                        {
+                                                            <td rowspan="@showHallSpan">
+                                                                <FestivalAuthorizeView Policy="@Permissions.Venue.Edit">
+                                                                    <MudIconButton Size="Size.Small"
+                                                                                   OnClick="() => EditShowHall(showTime.Key)" 
+                                                                                   Icon="@Icons.Material.Filled.Edit"></MudIconButton>
+                                                                </FestivalAuthorizeView>
+                                                            </td>
+                                                        }
+                                                    </tr>
+                                                }
+                                            }
+                                        }
+                                    </tbody>
+                                </MudSimpleTable>
+                            }
+                            <MudHidden Breakpoint="Breakpoint.MdAndDown">
+                                <MudButton Size="Size.Small" OnClick="() => ShowDetails[context.Id] = false" 
+                                           StartIcon="@Icons.Material.Filled.KeyboardArrowUp" Class="mt-2"
+                                           FullWidth="true" Variant="Variant.Filled">Close</MudButton>
+                            </MudHidden>
+                        </MudTd>
+                        <MudHidden Breakpoint="Breakpoint.LgAndUp">
+                            <MudButton Size="Size.Small" OnClick="() => ShowDetails[context.Id] = false" 
+                                       StartIcon="@Icons.Material.Filled.KeyboardArrowUp" Class="mt-2" 
+                                       FullWidth="true" Variant="Variant.Filled">Close</MudButton>
+                        </MudHidden>
+                    </MudTr>
+                }
+            </ChildRowContent>
+            <PagerContent>
+                <TablePager />
+            </PagerContent>
+        </MudTable>
+    }
+</MudContainer>

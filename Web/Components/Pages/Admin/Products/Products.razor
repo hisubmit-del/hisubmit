@@ -1,0 +1,98 @@
+﻿@page "/admin/festival/products/{FestivalId:int}"
+@page "/admin/festival/products"
+@inject IStringLocalizer<Products> Localize
+@using global::Hisubmit.Client.SharedModels.Features.Products.Queries.GetAllPaged;
+@inherits BaseAdminPages
+<style>
+    .mud-table-container {
+        overflow: auto;
+    }
+</style>
+
+<MudContainer MaxWidth="MaxWidth.Medium">
+    <HeroTitle Title="@Localize["Products"]" 
+               Description="@(FestivalId!=null && _pagedData?.ToList() is {Count:>0}? $"Manage {_pagedData.First().FestivalName}'s Products":"Manage All Products")" />
+
+    <MudTable Elevation="25"
+              SortLabel="Sort By"
+              Items="_pagedData"
+              Loading="!_loaded"
+              ServerData="@(new Func<TableState, CancellationToken, Task<TableData<GetAllPagedProductsResponse>>>(ServerReload))"
+              Hover="true" @ref="_table">
+        <ToolBarContent>
+            <div class="justify-center mud-text-align-center ">
+                <ResponsiveButton DisableElevation Variant="Variant.Filled"
+                                  OnClick="@(() => OnSearch(""))" StartIcon="@Icons.Material.Filled.Refresh"
+                                  Color="Color.Secondary">Reload</ResponsiveButton>
+            </div>
+
+            <MudSpacer />
+
+            <MudTextField T="string" ValueChanged="@(OnSearch)"
+                          Margin="Margin.Dense"
+                          Variant="Variant.Outlined"
+                          Placeholder="@Localize["Search"]"
+                          Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search"
+                          IconSize="Size.Medium"  />
+
+        </ToolBarContent>
+        <HeaderContent>
+            <MudTh>
+                @Localize["Product"]
+            </MudTh>
+            <MudTh>
+                @Localize["Festival"]
+            </MudTh>
+            <MudTh>
+                <MudTableSortLabel T="GetAllPagedProductsResponse" SortLabel="Price">
+                    @Localize["Price"]
+                </MudTableSortLabel>
+            </MudTh>
+            <MudTh>
+                @Localize["Type"]
+            </MudTh>
+            <MudTh>
+                @Localize["Status"]
+            </MudTh>
+            <MudTh Style="text-align:right">@Localize["Actions"]</MudTh>
+        </HeaderContent>
+        <RowTemplate>
+
+            <MudTd DataLabel="Product" >
+                <div class="d-flex flex-wrap gap-1">
+                    <MudAvatar>
+                        <MudImage Src="@context.ImageDataURL"></MudImage>
+                    </MudAvatar>
+                    <MudText Class="pt-2 ml-2">@context.Name</MudText>
+                </div>
+            </MudTd>
+
+            <MudTd DataLabel="Festival">
+                @context.FestivalName
+            </MudTd>
+
+            <MudTd DataLabel="Price">
+                <MudHighlighter Text="@context.Price.ToString("C2")" HighlightedText="@_searchString" />
+            </MudTd>
+
+            <MudTd DataLabel="Type">
+                <ProductTypeChip ProductType="@context.ProductType" />
+            </MudTd>
+
+            <MudTd DataLabel="Status">
+                <MudSwitch T="bool" Value="@context.IsEnable" T="bool"
+                           ThumbIcon="@(context.IsEnable == true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)"
+                           ThumbIconColor="@(context.IsEnable ? Color.Tertiary : Color.Error)"
+                           ValueChanged="(t) => ChangeEnable(context.Id, t)" Color="Color.Success" />
+            </MudTd>
+            <MudTd DataLabel="Actions" Style="text-align: right">
+                <MudIconButton Icon="@Icons.Material.Filled.Edit" Size="Size.Small"
+                               Href="@($"/festival/products/add/{context.Id}/Admin")" />
+
+            </MudTd>
+        </RowTemplate>
+        <PagerContent>
+            <TablePager />
+        </PagerContent>
+    </MudTable>
+</MudContainer>

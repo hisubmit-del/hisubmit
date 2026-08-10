@@ -1,0 +1,21 @@
+﻿@inject IStringLocalizer<FestivalTimeLine> localizer
+@using HiSubmit.Client.SharedModels.Extensions
+@if (_loaded && TimeLines.Any())
+{
+    <MudPaper Class="px-4 py-4" Style="height:100%;overflow:scroll">
+        <HeroTitle Align="Align.Center" Title="Dates & DeadLines"></HeroTitle>
+        <CustomDivider></CustomDivider>
+        <MudTimeline  TimelinePosition="TimelinePosition.Left">
+            @if (_loaded)
+            {
+                foreach (var time in TimeLines)
+                {
+                    <MudTimelineItem Elevation="2" Size="Size.Small" Color="time.Nearest? Color.Primary : Color.Default">
+                        <MudText Align="Align.Start" Color="time.Nearest? Color.Primary : Color.Default" Typo="Typo.subtitle1">@time.Name</MudText>
+                        <MudText Align="Align.Start" Color="time.Nearest? Color.Primary : Color.Default" Typo="Typo.body2" Class="mud-text-secondary">@time.Date.ToString("yyyy MMMM dd")</MudText>
+                    </MudTimelineItem>
+                }
+            }
+        </MudTimeline>
+    </MudPaper>
+}

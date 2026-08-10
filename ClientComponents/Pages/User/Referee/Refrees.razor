@@ -1,0 +1,180 @@
+﻿@page "/Judges"
+@inject IStringLocalizer<Refrees> Localize
+@using global::Hisubmit.Client.SharedModels.Features.ProjectJudgings.Queries.GetAll
+
+@using HiSubmit.Client.SharedModels.Extensions
+@inherits BaseUserPages
+<style>
+    .mud-table-container {
+        overflow: auto;
+    }
+</style>
+
+
+<HeroTitle Title="@Localize["Judges"]" Description="@Localize["List of  My Judges."]"/>
+@if (!_loaded)
+{
+    <MudProgressCircular Color="Color.Primary" Indeterminate="true"/>
+}
+else
+{
+    @* <MudButton Class="mb-3" OnClick="ToggleSearchFor" EndIcon="@Icons.Material.Filled.Search" Color="Color.Surface" Variant="Variant.Filled">
+        Advanced Search
+    </MudButton>*@
+
+    @* <MudCard Class="mb-2" Elevation="5">
+        <MudCardContent Class="@_displaySearchFrom">
+            <MudContainer>
+
+                <EditForm Model="@_advancedSearch">
+                    <MudGrid>
+                        <MudItem xs="12" md="4">
+                            <MudTextField T="string" Margin="Margin.Dense" Label="@_localizer["Project title"]" Variant="Variant.Text" @bind-Value="@_advancedSearch.ProjectTitle"></MudTextField>
+                        </MudItem>
+                         <MudItem xs="12" md="4">
+                            <MudTextField T="string" Margin="Margin.Dense" Label="@_localizer["festival Name"]" Variant="Variant.Text" @bind-Value="@_advancedSearch.fest"></MudTextField>
+                        </MudItem>
+                         <MudItem xs="12" md="4">
+                            <MudTextField T="string" Margin="Margin.Dense" Label="@_localizer["Assugn Date"]" Variant="Variant.Text" @bind-Value="@_advancedSearch.ProjectTitle"></MudTextField>
+                        </MudItem>
+                       @* <MudItem xs="12" md="4">
+                            <MudDatePicker Margin="Margin.Dense" Rounded="true" Label="@_localizer["Submit Date"]" Variant="Variant.Text" Editable="true" @bind-Date="@_advancedSearch.OpeningDateFrom" />
+                        </MudItem>
+                        <MudItem xs="12" md="4">
+                            <MudDatePicker Margin="Margin.Dense" Rounded="true" Label="@_localizer["Submit  Date"]" Variant="Variant.Text" Editable="true" @bind-Date="@_advancedSearch.OpeningDateTo" />
+                        </MudItem>
+
+                        <MudButton ButtonItemType="ButtonItemType.Button" Size="Size.Small" OnClick="AdvancedSearch" Variant="Variant.Filled" Color="Color.Tertiary">search</MudButton>
+                    </MudGrid>
+                </EditForm>
+
+            </MudContainer>
+        </MudCardContent>
+    </MudCard>*@
+    <MudTable Class="default-table"
+              Elevation="25"
+              Items="_pagedDate"
+              TotalItems="_totalItems"
+              ServerData="@(new Func<TableState,CancellationToken, Task<TableData<GetAllProjectJudgingResponse>>>(ServerReload))"
+              Hover="true"
+              @ref="_table">
+        <ToolBarContent>
+            <div class="justify-center mud-text-align-center">
+                <MudHidden Breakpoint="Breakpoint.MdAndDown">
+                    <MudButton DisableElevation
+                               Variant="Variant.Filled"
+                               OnClick="@(() => OnSearch(""))"
+                               StartIcon="@Icons.Material.Filled.Refresh"
+                               IconColor="Color.Surface"
+                               Color="Color.Secondary">
+                        @Localize["Reload"]
+                    </MudButton>
+                </MudHidden>
+                <MudHidden Breakpoint="Breakpoint.LgAndUp">
+                    <MudIconButton DisableElevation
+                                   Variant="Variant.Filled"
+                                   OnClick="@(() => OnSearch(""))"
+                                   Icon="@Icons.Material.Filled.Refresh"
+                                   Color="Color.Secondary"/>
+                </MudHidden>
+            </div>
+            <MudSpacer/>
+            <MudTextField T="string" ValueChanged="@(OnSearch)"
+                          Placeholder="@Localize["Search"]"
+                          Adornment="Adornment.Start"
+                          AdornmentIcon="@Icons.Material.Filled.Search"
+                          IconSize="Size.Medium"
+                          Class="mt-0"/>
+        </ToolBarContent>
+        <HeaderContent>
+            <MudTh>
+                <MudTableSortLabel T="GetAllProjectJudgingResponse"
+                                   SortLabel="ProjectTitle">
+                    @Localize["Project Title"]
+                </MudTableSortLabel>
+            </MudTh>
+            <MudTh>
+                <MudTableSortLabel T="GetAllProjectJudgingResponse"
+                                   SortLabel="ProjectTitle">
+                    @Localize["festival Name"]
+                </MudTableSortLabel>
+            </MudTh>
+            <MudTh>
+                <MudTableSortLabel
+                    T="GetAllProjectJudgingResponse"
+                    SortLabel="Submit Date">
+                    @Localize["Assign Date"]
+                </MudTableSortLabel>
+            </MudTh>
+            <MudTh>
+                @Localize["Enable"]
+            </MudTh>
+            <MudTh Style="text-align:center">
+                @Localize["Average of rates"]
+            </MudTh>
+            <MudTh >
+                @Localize["Actions"]
+            </MudTh>
+        </HeaderContent>
+        <RowTemplate >
+
+            <MudTd style="@(context.JudgingFiledAverage == 0 ? $"background:{Colors.DeepOrange.Lighten4}" : "")" DataLabel="Project">
+                <MudHighlighter Text="@context.ProjectName"
+                                HighlightedText="@_searchString"/>
+            </MudTd>
+            <MudTd style="@(context.JudgingFiledAverage == 0 ? $"background:{Colors.DeepOrange.Lighten4}" : "")" DataLabel="festival">
+                <MudHighlighter Text="@context.FestivalName"
+                                HighlightedText="@_searchString"/>
+            </MudTd>
+            <MudTd style="@(context.JudgingFiledAverage == 0 ? $"background:{Colors.DeepOrange.Lighten4}" : "")" DataLabel="Submit Date">
+                <MudHighlighter Text="@context.CreatedOn.ToLongDate()"
+                                HighlightedText="@_searchString"/>
+            </MudTd>
+            <MudTd style="@(context.JudgingFiledAverage == 0 ? $"background:{Colors.DeepOrange.Lighten4}" : "")" DataLabel="Enable">
+                @if (string.IsNullOrWhiteSpace(context.JudgingButtonName))
+                {
+                    <MudChip T="string" Color="Color.Info"
+                             Variant="Variant.Text"
+                             Text="---"/>
+                }
+                else
+                {
+                    <MudChip T="string" Color="Color.Info"
+                             Variant="Variant.Text"
+                             Text="@context.JudgingButtonName"/>
+                }
+            </MudTd>
+            <MudTd style="@(context.JudgingFiledAverage == 0 ? $"background:{Colors.DeepOrange.Lighten4}" : "")" DataLabel="Rate Average">
+                @{
+                    var average = context.JudgingFiledAverage;
+                    Color color;
+                    if (average < 2.5)
+                        color = Color.Error;
+                    else if (average is >= 2.5 and < 4)
+                        color = Color.Warning;
+                    else
+                        color = Color.Success;
+                    <MudChip T="string" Color="color"
+                             Variant="Variant.Text"
+                             Text="@Math.Round(context.JudgingFiledAverage, 2).ToString()"/>
+                }
+            </MudTd>
+            <MudTd style="@(context.JudgingFiledAverage == 0 ? $"background:{Colors.DeepOrange.Lighten4}" : "")" DataLabel="Actions">
+                @if (context.RefereeStatus == RefereeStatus.Default)
+                {
+                    <MudIconButton Icon="@Icons.Material.Filled.Visibility"
+                                   Title="@Localize["Go to Project page"]"
+                                   OnClick="() => GoToProject(context.ProjectURL)"/>
+                }
+                else
+                {
+                    <MudChip T="string" Color="Color.Warning">@context.RefereeStatus.ToDisplay()</MudChip>
+                }
+            </MudTd>
+
+        </RowTemplate>
+        <PagerContent>
+            <TablePager/>
+        </PagerContent>
+    </MudTable>
+}

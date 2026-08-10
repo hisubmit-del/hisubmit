@@ -1,0 +1,89 @@
+﻿@inject IStringLocalizer<PhotographySpecification> Localize
+
+@using Hisubmit.Client.SharedModels.Extensions
+<MudCardContent>
+    <MudContainer MaxWidth="MaxWidth.Medium" Class="px-0">
+        <MudGrid>
+            @if (!_loaded)
+            {
+                <Spinner></Spinner>
+            }
+            else
+            {
+                <MudItem xs="12" sm="12" md="12">
+                    <EditForm OnValidSubmit="SaveAsync" EditContext="@_editContext">
+                        <FluentValidationValidator @ref="_fluentValidationValidator"/>
+                        <MudGrid>
+                            <MudItem xs="12">
+                                <MudGrid>
+                                    @foreach (var type in _subProjectTypesItem)
+                                    {
+                                        <MudItem xs="6" md="4" lg="3">
+                                            <MudCheckBox T="bool" Size="Size.Small" @bind-Value="@type.IsSelected" Color="Color.Default">@type.Name</MudCheckBox>
+                                        </MudItem>
+                                    }
+                                </MudGrid>
+                            </MudItem>
+                            <MudItem xs="12" md="6">
+                                <MudGrid >
+                                    <MudItem xs="12" md="2">
+                                        <MudText Typo="Typo.subtitle1">
+                                            @Localize["Genre"]:
+                                        </MudText>
+                                    </MudItem>
+                                    <MudItem xs="12" md="10">
+                                        <ChipsetTextField @bind-Value="@Model.Genre" Label="Genres" HelperText="Separate genres with the - character"/>
+                                    </MudItem>
+                                </MudGrid>
+                            </MudItem>
+                            <MudItem xs="12" md="6">
+                                <MudDatePicker PickerVariant="PickerVariant.Dialog" @bind-Date="Model.TakenDate" For="@(() => Model.TakenDate)" DateFormat="@DateTimeExtension.LongDateFormat" Label="@Localize["Taken Date"]" Variant="Variant.Filled" Margin="Margin.Dense"/>
+                            </MudItem>
+                            <MudItem xs="12" md="6" Style="margin-bottom:2px">
+                                <MudAutocomplete T="int" Label="@Localize["Origin Country"]" For="@(() => Model.OriginCountryId)" @bind-Value="Model.OriginCountryId" ResetValueOnEmptyText="true" SearchFunc="@SearchCountries" Variant="Variant.Filled" Margin="Margin.Dense" ToStringFunc="@(i => Countries.FirstOrDefault(b => b.Id == i)?.Name ?? string.Empty)" OffsetY="true"/>
+                            </MudItem>
+                            <MudItem xs="12" md="6">
+                                <MudTextField @bind-Value="Model.Camera" For="@(() => Model.Camera)" Label="@Localize["Camera"]" Variant="Variant.Filled" Margin="Margin.Dense"/>
+                            </MudItem>
+
+                            <MudItem xs="12" md="6">
+                                <MudTextField @bind-Value="Model.Lens" For="@(() => Model.Lens)" Label="@Localize["Lens"]" Variant="Variant.Filled" Margin="Margin.Dense"/>
+                            </MudItem>
+
+                            <MudItem xs="12" md="6">
+                                <MudTextField @bind-Value="Model.FocalLength" For="@(() => Model.FocalLength)" Label="@Localize["Focal Length"]" Variant="Variant.Filled" Margin="Margin.Dense"/>
+                            </MudItem>
+                            <MudItem xs="12" md="6">
+                                <MudTextField @bind-Value="Model.ShutterSpeed" For="@(() => Model.ShutterSpeed)" Label="@Localize["Shutter Speed"]" Variant="Variant.Filled" Margin="Margin.Dense"/>
+                            </MudItem>
+                            <MudItem xs="12" md="6">
+                                <MudTextField @bind-Value="Model.Aperture" For="@(() => Model.Aperture)" Label="@Localize["Aperture"]" Variant="Variant.Filled" Margin="Margin.Dense"/>
+                            </MudItem>
+                            <MudItem xs="12" md="6">
+                                <MudTextField @bind-Value="Model.Location" For="@(() => Model.Location)" Label="@Localize["Location"]" Variant="Variant.Filled" Margin="Margin.Dense"/>
+                            </MudItem>
+                            <MudItem xs="12" md="6">
+                                <MudTextField @bind-Value="Model.Iso_Film" For="@(() => Model.Iso_Film)" Label="@Localize["Iso Film"]" Variant="Variant.Filled" Margin="Margin.Dense"/>
+                            </MudItem>
+                            @* <MudItem xs="12" md="6"> *@
+                            @*     <MudCheckBox T="bool" Size="Size.Small" For="@(()=>_model.StudentProject)" @bind-Value="@_model.StudentProject" Color="Color.Default">@localizer["Student project"]</MudCheckBox> *@
+                            @* </MudItem>       *@
+                        </MudGrid>
+                    </EditForm>
+                </MudItem>
+            }
+        </MudGrid>
+    </MudContainer>
+</MudCardContent>
+<MudPaper Class="d-flex justify-end flex-grow-1 " Elevation="0">
+    <MudPaper Class="mr-2 mb-2" Elevation="0">
+         <MudButtonGroup Variant="Variant.Filled" Color="Color.Info" OverrideStyles="false">
+             <LoadingButton Processing="_processing" Variant="Variant.Filled" ButtonType="ButtonType.Submit" 
+                            OnClick="SaveAsync" StartIcon="@Icons.Material.Filled.Save" Color="Color.Info">
+            @Localize["Save"]
+        </LoadingButton>
+             <MudButton Variant="Variant.Filled" OnClick="GoNext" EndIcon="@Icons.Material.Filled.ArrowRight" 
+                        Color="Color.Secondary"> @Localize["Next"]</MudButton>
+        </MudButtonGroup>
+    </MudPaper>
+</MudPaper>

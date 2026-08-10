@@ -1,0 +1,109 @@
+﻿@using HiSubmit.Client.Infrastructure.Managers.Contents
+@using global::Hisubmit.Client.SharedModels.Features.FooterItems.Queries.GetAll
+@using global::Hisubmit.Client.SharedModels.Features.FooterItems
+<style>
+    .footer {
+    margin-top: 30px;
+        background: #0b0c28;
+        padding: 30px 0px;
+        /*font-family: 'Play', sans-serif;*/
+        text-align: center;
+    }
+        .footer .row {
+            width: 100%;
+            margin: 1% 0%;
+            padding: 0.6% 0%;
+            color: #e5ecf4;
+            font-size: 0.8em;
+        }
+            .footer .row a {
+                text-decoration: none;
+                color: #e5ecf4;
+                transition: 0.5s;
+            }
+                .footer .row a:hover {
+                    color: #fff;
+                }
+
+            .footer .row ul {
+                width: 100%;
+            }
+
+                .footer .row ul li {
+                    display: inline-block;
+                    margin: 0px 30px;
+                }
+
+            .footer .row a i {
+                font-size: 2em;
+                margin: 0% 1%;
+            }
+
+    @@media (max-width:720px) {
+        .footer {
+            text-align: left;
+            padding: 5%;
+        }
+
+            .footer .row ul li {
+                display: block;
+                margin: 10px 0px;
+                text-align: left;
+            }
+
+            .footer .row a i {
+                margin: 0% 3%;
+            }
+    }
+</style>
+
+<footer>
+    <div class="footer">
+        <div class="row">
+            <MudIconButton Icon="@Icons.Custom.Brands.Facebook" Color="Color.Inherit" ></MudIconButton>
+            <MudIconButton Icon="@Icons.Custom.Brands.Instagram" Color="Color.Inherit" ></MudIconButton>
+            <MudIconButton Icon="@Icons.Custom.Brands.YouTube" Color="Color.Inherit"></MudIconButton>
+            <MudIconButton Icon="@Icons.Custom.Brands.Twitter" Color="Color.Inherit"></MudIconButton>
+        </div>
+        <div class="row">
+            <ul>
+                @foreach (var item in _footerItems)
+                {
+                    <li>
+                        <MudLink Href="@item.Link">@item.Title</MudLink>
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+</footer>
+
+@code{
+
+    [Inject]
+    private  IContentManager ContentManager { get; set; }
+
+    private List<FooterItemDto> _footerItems=new();
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadItems();
+        await base.OnInitializedAsync();
+    }
+
+    private async Task LoadItems()
+    {
+        var response = await ContentManager.GetFooterItems(new GetAllFooterItemQuery());
+        if (response.Succeeded)
+        {
+            _footerItems = response.Data;
+        }
+        else
+        {
+            foreach (var message in response.Messages)
+            {
+                _snackBar.Add(message, Severity.Error);
+            }
+        }
+    }
+}
+

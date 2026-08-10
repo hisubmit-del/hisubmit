@@ -1,0 +1,63 @@
+﻿@using HiSubmit.Client.SharedModels.Extensions
+@using Hisubmit.Client.SharedModels.Features.StaticPages.Commands
+@inject IStringLocalizer<AddEditStaticPageModal> Localize
+
+<EditForm Model="@Model" OnValidSubmit="SaveAsync">
+    <FluentValidationValidator @ref="_fluentValidationValidator" />
+    <MudDialog>
+        <TitleContent>
+            @{
+                if (Model.Id == 0)
+                {
+                    <MudText Typo="Typo.h6">
+                        <MudIcon Icon="@Icons.Material.Filled.Add" Class="mr-3 mb-n1" />
+                        @Localize["Add Item"]
+                    </MudText>
+                }
+                else
+                {
+                    <MudText Typo="Typo.h6">
+                        <MudIcon Icon="@Icons.Material.Filled.Update" Class="mr-3 mb-n1" />
+                        @Localize["Update Item"]
+                    </MudText>
+                }
+            }
+        </TitleContent>
+        <DialogContent>
+            <MudGrid>
+                <MudItem xs="12" md="6">
+                    <MudTextField For="@(() => Model.Title)" @bind-Value="Model.Title" Label="@Localize["Title"]" />
+                </MudItem>
+                <MudItem xs="12" md="6">
+                    <MudSelect Label="Position"   @bind-Value="Model.FaqType" For="@(() => Model.FaqType)">
+                        @foreach (var position in Enum.GetValues<FaqType>())
+                        {
+                            <MudSelectItem Value="@position">@position.ToDisplay()</MudSelectItem>
+                        }
+                    </MudSelect>
+                </MudItem>
+                <MudItem xs="12" md="12">
+                    <MudTextField For="@(() => Model.Content)" @bind-Value="Model.Content" Label="@Localize["Content"]" />
+                </MudItem>
+              
+
+            </MudGrid>
+        </DialogContent>
+        <DialogActions>
+            <MudButton DisableElevation Variant="Variant.Filled" OnClick="Cancel">@Localize["Cancel"]</MudButton>
+            @if (Model.Id != 0)
+            {
+                <LoadingButton Processing="_processing"
+                               DisableElevation Variant="Variant.Filled" 
+                               ButtonType="ButtonType.Submit" Disabled="@(!Validated)"
+                               Color="Color.Secondary">@Localize["Update"]</LoadingButton>
+            }
+            else
+            {
+                <LoadingButton Processing="_processing" DisableElevation 
+                               Variant="Variant.Filled" ButtonType="ButtonType.Submit" 
+                               Disabled="@(!Validated)" Color="Color.Success">@Localize["Save"]</LoadingButton>
+            }
+        </DialogActions>
+    </MudDialog>
+</EditForm>

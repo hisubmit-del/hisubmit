@@ -1,0 +1,22 @@
+﻿
+@using Hisubmit.Client.SharedModels.Extensions
+
+
+@switch (SelectedTicketType)
+{
+    case TicketType.Ticket:
+        <MudChip T="string" Label="true" Color="Color.Secondary" Variant="Variant.Text" Size="Size" Text="@SelectedTicketType.ToDisplay()"/>
+break;
+    case TicketType.Badge:
+        <MudChip T="string" Label="true" Color="Color.Success" Variant="Variant.Text" Size="Size" Text="@SelectedTicketType.ToDisplay()"/>
+        break;
+}
+
+@code {
+    [Parameter]
+    public  TicketType SelectedTicketType { get; set; }
+
+    [Parameter]
+    public Size Size { get; set; } = Size.Small;
+
+}

@@ -1,0 +1,26 @@
+﻿
+@using Hisubmit.Client.SharedModels.Extensions
+@switch (SelectedFeeStatus)
+{
+    case FeeStatus.SpecialRequest:
+        <MudChip T="string" Icon="@Icons.Material.Filled.Autorenew" 
+        Size="Size.Small" Variant="Variant.Text" Color="Color.Info" >
+        @SelectedFeeStatus.ToDisplay()</MudChip>
+        break;
+    case FeeStatus.Special:
+        <MudChip T="string" Icon="@Icons.Material.Filled.Star"  Size="Size.Small" Variant="Variant.Text" Color="Color.Success" >@SelectedFeeStatus.ToDisplay()</MudChip>
+        break;
+    case FeeStatus.Usual:
+        <MudChip T="string" Icon="@Icons.Material.Filled.RadioButtonUnchecked"  Size="Size.Small" Variant="Variant.Text" Color="Color.Default" >@SelectedFeeStatus.ToDisplay()</MudChip>
+        break;
+    case FeeStatus.Rejected:
+        <MudChip T="string" Icon="@Icons.Material.Filled.RadioButtonUnchecked"  Size="Size.Small" Variant="Variant.Text" Color="Color.Default" >Default</MudChip>
+        break;
+    default:
+        throw new ArgumentOutOfRangeException();
+}
+
+@code {
+    [Parameter]
+    public  FeeStatus SelectedFeeStatus { get; set; }
+}

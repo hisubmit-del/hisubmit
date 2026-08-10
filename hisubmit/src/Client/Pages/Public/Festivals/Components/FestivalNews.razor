@@ -1,0 +1,18 @@
+﻿@using global::Hisubmit.Client.SharedModels.Features.News.Queries
+<MudContainer>
+    <MudGrid>
+           @foreach (var item in News)
+           {
+               <MudItem xs="12" lg="6">
+                   <NewBox New="item" ShowFestivalName="false"/>
+               </MudItem>
+           } 
+    </MudGrid>
+</MudContainer>
+
+@code {
+
+    [Parameter]
+    public List<GetAllNewResponse> News { get; set; } = new();
+
+}

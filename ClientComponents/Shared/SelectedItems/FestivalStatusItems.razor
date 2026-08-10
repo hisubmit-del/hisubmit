@@ -1,0 +1,22 @@
+﻿
+@using HiSubmit.Client.SharedModels.Extensions
+@switch (SelectedFestivalStatus)
+{
+    case FestivalStatus.Default:
+        <MudChip T="string" Icon="@Icons.Material.Filled.RadioButtonUnchecked" Size="Size.Small" Variant="Variant.Text" Color="Color.Default" >@SelectedFestivalStatus.ToDisplay()</MudChip>
+        break;
+    case FestivalStatus.Confirmed:
+        <MudChip T="string" Icon="@Icons.Material.Filled.CheckCircle"  Size="Size.Small" Variant="Variant.Text" Color="Color.Success" >@SelectedFestivalStatus.ToDisplay()</MudChip>
+        break;
+    case FestivalStatus.NotConfirmed:
+        <MudChip T="string" Icon="@Icons.Material.Filled.Close"  Size="Size.Small" Variant="Variant.Text" Color="Color.Error" >@SelectedFestivalStatus.ToDisplay()</MudChip>
+        break;
+    case FestivalStatus.UnderInvestigation:
+        <MudChip T="string" Icon="@Icons.Material.Filled.AutoStories"  Size="Size.Small" Variant="Variant.Text" Color="Color.Info" >@SelectedFestivalStatus.ToDisplay()</MudChip>
+        break;
+}
+
+@code {
+    [Parameter]
+    public  FestivalStatus SelectedFestivalStatus { get; set; }
+}

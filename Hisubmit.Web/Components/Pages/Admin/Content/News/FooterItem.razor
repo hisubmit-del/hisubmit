@@ -1,0 +1,98 @@
+﻿@inject IStringLocalizer<FooterItem> Localize
+@using global::Hisubmit.Client.SharedModels.Features.Brands.Queries.GetAll
+@using global::Hisubmit.Client.SharedModels.Features.FooterItems
+@using Hisubmit.Client.SharedModels.Extensions
+
+<style>
+    .mud-table-container {
+        overflow: auto;
+    }
+</style>
+
+<HeroTitle Title="@Localize["Menu Items"]" Description="@Localize["Link & Items in footer and header"]"/>
+@if (!_loaded)
+{
+    <MudProgressCircular Color="Color.Primary" Indeterminate="true"/>
+}
+else
+{
+    <MudTable Class="default-light-table" Hover="true" Elevation="25" Items="_footerItems" Dense="@_dense" Bordered="@_bordered"
+              Striped="@_striped" Filter="new Func<FooterItemDto, bool>(Search)" @bind-brand="_footerItem">
+        <ToolBarContent>
+            <div class="justify-center mud-text-align-center">
+                <MudHidden Breakpoint="Breakpoint.MdAndDown">
+                    <AuthorizeView Policy="@Permissions.Contents.UpdateMenuItem">
+                        <MudButton DisableElevation Variant="Variant.Filled" Color="Color.Primary"
+                                   OnClick="(() => InvokeModal(new FooterItemDto()))" StartIcon="@Icons.Material.Filled.Add"
+                                   IconColor="Color.Surface">
+                            @Localize["Create"]
+                        </MudButton>
+                    </AuthorizeView>
+                    <MudButton DisableElevation Variant="Variant.Filled" OnClick="GetArtCategoryAsync"
+                               StartIcon="@Icons.Material.Filled.Refresh" IconColor="Color.Surface" Color="Color.Secondary">
+                        @Localize["Reload"]
+                    </MudButton>
+                </MudHidden>
+                <MudHidden Breakpoint="Breakpoint.LgAndUp">
+                    <AuthorizeView Policy="@Permissions.Contents.UpdateMenuItem">
+                        <MudIconButton DisableElevation Variant="Variant.Filled" Color="Color.Primary"
+                                       OnClick="(() => InvokeModal(new FooterItemDto()))" Icon="@Icons.Material.Filled.Add"/>
+                    </AuthorizeView>
+                    <MudIconButton DisableElevation Variant="Variant.Filled" OnClick="GetArtCategoryAsync"
+                                   Icon="@Icons.Material.Filled.Refresh" Color="Color.Secondary"/>
+                </MudHidden>
+            </div>
+            <MudSpacer/>
+            <MudTextField @bind-Value="_searchString" Immediate="true" Placeholder="@Localize["Search in items"]"
+                          Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0 mb-3">
+            </MudTextField>
+        </ToolBarContent>
+        <HeaderContent>
+            <MudTh>
+                @Localize["Title"]
+            </MudTh>
+            <MudTh>
+                @Localize["Link"]
+            </MudTh>
+            <MudTh>
+                @Localize["Position"]
+            </MudTh>
+
+            <MudTh Style="text-align:right">@Localize["Actions"]</MudTh>
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd DataLabel="Title">
+                <MudHighlighter Text="@context.Title" HighlightedText="@_searchString"/>
+            </MudTd>
+            <MudTd DataLabel="Link">
+                <MudHighlighter Text="@context.Link" HighlightedText="@_searchString"/>
+            </MudTd>
+            <MudTd DataLabel="Position">
+                <MudHighlighter Text="@context.Position.ToDisplay()" HighlightedText="@_searchString"/>
+            </MudTd>
+            <MudTd DataLabel="Actions" Style="text-align: right">
+                <AuthorizeView Context="authorizeView" Policy="@Permissions.Contents.UpdateStaticPage">
+                    <MudHidden Breakpoint="Breakpoint.MdAndDown">
+                        <MudIconButton Icon="@Icons.Material.Filled.Edit" Size="Size.Small" Title="Edit"
+                                       OnClick="() => InvokeModal(context)" Color="Color.Default">
+                        </MudIconButton>
+                        <MudIconButton Icon="@Icons.Material.Filled.Delete" Size="Size.Small" Title="Delete"
+                                       OnClick="() => Delete(context.Id, context.Title)" Color="Color.Default">
+                        </MudIconButton>
+                    </MudHidden>
+                    <MudHidden Breakpoint="Breakpoint.LgAndUp">
+                        <MudMenu Label="@Localize["Actions"]" Variant="Variant.Filled" DisableElevation="true"
+                                 EndIcon="@Icons.Material.Filled.KeyboardArrowDown" IconColor="Color.Secondary" Direction="Direction.Left" OffsetX="true">
+                            <MudMenuItem OnTouch="() => InvokeModal(context)" OnClick="(() => InvokeModal(context))">@Localize["Edit"]</MudMenuItem>
+                            <MudMenuItem OnTouch="() => Delete(context.Id, context.Title)" OnClick="(() => Delete(context.Id, context.Title))">@Localize["Delete"]</MudMenuItem>
+                        </MudMenu>
+                    </MudHidden>
+                </AuthorizeView>
+            </MudTd>
+        </RowTemplate>
+        <PagerContent>
+            <TablePager/>
+        </PagerContent>
+    </MudTable>
+}
+

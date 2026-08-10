@@ -1,0 +1,19 @@
+﻿<MudGrid Class=@($"festival-sponsored-box festival-side-box {Class}") Spacing="3">
+    @foreach (var festival in _festivalResponse.Data)
+    {
+        <MudItem xs="6" lg="6" Class="d-relative img-box">
+            <img alt="image"src="@festival.LogoURL"/>
+            <MudIconButton Class="btn-view-festival"
+                           Href="@($"/festivalPage/{festival.URL}")"
+                           Color="Color.Tertiary"
+                           Variant="Variant.Outlined"
+                           Icon="@Icons.Material.Filled.RemoveRedEye"></MudIconButton>
+            @* <MudButton Class="btn-view-festival" *@
+            @*            Href="@($"/festivalPage/{festival.URL}")" *@
+            @*            Color="Color.Tertiary" *@
+            @*            Variant="Variant.Outlined"> *@
+            @*     View FestivalId *@
+            @* </MudButton> *@
+        </MudItem>
+    }
+</MudGrid>

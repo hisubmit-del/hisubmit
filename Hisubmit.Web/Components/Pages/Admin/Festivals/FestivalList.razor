@@ -1,0 +1,224 @@
+﻿@page "/admin/festivals"
+
+@using Hisubmit.Client.SharedModels.Extensions
+@using HiSubmit.Web.Components.Shared.SelectedItems
+@inject IStringLocalizer<FestivalList> Localize
+@attribute [Authorize(Permissions.AdminFestival.View)]
+@using global::Hisubmit.Client.SharedModels.Features.AdminFestival.Queries.GetAllFestival
+@inherits BaseAdminPages
+
+<MudContainer MaxWidth="MaxWidth.Large">
+    <HeroTitle Title="@Localize["Festivals"]" Description="@Localize["List of registered Festival."]"/>
+    
+    @if (!_loaded)
+    {
+        <MudProgressCircular Color="Color.Primary" Indeterminate="true"/>
+    }
+    else
+    {
+        <MudButton Class="mb-3" OnClick="ToggleSearchFor" EndIcon="@Icons.Material.Filled.Search"
+                   Color="Color.Surface" Variant="Variant.Filled">
+            Advanced Search
+        </MudButton>
+        <MudCard Class="mb-2" Elevation="5">
+            <MudCardContent Class="@_displaySearchFrom">
+                <MudContainer>
+                    <EditForm Model="@_advancedSearch">
+                        <MudGrid>
+                            <MudItem xs="12" md="4">
+                                <MudTextField T="string" Margin="Margin.Dense" Label="@Localize["Name"]"
+                                              Variant="Variant.Text" @bind-Value="@_advancedSearch.Name">
+                                </MudTextField>
+                            </MudItem>
+                            <MudItem xs="12" md="4">
+                                <MudDatePicker Margin="Margin.Dense" Rounded="true" Label="@Localize["Opening Date From"]"
+                                               Variant="Variant.Text" Editable="true" @bind-Date="@_advancedSearch.OpeningDateFrom"/>
+                            </MudItem>
+                            <MudItem xs="12" md="4">
+                                <MudDatePicker Margin="Margin.Dense" Rounded="true" Label="@Localize["Opening Date To"]"
+                                               Variant="Variant.Text" Editable="true" @bind-Date="@_advancedSearch.OpeningDateTo"/>
+                            </MudItem>
+                            <MudItem xs="12" md="4">
+                                <MudSelect T="FestivalStatus?" @bind-Value="_advancedSearch.FestivalStatus" Label="@Localize["Festival Enable"]"
+                                           Variant="Variant.Text">
+                                    @foreach (FestivalStatus status in Enum.GetValues(typeof(FestivalStatus)))
+                                    {
+                                        <MudSelectItem Value="@(status as FestivalStatus?)">@status.ToDisplay()</MudSelectItem>
+                                    }
+                                </MudSelect>
+                            </MudItem>
+                            <MudItem xs="12">
+                                <MudButton ButtonType="ButtonType.Button"
+                                           FullWidth="true" OnClick="AdvancedSearch"
+                                           Variant="Variant.Filled" Color="Color.Default"
+                                           EndIcon="@Icons.Material.Filled.Search">
+                                    Search
+                                </MudButton>
+                            </MudItem>
+                        </MudGrid>
+                    </EditForm>
+                </MudContainer>
+            </MudCardContent>
+        </MudCard>
+        <MudTable Elevation="0" Items="_pagedData" TotalItems="_totalItems"
+                  Class="default-table default-transparency-table"
+                  
+                  ServerData="@(new Func<TableState, CancellationToken, Task<TableData<GetAllFestivalResponse>>>(ServerReload))"
+                  Bordered="@_bordered" Striped="false" @ref="_table">
+        <ToolBarContent>
+            <div class="justify-center mud-text-align-center">
+                <MudHidden Breakpoint="Breakpoint.MdAndDown">
+                    <MudButton DisableElevation Variant="Variant.Filled"
+                               OnClick="@(() => OnSearch(""))" StartIcon="@Icons.Material.Filled.Refresh"
+                               IconColor="Color.Surface" Color="Color.Secondary">
+                        @Localize["Reload"]
+                    </MudButton>
+                </MudHidden>
+                <MudHidden Breakpoint="Breakpoint.LgAndUp">
+                    <MudIconButton DisableElevation Variant="Variant.Filled"
+                                   OnClick="@(() => OnSearch(""))" Icon="@Icons.Material.Filled.Refresh"
+                                   Color="Color.Secondary"/>
+                </MudHidden>
+            </div>
+            <MudSpacer/>
+            <MudTextField T="string" ValueChanged="@(OnSearch)"
+                          Placeholder="@Localize["Search"]" Adornment="Adornment.Start"
+                          AdornmentIcon="@Icons.Material.Filled.Search"
+                          IconSize="Size.Medium" Class="mt-0">
+            </MudTextField>
+    
+        </ToolBarContent>
+        <RowTemplate >
+            <div class=" submit-card mud-elevation-1">
+                <MudGrid Class="pt-2 pl-2  pr-2 pb-0">
+                    <MudItem  xs="12" lg="3"  class="festival-image h-100 my-auto  d-flex justify-center">
+                        <img  src="@context.LogoURL" alt="@context.Name">
+                    </MudItem>
+                    <MudItem xs="12" lg="9" class=" d-flex flex-column" style="border: 1.5px none rgb(79,78,78) ;">
+                        <div class=" mb-auto submit-content">
+                            <div class="col justify-content-around align-items-end align-content-end">
+                                    <MudText Typo="Typo.h2">@context.Name</MudText>
+                                <MudGrid class="pa-2 my-4 ">
+                                    <MudItem xs="12" md="6" Class="pt-1">
+                                        <MudText Typo="Typo.subtitle2">
+                                            URL:
+                                            <MudLink Inline="true" Href="@($"/festivalPage/{context.URL}")" Typo="Typo.subtitle2">
+                                                @context.URL
+                                            </MudLink>
+                                        </MudText>
+                                    </MudItem>
+                                    <MudItem xs="12" md="6" Class="pt-0">
+                                        <MudText Typo="Typo.subtitle2">
+                                            Enable:
+                                            <FestivalStatusItems SelectedFestivalStatus="context.FestivalStatus"/>
+                                        </MudText>
+    
+                                    </MudItem>
+    
+                                    <MudItem xs="12" md="6" Class="pt-0">
+                                        <MudText Typo="Typo.subtitle2">
+                                            Submit Date:<MudText Inline="true" Typo="Typo.body1">@context.CreatedOn.ToLongDate()</MudText>
+                                        </MudText>
+    
+    
+                                    </MudItem>
+                                    <MudItem xs="12" md="6" Class="pt-0">
+                                        <MudText Typo="Typo.subtitle2">
+                                            Fee Enable:
+                                            <FeeStatusItem SelectedFeeStatus="@context.FeeStatus"/>
+                                            @if (context.FeeStatus == FeeStatus.SpecialRequest)
+                                            {
+                                                <AuthorizeView Context="authorizeContext"
+                                                               Policy="@Permissions.AdminFestival.ChangeFeeType">
+                                                    <MudMenu Variant="Variant.Filled" Label="Fee Enable" DisableElevation="true" 
+                                                             EndIcon="@Icons.Material.Filled.KeyboardArrowDown"
+                                                             IconColor="Color.Secondary">
+                                                        <MudMenuItem OnTouch="() => ConfirmSpecial(context.Id)"
+                                                                     OnClick="(() => ConfirmSpecial(context.Id))">
+                                                                     @Localize["Confirm Special"]</MudMenuItem>
+    
+                                                        <MudMenuItem OnTouch="() => NotConfirmSpecial(context.Id)"
+                                                                     OnClick="(() => NotConfirmSpecial(context.Id))">
+                                                            @Localize["Not Confirm Special"]
+                                                        </MudMenuItem>
+                                                    </MudMenu>
+                                                </AuthorizeView>
+                                            }
+                                        </MudText>
+    
+    
+                                    </MudItem>
+                                    <MudItem xs="12" md="6" Class="pt-0" >
+                                        <MudText Typo="Typo.subtitle2">
+                                            <MudIcon Icon="@Icons.Material.Filled.Email"></MudIcon>
+                                         <MudText Inline="true" Typo="Typo.body1">@context.AccountEmail</MudText>
+                                        </MudText>
+                                    </MudItem>
+                                    <MudItem xs="12" md="6" Class="pt-0">
+                                        <MudText Typo="Typo.subtitle2">
+                                            <MudIcon Icon="@Icons.Material.Filled.AccountBox"></MudIcon>
+                                        <MudText Inline="true" Typo="Typo.body1">@context.AccountFullName</MudText>
+                                        </MudText>
+                                    </MudItem>
+                                </MudGrid>
+    
+                            </div>
+                        </div>
+                        <div class="row  d-md-flex festival-footer">
+                            <div class="w-100 text-center d-sm-flex justify-end ">
+                                <MudButtonGroup OverrideStyles="false">
+                                    <MudButton StartIcon="@Icons.Material.Filled.Login"
+                                               Color="Color.Secondary"
+                                               Variant="Variant.Text"
+                                               OnClick="@(() => LoginWithFestival(context))">
+                                        Login
+                                    </MudButton>
+                               
+                                    <MudButton OnClick="@(() => GoToPaymentDetail(context.Id))"
+                                               Variant="Variant.Text"
+                                               Color="Color.Info">
+                                        Payment Detail
+                                    </MudButton>
+                                   
+                                    <AuthorizeView Context="authorizeContext" Policy="@Permissions.AdminFestival.Activate">
+                                        @if (!context.IsActive)
+                                        {
+                                            <MudButton Color="Color.Success"
+                                                       OnClick="@(() => UpdateState(context.Id, context.IsActive))"
+                                                       StartIcon="@Icons.Material.Filled.Public">
+                                                Activate
+                                            </MudButton>
+                                       
+                                        }
+                                        else
+                                        {
+                                            <MudButton Color="Color.Error"
+                                                       OnClick="@(() => UpdateState(context.Id, context.IsActive))"
+                                                       StartIcon="@Icons.Material.Filled.Block">
+                                                Block
+                                            </MudButton>
+                                        }
+                                    </AuthorizeView>
+    
+                                </MudButtonGroup>
+                                <MudMenu Label="@Localize["Other  Actions"]" Variant="Variant.Text"
+                                         DisableElevation="true" EndIcon="@Icons.Material.Filled.KeyboardArrowDown"
+                                         IconColor="Color.Secondary" Direction="Direction.Left" OffsetX="true">
+    
+                                    <MudMenuItem  OnClick="(() => FestivalDetail(context.Id))">@Localize["View festival"]</MudMenuItem>
+                                    <MudMenuItem  OnClick="() => GotoProducts(context.Id)">Products</MudMenuItem>
+                                    <MudMenuItem  OnClick="() => GoToNews(context.Id)">News</MudMenuItem>
+                                    <MudMenuItem  OnClick="() => GotoTickets(context.Id)">Tickets</MudMenuItem>
+                                </MudMenu>
+                            </div>
+                        </div>
+                    </MudItem>
+                </MudGrid>
+            </div>
+        </RowTemplate>
+        <PagerContent>
+            <TablePager/>
+        </PagerContent>
+        </MudTable>
+    }
+</MudContainer>

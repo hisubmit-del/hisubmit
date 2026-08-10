@@ -1,0 +1,152 @@
+﻿@using HiSubmit.Client.SharedModels.Extensions
+@inject IStringLocalizer<FilmProjectDetail> Localize
+@using BlazorVideoPlayer
+@using ClientComponents.Shared.Components.UserControllers
+@using global::Hisubmit.Client.SharedModels.Features.Permissions.Queries
+
+@* <MudContainer MaxWidth="MaxWidth.Large"> *@
+  @if (_loaded & DetailLoaded)
+  {
+      <div class="row">
+          <div class="col-md-8">
+              @if (_music != null)
+              {
+                  <MudPaper Elevation="0" class="d-flex justify-content mb-4">
+                      <MudGrid>
+  
+                          @if (Files.Any(p => p.IsLocalFile))
+                          {
+                              <MudItem xs="12">
+                                  <Player id="advanced"
+                                          @ref="_player"
+                                          Poster="@Project.FileURl"
+                                          CurrentTimeControl="true"
+                                          DownloadControl="true"
+                                          DurationControl="true"
+                                          FastForwardControl="true"
+                                          FullscreenControl="true"
+                                          PIPControl="true"
+                                          VolumeControl="true"
+                                          MuteControl="true"
+                                          SettingsControl="true"
+                                          RewindControl="true"
+                                          RestartControl="true"
+                                          ProgressControl="true"
+                                          PlayControl="true"
+                                          CaptionsControl="true"
+                                          AirplayControl="true"
+                                          PlayLargeControl="true"
+                                          Captions="true"
+                                          Loop="true"
+                                          Quality="true"
+                                          Speed="true"                                          
+                                          Sources="@sources"
+                                          OnEndedVideo="OnEndedVideo"
+                                          OnPlayVideo="OnPlayVideo"
+                                          OnVideoTimeUpdate="@((e) => OnVideoTimeUpdate(e.currentTime, e.duration))"/>
+  
+                                  @* <audio controls class="w-100" controlsList="nodownload"> *@
+                                  @*     <source src="@item.LocalFileURL"/> *@
+                                  @* </audio> *@
+                              </MudItem>
+                          }
+                          else
+                          {
+                              @foreach (var item in Files.Where(p => p.IsMainFile && !p.IsLocalFile))
+                              {
+                                  <MudItem xs="12">
+                                      <ExternalMainFile File="item"></ExternalMainFile>
+                                  </MudItem>
+                              }
+                          }
+                      </MudGrid>
+                  </MudPaper>
+              }
+          </div>
+  
+          <div class="col-md-4">
+              <TitleWithIcon Icon="@Icons.Material.Filled.PlaylistPlay">Play List</TitleWithIcon>
+              @foreach (var item in Files.Where(p => p.FileFormat == FileFormat.Music))
+              {
+                  <MudCard Class="mb-2 pa-2">
+                      <MudItem xs="12" Class="d-flex justify-content-between">
+                          <MudText Typo="Typo.subtitle2">@item.Name</MudText>
+                          <MudButton Color="Color.Tertiary" OnClick="()=>PlaySelectMusic(item)">Play</MudButton>
+                      </MudItem>
+                  </MudCard>
+              }
+          </div >
+      
+       @*    <MudItem xs="12">
+              <MudDivider Class="mt-2 mb-4" />
+          </MudItem > *@
+      </div>
+      
+  }
+  else
+  {
+      <div class="row">
+          <div class="col-md-8">
+              <MudPaper Elevation="0" class="d-flex justify-content mb-4">
+                  <MudGrid>
+                      @for (var i = 0; i < 4; i++)
+                      {
+                          <MudItem xs="12">
+                              <MudCard Class="mb-2 px-3">
+                                  <MudSkeleton SkeletonType="SkeletonType.Rectangle"
+                                               Animation="Animation.Wave" Height="114px">
+                                  </MudSkeleton>
+                              </MudCard>
+                          </MudItem>
+                      }
+                  </MudGrid>
+              </MudPaper>
+          </div>
+          <div class="col-md-4">
+          </div>
+      </div>
+      <div class="row mb-5">
+          <div class="col-lg-3 col-sm-6 col-12">
+              <MudSkeleton Width="60%"></MudSkeleton>
+              <MudSkeleton Width="50%" Class="mb-5"></MudSkeleton>
+  
+              <MudSkeleton Width="60%"></MudSkeleton>
+              <MudSkeleton Width="50%" Class="mb-5"></MudSkeleton>
+  
+              <MudSkeleton Width="60%"></MudSkeleton>
+              <MudSkeleton Width="50%" Class="mb-5"></MudSkeleton>
+  
+              <MudSkeleton Width="60%"></MudSkeleton>
+              <MudSkeleton Width="50%" Class="mb-5"></MudSkeleton>
+          </div>
+          <div class="col-lg-3 col-sm-6 col-12">
+              <MudSkeleton Width="60%"></MudSkeleton>
+              <MudSkeleton Width="50%" Class="mb-5"></MudSkeleton>
+  
+              <MudSkeleton Width="60%" Class="mb-2"></MudSkeleton>
+              <MudSkeleton Width="50%" Class="mb-2"></MudSkeleton>
+              <MudSkeleton Width="50%" Class="mb-2"></MudSkeleton>
+              <MudSkeleton Width="50%" Class="mb-2"></MudSkeleton>
+              <MudSkeleton Width="50%" Class="mb-2"></MudSkeleton>
+          </div>
+          <div class="col-lg-3 col-sm-6 col-12">
+              @for (int i = 0; i < 5; i++)
+              {
+                  <MudCard Elevation="0">
+                      <MudCardHeader>
+                          <CardHeaderAvatar>
+                              <MudSkeleton SkeletonType="SkeletonType.Rectangle" Class="rounded"
+                                           Animation="Animation.Wave" Height="30px" Width="30px"/>
+                          </CardHeaderAvatar>
+                          <CardHeaderContent>
+                              <MudSkeleton Animation="Animation.Wave" Width="60%"/>
+                          </CardHeaderContent>
+                      </MudCardHeader>
+                  </MudCard>
+              }
+  
+          </div>
+          <div class="col-lg-3 col-sm-6 col-12"></div>
+      </div>
+  }  
+@* </MudContainer> *@

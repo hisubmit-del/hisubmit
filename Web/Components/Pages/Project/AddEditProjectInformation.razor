@@ -1,0 +1,255 @@
+﻿@inject IStringLocalizer<AddEditProjectInformation> Localize
+
+@using HiSubmit.Client.SharedModels.Extensions
+@using HiSubmit.Client.SharedModels.Extensions
+
+
+<MudCard Elevation="25">
+    <MudCardHeader>
+        <CardHeaderContent>
+            <MudText Typo="Typo.h3">@Localize["Project Information"]</MudText>
+        </CardHeaderContent>
+    </MudCardHeader>
+    @if (!_loaded)
+    {
+        <MudContainer MaxWidth="MaxWidth.Medium" Style="height:300px">
+            <Spinner></Spinner>
+        </MudContainer>
+    }
+    else
+    {
+        <MudCardContent>
+            <MudContainer MaxWidth="MaxWidth.Medium" Class="px-2">
+                <MudGrid>
+                    <MudItem xs="12">
+                        <EditForm OnValidSubmit="SaveAsync" EditContext="EditForm">
+                            <FluentValidationValidator @ref="_fluentValidationValidator"></FluentValidationValidator>
+                            <MudGrid>
+                                <MudItem xs="12" md="6">
+                                    <MudTextField @bind-Value="Modal.Title"
+                                                  Label="@Localize["Title"]" For="@(() => Modal.Title)"
+                                                  Variant="Variant.Filled" Margin="Margin.Dense"/>
+                                </MudItem>
+                                <MudItem xs="12" md="6">
+                                    <MudTextField @bind-Value="Modal.SubTitle"
+                                                  Label="@Localize[" SubTitle"]"
+                                                  For="@(() => Modal.SubTitle)"
+                                                  Variant="Variant.Filled" Margin="Margin.Dense"/>
+                                </MudItem>
+                                <MudItem xs="12" md="8">
+                                    <MudGrid Justify="Justify.FlexEnd">
+                                        <MudItem xs="12" md="4">
+                                            <MudText Typo="Typo.subtitle1">@Localize["Project type"]:</MudText>
+                                        </MudItem>
+                                        <MudItem xs="10" md="8">
+                                            <MudRadioGroup T="ProjectType" @bind-Value="Modal.ProjectType">
+                                                @foreach (ProjectType type in Enum.GetValues(typeof(ProjectType)))
+                                                {
+                                                    <MudRadio Value="type" Class="w-100" Color="Color.Default" T="ProjectType"
+                                                              Size="Size.Small">
+                                                        @type.ToDisplay()
+                                                    </MudRadio>
+                                                }
+                                            </MudRadioGroup>
+                                        </MudItem>
+                                    </MudGrid>
+                                </MudItem>
+                                <MudItem xs="12" md="4">
+                                    <ImageUploader @bind-Url="Modal.FileURl"
+                                                   Title="Project Banner"
+                                                   SuggestedSize="Square image"
+                                                   @bind-UploadRequest="Modal.FileUrlUploadRequest"/>
+                                </MudItem>
+                                <MudItem xs="12">
+                                    <MudTextField @bind-Value="Modal.EnglishBriefSynopsis"
+                                                  For="@(() => Modal.EnglishBriefSynopsis)"
+                                                  Label="@Localize["Brief Synopsis"]"
+                                                  Variant="Variant.Filled" Lines="4" Margin="Margin.Dense"/>
+                                </MudItem>
+                                <MudItem xs="12">
+                                    <MudSwitch T="bool" @bind-Value="Modal.HasNoneEnglishTitle"
+                                               Color="Color.Secondary"
+                                               Label="@Localize["My project also has a non english title and lyrics"]"/>
+                                </MudItem>
+                                @if (Modal.HasNoneEnglishTitle)
+                                {
+                                    <MudItem xs="12" md="6">
+                                        <MudTextField @bind-Value="Modal.OriginalTitle"
+                                                      For="@(() => Modal.OriginalTitle)"
+                                                      Label="@Localize["Original title"]"
+                                                      Variant="Variant.Filled" Margin="Margin.Dense"/>
+                                    </MudItem>
+                                    <MudItem xs="12">
+                                        <MudTextField @bind-Value="Modal.OriginalBriefSynopsis"
+                                                      For="@(() => Modal.OriginalBriefSynopsis)"
+                                                      Label="@Localize["Original Brief Synopsis"]"
+                                                      Variant="Variant.Filled" Lines="4" Margin="Margin.Dense"/>
+                                    </MudItem>
+                                }
+                                <MudItem xs="12">
+                                    <CustomDivider></CustomDivider>
+                                </MudItem>
+                                <MudItem xs="12" md="12">
+                                    <MudText Typo="Typo.subtitle1">@Localize["Project Information"]</MudText>
+                                </MudItem>
+                                <MudItem xs="12" md="6">
+                                    <MudTextField @bind-Value="Modal.URL" For="@(() => Modal.URL)"
+                                                  Immediate="true"
+                                                  Label="@Localize["ProjectURL in this Site"]"
+                                                  Variant="Variant.Filled" Margin="Margin.Dense"
+                                                  HelperText="@($"hisubmit.com/project/{Modal.URL}")"/>
+                                </MudItem>
+                                <MudItem xs="12">
+                                    <CustomDivider/>
+                                </MudItem>
+                                <MudItem xs="12" md="6">
+                                    <MudTextField @bind-Value="Modal.WebSite" For="@(() => Modal.WebSite)"
+                                                  HelperText="Like: hisubmit.com" HelperTextOnFocus="true"
+                                                  Label="@Localize["WebSite"]" Variant="Variant.Filled"
+                                                  Margin="Margin.Dense"/>
+                                </MudItem>
+                                <MudItem xs="12" md="6">
+                                    <MudTextField @bind-Value="Modal.Twitter" For="@(() => Modal.Twitter)"
+                                                  HelperText="@("Like:tare ;without '@'")" HelperTextOnFocus="true"
+                                                  Label="@Localize["Twitter"]" Variant="Variant.Filled"
+                                                  Margin="Margin.Dense"/>
+                                </MudItem>
+
+                                <MudItem xs="12" md="6">
+                                    <MudTextField @bind-Value="Modal.Youtube" For="@(() => Modal.Youtube)"
+                                                  HelperText="@("Like:youtube;without '@'")" HelperTextOnFocus="true"
+                                                  Label="@Localize["Youtube"]" Variant="Variant.Filled"
+                                                  Margin="Margin.Dense"/>
+                                </MudItem>
+                                <MudItem xs="12" md="6">
+                                    <MudTextField @bind-Value="Modal.Instagram" For="@(() => Modal.Instagram)"
+                                                  HelperText="@("Like:instagram;without '@")" HelperTextOnFocus="true"
+                                                  Label="@Localize["Instagram"]" Variant="Variant.Filled"
+                                                  Margin="Margin.Dense"/>
+                                </MudItem>
+
+                                <MudItem xs="12" md="6">
+                                    <MudTextField @bind-Value="Modal.Telegram" For="@(() => Modal.Telegram)"
+                                                  HelperText="@("Like:tel;;without '@'")" HelperTextOnFocus="true"
+                                                  Label="@Localize["Telegram"]" Variant="Variant.Filled"
+                                                  Margin="Margin.Dense"/>
+                                </MudItem>
+                                <MudItem xs="12" md="6">
+                                    <MudTextField @bind-Value="Modal.WhatsApp" For="@(() => Modal.WhatsApp)"
+                                                  HelperText="@("Like: +345656654")" HelperTextOnFocus="true"
+                                                  Label="@Localize["WhatsApp"]" Variant="Variant.Filled"
+                                                  Margin="Margin.Dense"/>
+                                </MudItem>
+
+                                <MudItem xs="12">
+                                    <CustomDivider/>
+                                </MudItem>
+
+
+                                <MudItem xs="12" md="12">
+                                    <MudText Typo="Typo.subtitle1">@Localize["Artist Information"]</MudText>
+                                </MudItem>
+                                @* <MudItem xs="12"> *@
+                                @*     <MudSwitch T="bool" @bind-Value="Modal.UseCurrentUserInformation" *@
+                                @*                Color="Color.Secondary" *@
+                                @*                Label="@Localize["Use current user information for submitter information"]"/> *@
+                                @* </MudItem> *@
+                                @if (!Modal.UseCurrentUserInformation)
+                                {
+                                    <MudItem xs="12" md="6">
+                                        <MudItem Class="mb-8">
+                                            <MudTextField @bind-Value="Modal.FirstName" Label="@Localize["First Name"]"
+                                                          For="@(() => Modal.FirstName)" Variant="Variant.Filled"
+                                                          Margin="Margin.Dense"/>
+                                        </MudItem>
+                                    </MudItem>
+                                    <MudItem xs="12" md="6">
+                                        <MudItem Class="mb-8">
+                                            <MudTextField @bind-Value="Modal.LastName"
+                                                          Label="@Localize["Last Name"]" For="@(() => Modal.LastName)"
+                                                          Variant="Variant.Filled" Margin="Margin.Dense"/>
+                                        </MudItem>
+                                    </MudItem>
+                                    <MudItem xs="12" md="6">
+                                        <MudItem Class="mb-8">
+                                            <MudTextField @bind-Value="Modal.Email"
+                                                          Label="@Localize["Email"]" For="@(() => Modal.Email)"
+                                                          Variant="Variant.Filled" Margin="Margin.Dense"/>
+                                        </MudItem>
+                                    </MudItem>
+                                    <MudItem xs="12" md="6">
+                                        <MudItem Class="mb-8">
+                                            <MudTextField @bind-Value="Modal.PhoneNumber"
+                                                          Label="@Localize["Phone"]" For="@(() => Modal.PhoneNumber)"
+                                                          Variant="Variant.Filled" Margin="Margin.Dense"/>
+                                        </MudItem>
+                                    </MudItem>
+                                    <MudItem xs="12">
+                                        <AddressComponent Address="Modal.Address"></AddressComponent>
+                                    </MudItem>
+                                    <MudItem xs="12" md="6">
+                                        <MudItem Class="mb-2">
+                                            <MudDatePicker PickerVariant="PickerVariant.Dialog"
+                                                           DateFormat="@DateTimeExtension.LongDateFormat"
+                                                           Variant="Variant.Filled" AutoClose="true"
+                                                           @bind-Date="Modal.BirthDate" For="@(() => Modal.BirthDate)"
+                                                           Rounded="true" Elevation="1" Label="@Localize["BirthDate"]"/>
+                                        </MudItem>
+
+                                    </MudItem>
+                                    <MudItem xs="12" md="6">
+                                        <MudItem Class="mb-2">
+                                            <MudSelect T="Gender" @bind-Value="Modal.Gender" Label="Gender"
+                                                       Variant="Variant.Filled" AnchorOrigin="Origin.BottomCenter">
+                                                @foreach (Gender value in Enum.GetValues(typeof(Gender)))
+                                                {
+                                                    <MudSelectItem Value="value"/>
+                                                }
+                                            </MudSelect>
+                                        </MudItem>
+                                    </MudItem>
+                                }
+                                <MudItem xs="12">
+                                    <MudSwitch T="bool" @bind-Value="Modal.StudentProject"
+                                               Label="@Localize["Student project"]"
+                                               Color="Color.Secondary"/>
+                                </MudItem>
+                                @if (Modal.StudentProject)
+                                {
+                                    <MudItem xs="12" md="6">
+                                        <MudTextField @bind-Value="Modal.UniversityName"
+                                                      For="@(() => Modal.UniversityName)"
+                                                      Label="@Localize["University Name"]" Variant="Variant.Filled"
+                                                      Margin="Margin.Dense"/>
+                                    </MudItem>
+                                    <MudItem xs="12" md="6">
+                                        <ImageUploader @bind-Url="Modal.StudentPhotoCard"
+                                                       Title="Student Card"
+                                                       @bind-UploadRequest="Modal.UploadRequest"/>
+                                    </MudItem>
+                                }
+                            </MudGrid>
+                        </EditForm>
+                    </MudItem>
+                </MudGrid>
+            </MudContainer>
+        </MudCardContent>
+        <MudPaper Class="d-flex justify-end flex-grow-1" Elevation="0">
+            <MudPaper Class="mr-2 mb-2" Elevation="0">
+                <MudButtonGroup OverrideStyles="false">
+                    <LoadingButton Processing="_processing" Variant="Variant.Filled"
+                                   ButtonType="ButtonType.Submit" OnClick="SaveAsync"
+                                   StartIcon="@Icons.Material.Filled.Save" Color="Color.Info">
+                        @Localize["Save"]
+                    </LoadingButton>
+                    <MudButton Variant="Variant.Filled" OnClick="GoNext"
+                               EndIcon="@Icons.Material.Filled.ArrowRight"
+                               Disabled="@(ProjectId == 0)"
+                               Color="Color.Secondary">
+                        @Localize["Next"]
+                    </MudButton>
+                </MudButtonGroup>
+            </MudPaper>
+        </MudPaper>
+    }
+</MudCard>

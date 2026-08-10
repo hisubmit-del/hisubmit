@@ -1,0 +1,47 @@
+﻿@inject IStringLocalizer<AddEventOrganizerModal> Localize
+
+<EditForm Model="@Organizer">
+    <FluentValidationValidator @ref="_fluentValidationValidator"/>
+    <MudDialog>
+        <TitleContent>
+            <MudText Typo="Typo.h6">
+                <MudIcon Icon="@Icons.Material.Filled.Add" Class="mr-3 mb-n1"/>
+                @Localize["Add Organizer"]
+            </MudText>
+        </TitleContent>
+        <DialogContent>
+            @if (!Loaded)
+            {
+                <MudContainer MaxWidth="MaxWidth.Medium" Style="height:120px">
+                    <Spinner></Spinner>
+                </MudContainer>
+            }
+            else
+            {
+                <MudGrid>
+                    <MudItem xs="12" md="6">
+                        <MudTextField T="string" For="@(() => Organizer.Name)"
+                                      Required="true"
+                                      @bind-Value="Organizer.Name" Label="@Localize["Name"]"/>
+                    </MudItem>
+                    <MudItem xs="12" md="6">
+                        <MudTextField For="@(() => Organizer.Title)" 
+                                      Required="true"
+                                      @bind-Value="Organizer.Title" Label="@Localize["Title"]"/>
+                    </MudItem>
+                    <MudItem md="6">
+                        <ImageUploader MaxHeight="200px"
+                                       SuggestedSize=" Square image"
+                                       @bind-ImageAlt="@Organizer.Title" @bind-UploadRequest="@(Organizer.Image)"
+                                       @bind-Url="@(Organizer.ImageName)">
+                        </ImageUploader>
+                    </MudItem>
+                </MudGrid>
+            }
+        </DialogContent>
+        <DialogActions>
+            <MudButton DisableElevation Variant="Variant.Filled" OnClick="Cancel">@Localize["Cancel"]</MudButton>
+            <LoadingButton Processing="_processing" Variant="Variant.Filled" OnClick="SaveAsync" ButtonType="ButtonType.Submit" Color="Color.Success">@Localize["Save"]</LoadingButton>
+        </DialogActions>
+    </MudDialog>
+</EditForm>

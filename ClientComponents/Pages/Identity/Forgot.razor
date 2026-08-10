@@ -1,0 +1,47 @@
+﻿@page "/account/forgot-password"
+@layout MainLayout
+@attribute [AllowAnonymous]
+@inject IStringLocalizer<Forgot> _localizer
+@inherits ClientComponents.Pages.Public.BasePublicPages
+<MudGrid Class="mt-lg-8" Justify="Justify.Center">
+<MudItem xs="12" md="6" lg="5">
+    <MudPaper Class="pa-5">
+        <EditForm Model="@_emailModel" OnValidSubmit="SubmitAsync">
+            <FluentValidationValidator @ref="_fluentValidationValidator" />
+            <MudGrid>
+                <MudItem xs="12">
+                    <div class="d-flex justify-center">
+                        <MudIcon Icon="@CustomIcons.HiSubmitIcon" Color="Color.Primary"
+                                 Size="Size.Large" ViewBox="0 0 500 500" Style="width: 100px; height: 100px;" />
+                    </div>
+                </MudItem>
+                <MudItem xs="12">
+                    <div class="d-flex justify-center">
+                        <MudText Typo="Typo.h4">@_localizer["Forgot password?"]</MudText>
+                    </div>
+                </MudItem>
+                <MudItem xs="12">
+                    <div class="d-flex justify-center">
+                        <MudText Typo="Typo.subtitle2" Class="mb-n4">
+                            @_localizer["Enter email for password reset"]
+                        </MudText>
+                    </div>
+                </MudItem>
+                <MudItem xs="12">
+                    <MudTextField Label="@_localizer["E-mail"]" 
+                                  @bind-Value="_emailModel.Email"
+                                  For="@(() => _emailModel.Email)" 
+                                  Variant="Variant.Outlined"></MudTextField>
+                </MudItem>
+                <MudItem xs="12" Class="d-flex justify-center">
+                    <MudButton Variant="Variant.Filled" Disabled="@(!Validated)"
+                               Color="Color.Primary" Size="Size.Large"
+                               ButtonType="ButtonType.Submit" FullWidth="true">
+                        @_localizer["ResetTable Password"]
+                    </MudButton>
+                </MudItem>
+            </MudGrid>
+        </EditForm>
+    </MudPaper>
+</MudItem>
+</MudGrid>

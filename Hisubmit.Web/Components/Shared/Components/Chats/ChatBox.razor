@@ -1,0 +1,85 @@
+﻿@using System.Globalization
+@using Hisubmit.Client.SharedModels.Enums.Chats
+@using Hisubmit.Client.SharedModels.Extensions
+@inject IStringLocalizer<ChatBox> Localize
+
+<MudPaper Elevation="25" Class="py-4 flex-grow-1">
+    <MudToolBar Dense="true">
+
+        @if (string.IsNullOrEmpty(CFullName))
+        {
+            <MudIcon Icon="@Icons.Material.Outlined.Person" Style="margin-right:10px"> </MudIcon>
+            <MudText Typo="Typo.h6">@Localize["chat"]</MudText>
+        }
+        else
+        {
+            <div class="mr-2">
+                @if (string.IsNullOrEmpty(ImageUrl))
+                {
+                    <MudAvatar Color="Color.Secondary" Style="height:50px; width:50px;">@CFullName.ToUpper().FirstOrDefault()</MudAvatar>
+                }
+                else
+                {
+                    <MudAvatar Image="@ImageUrl" Style="height:50px; width:50px;"> </MudAvatar>
+                }
+            </div>
+            <MudText Typo="Typo.h6">@CFullName</MudText>
+        }
+
+        <MudSpacer />
+        <MudHidden Breakpoint="Breakpoint.MdAndUp">
+            <MudIconButton OnClick="@OpenDrawer" Icon="@Icons.Material.Outlined.PeopleAlt" Color="Color.Inherit" Class="ml-3" />
+        </MudHidden>
+    </MudToolBar>
+    @if (RoomId == null)
+    {
+        <MudAlert Severity="Severity.Info">
+            No contact has been selected
+        </MudAlert>
+    }
+    else
+    {
+        <div class="d-flex flex-column px-4" style="max-height:65vh;min-height:65vh; overflow:scroll;" id="chatContainer2">
+            @if (Messages is { Count: > 0 })
+            {
+                @foreach (var message in Messages.OrderBy(p=>p.CreatedOn))
+                {
+                    <div class="d-flex flex-row my-4" style="text-align: @(message.Type is ChatMessageType.AdminToFestival 
+                        or ChatMessageType.AdminToUser or ChatMessageType.FestivalToUser? "left" : "right")">
+                        <div style="width: 100%">
+                            <MudText Typo="Typo.caption" Style="display: block; font-size: xx-small!important;">@message.CreatedOn.ToLongDateTime()</MudText>
+                            <MudText Typo="Typo.body2" Style="display: inline-block; padding: 15px;background-color: #f8f9fb;border-radius: 5px;margin-top:5px">@message.Text</MudText>
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                <MudAlert Severity="Severity.Warning">There are no messages</MudAlert>
+            }
+        </div>
+    }
+    @if (RoomId != null)
+    {
+        if (!string.IsNullOrWhiteSpace(SendMessagePolicy))
+        {
+            <AuthorizeView Context="authorizeContext" Policy="@SendMessagePolicy">
+                <Authorized>
+                    <MudPaper Elevation="25" Class="d-flex flex-row px-2 mx-4" Style="">
+                        <MudTextField T="string" Immediate="true" Placeholder="@Localize["Enter your message..."]" @onkeypress="OnKeyPressInChat" DisableUnderLine="true" Class="mt-n2 mx-4"
+                                      @bind-Value="ChatMessage.Text" For="@(() => ChatMessage.Text)" />
+                        <MudButton OnClick="SubmitAsync" StartIcon="@Icons.Material.Outlined.Send" Color="Color.Secondary" ButtonType="ButtonType.Button">@Localize["Send"]</MudButton>
+                    </MudPaper>
+                </Authorized>
+            </AuthorizeView>
+        }
+        else
+        {
+            <MudPaper Elevation="25" Class="d-flex flex-row px-2 mx-4" Style="">
+                <MudTextField T="string" Immediate="true" Placeholder="@Localize["Enter your message..."]" @onkeypress="OnKeyPressInChat" DisableUnderLine="true" Class="mt-n2 mx-4"
+                              @bind-Value="ChatMessage.Text" For="@(() => ChatMessage.Text)" />
+                <MudButton OnClick="SubmitAsync" StartIcon="@Icons.Material.Outlined.Send" Color="Color.Secondary" ButtonType="ButtonType.Button">@Localize["Send"]</MudButton>
+            </MudPaper>
+        }
+    }
+</MudPaper>

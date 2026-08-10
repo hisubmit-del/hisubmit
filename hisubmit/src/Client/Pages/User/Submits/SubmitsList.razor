@@ -1,0 +1,241 @@
+﻿@page "/User/Submits"
+@inject IStringLocalizer<SubmitsList> Localize
+@using global::Hisubmit.Client.SharedModels.Features.Submits.Queries.GetAllSubmitsQueries
+
+@using HiSubmit.Client.SharedModels.Extensions
+@inherits BaseUserPages
+<style>
+    .mud-table-container {
+        overflow: auto;
+        background: transparent;
+    }
+     
+    .row {
+         --bs-gutter-x: 0 !important;       
+    }      
+</style>
+
+@* <HeroTitle Title="@_localizer["Submits"]" Description="@_localizer["List of  Submits."]"/> *@
+<MudContainer MaxWidth="MaxWidth.Large">
+    @if (!_loaded)
+    {
+        <MudProgressCircular Color="Color.Primary" Indeterminate="true"/>
+    }
+    else
+    {
+        <MudGrid>
+            <MudItem xs="12" xl="10">
+                <MudGrid Justify="Justify.Center">
+                    <MudItem xs="12" lg="10">
+                        <MudButton Class="mb-3" OnClick="ToggleSearchFor"
+                                   EndIcon="@Icons.Material.Filled.Search"
+                                   Color="Color.Surface" Variant="Variant.Filled">
+                            Advanced Search
+                        </MudButton>
+                        <MudCard Class="mb-2" Elevation="5">
+                            <MudCardContent Class="@_displaySearchFrom">
+                                    <EditForm Model="@_advancedSearch">
+                                        <MudGrid Class="justify-end">
+                                            <MudItem xs="12" md="4" Class="px-2">
+                                                <MudTextField T="string" Margin="Margin.Dense"
+                                                              Label="@Localize["Project title"]" Variant="Variant.Text"
+                                                              @bind-Value="@_advancedSearch.ProjectTitle"/>
+                                            </MudItem>
+                                            <MudItem xs="12" md="4" Class="px-2">
+                                                <MudTextField T="string" Margin="Margin.Dense"
+                                                              Label="@Localize["festival Name"]" Variant="Variant.Text"
+                                                              @bind-Value="@_advancedSearch.FestivalName"/>
+                                            </MudItem>
+                                            <MudItem xs="12" md="4">
+                                                <MudTextField T="string" Margin="Margin.Dense" Label="@Localize["Tracking Code"]"
+                                                              Variant="Variant.Text" @bind-Value="@_advancedSearch.TrackingCode">
+                                                </MudTextField>
+                                            </MudItem>
+                                            <MudItem xs="12" md="4">
+                                                <MudDatePicker Margin="Margin.Dense" Rounded="true" Label="@Localize["Submit Date From"]"
+                                                               Variant="Variant.Text" Editable="true" @bind-Date="@_advancedSearch.SubmitDateFrom"/>
+                                            </MudItem>
+                                            <MudItem xs="12" md="4">
+                                                <MudDatePicker Margin="Margin.Dense" Rounded="true" Label="@Localize["Submit Date To"]"
+                                                               Variant="Variant.Text" Editable="true" @bind-Date="@_advancedSearch.SubmitDateTo"/>
+                                            </MudItem>
+    
+                                            <MudItem xs="12" md="4" Class="px-2">
+                                                <MudSelect Variant="Variant.Text" Margin="Margin.Dense" T="int?"
+                                                           Label="Projects" @bind-Value="@_advancedSearch.ProjectId"
+                                                           AnchorOrigin="Origin.BottomCenter">
+                                                    @foreach (var project in Projects)
+                                                    {
+                                                        <MudSelectItem Value="@(project.Id as int?)">
+                                                            @project.Title
+                                                        </MudSelectItem>
+                                                    }
+                                                </MudSelect>
+                                            </MudItem>
+                                            <MudItem xs="12" md="4">
+                                                <MudSelect T="JudgingStatus?" @bind-Value="_advancedSearch.JudgingStatus" Label="@Localize["Judging Enable"]"
+                                                           Variant="Variant.Text">
+                                                    <MudSelectItem Value="@(null as JudgingStatus?)">@Localize["All Enable"]</MudSelectItem>
+                                                    @foreach (JudgingStatus? status in Enum.GetValues(typeof(JudgingStatus)))
+                                                    {
+                                                        <MudSelectItem Value="@(status as JudgingStatus?)">@status.ToDisplay()</MudSelectItem>
+                                                    }
+                                                </MudSelect>
+                                            </MudItem>
+                                            <MudItem xs="12" md="4">
+                                                <MudSelect T="SubmitStatus?" @bind-Value="_advancedSearch.SubmitStatus" Label="@Localize["Submission  Enable"]"
+                                                           Variant="Variant.Text">
+                                                    <MudSelectItem Value="@(null as SubmitStatus?)">@Localize["All Enable"]</MudSelectItem>
+                                                    @foreach (SubmitStatus? status in Enum.GetValues(typeof(SubmitStatus)))
+                                                    {
+                                                        <MudSelectItem Value="@(status as SubmitStatus?)">@status.ToDisplay()</MudSelectItem>
+                                                    }
+                                                </MudSelect>
+                                            </MudItem>
+                                            <MudItem xs="12" Class="d-flex justify-end">
+                                                   <MudButton ButtonType="ButtonType.Button"
+                                                                                                   OnClick="AdvancedSearch" Variant="Variant.Filled"
+                                                                                                   Color="Color.Primary">
+                                                                                            Search
+                                                                                        </MudButton>
+                                            </MudItem>
+                                        </MudGrid>
+                                    </EditForm>
+                         
+                            </MudCardContent>
+                        </MudCard>
+                        <MudTable class="default-table" Elevation="0" Items="PagedData" TotalItems="_totalItems"
+                                  ServerData="@(new Func<TableState,CancellationToken, Task<TableData<GetAllSubmitsResponse>>>(ServerReload))"
+                                  Hover="false"
+                                  Style="background-color: transparent"
+                                  Bordered="false" Striped="false" @ref="_table">
+                            <ToolBarContent>
+                                <div class="justify-center mud-text-align-center">
+                                    <MudHidden Breakpoint="Breakpoint.MdAndDown">
+                                        <MudButton DisableElevation Variant="Variant.Filled"
+                                                   OnClick="@(() => OnSearch(""))"
+                                                   StartIcon="@Icons.Material.Filled.Refresh"
+                                                   IconColor="Color.Surface" Color="Color.Secondary">
+                                            @Localize["Reload"]
+                                        </MudButton>
+                                    </MudHidden>
+                                    <MudHidden Breakpoint="Breakpoint.LgAndUp">
+                                        <MudIconButton DisableElevation Variant="Variant.Filled"
+                                                       OnClick="@(() => OnSearch(""))"
+                                                       Icon="@Icons.Material.Filled.Refresh"
+                                                       Color="Color.Secondary"/>
+                                    </MudHidden>
+                                </div>
+                                <MudSpacer/>
+                                <MudTextField T="string" ValueChanged="@(OnSearch)"
+                                              Placeholder="@Localize["Search"]" Adornment="Adornment.Start"
+                                              AdornmentIcon="@Icons.Material.Filled.Search"
+                                              IconSize="Size.Medium" Class="mt-0"/>
+    
+                            </ToolBarContent>
+                            <RowTemplate>
+                                <div class=" submit-card mud-elevation-1">
+                                    <MudGrid >
+                                        <MudItem xs="12" lg="3" class="festival-image h-100 my-auto   d-flex justify-center">
+                                            <img src="@context.FestivalLogoUrl" alt="@context.FestivalName">
+                                        </MudItem>
+                                        <MudItem  xs="12" lg="9" class=" d-flex flex-column" style="border: 1.5px none rgb(79,78,78) ;">
+                                            <div class="row mb-auto submit-content">
+                                                <div class="col justify-content-around align-items-end align-content-end pt-2 ">
+                                                        <h2>@context.FestivalName</h2>
+                                                    <MudGrid   class="row pa-2 my-4">
+                                                        <MudItem xs="12" md="6" Class="pt-0">
+                                                            <MudText Typo="Typo.subtitle2">
+                                                                Project:<MudText Inline="true" Typo="Typo.subtitle2">@context.ProjectTitle</MudText>
+                                                            </MudText>
+                                                        </MudItem>
+                                                        <MudItem  xs="12" md="6" Class="pt-0">
+                                                            <MudText Typo="Typo.subtitle2">
+                                                                Judging Enable:
+                                                                <JudgingStatusChip SelectedJudgingStatus="@context.JudgingStatus"/>
+                                                            </MudText>
+    
+                                                        </MudItem>
+    
+                                                        <MudItem  xs="12" md="6" Class="pt-0">
+                                                            <MudText Typo="Typo.subtitle2">
+                                                                Submit Date:<MudText Inline="true" Typo="Typo.body1">@context.SubmitDate.ToLongDate()</MudText>
+                                                            </MudText>
+                                                        </MudItem>
+                                                        <MudItem  xs="12" md="6" Class="pt-0">
+                                                            <MudText Typo="Typo.subtitle2">
+                                                                Submission State:
+                                                                <SubmitStatusChip SelectedSubmitStatus="@context.SubmitStatus"/>
+                                                            </MudText>
+                                                        </MudItem>
+                                                        <MudItem  xs="12" md="6" Class="pt-0">
+                                                            <MudText Typo="Typo.subtitle2">
+                                                                Tracking Code:<MudText Inline="true" Typo="Typo.body1">@context.TrackingCode</MudText>
+                                                            </MudText>
+                                                        </MudItem>
+                                                    </MudGrid>
+    
+                                                </div>
+                                            </div>
+                                            <div class="row  d-md-flex festival-footer">
+                                                <div class="w-100 text-center d-sm-flex j  justify-end">
+                                                    
+                                                    <MudButtonGroup OverrideStyles="false">
+                                                         @if (context.SubmitStatus == SubmitStatus.DontPaid
+                                                              || context.SubmitStatus == SubmitStatus.Paid)
+                                                         {
+                                                             <MudButton StartIcon="@Icons.Material.Filled.Login"
+                                                                        Color="Color.Secondary"
+                                                                        Variant="Variant.Text"
+                                                                        OnClick="@(() => WithDraw(context.Id))">
+                                                                 Withdraw
+                                                             </MudButton>
+                                                         }
+                                                        <MudButton OnClick="@(() => Review(context.Id, CommentType.ViolationReport))"
+                                                                   Variant="Variant.Text"
+                                                                   Color="Color.Info">
+                                                             Violation Report
+                                                        </MudButton>
+                                                        
+                                                                <MudButton Color="Color.Success"
+                                                                           OnClick="@(() => Review(context.Id))"
+                                                                           StartIcon="@Icons.Material.Filled.Public">
+                                                                    Review
+                                                                </MudButton>
+    
+                                                    </MudButtonGroup>
+                                                    
+                                                    @* @if (context.SubmitEnable == SubmitEnable.DontPaid || context.SubmitEnable == SubmitEnable.Paid) *@
+                                                    @* { *@
+                                                    @*     <button onclick="@(() => WithDraw(context.Id))" class="btn btn-light btn-submit-now btn-sm " type="button" *@
+                                                    @*             style="margin-right: 4px;"> *@
+                                                    @*         Withdraw *@
+                                                    @*     </button> *@
+                                                    @* } *@
+                                                    @* <button onclick="@(() => Review(context.Id, CommentType.ViolationReport))" *@
+                                                    @*         class="btn btn-light btn-show-detail btn-sm " type="button" *@
+                                                    @*         style="margin-right: 4px;"> *@
+                                                    @*     Violation Report *@
+                                                    @* </button> *@
+                                                    @* <button class="btn btn-light btn-sm btn-take-ticket" *@
+                                                    @*         data-bss-hover-animate="pulse" type="button" *@
+                                                    @*         style="margin-right: 4px;" *@
+                                                    @*         onclick="@(() => Review(context.Id))"> *@
+                                                    @*     Review *@
+                                                    @* </button> *@
+                                                </div>
+                                            </div>
+                                        </MudItem>
+                                    </MudGrid>
+                                </div>
+                            </RowTemplate>
+                            <PagerContent>
+                                <TablePager/>
+                            </PagerContent>
+                        </MudTable>
+                    </MudItem>
+                </MudGrid>
+            </MudItem>
+        </MudGrid>
+    }
+</MudContainer>

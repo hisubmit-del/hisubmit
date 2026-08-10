@@ -1,0 +1,102 @@
+﻿@using global::Hisubmit.Client.SharedModels.Features.News.Queries
+@using Hisubmit.Client.SharedModels.Extensions
+
+<style>
+    .max-height-100 {
+        max-height: 100%;
+    }
+</style>
+<MudCard Class="pa-1 pa-md-3">
+    <img src="@New.BannerUrl" height="200px" class="max-width-100 max-height-100" alt="@New.Title" />
+    @* <MudCardMedia Image="@($"/{New.BannerUrl}")" alt="@New.Title" Height="200"/> *@
+    <MudCardContent>
+        @if (ShowFestivalName && !string.IsNullOrWhiteSpace(New.FestivalName))
+        {
+            <MudChip T="string" Variant="Variant.Text" Color="Color.Info">
+                @New.FestivalName
+            </MudChip>
+        }
+        else
+        {
+            <MudChip T="string" Variant="Variant.Text" Color="Color.Info">Admin</MudChip>
+        }
+        <MudText Typo="Typo.h5" Class="h-3em">
+            <a href="@($"/new/{New.Id}")">@New.Title</a>
+        </MudText>
+    </MudCardContent>
+    <MudCardActions>
+        <MudAvatar>
+            <MudImage Src="@(string.IsNullOrWhiteSpace(New.FestivalLogoURL)?ClientAppConstants.SmallLogoUrl :New.FestivalLogoURL)"></MudImage>
+        </MudAvatar>
+        <MudText Inline="true" Typo="Typo.body2" Class="ml-1" Color="Color.Default" >@(string.IsNullOrWhiteSpace(New.FestivalName) ? "Admin":New.FestivalName)</MudText>
+        <MudSpacer />
+        <MudText Inline="true" Typo="Typo.body2" Color="Color.Default">@New.CreatedOn.ToLongDateString()</MudText>
+    </MudCardActions>
+</MudCard>
+
+
+@* <div class="article-box" data-slick-index="2" aria-hidden="false"  tabindex="0"> *@
+@*     <div class="thumbnail"> *@
+@*         <img src="@New.BannerUrl" height="270px" alt="@New.Title"> *@
+@*         @if (ShowName && !string.IsNullOrWhiteSpace(New.Name)) *@
+@*         { *@
+@*             <span class="cat"> *@
+@*                 @New.Name *@
+@*             </span> *@
+@*         } *@
+@*     </div> *@
+@*     <div class="content"> *@
+@*         <div class="meta"> *@
+@*             <span class="date"> *@
+@*                 @New.CreatedOn.ToLongDate() *@
+@*             </span> *@
+@*             <span class="h-line"></span> *@
+@*             $1$  <span class="view"> #1# *@
+@*             $1$     134 views #1# *@
+@*             $1$ </span> #1# *@
+@*             <span class="h-line"></span> *@
+@*             @if (New.CommentCount == 0) *@
+@*             { *@
+@*                 <span class="comments-count"> *@
+@*                     @New.CommentCount comments *@
+@*                 </span> *@
+@*             } *@
+@*             else *@
+@*             { *@
+@*                 <span class="comments-count"> *@
+@*                     No comments *@
+@*                 </span> *@
+@*             } *@
+@*         </div> *@
+@*         <h3> *@
+@*             @New.Title *@
+@*         </h3> *@
+@*         <p style="height: 85px;overflow: hidden"> *@
+@*             @New.ShortDescription *@
+@*         </p> *@
+@*         <a Href="@($"/new/{New.Id}")" class="read-more" tabindex="0"> *@
+@*             Read more *@
+@*             <svg id="right-arrow" xmlns="http://www.w3.org/2000/svg" width="14" height="9" viewBox="0 0 14 9"> *@
+@*                 <path id="Path" d="M13.8,3.986,10.177.211a.671.671,0,0,0-.98,0,.751.751,0,0,0,0,1.026l2.43,2.534H.693a.727.727,0,0,0,0,1.452H11.63L9.2,7.76a.751.751,0,0,0,0,1.026.671.671,0,0,0,.98,0L13.8,5.014A.751.751,0,0,0,13.8,3.986Z" transform="translate(0 0)" fill="#516995"></path> *@
+@*             </svg> *@
+@*         </a> *@
+@*     </div> *@
+@* </div> *@
+
+@code {
+
+    [Parameter]
+    public GetAllNewResponse New { get; set; }
+
+    [Parameter]
+    public bool ShowFestivalName { get; set; }
+
+    int _count;
+
+    protected override Task OnInitializedAsync()
+    {
+        _count = New.ShortDescription.Length;
+        if (_count > 200) _count = 200;
+        return base.OnInitializedAsync();
+    }
+}

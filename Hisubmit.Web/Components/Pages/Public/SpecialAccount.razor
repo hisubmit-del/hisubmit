@@ -1,0 +1,132 @@
+﻿@page "/goldaccount"
+@inherits BasePublicPages
+
+<MudContainer MaxWidth="MaxWidth.ExtraLarge">
+    <MudGrid>
+        <MudItem xs="12" lg="3">
+            <MudText Typo="Typo.h6" Class="side-title mt-lg-10" Align="Align.Center">
+                Other festival You May Like
+            </MudText>
+            <FavoriteFestival Class="mb-3" />
+
+          @if (_news.Any())
+            {
+                <MudGrid Class="mt-3">
+                    <MudPaper Elevation="0" Class="pa-4 w-100 ">
+                        @foreach (var n in _news)
+                        {
+                            <MudItem xs="12" Class="px-4">
+                                <div class="pa-1">
+                                    <NewBoxWithoutShortDescription New="n" />
+                                </div>
+                            </MudItem>
+                        }
+                    </MudPaper>
+                </MudGrid>
+            }
+        </MudItem>
+        <MudItem xs="12" lg="9">
+            <MudGrid>
+                <MudItem xs="12" Class="my-10">
+                    <MudText Typo="Typo.h3">
+                        Unlock exclusive benefits with a Gold account!
+                    </MudText>
+                </MudItem>
+            </MudGrid>
+            <MudPaper>
+                <MudGrid Class="pa-8">
+                    <MudItem xs="12" lg="4">
+                        <div class="single-pricing">
+                            <h3 class="hei">Monthly</h3>
+                            <MudIcon Class="money-icon" Icon="@Icons.Material.Filled.Money" />
+                            <div class="pricing-wrap">
+                                <MudText Typo="Typo.subtitle1">
+                                    @_commission.MonthlySpecialUserFee.ToString("C2")
+                                </MudText>
+                                <ul>
+                                    <li>
+                                        <MudIcon Icon="@Icons.Material.Filled.Check" />
+                                        Enjoy a <b>zero service fee</b> when registering
+                                    </li>
+                                    <li>
+                                        <MudIcon Icon="@Icons.Material.Filled.Check" />
+                                        Benefit from <b>lower registration </b> costs for Gold-tier festivals and events
+                                    </li>
+                                    <li class="border-bottom-0">
+                                        <MudIcon Icon="@Icons.Material.Filled.Check" />
+                                        All the above benefits are available for 30 day
+                                    </li>
+                                </ul>
+                                <LoadingButton Class="mb-2" Processing="_processing"
+                                               FullWidth="true" Variant="Variant.Filled" Color="Color.Primary"
+                                               OnClick="() => AddToCard(StatusFeePeriod.Monthly)">Add To Card</LoadingButton>
+                            </div>
+                        </div>
+                    </MudItem>
+
+                    <MudItem xs="12" lg="4">
+                        <div class="single-pricing">
+                            <h3>Three Months</h3>
+                            <MudIcon Class="money-icon" Icon="@Icons.Material.Filled.Money" />
+                            <div class="pricing-wrap">
+                                <MudText Typo="Typo.subtitle1">@_commission.ThreeMonthlySpecialUserFee.ToString("C2")</MudText>
+                                <ul>
+                                    <li>
+                                        <MudIcon Icon="@Icons.Material.Filled.Check" />
+                                        Enjoy a <b>zero service fee</b> when registering
+                                    </li>
+                                    <li>
+                                        <MudIcon Icon="@Icons.Material.Filled.Check" />
+                                        Benefit from <b>lower registration </b> costs for Gold-tier festivals and events
+                                    </li>
+                                    <li class="border-bottom-0">
+                                        <MudIcon Icon="@Icons.Material.Filled.Check" />
+                                        Enjoy all these perks for 90 days
+                                    </li>
+                                </ul>
+                                <LoadingButton Class="mb-2" Processing="_processing"
+                                               FullWidth="true" Variant="Variant.Filled"
+                                               Color="Color.Primary"
+                                               OnClick="() => AddToCard(StatusFeePeriod.ThreeMonth)">
+                                    Add To Card
+                                </LoadingButton>
+
+                            </div>
+                        </div>
+                    </MudItem>
+                    <MudItem xs="12" lg="4">
+                        <div class="single-pricing">
+                            <h3>Yearly</h3>
+                            <MudIcon Class="money-icon" Icon="@Icons.Material.Filled.Money" />
+                            <div class="pricing-wrap">
+                                <MudText Typo="Typo.subtitle1">
+                                    @_commission.YearlySpecialUserFee.ToString("C2")
+                                </MudText>
+                                <ul>
+                                    <li>
+                                        <MudIcon Icon="@Icons.Material.Filled.Check" />
+                                        Enjoy a <b>zero service fee</b> when registering
+                                    </li>
+                                    <li>
+                                        <MudIcon Icon="@Icons.Material.Filled.Check" />
+                                        Benefit from <b>lower registration </b> costs for Gold-tier festivals and events
+                                    </li>
+                                    <li class="border-bottom-0">
+                                        <MudIcon Icon="@Icons.Material.Filled.Check" />
+                                        Access all features for one year
+
+                                    </li>
+                                </ul>
+                                <LoadingButton Class="mb-2" Processing="_processing"
+                                               FullWidth="true" Variant="Variant.Filled"
+                                               Color="Color.Primary" OnClick="() => AddToCard(StatusFeePeriod.Yearly)">
+                                    Add To Card
+                                </LoadingButton>
+                            </div>
+                        </div>
+                    </MudItem>
+                </MudGrid>
+            </MudPaper>
+        </MudItem>
+    </MudGrid>
+</MudContainer>

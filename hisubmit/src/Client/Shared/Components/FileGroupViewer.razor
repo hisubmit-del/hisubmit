@@ -1,0 +1,59 @@
+@using System.IO
+@using System.Linq
+
+<MudPaper Class="pa-4">
+    <MudText Typo="Typo.h6" Class="mb-4">@Title</MudText>
+    
+    @if (FileGroups == null || !FileGroups.Any())
+    {
+        <MudText Color="Color.Default">@NoFilesMessage</MudText>
+    }
+    else
+    {
+        @foreach (var group in FileGroups)
+        {
+            <MudExpansionPanels>
+                <MudExpansionPanel Text="@group.Key">
+                    <MudList Dense="true" T="FileInfo" >
+                        @foreach (var file in group)
+                        {
+                            <MudListItem>
+                                <MudIcon Icon="@GetFileIcon(file.Extension)" Class="mr-2"/>
+                                <MudText>@file.Name</MudText>
+                            </MudListItem>
+                        }
+                    </MudList>
+                </MudExpansionPanel>
+            </MudExpansionPanels>
+        }
+    }
+</MudPaper>
+
+@code {
+    [Parameter]
+    public string Title { get; set; } = "فایل‌های هم‌نام";
+
+    [Parameter]
+    public string NoFilesMessage { get; set; } = "هیچ فایلی یافت نشد";
+
+    [Parameter]
+    public List<FileInfo> Files { get; set; } = new();
+
+    private IEnumerable<IGrouping<string, FileInfo>> FileGroups =>
+        Files.GroupBy(f => Path.GetFileNameWithoutExtension(f.Name));
+
+    private string GetFileIcon(string extension)
+    {
+        return extension.ToLower() switch
+        {
+            ".cs" => Icons.Material.Filled.Code,
+            ".razor" => Icons.Material.Filled.Web,
+            ".css" => Icons.Material.Filled.Style,
+            ".js" => Icons.Material.Filled.Javascript,
+            ".json" => Icons.Material.Filled.DataObject,
+            ".xml" => Icons.Material.Filled.Code,
+            ".html" => Icons.Material.Filled.Html,
+            _ => Icons.Material.Filled.InsertDriveFile
+        };
+    }
+} 

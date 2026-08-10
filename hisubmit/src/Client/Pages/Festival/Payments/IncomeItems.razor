@@ -1,0 +1,99 @@
+﻿@* @page "/festival/payments" *@
+
+@inject IStringLocalizer<CartItems> Localize;
+@using global::Hisubmit.Client.SharedModels.Features.Payments.Queries
+
+@using HiSubmit.Client.SharedModels.Extensions
+@using HiSubmit.Client.Pages.Festival.DashboardComponent
+@* @inherits HiSubmit.Hisubmit.Client.SharedModels.Components.Base.BaseFestivalId *@
+
+<MudContainer MaxWidth="MaxWidth.Large">
+
+<HeroTitle Title="@Localize["Income"]" Description="@Localize["Your festival Income "]"/>
+
+@* *@
+@* <MudGrid Class="mb-4"> *@
+@*     @if (_loadedFestivalIdId) *@
+@*     { *@
+@*         <MudItem xs="12" lg="3"> *@
+@*             <PurchaseDunateChart FestivalIdId="@FestivalIdId"/> *@
+@*         </MudItem> *@
+@*         <MudItem xs="12" lg="9"> *@
+@*             <PurchaseChart FestivalIdId="@FestivalIdId"/> *@
+@*         </MudItem> *@
+@*     } *@
+@* </MudGrid> *@
+@* *@
+
+<MudTable Loading="!_loaded" LoadingProgressColor="Color.Secondary" class="default-light-table mt-3"
+          Elevation="25" Items="_pagedDate" TotalItems="_totalItems"
+          ServerData="@(new Func<TableState,CancellationToken, Task<TableData<GetCartItemResponse>>>(ServerReload))"
+          Hover="true" Dense="true" Bordered="false" Striped="true" @ref="_table">
+    <ToolBarContent>
+        @* <div class="justify-center mud-text-align-center"> *@
+        @*     <MudHidden Breakpoint="Breakpoint.LgAndUp"> *@
+        @*         <MudIconButton DisableElevation Variant="Variant.Filled" OnClick="@(() => OnSearch(""))" Icon="@Icons.Material.Filled.Refresh" IconColor="Color.Surface" Color="Color.Secondary"/> *@
+        @*         <FestivalIdAuthorizeView Policy="@Permissions.FestivalIdNews.Edit"> *@
+        @*             <MudIconButton Variant="Variant.Filled" Color="Color.Primary"  Icon="@Icons.Material.Filled.Add"/> *@
+        @*         </FestivalIdAuthorizeView> *@
+        @*     </MudHidden> *@
+        @*     <MudHidden Breakpoint="Breakpoint.MdAndDown"> *@
+        @*         <MudButton DisableElevation Variant="Variant.Filled" OnClick="@(() => OnSearch(""))" StartIcon="@Icons.Material.Filled.Refresh" IconColor="Color.Surface" Color="Color.Secondary">@Localize["Reload"]</MudButton> *@
+        @*         <FestivalIdAuthorizeView Policy="@Permissions.FestivalIdNews.Edit"> *@
+        @*             <MudButton Variant="Variant.Filled" Color="Color.Primary"  StartIcon="@Icons.Material.Filled.Add">Add New</MudButton> *@
+        @*         </FestivalIdAuthorizeView> *@
+        @*     </MudHidden> *@
+        @* </div> *@
+        <MudSpacer/>
+        <MudTextField T="string" ValueChanged="@(OnSearch)" Placeholder="@Localize["Search"]" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+    </ToolBarContent>
+    <HeaderContent>
+        <MudTh>@Localize["Title"]</MudTh>
+        <MudTh>@Localize["ItemType"]</MudTh>
+        <MudTh>@Localize["Cost"]</MudTh>
+        <MudTh>@Localize["festival Share"]</MudTh>
+        <MudTh>@Localize["Date of Payment"]</MudTh>
+        @* <FestivalIdAuthorizeView Policy="@Permissions.FestivalIdNews.Edit"> *@
+        @*     <MudTh Style="text-align:center">@Localize["Actions"]</MudTh> *@
+        @* </FestivalIdAuthorizeView> *@
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="Title">
+            <MudHighlighter HighlightedText="@_searchString" Text="@GetTitle(context)"/>
+        </MudTd>
+        <MudTd DataLabel="ItemType">
+            <CartemTypeBadge CartItemType="context.CartItemType"/>
+        </MudTd>
+        <MudTd DataLabel="Price">
+            <MudText Color="Color.Info">@context.Price.ToString("C2")</MudText>
+        </MudTd>
+         <MudTd DataLabel="festival Share">
+                          <MudText Color="Color.Info">@context.GetShareFestival().ToString("C2")</MudText>
+                        </MudTd>
+        <MudTd DataLabel="Date of Payment">
+          <MudText Typo="Typo.caption">@context.PaidDate.ToLongDateTime()</MudText>
+        </MudTd>
+        @* <FestivalIdAuthorizeView Policy="@Permissions.FestivalIdNews.Edit"> *@
+        @*     <MudHidden Breakpoint="Breakpoint.LgAndUp"> *@
+        @*         <MudTd DataLabel="Actions"> *@
+        @*         <MudMenu Label="@Localize["Actions"]" Variant="Variant.Filled" DisableElevation="true" EndIcon="@Icons.Material.Filled.KeyboardArrowDown" IconColor="Color.Secondary" Direction="Direction.Left" OffsetX="true"> *@
+        @*             <MudMenuItem OnTouch="() => Edit(context.Id)" OnClick="@(() => Edit(context.Id))">@Localize["Edit"]</MudMenuItem> *@
+        @*             <MudMenuItem OnTouch="() => Delete(context.Id, context.Title)" OnClick="@(() => Delete(context.Id, context.Title))">@Localize["Delete"]</MudMenuItem> *@
+        @*         </MudMenu> *@
+        @*         </MudTd> *@
+        @*     </MudHidden> *@
+        @*     <MudHidden Breakpoint="Breakpoint.MdAndDown"> *@
+        @*         <MudTd DataLabel="Actions"> *@
+        @*             <MudIconButton Icon="@Icons.Material.Filled.Edit" Size="Size.Small" Title="Edit" OnClick="() => Edit(context.Id)" Color="Color.Default"></MudIconButton> *@
+        @*             <MudIconButton Icon="@Icons.Material.Filled.Delete" Size="Size.Small" Title="Delete" OnClick="() => Delete(context.Id, context.Title)" Color="Color.Default"></MudIconButton> *@
+        @*         </MudTd> *@
+        @*     </MudHidden> *@
+        @* </FestivalIdAuthorizeView> *@
+    </RowTemplate>
+    <PagerContent>
+        <TablePager/>
+    </PagerContent>
+</MudTable>
+
+
+</MudContainer>

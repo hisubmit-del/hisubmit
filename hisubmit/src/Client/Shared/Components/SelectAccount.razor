@@ -1,0 +1,36 @@
+﻿<MudMenu AnchorOrigin="Origin.BottomCenter" TransformOrigin="Origin.TopRight" Direction="Direction.Right">
+    <ActivatorContent>
+        <MudIcon ViewBox="0 -5 24 24" Size="Size.Large" Icon="@Icons.Material.Rounded.AccountBox" Color="Color.Dark"/>
+    </ActivatorContent>
+    <ChildContent >
+        @* <MudListItem Text="Account" Href="/account" Avatar="@FestivalId.LogoURL"/> *@
+        @* @if (_isFestivalIdUser) *@
+        @* { *@
+        @*     <MudListItem Text="@FestivalId.Name"  Avatar="@FestivalId.LogoURL"/> *@
+        @* } *@
+        @* @foreach (var item in Names) *@
+        @* { *@
+        @*     <MudListItem Text="@item.Value" Avatar="@FestivalId.LogoURL"/> *@
+        @* } *@
+        
+        <MudSimpleTable Dense="true" Elevation="0" Bordered="false" Class="default-simple-table px-2">
+            <tbody>
+            <tr>
+                <UserCard/>
+            </tr>
+            @if (_isFestivalUser)
+            {
+                <tr>
+                    <SelectAccountBox FullName="@Festival.Name" ImageDataUrl="@Festival.LogoURL"/>
+                </tr>
+            }
+            @foreach (var item in FestivalNames)
+            {
+                <tr>
+                    <SelectAccountBox FullName="@item.Name" ImageDataUrl="@item.LogoURL"/>
+                </tr>
+            }
+            </tbody>
+        </MudSimpleTable>
+    </ChildContent>
+</MudMenu>

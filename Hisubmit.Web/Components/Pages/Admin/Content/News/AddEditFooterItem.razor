@@ -1,0 +1,57 @@
+﻿
+@using Hisubmit.Client.SharedModels.Extensions
+@inject IStringLocalizer<AddEditFooterItem> Localize
+
+<EditForm Model="@AddEditFooterItemModel" OnValidSubmit="SaveAsync">
+    <FluentValidationValidator @ref="_fluentValidationValidator"/>
+    <MudDialog>
+        <TitleContent>
+            @{
+                if (AddEditFooterItemModel.Id == 0)
+                {
+                    <MudText Typo="Typo.h6">
+                        <MudIcon Icon="@Icons.Material.Filled.Add" Class="mr-3 mb-n1"/>
+                        @Localize["Add Item"]
+                    </MudText>
+                }
+                else
+                {
+                    <MudText Typo="Typo.h6">
+                        <MudIcon Icon="@Icons.Material.Filled.Update" Class="mr-3 mb-n1"/>
+                        @Localize["Update Item"]
+                    </MudText>
+                }
+            }
+        </TitleContent>
+        <DialogContent>
+            <MudGrid>
+                <MudItem xs="12" md="6">
+                    <MudTextField For="@(() => AddEditFooterItemModel.Title)" @bind-Value="AddEditFooterItemModel.Title" Label="@Localize["Name"]"/>
+                </MudItem>
+                <MudItem xs="12" md="6">
+                    <MudTextField For="@(() => AddEditFooterItemModel.Link)" @bind-Value="AddEditFooterItemModel.Link" Label="@Localize["Link"]"/>
+                </MudItem>
+                <MudItem xs="12" md="6">
+                    <MudSelect Label="Position"   @bind-Value="AddEditFooterItemModel.Position" For="@(() => AddEditFooterItemModel.Position)">
+                        @foreach (var position in Enum.GetValues<MenuItemPosition>())
+                        {
+                            <MudSelectItem Value="@position">@position.ToDisplay()</MudSelectItem>
+                        }
+                    </MudSelect>
+                </MudItem>
+              
+            </MudGrid>
+        </DialogContent>
+        <DialogActions>
+            <MudButton DisableElevation Variant="Variant.Filled" OnClick="Cancel">@Localize["Cancel"]</MudButton>
+            @if (AddEditFooterItemModel.Id != 0)
+            {
+                <LoadingButton Processing="_processing" DisableElevation Variant="Variant.Filled" ButtonType="ButtonType.Submit" Disabled="@(!Validated)" Color="Color.Secondary">@Localize["Update"]</LoadingButton>
+            }
+            else
+            {
+                <LoadingButton Processing="_processing" DisableElevation Variant="Variant.Filled" ButtonType="ButtonType.Submit" Disabled="@(!Validated)" Color="Color.Success">@Localize["Save"]</LoadingButton>
+            }
+        </DialogActions>
+    </MudDialog>
+</EditForm>

@@ -1,0 +1,16 @@
+﻿<div class="pa-2">
+    <div class="d-inline-flex">
+        <MudChipSet T="string" AllClosable="true" OnClose="Remove" >
+            @foreach (var value in _values)
+            {
+                <MudChip T="string" Variant="Variant.Text" Text="@value"></MudChip>
+            }
+        </MudChipSet>
+    </div>
+    <div class="d-inline-flex ml-2">
+        <MudTextField  Immediate="true" Value="_currentString"
+                       Label="@Label" HelperText="@HelperText" 
+                       OnBlur="AddCurrentToValues" T="string" ValueChanged="CheckSeparator"/>
+    </div>
+</div>
+

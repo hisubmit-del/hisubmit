@@ -1,0 +1,90 @@
+﻿@page "/festival/products/add"
+@page "/festival/products/add/{ProductId:int}"
+@using Hisubmit.Client.SharedModels.Extensions
+@inject IStringLocalizer<AddProduct> Localize
+@inherits BaseFestival
+
+<MudContainer MaxWidth="MaxWidth.Medium">
+    <MudCard Elevation="25" Class="pa-lg-8">
+        <EditForm OnSubmit="SaveAsync" Model="Model">
+            <MudGrid>
+                <FluentValidationValidator @ref="_fluentValidationValidator"/>
+                <MudItem xs="12" md="6">
+                    <MudTextField For="@(() => Model.Name)" Variant="Variant.Filled"
+                                  @bind-Value="Model.Name" Label="@Localize["Name"]"/>
+                </MudItem>
+                <MudItem xs="12" md="6">
+                    <MudTextField For="@(() => Model.Price)"
+                                  Variant="Variant.Filled" @bind-Value="Model.Price" Label="@Localize["Price"]"/>
+                </MudItem>
+                <MudItem xs="12" md="6">
+                    <ImageUploader @bind-Url="Model.ImageDataURL"
+                                   @bind-UploadRequest="Model.UploadRequest">
+                    </ImageUploader>
+                </MudItem>
+                <MudItem xs="12" md="6">
+                    <MudSelect @bind-Value="Model.ProductType" For="@(() => Model.ProductType)" Margin="Margin.Dense"
+                               T="ProductType" Label="@Localize["Product ItemType"]" Variant="Variant.Filled" AnchorOrigin="Origin.BottomCenter">
+                        @foreach (ProductType productType in Enum.GetValues<ProductType>())
+                        {
+                            <MudSelectItem Value="productType">@productType.ToDisplay()</MudSelectItem>
+                        }
+                    </MudSelect>
+                </MudItem>
+                <MudItem xs="12" Class="h-100" >
+                    <CustomeRichTextEditor MinHeight="360px" @bind-Body="@Model.Description"/>
+                </MudItem>
+
+                <MudItem xs="12" md="10">
+                    @if (Model.ProductImages.Any())
+                    {
+                        <MudGrid>
+                            @foreach (var image in Model.ProductImages)
+                            {
+                                <MudItem>
+                                    <MudStack>
+                                        <ImageUploader MaxHeight="200px" DeleteImage="() => DeleteImage(image)"
+                                                       @bind-UploadRequest="@(image.UploadRequest)"
+                                                       @bind-Url="@(image.Url)">
+                                        </ImageUploader>
+                                    </MudStack>
+                                </MudItem>
+                            }
+                            <MudIconButton Variant="Variant.Text" Size="Size.Large"
+                                           Icon="@Icons.Material.Outlined.Add" OnClick="AddImage">
+                            </MudIconButton>
+                        </MudGrid>
+                    }
+                    else
+                    {
+                        <MudItem xs="12">
+                            <MudButton Variant="Variant.Filled" Size="Size.Large" OnClick="AddImage">@Localize["Add Product gallery image"]</MudButton>
+                        </MudItem>
+                    }
+                </MudItem>
+                <MudItem xs="12">
+                    <AddEditSeoTagForm Model="@Model.SeoTag"/>
+                </MudItem>
+                <MudItem xs="12" Class="d-flex">
+                    <MudSpacer/>
+                    <MudButtonGroup OverrideStyles="false">
+                        <LoadingButton Class="my-2"
+                                       StartIcon="@Icons.Material.Filled.Save"
+                                       Processing="_processing" Variant="Variant.Filled"
+                                       Color="Color.Primary" ButtonType="ButtonType.Submit">
+                            @Localize["Save"]
+                        </LoadingButton>
+
+                        <MudButton Class="my-2" Variant="Variant.Filled"
+                                   ButtonType="ButtonType.Button"
+                                   Href="/festival/products">
+                            @Localize["Back To list"]
+                        </MudButton>
+                    </MudButtonGroup>
+                </MudItem>
+            
+            </MudGrid>
+        </EditForm>
+    </MudCard>
+</MudContainer>
+

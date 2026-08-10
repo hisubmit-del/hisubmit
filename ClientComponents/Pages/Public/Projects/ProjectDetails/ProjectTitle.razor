@@ -1,0 +1,135 @@
+﻿@using Hisubmit.Client.SharedModels.Features.Projects.Queries.GetDetail
+@if (_loaded)
+{
+    @switch (Project.ProjectType)
+    {
+        case ProjectType.Film:
+            <div class="my-3">
+                <MudText Typo="Typo.h1" Class="mx-2 my-2">
+                    @Project.Title
+                </MudText>
+                <MudText Typo="Typo.subtitle2" Class="mx-2" Inline="true">
+                    country Origin:@FilmSpecification.OriginCountryName
+                </MudText>
+                <MudText Typo="Typo.subtitle2" Class="mx-2" Inline="true">
+                    Production year:2024
+                </MudText>
+                @if (Project.StudentProject)
+                {
+                    <MudChip T="string" Variant="Variant.Text" Color="Color.Info" Icon="@Icons.Material.Filled.Book">Student Project</MudChip>
+                }
+                @if (FilmSpecification.FirstTimeFilmMaker)
+                {
+                    <MudChip T="string" Variant="Variant.Text" Color="Color.Info" Icon="@Icons.Material.Filled.FirstPage">First time filmmaker</MudChip>
+                }
+                <MudItem xs="12" Class="d-flex justify-content-end">
+                    <RateProject Project="@Project"></RateProject>
+                </MudItem>
+            </div>
+            break;
+        case ProjectType.Photography:
+            <div class="my-3">
+                <MudText Typo="Typo.h1" Class="mx-2 my-2">
+                    @Project.Title
+                </MudText>
+                <MudText Typo="Typo.subtitle2" Class="mx-2" Inline="true">
+                    Country Origin:@PhotographySpecification.OriginCountryName
+                </MudText>
+                <MudText Typo="Typo.subtitle2" Class="mx-2" Inline="true">
+                    Production year:2024
+                </MudText>
+                @if (Project.StudentProject)
+                {
+                    <MudChip T="string" Variant="Variant.Text" Color="Color.Info"
+                             Icon="@Icons.Material.Filled.Book">Student Project</MudChip>
+                }
+                @* @if (FilmPhotographyMusicVrXrSpecification.FirstTimeFilmMaker) *@
+                @* { *@
+                @*     <MudChip T="string" Variant="Variant.Text" Color="Color.Info" Icon="@Icons.Material.Filled.FirstPage">First time film maker</MudChip> *@
+                @* } *@
+                <MudItem xs="12" Class="d-flex justify-content-end">
+                    <RateProject Project="@Project"></RateProject>
+                </MudItem>
+            </div>
+            break;
+        case ProjectType.Music:
+            <div class="my-3">
+                <MudText Typo="Typo.h1" Class="mx-2 my-2">
+                    @Project.Title
+                </MudText>
+                <MudText Typo="Typo.subtitle2" Class="mx-2" Inline="true">
+                    Country Origin:
+                    @MusicSpecification.OriginCountryName
+                </MudText>
+                <MudText Typo="Typo.subtitle2" Class="mx-2" Inline="true">
+                    Production year:
+                    2024
+                </MudText>
+                @if (Project.StudentProject)
+                {
+                    <MudChip T="string" Variant="Variant.Text" Color="Color.Info" Icon="@Icons.Material.Filled.Book">Student Project</MudChip>
+                }
+                @* @if (FilmPhotographyMusicVrXrSpecification.FirstTimeFilmMaker) *@
+                @* { *@
+                @*     <MudChip T="string" Variant="Variant.Text" Color="Color.Info" Icon="@Icons.Material.Filled.FirstPage">First time film maker</MudChip> *@
+                @* } *@
+                <MudItem xs="12" Class="d-flex justify-content-end">
+                    <RateProject Project="@Project"></RateProject>
+                </MudItem>
+            </div>
+            break;
+        case ProjectType.Script_ScreenWriting:
+            <div class="my-3">
+                <MudText Typo="Typo.h1" Class="mx-2 my-2">
+                    @Project.Title
+                </MudText>
+                <MudText Typo="Typo.subtitle2" Class="mx-2" Inline="true">
+                    country Origin:@ScriptSpecification.OriginCountryName
+                </MudText>
+                <MudText Typo="Typo.subtitle2" Class="mx-2" Inline="true">
+                    Production year:2024
+                </MudText>
+                @if (Project.StudentProject)
+                {
+                    <MudChip T="string" Variant="Variant.Text" Color="Color.Info" Icon="@Icons.Material.Filled.Book">Student Project</MudChip>
+                }
+                @if (ScriptSpecification.FirstTimeScreenWrite)
+                {
+                    <MudChip T="string" Variant="Variant.Text" Color="Color.Info" Icon="@Icons.Material.Filled.FirstPage">First time film maker</MudChip>
+                }
+                <MudItem xs="12" Class="d-flex justify-content-end">
+                    <RateProject Project="@Project"></RateProject>
+                </MudItem>
+            </div>
+            break;
+        case ProjectType.VR_XR:
+            <div class="my-3">
+                <MudText Typo="Typo.h1" Class="mx-2 my-2">
+                    @Project.Title
+                </MudText>
+                <MudText Typo="Typo.subtitle2" Class="mx-2" Inline="true">
+                    country Origin:@VrXrSpecification.OriginCountryName
+                </MudText>
+                <MudText Typo="Typo.subtitle2" Class="mx-2" Inline="true">
+                    Production year:2024
+                </MudText>
+                @if (Project.StudentProject)
+                {
+                    <MudChip T="string" Variant="Variant.Text" Color="Color.Info" Icon="@Icons.Material.Filled.Book">Student Project</MudChip>
+                }
+                @* @if (FilmPhotographyMusicVrXrSpecification.fir) *@
+                @* { *@
+                @*     <MudChip T="string" Variant="Variant.Text" Color="Color.Info" Icon="@Icons.Material.Filled.FirstPage">First time film maker</MudChip> *@
+                @* } *@
+                <MudItem xs="12" Class="d-flex justify-content-end">
+                    <RateProject Project="@Project"></RateProject>
+                </MudItem>
+            </div>
+            break;
+        case ProjectType.Art:
+            break;
+        default:
+            throw new ArgumentOutOfRangeException();
+    }
+
+}

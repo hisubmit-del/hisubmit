@@ -1,0 +1,48 @@
+﻿@using HiSubmit.Client.SharedModels.Extensions
+@using Hisubmit.Client.SharedModels.Enums.Festivals
+@inject IStringLocalizer<AddFestivalPaymentItemDialog> Localize
+
+<EditForm Model="@Item" OnValidSubmit="SaveAsync">
+    <FluentValidationValidator @ref="_fluentValidationValidator"/>
+    <MudDialog>
+        <TitleContent>
+            <MudText Typo="Typo.h6">
+                <MudIcon Icon="@Icons.Material.Filled.Add" Class="mr-3 mb-n1"/>
+                @Localize["Add Item"]
+            </MudText>
+        </TitleContent>
+        <DialogContent>
+            <MudGrid>
+                <MudItem xs="12" md="6">
+                    <MudNumericField Adornment="Adornment.End"
+                                     Variant="Variant.Outlined"
+                                     AdornmentIcon="@Icons.Material.Filled.AttachMoney"
+                                     HideSpinButtons="true" For="@(() => Item.Amount)" 
+                                     @bind-Value="Item.Amount" Label="@Localize["Amount"]"/>
+                </MudItem>
+                <MudItem xs="12" md="6">
+                    <MudTextField Variant="Variant.Outlined" For="@(() => Item.TrackNumber)" @bind-Value="Item.TrackNumber"
+                                   Label="@Localize["Tracking Number"]"/>
+                </MudItem>
+                <MudItem xs="12" md="6">
+                    <MudSelect Label="Payment methode" Variant="Variant.Outlined" @bind-Value="Item.Type" For="@(() => Item.Type)">
+                        @foreach (var type in Enum.GetValues<FestivalPaymentType>())
+                        {
+                            <MudSelectItem Value="@type">@type.ToDisplay()</MudSelectItem>
+                        }
+                    </MudSelect>
+                </MudItem>
+                <MudItem xs="12" md="6">
+                    <MudDatePicker Variant="Variant.Outlined" PickerVariant="PickerVariant.Dialog" HelperTextOnFocus="true"
+                                    Rounded="true"  DateFormat="MMMM,dd,yyyy"
+                                   Label="@Localize["Paid Date"]" For="() => Item.PaidDate" @bind-Date="Item.PaidDate"/>
+                </MudItem>
+            </MudGrid>
+        </DialogContent>
+        <DialogActions>
+            <MudButton DisableElevation Variant="Variant.Filled" OnClick="Cancel">@Localize["Cancel"]</MudButton>
+            <LoadingButton Processing="_processing" DisableElevation Variant="Variant.Filled" ButtonType="ButtonType.Submit" Color="Color.Success">@Localize["Save"]</LoadingButton>
+
+        </DialogActions>
+    </MudDialog>
+</EditForm>

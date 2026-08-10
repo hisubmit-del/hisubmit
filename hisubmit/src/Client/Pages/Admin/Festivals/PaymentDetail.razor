@@ -1,0 +1,33 @@
+﻿@page "/Admin/festival/payment/{FestivalId:int}"
+
+@using HiSubmit.Client.Shared.Components.Payments
+@using HiSubmit.Client.Pages.Festival.Payments.Components
+@using HiSubmit.Client.Pages.Festival.DashboardComponent
+@inject IStringLocalizer<PaymentDetail> Localizer
+@inherits BaseAdminPages
+<MudGrid class="mt-lg-2 pa-2">
+    <MudItem xs="4" lg="3" class="h-100">
+      
+        @if (_loaded)
+        {
+            <FestivalDetailBox  Festival="_detail" Loaded="true"/>
+        }
+        <LoadingButton Processing="_paymentInformationProcessing"
+                       FullWidth="true" Variant="Variant.Outlined"
+                       Color="Color.Primary" StartIcon="@Icons.Material.Filled.Info"
+                       Class="my-2 py-2" OnClick="ShowPaymentInformation">
+            @Localizer["Payment Information"]
+        </LoadingButton>
+    </MudItem>
+    <MudItem xs="12" lg="9">
+        @if (FestivalId != 0)
+        {
+            <FestivalPaymentItemsList OnChangeData="ReloadData" FestivalId="@FestivalId" IsAdmin="@true"/>
+        }
+    </MudItem>
+</MudGrid>
+
+@if (FestivalId != 0)
+{
+    <FestivalPaymentState @ref="_festivalPaymentState" FestivalId="FestivalId"/>
+}

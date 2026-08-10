@@ -1,0 +1,71 @@
+﻿@using Hisubmit.Client.SharedModels.Extensions
+@inject IStringLocalizer<DeadLineEntry> Localize
+<MudGrid>
+    <MudItem xs="12" md="2">
+        <MudStack Row="true" Justify="Justify.SpaceBetween">
+            <MudText Typo="Typo.subtitle2"> @Localize["Entry Deadlines"]</MudText>
+            @if (!IsAdmin)
+            {
+                <MudHidden Breakpoint="Breakpoint.MdAndUp">
+                    <MudButton Disabled="ReadOnlyMood" OnClick="@(() => InvokeModal())" 
+                               Variant="Variant.Filled" Color="Color.Default" 
+                               Size="Size.Medium" IconColor="Color.Dark" StartIcon="@Icons.Material.Filled.Add">
+                        @Localize["Add deadline"]
+                    </MudButton>
+                </MudHidden>
+            }
+        </MudStack>
+    </MudItem>
+    <MudItem xs="12" md="9">
+        <MudTable Items="@DeadLines" Class="default-table" Dense="true" Hover="true"
+                  Breakpoint="Breakpoint.Sm" LoadingProgressColor="Color.Info">
+            <HeaderContent >
+                <MudTh>@Localize["Name"]</MudTh>
+                <MudTh>@Localize["Date"]</MudTh>
+                <MudTh>@Localize["Apply To All Category"]</MudTh>
+                <MudTh Style="text-align:end">
+                    @if (!IsAdmin)
+                    {
+                        <MudButton Disabled="ReadOnlyMood" OnClick="@(() => InvokeModal())"
+                                   Variant="Variant.Filled" Color="Color.Default"
+                                   Size="Size.Small" StartIcon="@Icons.Material.Filled.Add"
+                                   IconColor="Color.Surface">
+                            @Localize["Add deadline"]
+                        </MudButton>
+                    }
+                </MudTh>
+            </HeaderContent >
+            <RowTemplate>
+                <MudTd DataLabel="Title">@context.Name</MudTd>
+                <MudTd DataLabel="DeadLines">@context.Date.ToLongDate()</MudTd>
+                <MudTd DataLabel="ApplyTAll">
+                    <MudCheckBox T="bool?" Class="mx-auto" @bind-Value="@context.ApplyToAllCategory" Dense="true" 
+                                 ReadOnly="true" Size="Size.Small" Color="Color.Default"></MudCheckBox>
+                </MudTd>
+                <MudTd DataLabel="Actions">
+                   @if (!IsAdmin)
+                   {
+                       <MudHidden Breakpoint="Breakpoint.LgAndUp">
+                           <MudMenu Label="@Localize["Actions"]" Variant="Variant.Filled" DisableElevation="true"
+                                    EndIcon="@Icons.Material.Filled.KeyboardArrowDown" 
+                                    Size="Size.Small"
+                                    IconColor="Color.Secondary" Direction="Direction.Left" OffsetX="true">
+
+                               <MudMenuItem OnClick="() => InvokeModal(context.Id)">@Localize["Edit"]</MudMenuItem>
+                               <MudMenuItem OnClick="() => DeleteAsync(context.Id, context.Name)">@Localize["Delete"]</MudMenuItem>
+                           </MudMenu>
+                       </MudHidden>
+
+                       <MudHidden Breakpoint="Breakpoint.MdAndDown">
+                           <MudIconButton Disabled="ReadOnlyMood" Icon="@Icons.Material.Filled.Edit" 
+                                          OnClick="@(() => InvokeModal(@context.Id))" Size="Size.Small" aria-label="edit"></MudIconButton>
+                           <MudIconButton Disabled="ReadOnlyMood" Icon="@Icons.Material.Filled.Delete" 
+                                          OnClick="@(() => DeleteAsync(@context.Id, @context.Name))"
+                                          Size="Size.Small" aria-label="delete"></MudIconButton>
+                       </MudHidden>
+                   }
+                </MudTd>
+            </RowTemplate>
+        </MudTable>
+    </MudItem>
+</MudGrid>

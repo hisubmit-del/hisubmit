@@ -1,0 +1,19 @@
+﻿
+@if (_loaded && _questions.Any())
+{
+    <FormCreatorWithAnswer Questions="_questions" 
+                           AnswerQuestions="_answers"
+                           ReadOnlyMood="true"
+                           HasHeader="true">
+        <HeaderContent>
+            <MudCardHeader>
+                <CardHeaderContent>
+                    <MudText Color="Color.Primary"
+                             Typo="Typo.h6">
+                        Submission Form
+                    </MudText>
+                </CardHeaderContent>
+            </MudCardHeader>
+        </HeaderContent>
+    </FormCreatorWithAnswer>
+}

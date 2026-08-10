@@ -1,0 +1,138 @@
+﻿@inherits LayoutComponentBase
+@inject IStringLocalizer<MainLayout> Localize
+
+<MudThemeProvider  Theme="BlazorHeroTheme.DefaultTheme" />
+<MudDialogProvider/>
+<MudSnackbarProvider/>
+<MudPopoverProvider/>
+
+@* <MudRTLProvider RightToLeft="@_rightToLeft"> *@
+    <MudLayout Class="main-layout">
+        <MudAppBar Elevation="0" id="main-header" Class="main-header">
+            <div class="d-flex d-lg-none ma-0 pa-0 w-100">
+                <MudIconButton Icon="@Icons.Material.Filled.Menu"
+                               Color="Color.Dark" Edge="Edge.Start" OnClick="@DrawerOpenToggle"/>
+                <MudSpacer/>
+                <AuthorizeView>
+                    <Authorized>
+                        <NotificationDropDown/>
+                        <UserCartItems/>
+                    </Authorized>
+                </AuthorizeView>
+                <MudImage Height="57" Width="57" Src="@ClientAppConstants.SmallLogoUrl" Alt="hisubmit-logo-small"></MudImage>
+            </div>
+            <div class="d-none d-lg-flex pa-0 ma-0 w-100">
+                <MudImage Src="/assets/img/logo.png" Alt="hisubmit-logo"></MudImage>
+                @if (_showDrawer)
+                {
+                    <MudToolBar DisableGutters="true">
+                        <MudIconButton Icon="@Icons.Material.Outlined.Menu" Color="Color.Default"
+                                       OnClick="@((e) => DrawerOpenToggle())" Class="ml-3"/>
+                    </MudToolBar>
+                }
+                <AuthorizeView>
+                    <Authorized>
+                        @if (_showCreateFestivalButton)
+                        {
+                            <MudButton Color="Color.Primary"
+                                       Class="h-fit ml-3 my-auto"
+                                       Size="Size.Small" OnClick="AddFestival"
+                                       Variant="Variant.Outlined">
+                                @Localize["Create your festival"]
+                            </MudButton>
+                        }
+                    </Authorized>
+                </AuthorizeView>
+                <MudSpacer/>
+                <div class="menu-items">
+                    <MudButton Color="Color.Dark" Variant="Variant.Text" Href="/">Browse festival</MudButton>
+                    @if (_menuItems != null)
+                    {
+                        foreach (var item in _menuItems
+                                     .Where(p => p.Position == MenuItemPosition.Header))
+                        {
+                            <MudButton Color="Color.Dark" Href="@item.Link" Variant="Variant.Text">@item.Title</MudButton>
+                        }
+                    }
+                </div>
+                <MudSpacer/>
+                <div class="account-items my-auto">
+                    <AuthorizeView>
+                        <Authorized>
+                            <UserCartItems/>
+                            <NotificationDropDown/>
+                            <UserCard ShowAnotherAccount="true" UserInHeader="true"/>
+                        </Authorized>
+                        <NotAuthorized>
+                            <MudButton Color="Color.Tertiary" Href="/register" Variant="Variant.Filled">Sign up</MudButton>
+                            <MudButton Color="Color.Dark" Href="/login" Class="btn-login" Variant="Variant.Text">Login</MudButton>
+                        </NotAuthorized>
+                    </AuthorizeView>
+                </div>
+            </div>
+        </MudAppBar>
+        <MudHidden Breakpoint="Breakpoint.LgAndUp">
+            <MudDrawer @bind-Open="_drawerOpen"
+                       Class="main-drawer"
+                       Variant="DrawerVariant.Responsive"
+                       ClipMode="DrawerClipMode.Docked"
+                       Elevation="0">
+                <NavMenu AccountPages="_showDrawer"
+                         ShowCreateFestivalButton="_showCreateFestivalButton"/>
+            </MudDrawer>
+        </MudHidden>
+        <MudHidden Breakpoint="Breakpoint.MdAndDown">
+            <MudDrawer Open="@(_showDrawer && _drawerOpen)"
+                       Variant="DrawerVariant.Responsive"
+                       Class="main-drawer"
+                       ClipMode="DrawerClipMode.Docked"
+                       Elevation="0">
+                <NavMenu AccountPages="_showDrawer"
+                         ShowCreateFestivalButton="_showCreateFestivalButton"/>
+            </MudDrawer>
+        </MudHidden>
+        <MudMainContent   
+            Class="mt-4 px-lg-8 px-2" >
+            <CascadingValue Value="hubConnection">
+                <div class="min-vh-100 pt-3 pt-lg-0">
+                    @Body
+                </div>
+
+              @*   <PublicFooter Items="@_menuItems.Where(p => p.Position == MenuItemPosition.Footer).ToList()"/> *@
+            </CascadingValue>
+        </MudMainContent>
+        
+      
+    </MudLayout>
+@* </MudRTLProvider> *@
+  <MudOverlay DarkBackground Visible="GalleryImagesOverallyService.Visible" ZIndex="1400" Class="ultra-dark" > 
+            <div class="overlay-gallery-box">
+                <MudIconButton Style="position:absolute;top:2px;right:2px" OnClick="@(()=>GalleryImagesOverallyService.Visible=false)"
+                               Variant="Variant.Filled"
+                               Size="Size.Small"
+                               Icon="@Icons.Material.Filled.Close" Color="Color.Secondary"/>
+                @{
+                    var i = GalleryImagesOverallyService.Images
+                        .FirstOrDefault(p => p.Id == GalleryImagesOverallyService.SelectedImage.Id);
+                    <img src="@i.Url"  alt="@i.Title"/>
+                    
+                    <p>@i.Title</p>
+                }
+                <div class="d-flex justify-center mt-2">
+                    <MudButtonGroup OverrideStyles="false">
+                        <MudIconButton Variant="Variant.Filled"
+                                       Size="Size.Small"
+                                       Color="Color.Secondary"
+                                       OnClick="GalleryImagesOverallyService.PrevImages"
+                                       Icon="@Icons.Material.Filled.ArrowLeft"></MudIconButton>
+        
+        
+                        <MudIconButton Variant="Variant.Filled" Color="Color.Secondary"
+                                       Size="Size.Small"
+                                       OnClick="GalleryImagesOverallyService.NextImages"
+                                       Icon="@Icons.Material.Filled.ArrowRight"></MudIconButton>
+                    </MudButtonGroup>
+                </div>
+            </div>
+        </MudOverlay>
+

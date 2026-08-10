@@ -1,0 +1,46 @@
+﻿@inject IStringLocalizer<AddEditDocumentTypeModal> Localize
+
+<EditForm Model="@AddEditDocumentTypeModel" OnValidSubmit="SaveAsync">
+    <FluentValidationValidator @ref="_fluentValidationValidator" />
+    <MudDialog>
+        <TitleContent>
+            @{
+                if (AddEditDocumentTypeModel.Id == 0)
+                {
+                    <MudText Typo="Typo.h6">
+                        <MudIcon Icon="@Icons.Material.Filled.Add" Class="mr-3 mb-n1" />
+                        @Localize["Add Document ItemType"]
+                    </MudText>
+                }
+                else
+                {
+                    <MudText Typo="Typo.h6">
+                        <MudIcon Icon="@Icons.Material.Filled.Update" Class="mr-3 mb-n1" />
+                        @Localize["Update Document ItemType"]
+                    </MudText>
+                }
+            }
+        </TitleContent>
+        <DialogContent>
+            <MudGrid>
+                <MudItem xs="12" md="6">
+                    <MudTextField T="string" For="@(() => AddEditDocumentTypeModel.Name)" @bind-Value="AddEditDocumentTypeModel.Name" Label="@Localize["Name"]" />
+                </MudItem>
+                <MudItem xs="12" md="6">
+                    <MudTextField For="@(() => AddEditDocumentTypeModel.Description)" @bind-Value="AddEditDocumentTypeModel.Description" Label="@Localize["Description"]" />
+                </MudItem>
+            </MudGrid>
+        </DialogContent>
+        <DialogActions>
+            <MudButton Variant="Variant.Filled" OnClick="Cancel">@Localize["Cancel"]</MudButton>
+            @if (AddEditDocumentTypeModel.Id != 0)
+            {
+                <MudButton Variant="Variant.Filled" ButtonType="ButtonType.Submit" Disabled="@(!Validated)" Color="Color.Secondary">@Localize["Update"]</MudButton>
+            }
+            else
+            {
+                <MudButton Variant="Variant.Filled" ButtonType="ButtonType.Submit" Disabled="@(!Validated)" Color="Color.Success">@Localize["Save"]</MudButton>
+            }
+        </DialogActions>
+    </MudDialog>
+</EditForm>

@@ -1,0 +1,200 @@
+﻿@using Hisubmit.Client.SharedModels.Extensions
+@using global::Hisubmit.Client.SharedModels.Features.Payments.Queries
+@inject IStringLocalizer<CartItems> Localize;
+
+@if (_openSearchForm)
+{
+    @* <Animate Animation="Animations.FadeDown" Auto DurationMilliseconds="1000" DelayMilliseconds="100"> *@
+    <MudCard Elevation="1" Class="my-3 animate animate__fadeInDown animate__fadeOut">
+        <MudCardContent>
+            <EditForm Model="Filter" OnValidSubmit="Search">
+                <MudGrid>
+                    <MudItem xs="12" md="6" lg="3">
+                        <MudTextField T="string" @bind-Value="Filter.PaymentId"
+                                      Variant="Variant.Outlined" Margin="Margin.Dense"
+                                      For="() => Filter.PaymentId" Label="Payment Id">
+                        </MudTextField>
+                    </MudItem>
+                    <MudItem xs="12" md="6" lg="3">
+                        <MudTextField T="string" @bind-Value="Filter.PayerId"
+                                      Variant="Variant.Outlined" Margin="Margin.Dense"
+                                      For="() => Filter.PayerId" Label="PayerId">
+                        </MudTextField>
+                    </MudItem>
+                    <MudItem xs="12" md="6" lg="3">
+                        <MudTextField T="string" @bind-Value="Filter.PaypalEmail"
+                                      Variant="Variant.Outlined" Margin="Margin.Dense"
+                                      For="() => Filter.PaypalEmail" Label="Paypal Email">
+                        </MudTextField>
+                    </MudItem>
+                    <MudItem xs="12" md="6" lg="3">
+                        <MudSelect Class="w-25" T="bool?" Variant="Variant.Outlined"
+                                   Label="Paid Enable"
+                                   Margin="Margin.Dense" Dense="true" @bind-Value="Filter.Paid">
+                            <MudSelectItem T="bool?" value="@(null as bool?)">All</MudSelectItem>
+                            <MudSelectItem T="bool?" value="@(true as bool?)">Paid</MudSelectItem>
+                            <MudSelectItem T="bool?" value="@(false as bool?)">Unpaid</MudSelectItem>
+
+                        </MudSelect>
+                    </MudItem>
+
+                    <MudItem xs="12" md="6" lg="4">
+                        <NumericFilter T="decimal" Title="Price" Model="Filter.PriceFilter" />
+                    </MudItem>
+                    <MudItem xs="12" md="6" lg="6">
+                        <DateFilterComponent Title="Paid Date" Model="Filter.PaidDateFilter" />
+                    </MudItem>
+                    <MudItem xs="12">
+                        <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled"
+                                   StartIcon="@Icons.Material.Filled.Search"
+                                   Color="Color.Tertiary">
+                            Search
+                        </MudButton>
+                        <MudButton ButtonType="ButtonType.Button"
+                                   Variant="Variant.Filled"
+                                   OnClick="ToggleSearch"
+                                   Color="Color.Default">
+                            Cancel
+                        </MudButton>
+                    </MudItem>
+
+                </MudGrid>
+            </EditForm>
+        </MudCardContent>
+    </MudCard>
+    // </Animate>
+}
+<MudOverlay AutoClose="false" DarkBackground="true" Absolute="true" Visible="_downloadProcess">
+    <MudProgressCircular Color="Color.Warning" Style="height:70px;width:70px;margin: auto" Indeterminate="true" />
+</MudOverlay>
+<MudTable Loading="!_loaded" LoadingProgressColor="Color.Secondary" class="default-light-table"
+          Elevation="25" Items="_pagedDate" TotalItems="_totalItems"
+          ServerData="@(new Func<TableState, CancellationToken, Task<TableData<GetAllCartsResponse>>>(ServerReload))"
+          Hover="true" Bordered="false" Dense="true" Striped="true" @ref="_table">
+    <ToolBarContent>
+        <ResponsiveButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Search"
+                          OnClick="ToggleSearch">
+            Advanced Search
+        </ResponsiveButton>
+        <MudSpacer />
+        <MudTextField T="string" ValueChanged="@(OnSearch)" Placeholder="@Localize["Search"]"
+                      Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search"
+                      IconSize="Size.Medium" Class="mt-0">
+        </MudTextField>
+    </ToolBarContent>
+    <HeaderContent>
+        <MudTh>#</MudTh>
+        <MudTh>@Localize["Payment date"]</MudTh>
+        <MudTh>@Localize["Price"]</MudTh>
+        <MudTh>@Localize["User"]</MudTh>
+        <MudTh>@Localize["Payment Id"]</MudTh>
+        <MudTh>@Localize["Paid"]</MudTh>
+        <MudTh>@Localize["Actions"]</MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd>
+            @(_table.CurrentPage* _table.RowsPerPage + _pagedDate.IndexOf(context) + 1)
+        </MudTd>
+        <MudTd DataLabel="Payment date">
+            @context.CartDate.ToLongDateTime()
+        </MudTd>
+        <MudTd DataLabel="Price">
+            @context.Price
+        </MudTd>
+        <MudTd DataLabel="User">
+            @context.UserFullName
+        </MudTd>
+        <MudTd DataLabel="Payment Id">
+            @context.PaymentId
+        </MudTd>
+        <MudTd DataLabel="Paid">
+            <MudCheckBox T="bool" Dense="true" Color="Color.Info" @bind-Value="@context.Paid" />
+        </MudTd>
+        <MudTd>
+            <MudIconButton Icon="@Icons.Material.Filled.ViewList"
+                           OnClick="@(() => context.ShowDetails = !context.ShowDetails)" />
+
+            <MudIconButton Icon="@Icons.Material.Filled.Download"
+                           OnClick="() => DownloadFactor(context.Id)" />
+        </MudTd>
+
+    </RowTemplate>
+
+    <ChildRowContent>
+        @if (context.ShowDetails)
+        {
+            <MudTr Style="@($"background:{Colors.Red.Darken1};")">
+                <td colspan="7">
+                    @* <Animate Animation="Animations.FadeDown"  *@
+                    @*          Auto *@
+                    @*          Delay="TimeSpan.FromMilliseconds(100)"  *@
+                    @*          Duration="TimeSpan.FromMilliseconds(1000)"> *@
+                    <MudCard Elevation="0" Class="ma-6 animate__animated animate__fadeInDown">
+
+                        <MudCardContent Class="pa-0">
+                            <div class="d-flex justify-space-between flex-grow-1 pa-2">
+                                <MudText>
+                                    <MudText Typo="Typo.subtitle2" Color="Color.Dark">Payment Id:</MudText>
+                                    @context.PaymentId
+                                </MudText>
+                                <MudText>
+                                    <MudText Typo="Typo.subtitle2" Color="Color.Dark">Paypal Email:</MudText>
+                                    @context.Email
+                                </MudText>
+                            </div>
+
+                            <MudTable Items="@context.CartItems" Context="ItemContext" Hover="true" Breakpoint="Breakpoint.Sm" Elevation="0">
+                                <ColGroup>
+                                    <col />
+                                    <col />
+                                    <col />
+                                    <col />
+                                </ColGroup>
+                                <HeaderContent>
+                                    <MudTh>#</MudTh>
+                                    <MudTh>@Localize["Title"]</MudTh>
+                                    <MudTh>@Localize["Type"]</MudTh>
+                                    <MudTh>@Localize["Tracking Code"]</MudTh>
+                                    <MudTh>@Localize["Price"]</MudTh>
+                                </HeaderContent>
+                                <RowTemplate>
+                                    <MudTd>
+                                        @(_table.CurrentPage* _table.RowsPerPage + context.CartItems.IndexOf(ItemContext) + 1)
+                                    </MudTd>
+                                    <MudTd DataLabel="Title">
+                                        <MudHighlighter HighlightedText="@_searchString" Text="@ItemContext.GetTitle()" />
+                                    </MudTd>
+                                    <MudTd DataLabel="ItemType">
+                                        <CartemTypeBadge CartItemType="ItemContext.CartItemType" />
+                                    </MudTd>
+                                    <MudTd DataLabel="ItemType">
+                                        @ItemContext.SubmitTrackCode
+                                    </MudTd>
+                                    <MudTd DataLabel="Price">
+                                        @if (ItemContext.PriceAfterDiscount == null)
+                                        {
+                                            <MudText Typo="Typo.caption">
+                                                @ItemContext.Price.ToString("C2")
+                                            </MudText>
+                                        }
+                                        else
+                                        {
+                                            <MudText Typo="Typo.caption">
+                                                <del> @ItemContext.Price.ToString("C2")</del>
+                                                @ItemContext.PriceAfterDiscount.Value.ToString("C2")
+                                            </MudText>
+                                        }
+                                    </MudTd>
+                                </RowTemplate>
+                            </MudTable>
+                        </MudCardContent>
+                    </MudCard>
+                    @* </Animate> *@
+                </td>
+            </MudTr>
+        }
+    </ChildRowContent>
+    <PagerContent>
+        <TablePager />
+    </PagerContent>
+</MudTable>

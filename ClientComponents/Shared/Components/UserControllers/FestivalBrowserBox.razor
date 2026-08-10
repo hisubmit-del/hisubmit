@@ -1,0 +1,77 @@
+﻿@using global::Hisubmit.Client.SharedModels.Features.AdminFestival.Queries.GetAllFestival
+@using ClientComponents.Pages.Public.Festivals.Components
+
+@using HiSubmit.Client.SharedModels.Extensions
+@using ClientComponents.Shared.Components.ICons
+@inject IStringLocalizer<FestivalBrowserBox> localizer
+
+<div class=" festival-card mud-elevation-1">
+    <div class="row">
+        <div class="col-sm-3 festival-image pa-2 d-flex align-content-center flex-wrap flex-grow-1 gap-4">
+            <img loading="lazy" src="@Festival.LogoURL" alt="@Festival.Name">
+        </div>
+        <div class="col-sm-9 d-flex flex-column position-relative" style="border: 1.5px none rgb(79,78,78) ;">
+            <div class="row mb-auto festival-content">
+                <div class="col justify-content-around align-items-end align-content-end">
+                    <div class="row pa-2">
+                        <h2>@Festival.Name</h2>
+                        <div class="col-xs-12 col-md-12 mb-2">
+                            <span class="deadline mt-2 ">
+                                @Festival.DateTitle:@Festival.NearDeadline.ToLongDate()
+                            </span>
+                        </div>
+                        <div class="col-xs-12 col-md-6 mb-2">
+                            <span class="position">
+                                @Festival.Address?.ToShortString()
+                            </span>
+                        </div>
+                        <div class="col-xs-12 col-md-6 mb-2">
+                            @foreach (var focus in Festival.Focuses)
+                            {
+                                <MudChip T="string" Size="Size.Small">@focus</MudChip>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row  d-md-flex festival-footer">
+                <div class="col text-center d-sm-flex justify-content-end ">
+                    @if (Festival.FestivalDateStatus == FestivalDateStatus.Submit)
+                    {
+                        <button onclick="@Submit" class="btn btn-light btn-submit-now btn-sm " type="button"
+                                style="margin-right: 4px;">
+                            Submit now
+                        </button>
+                    }
+                    @if (Festival.FestivalDateStatus == FestivalDateStatus.Closed)
+                    {
+                        <button disabled="disabled" class="btn btn-light btn-show-detail btn-sm " type="button"
+                                style="margin-right: 4px;">
+                            Closed
+                        </button>
+                    }
+                    @if (Festival.FestivalDateStatus == FestivalDateStatus.OpenSoon)
+                    {
+                        <button  disabled="disabled"  class="btn btn-light btn-sm btn-take-ticket"
+                                data-bss-hover-animate="pulse" type="button"
+                                style="margin-right: 4px;">
+                            Open Soon
+                        </button>
+                    }
+                    <button onclick="@GoToFestivalDetail" class="btn btn-light btn-show-detail btn-sm " type="button"
+                            style="margin-right: 4px;">
+                        View FestivalId
+                    </button>
+
+                </div>
+            </div>
+            @if (Festival.FeeStatus == FeeStatus.Special)
+            {
+                <div class="gold-flag">
+                    <ClientComponents.Shared.Components.ICons.IGold/>
+                </div>
+            }
+        </div>
+
+    </div>
+</div>

@@ -1,0 +1,97 @@
+﻿@page "/user/tickets"
+@using global::Hisubmit.Client.SharedModels.Features.SoldTickets.Queries
+
+@inject IStringLocalizer<SoldTicketsList> _localizer
+@inherits BaseUserPages
+@if (!_loaded)
+{
+    <MudProgressCircular Color="Color.Primary" Indeterminate="true"/>
+}
+else
+{
+    @* <MudButton Class="mb-3" OnClick="ToggleSearchFor" EndIcon="@Icons.Material.Filled.Search" Color="Color.Surface" Variant="Variant.Filled"> *@
+    @*     Advanced Search *@
+    @* </MudButton> *@
+
+    @* <MudCard Class="mb-2" Elevation="5"> *@
+    @*     <MudCardContent Class="@_displaySearchFrom"> *@
+    @*         <MudContainer> *@
+    @*             <EditForm Model="@_advancedSearch"> *@
+    @*                 <MudGrid> *@
+    @*                     <MudItem xs="12" md="4" Class="px-2"> *@
+    @*                         <MudTextField T="string" Margin="Margin.Dense" Label="@_localizer["Project title"]" Variant="Variant.Filled" @bind-Value="@_advancedSearch.ProjectTitle"></MudTextField> *@
+    @*                     </MudItem> *@
+    @* *@
+    @*                     <MudButton ButtonItemType="ButtonItemType.Button"  OnClick="AdvancedSearch" Variant="Variant.Filled" Color="Color.Primary">search</MudButton> *@
+    @*                 </MudGrid> *@
+    @*             </EditForm> *@
+    @*         </MudContainer> *@
+    @*     </MudCardContent> *@
+    @* </MudCard> *@
+    <MudTable class="default-table" Elevation="25" Items="_pagedDate" TotalItems="_totalItems"
+              ServerData="@(new Func<TableState,CancellationToken, Task<TableData<GetAllSoldTicketResponse>>>(ServerReload))"
+              Hover="true" Dense="true" Bordered="false" Striped="true" @ref="_table">
+        <ToolBarContent>
+            <div class="justify-center mud-text-align-center">
+                <MudButton DisableElevation Variant="Variant.Filled" OnClick="@(() => OnSearch(""))" StartIcon="@Icons.Material.Filled.Refresh" IconColor="Color.Surface" Color="Color.Secondary">@_localizer["Reload"]</MudButton>
+            </div>
+            <MudSpacer/>
+            <MudTextField T="string" ValueChanged="@(s => OnSearch(s))" Placeholder="@_localizer["Search"]" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+        </ToolBarContent>
+        <HeaderContent>
+            <MudTh>
+                <MudTableSortLabel T="GetAllSoldTicketResponse" SortLabel="ProjectTitle">@_localizer["Ticket"]</MudTableSortLabel>
+            </MudTh>
+            <MudTh>
+                <MudTableSortLabel T="GetAllSoldTicketResponse" SortLabel="ProjectTitle">@_localizer["Buyer Name"]</MudTableSortLabel>
+            </MudTh>
+            <MudTh>
+                <MudTableSortLabel T="GetAllSoldTicketResponse" SortLabel="ProjectTitle">@_localizer["Email"]</MudTableSortLabel>
+            </MudTh>
+            <MudTh>
+                <MudTableSortLabel T="GetAllSoldTicketResponse" SortLabel="Owner">@_localizer["ItemType"]</MudTableSortLabel>
+            </MudTh>
+            <MudTh>
+                <MudTableSortLabel T="GetAllSoldTicketResponse" SortLabel="Submit Date">@_localizer["Price"]</MudTableSortLabel>
+            </MudTh>
+
+            <MudTh>@_localizer["Count"]</MudTh>
+            <MudTh>@_localizer["Enable"]</MudTh>
+            <MudTh>
+                Actions
+            </MudTh>
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd DataLabel="TicketTitle">
+                <MudHighlighter Text="@context.TicketTitle" HighlightedText="@_searchString"/>
+            </MudTd>
+            <MudTd DataLabel="Name">
+                <MudHighlighter Text="@context.BuyerFullNameName" HighlightedText="@_searchString"/>
+            </MudTd>
+            <MudTd DataLabel="Email">
+                <MudHighlighter Text="@(context.ForOtherUser ? context.OtherUserEmail : context.BuyerEmail)" HighlightedText="@_searchString"/>
+            </MudTd>
+            <MudTd DataLabel="TicketItemType">
+                <TicketTypeChip SelectedTicketType="@context.TicketType"></TicketTypeChip>
+            </MudTd>
+            <MudTd DataLabel="Price">
+                <MudText Typo="Typo.subtitle2" Color="Color.Info"> @context.Cost.ToString("C2")</MudText>
+            </MudTd>
+            <MudTd DataLabel="Enable">
+                @context.Count
+            </MudTd>
+            <MudTd DataLabel="Enable">
+                @context.SoldTicketStatus
+            </MudTd>
+            <MudTd DataLabel="Enable">
+                @if (context.SoldTicketStatus == SoldTicketStatus.Paid)
+                {
+                    <MudIconButton OnClick="() => DownloadFile(context.Id)" Title="DownloadFile" Icon="@Icons.Material.Filled.Download"></MudIconButton>
+                }
+            </MudTd>
+        </RowTemplate>
+        <PagerContent>
+            <TablePager/>
+        </PagerContent>
+    </MudTable>
+}

@@ -1,0 +1,118 @@
+﻿@using System.IO
+@using global::Hisubmit.Client.SharedModels.Requests
+@using global::Hisubmit.Client.SharedModels.Enums
+@inject IStringLocalizer<ImageUploader> Localize;
+
+<InputFile id="@UploadRequest.ImageId" hidden OnChange="UploadImageAsync"/>
+@if (_imageFile != null)
+{
+    <MudText>@_imageFile.Name</MudText>
+}
+<div>
+    <MudButton HtmlTag="label"
+               Variant="Variant.Text"
+               Color="Color.Primary"
+               Size="Size.Small"
+               StartIcon="@Icons.Material.Filled.CloudUpload"
+               for="@UploadRequest.ImageId">
+        @UploadButtonText
+    </MudButton>
+    @if (!string.IsNullOrEmpty(Url))
+    {
+        <MudButton Variant="Variant.Text"
+                   Color="Color.Error"
+                   StartIcon="@Icons.Material.Filled.Delete"
+                   OnClick="DeleteImageAsync"
+                   Size="Size.Small">
+            @Localize["Delete"]
+        </MudButton>
+    }
+</div>
+
+@code {
+
+    private string _url;
+
+    [Parameter]
+    public string Url
+    {
+        set
+        {
+            if (!string.IsNullOrWhiteSpace(value))
+                _url = value;
+        }
+        get => _url;
+    }
+
+    [Parameter]
+    public EventCallback<string> UrlChanged { get; set; }
+
+    [Parameter]
+    public EventCallback<UploadRequest> DeleteImage { get; set; }
+
+    [Parameter]
+    public EventCallback<UploadRequest> UploadRequestChanged { get; set; }
+
+    [Parameter]
+    public UploadRequest UploadRequest { get; set; } = new();
+
+    [Parameter]
+    public EventCallback<string> ImageAltChanged { get; set; }
+
+    [Parameter]
+    public string ImageAlt { get; set; }
+
+    [Parameter]
+    public string UploadButtonText { get; set; } = "Upload";
+
+    [Parameter]
+    public string Width { get; set; } = "200px";
+
+    [Parameter]
+    public string Height { get; set; } = "200px";
+
+    [Parameter]
+    public string MaxHeight { get; set; } = "100%";
+    protected override Task OnInitializedAsync()
+    {
+        Console.WriteLine("Image uploader initlize");
+        UploadRequest ??= new UploadRequest();
+        return base.OnInitializedAsync();
+    }
+
+    private IBrowserFile _imageFile;
+
+    private async Task DeleteImageAsync()
+    {
+        Url = string.Empty;
+        UploadRequest = new UploadRequest();
+        await DeleteImage.InvokeAsync(UploadRequest);
+    }
+
+    private async Task UploadImageAsync(InputFileChangeEventArgs e)
+    {
+        _imageFile = e.File;
+        if (_imageFile != null)
+        {
+            var extension = Path.GetExtension(_imageFile.Name);
+            var format = "image/png";
+            var fileName = $"{Guid.NewGuid()}{extension}";
+            var imageFile = await e.File.RequestImageFileAsync(format, 400, 400);
+            var buffer = new byte[imageFile.Size];
+            await imageFile.OpenReadStream().ReadAsync(buffer);
+            Url = $"data:{format};base64,{Convert.ToBase64String(buffer)}";
+            UploadRequest = new UploadRequest()
+            {
+                Data = buffer,
+                Extension = extension,
+                UploadType = UploadType.FestivalLogo,
+                FileName = fileName
+            };
+            ImageAlt = UploadRequest.FileName;
+        }
+        await UploadRequestChanged.InvokeAsync(UploadRequest);
+        await UrlChanged.InvokeAsync(Url);
+        await ImageAltChanged.InvokeAsync(ImageAlt);
+    }
+
+}

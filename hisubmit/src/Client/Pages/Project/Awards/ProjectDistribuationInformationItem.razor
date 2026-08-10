@@ -1,0 +1,44 @@
+﻿@inject IStringLocalizer<ProjectDistribuationInformationItem> Localizer
+
+@if (!_Loaded)
+{
+}
+else
+{
+    <MudPaper Class="pa-lg-6 pb-12 position-relative">
+        @* <MudHidden Breakpoint="Breakpoint.MdAndDown"> *@
+        @*     <MudButton OnClick="DeleteItem" Style="position: absolute;right: 5%;top: 5%;" *@
+        @*                EndIcon="@Icons.Material.Filled.Delete"  *@
+        @*                Color="Color.Error">@Localizer["delete country"]</MudButton> *@
+        @* </MudHidden> *@
+        @*  <MudHidden Breakpoint="Breakpoint.LgAndUp"> *@
+        @*      <MudIconButton OnClick="DeleteItem" Size="Size.Small" Style="position: absolute;right: -4px;top: -4px;" *@
+        @*                     Icon="@Icons.Material.Filled.Delete" Color="Color.Error"/> *@
+        @*         </MudHidden> *@
+        <MudItem xs="12" md="6">
+            <NewCountrySelector Required="true" @bind-CountryId="@Item.CountryId"
+                                SelectorVariant="Variant.Outlined" @bind-CountryId:event="CountryChanged"/>
+        </MudItem>
+        <MudItem xs="12">
+            <MudGrid>
+                @foreach (var right in MediaRightItem)
+                {
+                    <MudItem xs="12" md="4" lg="3">
+                        <MudCheckBox T="bool" T="bool" Size="Size.Small" Checked="@right.IsSelected"
+                                     CheckedChanged="@(() => ChangeMediaRightId(right.Value))"
+                                     Color="Color.Default">
+                            @right.Name
+                        </MudCheckBox>
+                    </MudItem>
+                }
+            </MudGrid>
+        </MudItem>
+        <MudItem Class="w-100 text-end">
+            <MudButton OnClick="() => DeleteItem()" Size="Size.Small"
+                       EndIcon="@Icons.Material.Filled.Delete"
+                       Color="Color.Error">
+                @Localizer["delete country"]
+            </MudButton>
+        </MudItem>
+    </MudPaper>
+}

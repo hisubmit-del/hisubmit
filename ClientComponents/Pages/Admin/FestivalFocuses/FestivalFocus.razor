@@ -1,0 +1,80 @@
+﻿@page "/festivalFocus"
+@attribute [Authorize(Policy = Permissions.FocusCategory.View)]
+@inject IStringLocalizer<FestivalFocus> Localize
+@inherits BaseAdminPages
+<MudContainer MaxWidth="MaxWidth.Medium">
+
+    <HeroTitle Title="@Localize["festival Focus"]" Description="@Localize["Add or edit selection options for each festival focus"]"/>
+    @if (!_loaded)
+    {
+        <MudProgressCircular Color="Color.Primary" Indeterminate="true"/>
+    }
+    else
+    {
+        <MudTable Hover="true" Elevation="25" Items="_festivalList" Dense="@_dense" Bordered="@_bordered" Striped="@_striped">
+            <ToolBarContent>
+                <div class="justify-center mud-text-align-center min-w-xs-50">
+                    <MudHidden Breakpoint="Breakpoint.MdAndDown">
+                        <AuthorizeView Policy="@Permissions.FocusCategory.Edit">
+                            <Authorized>
+                                <MudButton DisableElevation Variant="Variant.Filled" Color="Color.Primary" OnClick="(() => InvokeModal())" StartIcon="@Icons.Material.Filled.Add" IconColor="Color.Surface">@Localize["Create"]</MudButton>
+                                <MudButton DisableElevation Variant="Variant.Filled" OnClick="GetFestivalFocusAsync" StartIcon="@Icons.Material.Filled.Refresh" IconColor="Color.Surface" Color="Color.Secondary">@Localize["Reload"]</MudButton>
+                            </Authorized>
+                            <NotAuthorized>
+                                <MudButton DisableElevation Variant="Variant.Filled" OnClick="GetFestivalFocusAsync" StartIcon="@Icons.Material.Filled.Refresh" IconColor="Color.Surface" Color="Color.Secondary">@Localize["Reload"]</MudButton>
+                            </NotAuthorized>
+                        </AuthorizeView>
+                    </MudHidden>
+                    <MudHidden Breakpoint="Breakpoint.LgAndUp">
+                        <AuthorizeView Policy="@Permissions.FocusCategory.Edit">
+                            <Authorized>
+                                <MudIconButton DisableElevation Variant="Variant.Filled" Color="Color.Primary" OnClick="(() => InvokeModal())" Icon="@Icons.Material.Filled.Add"/>
+                                <MudIconButton DisableElevation Variant="Variant.Filled" OnClick="GetFestivalFocusAsync" Icon="@Icons.Material.Filled.Refresh" Color="Color.Secondary"/>
+                            </Authorized>
+                            <NotAuthorized>
+                                <MudIconButton DisableElevation Variant="Variant.Filled" OnClick="GetFestivalFocusAsync" Icon="@Icons.Material.Filled.Refresh" Color="Color.Secondary"/>
+                            </NotAuthorized>
+                        </AuthorizeView>
+                    </MudHidden>
+                </div>
+                <MudSpacer/>
+            </ToolBarContent>
+            <HeaderContent>
+                <MudTh>@Localize["Name"]</MudTh>
+                <MudTh>@Localize["Description"]</MudTh>
+                <MudTh Style="text-align:right">@Localize["Actions"]</MudTh>
+            </HeaderContent>
+            <RowTemplate>
+                <MudTd DataLabel="Name">
+                    <MudHighlighter Text="@context.Name" HighlightedText="@_searchString"/>
+                </MudTd>
+                <MudTd DataLabel="Description">
+                    <MudHighlighter Text="@context.Description" HighlightedText="@_searchString"/>
+                </MudTd>
+                <MudTd DataLabel="Actions" Style="text-align: right">
+                    <AuthorizeView Context="authorizeContext" Policy="@Permissions.FocusCategory.Edit">
+                        <Authorized>
+                            <MudMenu Label="@Localize["Actions"]" Variant="Variant.Filled" DisableElevation="true" EndIcon="@Icons.Material.Filled.KeyboardArrowDown" IconColor="Color.Secondary" Direction="Direction.Left" OffsetX="true">
+                                <MudMenuItem OnTouch="() => InvokeModal(context.Id)" OnClick="@(() => InvokeModal(context.Id))">@Localize["Edit"]</MudMenuItem>
+                                <MudMenuItem OnTouch="() => Delete(context.Id, context.Name)" OnClick="@(() => Delete(context.Id, context.Name))">@Localize["Delete"]</MudMenuItem>
+                            </MudMenu>
+                        </Authorized>
+                        <NotAuthorized>
+                            <MudButton Variant="Variant.Filled"
+                                       DisableElevation="true"
+                                       StartIcon="@Icons.Material.Filled.DoNotTouch"
+                                       IconColor="Color.Secondary"
+                                       Size="Size.Small"
+                                       Color="Color.Surface">
+                                @Localize["No Allowed Actions"]
+                            </MudButton>
+                        </NotAuthorized>
+                    </AuthorizeView>
+                </MudTd>
+            </RowTemplate>
+            <PagerContent>
+                <TablePager/>
+            </PagerContent>
+        </MudTable>
+    }
+</MudContainer>

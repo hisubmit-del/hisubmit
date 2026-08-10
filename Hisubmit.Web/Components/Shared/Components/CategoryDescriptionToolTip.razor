@@ -1,0 +1,45 @@
+﻿@using global::Hisubmit.Client.SharedModels.Features.Festivals.Queries.GetAllDeadLineEventCategory
+@using global::Hisubmit.Client.SharedModels.Features.Festivals.Queries.GetEventCateoryById
+@using Hisubmit.Client.SharedModels.Extensions
+<style>
+    .tooltip-box{
+    text-align: start;
+    max-width: 300px;
+    max-height: 400px;
+    overflow-y: scroll;
+    }
+</style>
+<MudTooltip>
+    <ChildContent>
+        <MudIconButton DisableElevation="true" DisableRipple="true" Icon="@Icons.Material.Filled.Info"/>
+    </ChildContent>
+    <TooltipContent>
+        <div class="tooltip-box p-2">
+            <MudText Typo="Typo.caption">@EventCategory.Description</MudText>
+            <hr/>
+            <h6>
+                Limitations
+            </h6>
+             @if (EventCategory.ProjectType != null)
+            {
+                <p>-- Only  @EventCategory.ProjectType.ToDisplay()</p>
+            }
+            @if (EventCategory.StudentProject)
+            {
+                <p>-- Only student project</p>
+            }
+         
+            @if (EventCategory.CountriesName.Any())
+            {
+                var countries = string.Join(',', EventCategory.CountriesName);
+                <p>-- Authorized countries : @countries </p>
+            }
+        </div>
+    </TooltipContent>
+</MudTooltip>
+
+@code {
+
+    [Parameter] public GetEventCategoryByIdResponse EventCategory { get; set; }
+
+}

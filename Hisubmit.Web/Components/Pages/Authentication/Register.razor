@@ -1,0 +1,91 @@
+﻿@page "/register"
+@layout MainLayout
+@attribute [AllowAnonymous]
+@inject IStringLocalizer<Register> Localize
+@inherits HiSubmit.Web.Components.Pages.Public.BasePublicPages
+<MudGrid Class="mt-lg-8" Justify="Justify.Center">
+    <MudItem xs="12" md="6" lg="5" Class="pl-0">
+    <MudPaper Class="pa-5" >
+        
+        <EditForm Model="@_registerUserModel" OnValidSubmit="SubmitAsync">
+   
+            <FluentValidationValidator @ref="_fluentValidationValidator"/>
+            <MudGrid Class="pa-lg-8 pa-2">
+                @*  <MudItem xs="12">
+                    <div class="d-flex justify-center">
+                        <MudIcon Icon="@CustomIcons.BlazorHero" Color="Color.Primary" Size="Size.Large" ViewBox="0 0 500 500" Style="width: 100px; height: 100px;" />
+                    </div>
+                </MudItem>*@
+                <MudItem xs="12">
+                    <div class="d-flex justify-center">
+                        <MudText Color="Color.Primary"  Typo="Typo.h4">@Localize["Register"]</MudText>
+                    </div>
+                </MudItem>
+                 <MudItem xs="12" Class="text-center">
+                                                <MudImage Style="width: 60%" Src="@ClientAppConstants.LogoUrl"></MudImage>
+                                            </MudItem>
+                <MudItem xs="12">
+                    <div class="d-flex justify-center">
+                        <MudText>@Localize["Already have an account?"] <MudLink Href="/login">@Localize["Sign In"]</MudLink></MudText>
+                    </div>
+                </MudItem>
+
+                <MudItem xs="12" sm="6" md="6">
+                    <MudTextField For="@(() => _registerUserModel.FirstName)"
+                                  Variant="Variant.Outlined"
+                                      Required="true"
+                                  @bind-Value="_registerUserModel.FirstName" Label="@Localize["First Name"]"/>
+                </MudItem>
+                <MudItem xs="12" sm="6" md="6">
+                    <MudTextField For="@(() => _registerUserModel.LastName)"
+                                  Variant="Variant.Outlined"
+                                  Required="true"
+                                  @bind-Value="_registerUserModel.LastName" Label="@Localize["Last Name"]"/>
+                </MudItem>
+                @*     <MudItem xs="12" sm="6" md="6">
+                    <MudTextField Margin="Margin.Dense" Variant="Variant.Outlined" For="@(() => _registerUserModel.UserName)" @bind-Value="_registerUserModel.UserName" Label="@_localizer["User Name"]" />
+                </MudItem>*@
+                <MudItem xs="12" sm="6" md="6">
+                    <MudTextField T="string" Label="@Localize["E-mail"]"
+                                  Variant="Variant.Outlined"
+                                  Required="true"
+                                  @bind-Value="_registerUserModel.Email"
+                                  For="@(() => _registerUserModel.Email)"/>
+                </MudItem>
+                <MudItem xs="12" sm="6" md="6">
+                    <MudTextField For="@(() => _registerUserModel.Password)"
+                                  InputType="@_passwordInput" Adornment="Adornment.End"
+                                  Required="true"
+                                  Variant="Variant.Outlined"
+                                  AdornmentIcon="@_passwordInputIcon" OnAdornmentClick="TogglePasswordVisibility"
+                                  @bind-Value="_registerUserModel.Password" Label="@Localize["Password"]"/>
+                </MudItem>
+                @if (_registerUserModel.RegisterAsFestival)
+                {
+                    <MudItem xs="12">
+                        <MudTextField For="@(() => _registerUserModel.FestivalName)" 
+                                      @bind-Value="_registerUserModel.FestivalName"
+                                      Variant="Variant.Outlined"
+                                      Required="@(_registerUserModel.RegisterAsFestival)"
+                                      Label="@Localize["Event Name"]"/>
+                    </MudItem>
+                }
+
+                <MudItem xs="12">
+                      <MudRadioGroup T="bool" @bind-Value="_registerUserModel.RegisterAsFestival" >
+                          <MudRadio T="bool" Value="false" Color="Color.Primary" 
+                                    Size="Size.Small">@Localize["Register as user"]</MudRadio>
+
+                          <MudRadio T="bool" Value="true"  Color="Color.Primary"
+                                    Size="Size.Small">@Localize["Register as festival"] </MudRadio>
+                                    </MudRadioGroup>
+                </MudItem>
+
+                <MudItem xs="12" Class="d-flex justify-center">
+                    <LoadingButton Processing="_processing" ButtonType="ButtonType.Submit" Variant="Variant.Filled" Disabled="@(!_validated)" Color="Color.Dark" Size="Size.Large" Style="width: 100%;">@Localize["Register"]</LoadingButton>
+                </MudItem>
+            </MudGrid>
+        </EditForm>
+         </MudPaper>
+    </MudItem>
+</MudGrid>

@@ -1,0 +1,46 @@
+﻿@inject IStringLocalizer<AddProjectsToRefree> Localizer
+@using global::Hisubmit.Client.SharedModels.Features.Submits.Queries.GetAllSubmitsQueries
+
+<style>
+    .mud-table-container {
+        overflow: auto;
+    }
+</style>
+
+   <MudContainer MaxWidth="MaxWidth.Large">
+
+    <MudTable MultiSelection="true" SelectedItems="selectedSubmits" FixedFooter="true"  FixedHeader="true" Height="300px" Elevation="25" Items="_pagedDate" TotalItems="_totalItems" ServerData="@(new Func<TableState,CancellationToken, Task<TableData<GetAllSubmitsResponse>>>(ServerReload))" Hover="true" Dense="true" Bordered="@_bordered" Striped="@_striped" @ref="_table">
+        <ToolBarContent>
+            <div class="justify-center mud-text-align-center">
+                <MudButton DisableElevation Variant="Variant.Filled" OnClick="@(() => OnSearch(""))" StartIcon="@Icons.Material.Filled.Refresh" IconColor="Color.Surface" Color="Color.Secondary">@Localizer["Reload"]</MudButton>
+            </div>
+            <MudSpacer />
+            <MudTextField T="string" ValueChanged="@(OnSearch)" Placeholder="@Localizer["Search"]" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+        </ToolBarContent>
+        <HeaderContent>
+            <MudTh><MudTableSortLabel T="GetAllSubmitsResponse" SortLabel="ProjectTitle">@Localizer["Title"]</MudTableSortLabel></MudTh>
+            <MudTh><MudTableSortLabel T="GetAllSubmitsResponse" SortLabel="Submit Date">@Localizer["Submit Date"]</MudTableSortLabel></MudTh>
+            <MudTh>@Localizer["Enable"]</MudTh>
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd DataLabel="ProjectTitle">
+                <MudHighlighter Text="@context.ProjectTitle" HighlightedText="@_searchString" />
+            </MudTd>
+            <MudTd DataLabel="Submit Date">
+                <MudHighlighter Text="@context.SubmitDate.ToString("MMMM")" HighlightedText="@_searchString" />
+            </MudTd>
+            <MudTd DataLabel="Enable">
+                <MudChip T="string" Color="Color.Info" Variant="Variant.Text"  Size="Size.Small" Text="@context.SubmitStatus.ToString()" />
+            </MudTd>
+        </RowTemplate>
+      
+        <PagerContent>
+            <TablePager />
+        </PagerContent>
+    </MudTable>
+    <LoadingButton  Processing="_processing"  Class="mb-2 mt-2"  OnClick="AddToReferee"
+                    EndIcon="@Icons.Material.Filled.AddBusiness" Color="Color.Primary" Variant="Variant.Filled">
+        @Localizer["Add To Judge"]
+    </LoadingButton>
+   </MudContainer>   
+

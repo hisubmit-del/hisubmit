@@ -1,0 +1,52 @@
+﻿@if (!_loaded)
+{
+}
+else
+{
+    <MudCard Class="mt-2 pb-3 pt-2 border-radius-20 ">
+        <div Class="mt-2 text-center">
+            <MudText Typo="Typo.h5" Align="Align.Center" Class="mb-2">Venues</MudText>
+        </div>
+        <div class="side-box contact w-100">
+            <ul class="contact-list mt-4">
+                @foreach (var item in Venues)
+                {
+                    <li>
+                        <a href="#" target="_blank">
+                            <MudIcon Icon="@Icons.Material.Outlined.LocationOn"></MudIcon>
+                            @item.Address.ToString()
+                        </a>
+                    </li>
+                }
+            </ul>
+        </div>
+
+    </MudCard>
+}
+
+@* <div class="side-box venue"> *@
+@*     <h3>Venue</h3> *@
+@*     <div class="map"> *@
+@*         <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1438.709810731201!2d-79.50677661413523!3d43.84713056635582!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89d4cb90d7c63ba5%3A0x323555502ab4c477!2sToronto%2C%20ON%2C%20Canada!5e0!3m2!1sen!2s!4v1645792335003!5m2!1sen!2s" *@
+@*                 width="200" height="100" style="border:0;" allowfullscreen="" loading="lazy"> *@
+@*         </iframe> *@
+@*     </div> *@
+@*     <div class="navigate"> *@
+@*         <span class="">Navigate now:</span> *@
+@*         <a href="#"> *@
+@*             <img src="assets/img/nav-ma.svg" alt="ma"> *@
+@*         </a> *@
+@*         <a href="#"> *@
+@*             <img src="assets/img/nav-goo.svg" alt="goo"> *@
+@*         </a> *@
+@*         <a href="#"> *@
+@*             <img src="assets/img/nav.svg" alt="nav"> *@
+@*         </a> *@
+@*     </div> *@
+@*     <div class="address"> *@
+@*         <span>Imagine Cinemas Carlton Cinema</span> *@
+@*         <address> *@
+@*             20 Carlton Street Toronto, Ontario M5B 2H5 Canada *@
+@*         </address> *@
+@*     </div> *@
+@* </div> *@

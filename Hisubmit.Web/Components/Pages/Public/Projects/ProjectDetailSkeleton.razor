@@ -1,0 +1,50 @@
+﻿ <div class="container">
+        <section class="slider-section">
+            <MudSkeleton SkeletonType="SkeletonType.Rectangle"
+                         Height="400px" Width="100%">
+            </MudSkeleton>
+        </section>
+        <div class="row mb-5">
+            <div class="col-lg-3 col-sm-6 col-12">
+                <MudSkeleton Width="60%"></MudSkeleton>
+                <MudSkeleton Width="50%" Class="mb-5"></MudSkeleton>
+
+                <MudSkeleton Width="60%"></MudSkeleton>
+                <MudSkeleton Width="50%" Class="mb-5"></MudSkeleton>
+
+                <MudSkeleton Width="60%"></MudSkeleton>
+                <MudSkeleton Width="50%" Class="mb-5"></MudSkeleton>
+
+                <MudSkeleton Width="60%"></MudSkeleton>
+                <MudSkeleton Width="50%" Class="mb-5"></MudSkeleton>
+            </div>
+            <div class="col-lg-3 col-sm-6 col-12">
+                <MudSkeleton Width="60%"></MudSkeleton>
+                <MudSkeleton Width="50%" Class="mb-5"></MudSkeleton>
+
+                <MudSkeleton Width="60%" Class="mb-2"></MudSkeleton>
+                <MudSkeleton Width="50%" Class="mb-2"></MudSkeleton>
+                <MudSkeleton Width="50%" Class="mb-2"></MudSkeleton>
+                <MudSkeleton Width="50%" Class="mb-2"></MudSkeleton>
+                <MudSkeleton Width="50%" Class="mb-2"></MudSkeleton>
+            </div>
+            <div class="col-lg-3 col-sm-6 col-12">
+                @for (int i = 0; i < 5; i++)
+                {
+                    <MudCard Elevation="0">
+                        <MudCardHeader>
+                            <CardHeaderAvatar>
+                                <MudSkeleton SkeletonType="SkeletonType.Rectangle" Class="rounded"
+                                             Animation="Animation.Wave" Height="30px" Width="30px"/>
+                            </CardHeaderAvatar>
+                            <CardHeaderContent>
+                                <MudSkeleton Animation="Animation.Wave" Width="60%"/>
+                            </CardHeaderContent>
+                        </MudCardHeader>
+                    </MudCard>
+                }
+
+            </div>
+            <div class="col-lg-3 col-sm-6 col-12"></div>
+        </div>
+    </div>

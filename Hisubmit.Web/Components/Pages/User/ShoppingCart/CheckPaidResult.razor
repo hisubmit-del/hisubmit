@@ -1,0 +1,33 @@
+﻿@page "/user/payment-result/{PaymentId}"
+@inherits BaseUserPages
+<style>
+    .question-box p{
+    font-size: 14px;
+    }
+</style>
+<MudContainer MaxWidth="MaxWidth.Medium">
+    <MudCard Class="pa-3">
+        <MudCardContent>
+            <MudAlert Class="text-center w-100 pa-2" ContentAlignment="HorizontalAlignment.Center" NoIcon="true"
+                      Severity="Severity.Success">
+                Your payment has been successfully completed
+            </MudAlert>
+
+             <MudText Typo="Typo.subtitle2" Class="mt-2">Payment Id:@PaymentId</MudText> 
+            @* <MudText Typo="Typo.subtitle2"  Class="mbt-2">Order Id:@OrderId</MudText> *@
+            <MudDivider/>
+            
+            <MudItem xs="12" Class="justify-end mt-2 d-flex ">
+                <MudButton Color="Color.Tertiary" Href="/user/ShoppingCart"
+                           StartIcon="@Icons.Material.Filled.ShoppingCart"> Go to Cart</MudButton>
+            </MudItem>
+        </MudCardContent>
+    </MudCard>
+</MudContainer>
+
+@code {
+    [Parameter] public string PaymentId { get; set; }
+
+    [Parameter] public string OrderId { get; set; }
+    
+}

@@ -1,0 +1,10 @@
+﻿@inject IStringLocalizer<CountrySelector> Localizer 
+
+<MudAutocomplete T="int"  Label="@Localizer["Country"]"
+                 ValueChanged="@((id)=>ChangeCountry(id))" 
+                 Value="CountryId"  ResetValueOnEmptyText="true"
+                 SearchFunc="@SearchCountries" Variant="SelectorVariant" 
+                 For="()=>CountryId"Margin="Margin.Dense" OffsetY="true" 
+                 ToStringFunc="@(i => Countries.FirstOrDefault(b => b.Id == i)?.Name ?? string.Empty)" />
+
+ 

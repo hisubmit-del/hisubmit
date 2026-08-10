@@ -1,0 +1,49 @@
+@using Hisubmit.Client.SharedModels.Features.Festivals.Queries.GetAllFestivalFile
+@using MudBlazor
+  @if (Files != null || !Files.Any())
+            {
+               
+@* <MudContainer MaxWidth="MaxWidth.Large" Class="mt-4"> *@
+    <MudCard>
+        <MudCardHeader>
+            <MudText Typo="Typo.h6">Files </MudText>
+        </MudCardHeader>
+        <MudCardContent>
+                <MudList Clickable="false" T="GetAllFestivalFileResponse" SelectedValue="@Files[0]">
+                    @foreach (var file in Files)
+                    {
+                        <MudListItem>
+                            <div class="d-flex justify-space-between align-center">
+                                <MudText Typo="Typo.body1">@file.Name</MudText>
+                                <MudIconButton Icon="@Icons.Material.Filled.Download" 
+                                             Size="Size.Small"
+                                             Color="Color.Primary" 
+                                             OnClick="@(() => DownloadFile(file.FileURL))"
+                                             Title="دانلود فایل" />
+                            </div>
+                        </MudListItem>
+                        @if (Files.Last() != file)
+                        {
+                            <MudDivider />
+                        }
+                    }
+                </MudList>
+            
+        </MudCardContent>
+    </MudCard>
+@* </MudContainer> *@
+
+}
+
+@code {
+    [Parameter]
+    public List<GetAllFestivalFileResponse> Files { get; set; }
+
+    [Inject]
+    private IJSRuntime JSRuntime { get; set; }
+
+    private async Task DownloadFile(string filePath)
+    {
+        await JSRuntime.InvokeVoidAsync("window.open", filePath, "_blank");
+    }
+} 

@@ -1,0 +1,93 @@
+﻿@page "/commissions"
+@inject IStringLocalizer<Commissions> Localizer;
+@attribute [Authorize(Permissions.Commission.View)]
+@inherits BaseAdminPages
+
+<MudContainer MaxWidth="MaxWidth.Large">
+    <HeroTitle Title="@Localizer["Site Commission"]" />
+    <MudCard Class="mb-2" Elevation="5">
+        <MudCardContent>
+            <MudContainer>
+                <EditForm Model="_commissions">
+                    <FluentValidationValidator @ref="_fluentValidationValidator" />
+                    <MudGrid>
+                        <MudItem xs="12" sm="6" lg="4">
+                            <MudNumericField Label="@Localizer["Service Fee(percent)"]"
+                                             Variant="Variant.Filled"
+                                             @bind-Value="_commissions.SubmitServiceFee"
+                                             For="() => _commissions.SubmitServiceFee" />
+                        </MudItem>
+                        <MudItem xs="12" sm="6" lg="4">
+                            <MudNumericField Label="@Localizer["Minimum Service Fee"]"
+                                             Variant="Variant.Filled"
+                                             @bind-Value="_commissions.MinimumServiceFee"
+                                             For="() => _commissions.MinimumServiceFee" />
+                        </MudItem>
+                        <MudItem xs="12" sm="6" lg="4">
+                            <MudNumericField Label="@Localizer["Maximum Service Fee"]"
+                                             Variant="Variant.Filled"
+                                             @bind-Value="_commissions.MaximumServiceFee"
+                                             For="() => _commissions.MaximumServiceFee" />
+                        </MudItem>
+                        <MudItem xs="12" sm="6" lg="4">
+                            <MudNumericField Label="@Localizer["Usual Festival Commission"]"
+                                             Variant="Variant.Filled"
+                                             @bind-Value="_commissions.UsualFestivalCommission"
+                                             For="() => _commissions.UsualFestivalCommission" />
+                        </MudItem>
+                        <MudItem xs="12" sm="6" lg="4">
+                            <MudNumericField Label="@Localizer["Special Festival Commission"]"
+                                             Variant="Variant.Filled"
+                                             @bind-Value="_commissions.SpecialFestivalCommission"
+                                             For="() => _commissions.SpecialFestivalCommission" />
+                        </MudItem>
+                        <MudItem xs="12" sm="6" lg="4">
+                            <MudNumericField Label="@Localizer["Ticket Sales Commission(percent)"]"
+                                             Variant="Variant.Filled"
+                                             @bind-Value="_commissions.TicketSalesCommission"
+                                             For="() => _commissions.TicketSalesCommission" />
+                        </MudItem>
+                        <MudItem xs="12" sm="6" lg="4">
+                            <MudNumericField Label="@Localizer["Product Sales Commission(percent)"]"
+                                             Variant="Variant.Filled"
+                                             @bind-Value="_commissions.ProductSalesCommission"
+                                             For="() => _commissions.ProductSalesCommission" />
+                        </MudItem>
+
+                        <MudItem xs="12" sm="6" lg="4">
+                            <MudNumericField Label="@Localizer["Monthly Special User Fee"]"
+                                             Variant="Variant.Filled"
+                                             @bind-Value="_commissions.MonthlySpecialUserFee"
+                                             For="() => _commissions.MonthlySpecialUserFee" />
+                        </MudItem>
+                        <MudItem xs="12" sm="6" lg="4">
+                            <MudNumericField Label="@Localizer["Three Monthly Special User Fee"]"
+                                             Variant="Variant.Filled"
+                                             @bind-Value="_commissions.ThreeMonthlySpecialUserFee"
+                                             For="() => _commissions.ThreeMonthlySpecialUserFee" />
+                        </MudItem>
+                        <MudItem xs="12" sm="6" lg="4">
+                            <MudNumericField Label="@Localizer["Yearly Special User Fee"]"
+                                             Variant="Variant.Filled"
+                                             @bind-Value="_commissions.YearlySpecialUserFee"
+                                             For="() => _commissions.YearlySpecialUserFee" />
+                        </MudItem>
+                    </MudGrid>
+
+                    <AuthorizeView Context="authorizeContext"
+                                   Policy="@Permissions.Commission.Update">
+                        <MudGrid Class="my-2 justify-end">
+                            <LoadingButton Processing="_processing"
+                                           OnClick="SaveAsync"
+                                           Variant="Variant.Filled"
+                                           StartIcon="@Icons.Material.Filled.Save"
+                                           Color="Color.Primary">
+                                @Localizer["Save"]
+                            </LoadingButton>
+                        </MudGrid>
+                    </AuthorizeView>
+                </EditForm>
+            </MudContainer>
+        </MudCardContent>
+    </MudCard>
+</MudContainer>

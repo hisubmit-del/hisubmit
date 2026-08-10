@@ -1,0 +1,272 @@
+﻿@page "/user/ShoppingCart"
+@using Hisubmit.Client.SharedModels.Extensions
+@using HiSubmit.Web.Components.Shared.Components.Payments
+@inject IStringLocalizer<ShoppingCart> Localize
+@inherits BaseUserPages
+<MudContainer MaxWidth="MaxWidth.Large">
+    <HeroTitle Title="@Localize["Cart"]" Description="@Localize["All your purchases"]" />
+    <MudDivider />
+    <MudTabs Elevation="25" Color="Color.Transparent" Rounded="true" PanelClass="mt-6">
+        <MudTabPanel Text="@Localize["Cart Items"]">
+            <MudGrid Class="mt-2 flex-row-reverse">
+                <MudItem xs="12" md="4">
+                    <MudPaper Outlined="true" Class="flex-grow-1 px-4 pt-2 pb-4 relative  ">
+                        <MudOverlay Visible="IsVisibleOveralls" ZIndex="500"
+                                    DarkBackground="true" Absolute="true">
+                            <div>
+                                <MudProgressCircular Color="Color.Secondary"
+                                                     Size="Size.Large" Indeterminate="true" />
+                            </div>
+                        </MudOverlay>
+                        <MudStack Row="true" Justify="Justify.SpaceBetween"
+                                  AlignItems="AlignItems.Center">
+                            <MudText Typo="Typo.h6">Unpaid Cart Summary</MudText>
+                            <MudIconButton Icon="@Icons.Material.Filled.AttachMoney"
+                                           Color="Color.Default" Edge="Edge.End" />
+                        </MudStack>
+                        <MudStack Spacing="5">
+                            @if (_shopCartItems.Where(p => !p.Paid).ToList() is null or { Count: 0 })
+                            {
+                                <MudText Class="py-16" Typo=Typo.h6 Align="Align.Center">
+                                    Your cart is empty... ☹️
+                                </MudText>
+                            }
+                            else
+                            {
+                                foreach (var item in _shopCartItems
+                                .Where(p => !p.Paid)
+                                .GroupBy(p => p.FestivalId))
+                                {
+                                    var festivalName = item.First().FestivalName;
+                                    <MudDivider />
+                                    <MudStack Row="true" Justify="Justify.SpaceBetween">
+                                        <MudText Typo=Typo.body2>
+                                            @(festivalName)
+                                        </MudText>
+                                        <MudText Typo=Typo.subtitle2>
+                                            @item.Sum(p => p.GetRealPrice()).ToString("C2")
+
+                                        </MudText>
+                                    </MudStack>
+                                    @foreach (var i in item)
+                                    {
+                                        <MudStack Row="true" Class="ml-4"
+                                                  Justify="Justify.SpaceBetween">
+                                            @if (i.CartItemType == CartItemType.Submit)
+                                            {
+                                                <MudText Typo="Typo.caption">@i.SubmitCategoriesName </MudText>
+                                            }
+
+                                            @if (i.CartItemType == CartItemType.ServiceFee)
+                                            {
+                                                <MudText Typo="Typo.caption" Inline="false">Service fee </MudText>
+                                            }
+                                            @if (i.CartItemType == CartItemType.Product)
+                                            {
+                                                <MudText Typo="Typo.caption" Inline="false">@i.ProductName</MudText>
+                                            }
+                                            @if (i.CartItemType == CartItemType.Ticket)
+                                            {
+                                                <MudText Typo="Typo.caption" Inline="false">@i.SoldTicketName</MudText>
+                                            }
+                                            @if (i.CartItemType == CartItemType.Badge)
+                                            {
+                                                <MudText Typo="Typo.caption" Inline="false">@i.SoldTicketName</MudText>
+                                            }
+
+                                            @if (i.PriceAfterDiscount == null)
+                                            {
+                                                <MudText Typo="Typo.caption">
+                                                    @i.Price.ToString("C2")
+                                                </MudText>
+                                            }
+                                            else
+                                            {
+                                                <MudText Typo="Typo.caption">
+                                                    <del> @i.Price.ToString("C2")</del>
+                                                    @i.PriceAfterDiscount.Value.ToString("C2")
+                                                </MudText>
+                                            }
+                                        </MudStack>
+                                    }
+                                }
+
+                                <MudDivider />
+
+                                @foreach (var c in _discountCodes)
+                                {
+                                    <MudChip T="string" Variant="Variant.Outlined" Color="Color.Dark"
+                                             OnClose="() => RemoveDiscountCode(c)"
+                                             CloseIcon="@Icons.Material.Filled.Delete">@c</MudChip>
+                                }
+                                <MudTextField Variant="Variant.Outlined"
+                                              @bind-Value="_discountCode"
+                                              Margin="Margin.Dense"
+                                              AdornmentColor="Color.Primary"
+                                              Adornment="Adornment.End"
+                                              OnAdornmentClick="() => AddDiscountCodes()"
+                                              Label="Discount Code"
+                                              Placeholder="Enter Your Discount Codes"
+                                              AdornmentIcon="@Icons.Material.Filled.Add"></MudTextField>
+                            }
+
+                        </MudStack>
+                        <MudStack Class="mt-4">
+                            <MudStack Row="true" Justify="Justify.SpaceBetween">
+                                <MudText Typo=Typo.subtitle1>
+                                    <b>Pretax Total:</b>
+                                </MudText>
+                                <MudText Typo=Typo.subtitle1>
+                                    <b>@_shopCartItems?.Where(p => !p.Paid).Sum(p => p.GetRealPrice()).ToString("C2")</b>
+                                </MudText>
+                            </MudStack>
+                            @if (_shopCartItems != null
+                                                        && _shopCartItems.Any(p => !p.Paid)
+                                                        && _shopCartItems.Where(p => !p.Paid).Sum(p => p.GetRealPrice()) > 0)
+                            {
+                                if (_shopCartItems != null)
+                                {
+                                    <PaypalButtons @bind-Overaly="IsVisibleOveralls"
+                                                   DiscountCodes="_discountCodes"
+                                                   PaidSuccessfully="PaidSuccessfully"
+                                                   CostumeId="@(_shopCartItems?.Where(p => !p.Paid).FirstOrDefault()?.CartId.ToString())"
+                                                   Amount="@_shopCartItems.Where(p => !p.Paid).Sum(p => p.GetRealPrice())">
+                                    </PaypalButtons>
+                                }
+                            }
+                            else
+                            {
+
+                                <MudButton OnClick="PaidZero" Variant="Variant.Filled" Color="Color.Primary"
+                                           FullWidth="true"
+                                           Disabled="@(!(_shopCartItems?.Where(p=>!p.Paid)).Any())" DisableElevation
+                                           Size=@Size.Large>
+                                    Checkout
+                                </MudButton>
+                            }
+                        </MudStack>
+                    </MudPaper>
+                </MudItem>
+
+                <MudItem xs="12" md="8" Class="max-vh-90 overflow-auto">
+                    <Animate DelayMilliseconds="100" Auto Animation="Animations.FadeDown" DurationMilliseconds="1000">
+                        <MudStack Spacing="8">
+                            @foreach (var cartGrouped in _shopCartItems.GroupBy(p => p.CartId))
+                            {
+                                foreach (var festivalGrouped in cartGrouped.GroupBy(p => p.FestivalId))
+                                {
+                                    <MudStack Row="true" Spacing="3">
+                                        @if (festivalGrouped.Any(p => p.CartItemType is CartItemType.Submit
+                                                                        or CartItemType.Badge or CartItemType.Ticket))
+                                        {
+                                            <MudImage Src="@festivalGrouped.First().ImageUrl" Width="120"
+                                                      Height="120" Class="rounded" />
+                                            <MudText Typo="Typo.subtitle1">
+                                                <b>@(string.IsNullOrWhiteSpace(festivalGrouped.First().FestivalName) ? "Hisubmit" : festivalGrouped.First().FestivalName) </b>
+                                            </MudText>
+                                        }
+                                        else
+                                        {
+                                            <MudImage Src="@ClientAppConstants.SmallLogoUrl"
+                                                      Width="120" Height="120" />
+                                            <MudText Typo="Typo.subtitle1">
+                                                <b>@(string.IsNullOrWhiteSpace(festivalGrouped.First().FestivalName) ? "Hisubmit" : festivalGrouped.First().FestivalName) </b>
+                                            </MudText>
+                                        }
+                                        <MudGrid>
+                                            <MudItem xs="12" md="12">
+                                                <MudSimpleTable Dense="true" Bordered="true" Class="me-lg-4">
+                                                    @foreach (var i in festivalGrouped)
+                                                    {
+                                                        <MudTr>
+                                                            <MudTd>
+                                                                @if (i.CartItemType == CartItemType.Submit)
+                                                                {
+                                                                    <MudText Typo="Typo.caption">@i.SubmitCategoriesName </MudText>
+                                                                }
+                                                                @if (i.CartItemType == CartItemType.ServiceFee)
+                                                                {
+                                                                    <MudText Typo="Typo.caption" Inline="false">Service fee </MudText>
+                                                                }
+                                                                @if (i.CartItemType == CartItemType.Product)
+                                                                {
+                                                                    <MudText Typo="Typo.caption" Inline="false">@i.ProductName</MudText>
+                                                                }
+                                                                @if (i.CartItemType == CartItemType.Ticket)
+                                                                {
+                                                                    <MudText Typo="Typo.caption" Inline="false">@i.SoldTicketName</MudText>
+                                                                }
+                                                                @if (i.CartItemType == CartItemType.Badge)
+                                                                {
+                                                                    <MudText Typo="Typo.caption" Inline="false">@i.SoldTicketName</MudText>
+                                                                }
+                                                            </MudTd>
+                                                            <MudTd>
+                                                                <MudChip T="string" Label="true" Size="Size.Small" Variant="Variant.Text"
+                                                                         Color="Color.Info">
+                                                                    @i.CartItemType
+                                                                </MudChip>
+                                                            </MudTd>
+
+                                                            <MudTd>
+                                                                @if (i.PriceAfterDiscount == null)
+                                                                {
+                                                                    <MudText Typo="Typo.caption">
+                                                                        @i.Price.ToString("C2")
+                                                                    </MudText>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <MudText Typo="Typo.caption">
+                                                                        <del> @i.Price.ToString("C2")</del>
+                                                                        @i.PriceAfterDiscount.Value.ToString("C2")
+                                                                    </MudText>
+                                                                }
+                                                            </MudTd>
+                                                            <MudTd>
+                                                                @if (i.CanDelete)
+                                                                {
+                                                                    <MudIconButton Color="Color.Error"
+                                                                                   Icon="@Icons.Material.Filled.Delete"
+                                                                                   OnClick="() => DeleteItem(i)"
+                                                                                   Size="Size.Small" />
+                                                                }
+                                                                else
+                                                                {
+                                                                    <MudText Typo="Typo.caption">@i.SubmitTrackCode</MudText>
+                                                                }
+                                                            </MudTd>
+                                                        </MudTr>
+                                                    }
+                                                </MudSimpleTable>
+                                                <div class="mb-3">
+                                                    <MudChip T="string" Size="Size.Small" Label="true"
+                                                             Color="@(festivalGrouped.First().Paid ? Color.Success : Color.Warning)"
+                                                             Variant="Variant.Filled">
+                                                        @(festivalGrouped.First().Paid ? "Paid" : "UnPaid")
+                                                    </MudChip>
+                                                    @if (festivalGrouped.First().Paid)
+                                                    {
+                                                        <MudText Typo="Typo.body1">
+                                                            Paid Date:@festivalGrouped.First().PaidDate.ToLongDateTime()
+                                                        </MudText>
+                                                    }
+                                                </div>
+                                            </MudItem>
+                                        </MudGrid>
+                                    </MudStack>
+                                    <MudDivider />
+                                }
+                            }
+                        </MudStack>
+                    </Animate>
+                </MudItem>
+            </MudGrid>
+        </MudTabPanel>
+        <MudTabPanel Text="@Localize["Receipts"]">
+            <Carts />
+        </MudTabPanel>
+    </MudTabs>
+</MudContainer>
+
+

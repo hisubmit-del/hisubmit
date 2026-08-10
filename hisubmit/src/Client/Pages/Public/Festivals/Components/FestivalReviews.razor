@@ -1,0 +1,42 @@
+﻿@using HiSubmit.Client.SharedModels.Extensions
+@if (_loaded && _reviews.Any())
+{
+    <MudCard Elevation="1" Class="pa-3 text-center mb-3">
+        <MudText Typo="Typo.h5" Class="mb-5" Align="Align.Center">Reviews</MudText>
+
+        @foreach (var review in _reviews)
+        {
+            <MudGrid>
+                <MudItem xs="12" lg="3">
+                    <MudAvatar Style="height:100px; width:100px;">
+                        @if (string.IsNullOrWhiteSpace(review.UserImages))
+                        {
+                            <MudImage Src="@ClientAppConstants.NoImageUrl" Alt="NoImage"></MudImage>
+                        }
+                        else
+                        {
+                            <MudImage Src="@review.UserImages" Alt="@review.UserFullName"></MudImage>
+                        }
+                    </MudAvatar>
+                    <MudText Typo="Typo.subtitle1">@review.UserFullName</MudText>
+                </MudItem>
+                <MudItem xs="12" lg="9" Class="text-start">
+                    <div>
+                        <MudRating Size="Size.Medium"
+                                   ReadOnly="true"
+                                   SelectedValue="@review.Rate">
+                        </MudRating>
+                    </div>
+                    <MudText Typo="Typo.body1">
+                        @review.Text
+                    </MudText>
+                </MudItem>
+            </MudGrid>
+            <MudDivider DividerType="DividerType.Inset" Style="height: 2px" Class="my-4"></MudDivider>
+        }
+
+        <MudGrid Class="d-flex justify-end">
+            <MudButton Color="Color.Dark" Class="ma-2" EndIcon="@Icons.Material.Outlined.ArrowForward">Show more</MudButton>
+        </MudGrid>
+    </MudCard>
+}

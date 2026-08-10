@@ -1,0 +1,31 @@
+﻿@using Hisubmit.Client.SharedModels.Extensions
+<MudItem xs="12">
+    <MudCard>
+        @if (_loaded)
+        {
+            <MudCardContent Class="ma-3 pb-5 position-relative">
+                <MudGrid Class="mb-5 mb-lg-1">
+
+                    <MudItem xs="12" lg="4">
+                        <MudPaper Elevation="0" Class="border-r-2 border-solid mud-border-primary pa-4" Style="height: 100%">
+                            <MudStack Justify="Justify.SpaceBetween">
+                                <MudText Typo="Typo.h4" Align="Align.Center">@_submit.ProjectTitle</MudText>
+                                <MudChip T="string" Label="true" Color="Color.Surface" Variant="Variant.Text" Icon="@Icons.Material.Filled.AccountBox">@_submit.ProjectOwnerFullName</MudChip>
+                                <MudText Align="Align.Center" Typo="Typo.body2"><MudText Typo="Typo.body1">Submit Date:</MudText> @_submit.SubmitDate.ToLongDateTime()</MudText>
+                            </MudStack>
+                        </MudPaper>
+                    </MudItem>
+                    <MudItem xs="12" lg="8">
+                        <MudPaper Class="pa-2" Elevation="0">
+                            @_submit.ProjectEnglishBriefSynopsis
+                        </MudPaper>
+                    </MudItem>
+
+                </MudGrid>
+                <MudButton Color="Color.Primary" EndIcon="@Icons.Material.Filled.KeyboardArrowRight" Style="position: absolute;right: 2%;bottom: 2%"
+                Href="@($"/project/{_submit.ProjectUrl}")">Go to Project Page</MudButton>
+       
+            </MudCardContent>
+        }
+    </MudCard >
+</MudItem>

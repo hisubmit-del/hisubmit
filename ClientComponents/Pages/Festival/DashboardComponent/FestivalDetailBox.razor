@@ -1,0 +1,162 @@
+﻿@using global::Hisubmit.Client.SharedModels.Features.Festivals.Queries.GetDetailById
+@using HiSubmit.Client.Infrastructure.Managers.Festivals
+@using ClientComponents.Shared.Components.ICons
+@using HiSubmit.Client.SharedModels.Extensions
+@using Hisubmit.Client.SharedModels.Features.Festivals.Commands.ReleaseFestival
+@using Hisubmit.Client.SharedModels.Features.Festivals.Commands.SpecialRequest
+
+<MudCard Class="pa-3 chart-box">
+    <MudCardContent>
+        <div class="d-flex justify-center mb-4">
+            @{
+                if (!string.IsNullOrEmpty(Festival.LogoURL))
+                {
+                    <MudAvatar  Style="height:200px; width:200px;">
+                        <MudImage Src="@Festival.LogoURL" Alt="@Festival.Name"></MudImage>
+                    </MudAvatar>
+                }
+                else
+                {
+                    <MudAvatar Color="Color.Secondary" Style="height:200px; width:200px;">@Festival.Name[0]</MudAvatar>
+                }
+            }
+        </div>
+        <MudText Typo="Typo.h4" Align="Align.Center">@Festival.Name</MudText>
+        @{
+            
+            if (Festival.IsActive)
+            {
+                <MudText Align="Align.Center" Typo="Typo.subtitle1" Color="Color.Success">
+                    Published
+                </MudText>
+            }
+            else
+            {
+                @if (Festival.FestivalStatus == FestivalStatus.UnderInvestigation)
+                {
+                    <MudChip T="FestivalStatus" Color="Color.Info" Size="Size.Small">@Festival.FestivalStatus.ToDisplay()</MudChip>
+                    // <MudText Align="Align.Center" Class="mb-2" Typo="Typo.subtitle1">
+                    //     Not Published
+                    // </MudText>
+                }
+                else
+                {
+                    <MudText Align="Align.Center" Class="mb-2" Typo="Typo.subtitle1">
+                        Not Published
+                        <MudButton Color="Color.Primary" Class="d-inline" 
+                                   OnClick="ReleaseFestival"  Size="@Size.Small" Variant="@Variant.Outlined">
+                            Release Festival
+                        </MudButton>
+                   
+                    </MudText>
+                }
+            }
+            switch (Festival.FeeStatus)
+            {
+                case FeeStatus.Usual:
+                    <MudText Align="@Align.Center" Typo="@Typo.subtitle1">
+                        Normal
+                        <MudButton Size="@Size.Small" Variant="@Variant.Outlined"
+                                   Color="@Color.Secondary" Class="d-inline" OnClick="() => SpecialRequest()">
+                         
+                          Special Request
+                        </MudButton>
+
+                    </MudText>
+                    break;
+                case FeeStatus.SpecialRequest:
+                    <MudText Align="@Align.Center" Typo="@Typo.subtitle1">
+                        Under review
+                    </MudText>
+                    break;
+                case FeeStatus.Special:
+                    <MudText Align="@Align.Center" Typo="@Typo.subtitle1">
+                        Special
+                        <IGold  Height="25px" Width="25px"/>
+                    </MudText>
+                    break;
+                case FeeStatus.Rejected:
+
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+        }
+
+    </MudCardContent>
+</MudCard>
+
+@code{
+
+    [Parameter]
+    public GetFestivalDetailResponse Festival { get; set; }
+
+    [Parameter]
+    public bool Loaded { get; set; }
+
+
+    [Inject]
+    private IFestivalManager FestivalManager { get; set; }
+
+    private async Task SpecialRequest()
+    {
+        var response = await FestivalManager.SpecialRequest(new SpecialRequestCommand()
+        {
+            FestivalId = Festival.Id
+        });
+        if (response.Succeeded)
+        {
+            await PendingApproval();
+            Festival.FeeStatus = FeeStatus.SpecialRequest;
+            // _snackBar.Add(response.Messages[0], Severity.Success);
+        }
+        else
+        {
+            foreach (var message in response.Messages)
+            {
+                _snackBar.Add(message, Severity.Error);
+            }
+        }
+    }
+
+    private async Task ReleaseFestival()
+    {
+      
+        var response = await FestivalManager.Release(new ReleaseFestivalCommand()
+        {
+            FestivalId = Festival.Id
+        });
+        if (response.Succeeded)
+        {
+            var parameters = new DialogParameters
+                { { nameof(SuccessfullyProccess.ContentText), response.Messages[0] } };
+
+            var options = new DialogOptions() { CloseButton = true, FullWidth = true, MaxWidth = MaxWidth.Small };
+
+            _dialogService.Show<SuccessfullyProccess>("Success", parameters, options);
+        }
+        else
+        {
+            var parameter = new DialogParameters
+                { { nameof(EmptyItemForReleaseFestival.Messages), response.Messages } };
+            var options = new DialogOptions() { CloseButton = true, FullWidth = true, MaxWidth = MaxWidth.Small };
+            var dialog = _dialogService.Show<EmptyItemForReleaseFestival>("Empty Item", parameter, options);
+        }
+
+        
+    }
+
+
+    private async Task PendingApproval()
+    {
+        var options = new DialogOptions()
+        {
+            BackdropClick = true,
+            CloseButton = true,
+            FullWidth = true,
+            MaxWidth = MaxWidth.Small
+        };
+        var d = await _dialogService.ShowAsync<ApprovedEmail>("Admin Approval", options);
+        var res = await d.Result;
+    }
+}

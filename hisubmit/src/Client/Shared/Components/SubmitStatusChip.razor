@@ -1,0 +1,32 @@
+﻿
+@using HiSubmit.Client.SharedModels.Extensions
+@switch (SelectedSubmitStatus)
+{
+    case SubmitStatus.Default:
+        <MudChip T="string" Color="Color.Info" Variant="Variant.Text" Size="Size.Small" Text="@SelectedSubmitStatus.ToDisplay()"/>
+        break;
+    case SubmitStatus.DontPaid:
+        <MudChip T="string" Color="Color.Secondary" Variant="Variant.Text" Size="Size.Small" Text="@SelectedSubmitStatus.ToDisplay()"/>
+break;
+    case SubmitStatus.Paid:
+        <MudChip T="string" Color="Color.Success" Variant="Variant.Text" Size="Size.Small" Text="@SelectedSubmitStatus.ToDisplay()"/>
+        break;
+    case SubmitStatus.Inconsideration:
+        <MudChip T="string" Color="Color.Default" Variant="Variant.Text" Size="Size.Small" Text="@SelectedSubmitStatus.ToDisplay()"/>
+        break;
+    case SubmitStatus.InComplete:
+        <MudChip T="string" Color="Color.Tertiary" Variant="Variant.Text" Size="Size.Small" Text="@SelectedSubmitStatus.ToDisplay()"/>
+        break; 
+    case SubmitStatus.Withdrawn:
+            <MudChip T="string" Color="Color.Warning" Variant="Variant.Text" Size="Size.Small" Text="@SelectedSubmitStatus.ToDisplay()"/>
+            break;
+    case SubmitStatus.Disqualified:
+        <MudChip T="string" Color="Color.Error" Variant="Variant.Text" Size="Size.Small" Text="@SelectedSubmitStatus.ToDisplay()"/>
+        break;
+}
+@code {
+    
+    [Parameter]
+    public  SubmitStatus SelectedSubmitStatus { get; set; }
+    
+}

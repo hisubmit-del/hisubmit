@@ -1,0 +1,81 @@
+﻿@inject IStringLocalizer<FestivalNavMenu> Localize
+@using HiSubmit.Client.SharedModels.Constants.Role
+
+@if (IsFestivalRole || IsAdminRole)
+{
+    <MudNavLink Href="/festival/dashboard" IconColor="Color.Tertiary" Match="NavLinkMatch.All" Icon="@Icons.Material.Outlined.Dashboard">
+        @Localize["Dashboard"]
+    </MudNavLink>
+    <MudNavLink Href="/festival/notifications" IconColor="Color.Tertiary" Match="NavLinkMatch.All" Icon="@Icons.Material.Outlined.Notifications">
+        @Localize["Notifications"]
+    </MudNavLink>
+    <MudNavLink Href="/festival/edit" IconColor="Color.Tertiary" Match="NavLinkMatch.All" Icon="@Icons.Material.Outlined.Edit">
+        @Localize["Edit"]
+    </MudNavLink>
+    <MudNavGroup IconColor="Color.Tertiary" Icon="@Icons.Material.Filled.AppRegistration" Title="Submits" Expanded="false">
+        <MudNavLink Href="/festival/submits" IconColor="Color.Tertiary" Icon="@Icons.Material.Outlined.AppRegistration">
+            @Localize["festival Submits"]
+        </MudNavLink>
+        <MudNavLink Href="/festival/question" IconColor="Color.Tertiary" Icon="@Icons.Material.Outlined.FormatSize">
+            @Localize["Submission form"]
+        </MudNavLink>
+        <MudNavLink Href="@($"/festival/judging")" IconColor="Color.Tertiary" Icon="@Icons.Material.Outlined.Score">
+            @Localize["Judging form"]
+        </MudNavLink>
+    </MudNavGroup>
+    <MudNavGroup IconColor="Color.Tertiary" Icon="@Icons.Material.Filled.AirplaneTicket" Title="Tickets" Expanded="false">
+        <MudNavLink Href="/festival/venues" IconColor="Color.Tertiary" Icon="@Icons.Material.Outlined.Apartment">
+            @Localize["Venues"]
+        </MudNavLink>
+        <MudNavLink Href="/festival/tickets" IconColor="Color.Tertiary" Icon="@Icons.Material.Outlined.AirplaneTicket">
+            @Localize["Tickets"]
+        </MudNavLink>
+        <MudNavLink Href="/festival/soldTicketsList" IconColor="Color.Tertiary" Icon="@Icons.Material.Outlined.Money">
+            @Localize["Tickets sold"]
+        </MudNavLink>
+    </MudNavGroup>
+
+    <MudNavGroup IconColor="Color.Tertiary" Icon="@Icons.Material.Filled.SocialDistance" Title="Communication" Expanded="false">
+        <MudNavLink Href="/festival/chat" IconColor="Color.Tertiary" Icon="@Icons.Material.Outlined.Chat">
+            @Localize["Chat"]
+        </MudNavLink>
+        <MudNavLink Href="/festival/reviews" IconColor="Color.Tertiary" Icon="@Icons.Material.Outlined.Reviews">
+            @Localize["Reviews"]
+        </MudNavLink>
+        <MudNavLink Href="/festival/news" IconColor="Color.Tertiary" Icon="@Icons.Material.Outlined.Newspaper">
+            @Localize["News"]
+        </MudNavLink>
+         <MudNavLink Href="/festival/seo" IconColor="Color.Tertiary" Icon="@Icons.Material.Filled.Search">
+                    @Localize["Seo"]
+                </MudNavLink>
+    </MudNavGroup>
+    <MudNavGroup IconColor="Color.Tertiary" Icon="@Icons.Material.Filled.ProductionQuantityLimits" Title="Products" Expanded="false">
+        <MudNavLink Href="/festival/products" IconColor="Color.Tertiary" Icon="@Icons.Material.Outlined.ProductionQuantityLimits">
+            @Localize["Products"]
+        </MudNavLink>
+        <MudNavLink Href="/festival/productsSold" IconColor="Color.Tertiary" Icon="@Icons.Material.Outlined.Money">
+            @Localize["Products Sold"]
+        </MudNavLink>
+    </MudNavGroup>
+    <MudNavGroup IconColor="Color.Tertiary" Icon="@Icons.Material.Filled.SupervisorAccount" Title="Sub Users" Expanded="false">
+        <MudNavLink Href="/festival/subUser/users" IconColor="Color.Tertiary" Icon="@Icons.Material.Filled.SupervisorAccount">Users</MudNavLink>
+        <MudNavLink Href="/festival/subUser/roles" IconColor="Color.Tertiary" Icon="@Icons.Material.Filled.Policy">Roles</MudNavLink>
+    </MudNavGroup>
+
+    <MudNavGroup IconColor="Color.Tertiary" Icon="@Icons.Material.Filled.Money" Expanded="false" Title="Financial">
+        <MudNavLink Href="/festival/payment-information" Icon="@Icons.Material.Outlined.CreditCard">Payment Information</MudNavLink>
+                           <MudNavLink Href="/festival/discount-codes" Icon="@Icons.Material.Outlined.LocalOffer">Discount Codes</MudNavLink> 
+                      </MudNavGroup>
+}
+
+@code{
+    private bool IsFestivalRole { get; set; }
+private bool IsAdminRole { get; set; }
+    protected override async Task OnParametersSetAsync()
+    {
+        IsFestivalRole = (await AuthenticationManager.CurrentUser()).IsInRole(RoleConstants.FestivalRole);
+        IsAdminRole = (await AuthenticationManager.CurrentUser()).IsInRole(RoleConstants.AdministratorRole);
+    }
+    
+
+}

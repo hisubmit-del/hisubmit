@@ -1,0 +1,57 @@
+﻿@using Hisubmit.Client.SharedModels.Extensions
+
+@using Hisubmit.Client.SharedModels.Extensions
+@inject IStringLocalizer<FilmProjectDetail> Localize
+@using BlazorVideoPlayer
+
+@* <MudContainer MaxWidth="MaxWidth.Large"> *@
+@if (_loaded && DetailLoaded)
+{
+    <div class="container mt-2 pa-2 row">
+        @{
+            var hasLocalFile = Files.Any(p =>  p.IsLocalFile);
+            if (hasLocalFile)
+            {
+                @foreach (var file in Files.Where(p =>  p.IsLocalFile))
+                {
+
+                    <MudItem xs="12" md="6">
+                        <MudCard Elevation="1">
+                            <MudCardHeader>
+                                <CardHeaderContent>
+                                    <MudText Typo="Typo.h6">@file.Name</MudText>
+                                </CardHeaderContent>
+                               
+                            </MudCardHeader>
+                            <MudCardContent>
+                               
+                                <MudText Typo="Typo.body2">@file.FileDescription.</MudText>
+                            </MudCardContent>
+                            <MudCardActions>
+                                <a href="@file.LocalFileURL"  data-size="lg" data-color="primary"
+                                   class="AppInstallBtn newbtn  ml-auto">
+                                    <MudIcon Color="Color.Primary" Icon="@Icons.Material.Filled.Download" Size="Size.Small"/>
+                                    <MudText Color="Color.Primary" Inline="true">Download</MudText>
+                                </a>
+                            </MudCardActions>
+                        </MudCard>
+                    </MudItem>
+                }
+            }
+            else
+            {
+                <MudGrid Justify="Justify.Center">
+                    @foreach (var file in Files.Where(p =>  !p.IsLocalFile))
+                    {
+                        <MudItem xs="12" lg="4">
+                            <ExternalMainFile File="file"></ExternalMainFile>
+                        </MudItem>
+                    }
+                </MudGrid>
+            }
+        }
+
+
+    </div>
+}
+@* </MudContainer> *@

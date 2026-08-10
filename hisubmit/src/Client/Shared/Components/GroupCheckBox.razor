@@ -1,0 +1,3 @@
+﻿@foreach(var item in Items){
+    <MudCheckBox T="bool" @bind-Value="@item.IsSelected"  Color="Color.Secondary" Label="@item.Name" />
+}

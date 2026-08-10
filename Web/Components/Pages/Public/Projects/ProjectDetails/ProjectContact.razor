@@ -1,0 +1,99 @@
+﻿@using global::Hisubmit.Client.SharedModels.Features.Projects.Queries.GetDetail
+@using HiSubmit.Client.SharedModels.Extensions
+
+
+
+<MudCard Class="mt-2 pb-3 pt-2 border-radius-20 ">
+    <div Class="mt-2 text-center">
+        <MudText Typo="Typo.h5" Align="Align.Center" Class="mb-2">Contacts</MudText>
+    </div>
+    <div class="side-box contact w-100">
+
+        <ul class="contact-list mt-4">
+            @* @if (!string.IsNullOrWhiteSpace(Project.WhatsAppNumber)) *@
+            @* { *@
+            @*     <li> *@
+            @*         <a href="https://wa.me/@Project.WhatsAppNumber" target="_blank"> *@
+            @*             <MudIcon Icon="@Icons.Material.Outlined.Whatsapp"></MudIcon> *@
+            @*             @Project.WhatsAppNumber *@
+            @*         </a> *@
+            @*     </li> *@
+            @* } *@
+
+            @if (!string.IsNullOrWhiteSpace(Project.Telegram))
+            {
+            <li>
+                <a href="https://telegram.me/@Project.Telegram" target="_blank">
+                    <MudIcon Icon="@Icons.Custom.Brands.Telegram"></MudIcon>
+                    @Project.Telegram
+                </a>
+            </li>
+            }
+            @if (!string.IsNullOrWhiteSpace(Project.Twitter))
+            {
+                <li>
+                    <a href="https://twitter.com/@Project.Twitter" target="_blank">
+                        <MudIcon Icon="@Icons.Custom.Brands.Twitter"></MudIcon>
+                        @Project.Twitter
+                    </a>
+                </li>
+            }
+            @if (!string.IsNullOrWhiteSpace(Project.Youtube))
+            {
+                <li>
+                    <a href="https://youtube.com/@Project.Youtube" target="_blank">
+                        <MudIcon Icon="@Icons.Custom.Brands.YouTube"></MudIcon>
+                        @Project.Youtube
+                    </a>
+                </li>
+            }
+
+            @if (!string.IsNullOrWhiteSpace(Project.Instagram))
+            {
+                <li>
+                    <a href="https://www.instagram.com/@Project.Instagram" target="_blank">
+                        <MudIcon Icon="@Icons.Custom.Brands.Instagram"></MudIcon>
+                        @Project.Instagram
+                    </a>
+                </li>
+            }
+
+
+            @* @if (!string.IsNullOrWhiteSpace(Project.Facebook)) *@
+            @* { *@
+            @*     <li> *@
+            @*         <a href="https://facebook.com/@Project.Facebook" target="_blank"> *@
+            @*             <MudIcon Icon="@Icons.Custom.Brands.Facebook"></MudIcon> *@
+            @*             @Project.Facebook *@
+            @*         </a> *@
+            @*     </li> *@
+            @* } *@
+
+            @if (!string.IsNullOrWhiteSpace(Project.WebSite))
+            {
+                <li>
+                    <a href="@Project.WebSite.ToAbsolutUrl()" target="_blank">
+                        <MudIcon Icon="@Icons.Material.Filled.WebAsset"></MudIcon>
+                        @Project.WebSite
+                    </a>
+                </li>
+            }
+            @if (!string.IsNullOrWhiteSpace(Project.Email))
+            {
+                <li>
+                    <a href="#" target="_blank">
+                        <MudIcon Icon="@Icons.Material.Outlined.Email"></MudIcon>
+                        @Project.Email
+                    </a>
+                </li>
+            }
+
+        </ul>
+    </div>
+</MudCard>
+
+
+@code{
+    [Parameter]
+    public GetProjectDetailResponse Project { get; set; }
+}

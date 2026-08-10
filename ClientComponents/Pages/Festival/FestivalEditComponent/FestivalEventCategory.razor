@@ -1,0 +1,129 @@
+﻿@inject IStringLocalizer<FestivalEventCategory> Localize
+
+<MudCard Elevation="25">
+    <MudCardHeader>
+        <CardHeaderContent>
+            <MudText Typo="Typo.h3">@Localize["Event Categories"]</MudText>
+        </CardHeaderContent>
+    </MudCardHeader>
+    @if (!_loaded)
+    {
+        <MudContainer MaxWidth="MaxWidth.Medium" Style="height:300px">
+            <Spinner></Spinner>
+        </MudContainer>
+    }
+    else
+    {
+        <MudCardContent>
+            @* <MudContainer MaxWidth="MaxWidth.Medium"> *@
+                <MudGrid>
+                   @if (!IsAdmin)
+                   {
+                       if (_readOnlyMood)
+                       {
+                           <MudItem xs="12" Class="mb-2">
+                               <MudAlert Severity="Severity.Warning"> Your festival information is under review.</MudAlert>
+                           </MudItem>
+                       }
+                   }
+                </MudGrid>
+                <MudGrid Class="px-0 px-md-20 px-lg-20">
+                    <MudItem xs="12" md="2">
+                        <MudStack Justify="Justify.SpaceBetween">
+                            <MudText Typo="Typo.h5"> @Localize["Categories"]</MudText>
+                           @if (!IsAdmin)
+                           {
+                               <MudHidden Breakpoint="Breakpoint.MdAndUp">
+                                   <MudButton Style="text-transform:none" Disabled="_readOnlyMood" Variant="Variant.Filled"
+                                              Color="Color.Default" OnClick="() => { InvokeModal(); }" Size="Size.Medium"
+                                              StartIcon="@Icons.Material.Filled.Add" IconColor="Color.Surface">
+                                       @Localize["Add Category"]
+                                   </MudButton>
+                               </MudHidden>
+                           }
+                        </MudStack>
+                    </MudItem>
+                    <MudItem xs="12" md="9">
+                        <MudTable Class="default-table" Items="@Categories" Dense="true" Hover="true" Breakpoint="Breakpoint.Sm" LoadingProgressColor="Color.Info">
+                            <HeaderContent>
+                                <MudTh>@Localize["Name"]</MudTh>
+                               @if (!IsAdmin)
+                               {
+                                   <MudTh Style="text-align:end">
+                                       <MudButton Style="text-transform:none" Disabled="_readOnlyMood" Variant="Variant.Filled" Color="Color.Default" OnClick="() => { InvokeModal(); }" Size="Size.Medium"
+                                                  StartIcon="@Icons.Material.Filled.Add" IconColor="Color.Surface">
+                                           @Localize["Add Category"]
+                                       </MudButton>
+                                   </MudTh>
+                               }
+                            </HeaderContent>
+                            <RowTemplate>
+                                <MudTd DataLabel="Name">@context.Name</MudTd>
+                                <MudTd DataLabel="Actions">
+                                    <MudHidden Breakpoint="Breakpoint.LgAndUp">
+                                        <MudMenu Label="@Localize["Actions"]" Size="Size.Small" Variant="Variant.Filled" DisableElevation="true"
+                                                 EndIcon="@Icons.Material.Filled.KeyboardArrowDown" IconColor="Color.Secondary" Direction="Direction.Left" OffsetX="true">
+
+                                            <MudMenuItem OnClick="() => InvokeModal(context.Id)">@Localize["Edit"]</MudMenuItem>
+                                            <MudMenuItem OnClick="() => DeleteAsync(context.Id, context.Name)">@Localize["Delete"]</MudMenuItem>
+                                        </MudMenu>
+                                    </MudHidden>
+                                    <MudHidden Breakpoint="Breakpoint.MdAndDown">
+                                        @if (!IsAdmin)
+                                        {
+                                            <MudIconButton Disabled="_readOnlyMood" Icon="@Icons.Material.Filled.Delete" 
+                                                           Size="Size.Small" OnClick="() => DeleteAsync(context.Id, context.Name)" 
+                                                           aria-label="delete"></MudIconButton>
+                                        }
+                                        <MudIconButton Disabled="_readOnlyMood" Icon="@Icons.Material.Filled.Edit" 
+                                                       OnClick="() => InvokeModal(context.Id)" Size="Size.Small" 
+                                                       aria-label="Edit"></MudIconButton>
+                                    </MudHidden>
+                                </MudTd>
+                            </RowTemplate>
+                        </MudTable>
+                    </MudItem>
+                 @if (_editFormClass)
+                    {
+                        <MudItem xs="12" md="12" >
+                            <MudGrid>
+                                <MudItem xs="12" md="11">
+                                    @if (_editViewProcessing)
+                                    {
+                                        <MudContainer MaxWidth="MaxWidth.Medium" Style="height:300px">
+                                            <Spinner/>
+                                        </MudContainer>
+                                    }
+                                    else
+                                    {
+                                        <Animate Auto Anchor="#b-animate" Animation="Animations.FadeDown" DelayMilliseconds="300">
+                                            <MudCard>
+                                                <AddEditEventCategory IsAdmin="IsAdmin" IsSuccessDone="ResetTableAndForm" 
+                                                                      FestivalId="FestivalId"
+                                                                      CancelProccess="HideAndResetForm" @ref="AddEditCategoryForm" 
+                                                                      Category="Category"/>
+                                            </MudCard>
+                                        </Animate>
+                                    }
+                                </MudItem>
+                            </MudGrid>
+                        </MudItem>
+                    }
+                </MudGrid>
+            @* </MudContainer> *@
+        </MudCardContent>
+        <MudPaper Class="d-flex justify-end flex-grow-1 ">
+            <MudPaper Class="mr-2 mb-2">
+                <MudButtonGroup OverrideStyles="false">
+                    <MudButton Variant="Variant.Filled" OnClick="GoPrev"
+                               EndIcon="@Icons.Material.Filled.ArrowLeft"
+                               Color="Color.Secondary"> @Localize["Prev"]</MudButton>
+                    
+                    <MudButton Variant="Variant.Filled" OnClick="GoNext"
+                               EndIcon="@Icons.Material.Filled.ArrowRight"
+                               Color="Color.Secondary"> @Localize["Next"]</MudButton>
+                </MudButtonGroup>
+            </MudPaper>
+        </MudPaper>
+    }
+</MudCard>

@@ -1,0 +1,16 @@
+﻿@if (Venue.Address != null)
+{
+    <MudPaper  Class="pa-3 mb-2 mt-1 mr-2 ml-2"  Style="@($"background:{Colors.Gray.Lighten4};")">
+        <MudText Typo="Typo.h6">
+            <MudIcon Icon="@Icons.Material.Filled.MapsHomeWork"></MudIcon>
+            @Venue.Name
+        </MudText>
+            <MudText Class="ma-2" Typo="Typo.body1">
+                @Venue.Address.ToString()
+            </MudText>
+        <MudText Class="ma-1" Typo="Typo.body1">
+            @Venue.Address.Text
+        </MudText>
+        @* <MudIconButton Icon="@Icons.Material.Filled.AirplaneTicket" OnClick="TakeTicket"></MudIconButton> *@
+    </MudPaper>
+}

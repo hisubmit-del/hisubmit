@@ -1,0 +1,36 @@
+﻿@using HiSubmit.Client.SharedModels.Extensions
+@inject IStringLocalizer<AddEditCategoryDeadLineFee> Localizer
+<MudGrid>
+  <MudItem xs="12">
+    <MudText Typo="Typo.subtitle2">@Fee.DeadLineName </MudText>
+    <MudText Typo="Typo.caption">@Fee.DeadLineDate.ToLongDate()</MudText>
+  </MudItem>
+
+    <MudItem xs="12" md="6" lg="4">
+        <MudNumericField @bind-Value="Fee.StandardFee" 
+                         Margin="Margin.Dense" 
+                         T="int?"
+                         Min="0"
+                         For="()=>Fee.StandardFee"
+                         Label="@Localizer["Standard Fee"]" 
+                         Variant="Variant.Outlined" />
+    </MudItem>
+    <MudItem xs="12" md="6" lg="4">
+        <MudNumericField @bind-Value="Fee.StudentFee"
+                         Margin="Margin.Dense" 
+                         Min="0"
+                         T="int?"
+                         For="()=>Fee.StudentFee" 
+                         Label="@Localizer["Student Fee"]"
+                         Variant="Variant.Outlined" />
+    </MudItem>
+    <MudItem xs="12" md="6" lg="4">
+        <MudNumericField @bind-Value="Fee.GoldFee" 
+                         Margin="Margin.Dense"
+                         Min="0"
+                         T="int?"
+                         For="()=>Fee.GoldFee"
+                         Label="@Localizer["Gold Fee"]"
+                         Variant="Variant.Outlined" />
+    </MudItem>
+</MudGrid>

@@ -1,0 +1,249 @@
+@media only screen and (max-width: 1199px) {
+    .title-box-icon-section .boxes {
+        width: calc(100% - 300px);
+    }
+
+    .customer-slider-section {
+        margin-bottom: 50px;
+    }
+
+    .banner-section {
+        background-image: none, linear-gradient(69deg, #31303B, #31303B, #fff);
+    }
+
+    .made-by-col {
+        background-position: left -100%;
+    }
+
+    .organizers {
+        width: 100%;
+    }
+
+    .organizer-box {
+        padding-inline: 15px;
+    }
+
+    .faq-accordion {
+        width: 100%;
+    }
+
+}
+
+@media only screen and (max-width: 991px) {
+    .title-box-icon-section .boxes {
+        width: 100%;
+    }
+
+    .title-box-icon-section .title {
+        width: 100%;
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    .housing-steps-section {
+        margin-bottom: 50px;
+    }
+
+    .made-by-col {
+        background-position: left top;
+    }
+
+    .festival-single .side-box {
+        width: calc(50% - 10px);
+        height: max-content;
+        margin-inline: 5px;
+    }
+
+    .faq-accordion .accordion-item:first-child,
+    .faq-accordion .accordion-item:nth-child(2) {
+        width: 100%;
+    }
+
+    .festival-tabs ul {
+        width: 100%;
+    }
+}
+
+@media only screen and (max-width: 767px) {
+    .single-pricing .pricing-wrap{
+        padding:15px;
+    }
+    .housing-steps-section .steps img {
+        border-radius: 15px;
+        transform: none;
+        margin-bottom: 30px;
+    }
+
+    .title-box-icon-section .boxes {
+        flex-wrap: wrap;
+    }
+
+    .title-box-icon-section .boxes .icon-box {
+        margin-bottom: 20px;
+        padding-inline: 0;
+    }
+
+    .line span.h-line {
+        margin-top: 0;
+    }
+
+    .title-box-icon-section .row {
+        padding-inline: 0;
+    }
+
+    .festival-section nav {
+        flex-wrap: wrap;
+    }
+
+    .festival-section nav span.h-line {
+        margin-block: 15px;
+    }
+
+    .festival-section nav ul {
+        margin-inline-start: 0;
+    }
+
+    .text-line p {
+        white-space: normal;
+        text-align: center;
+        width: 100%;
+        margin-inline-end: 0;
+    }
+
+    .text-line span {
+        display: none;
+    }
+
+    .container-fluid.steps {
+        max-width: 540px;
+    }
+
+    .slider-section img {
+        height: 250px;
+        object-fit: cover;
+    }
+
+    .customer-slider-section {
+        margin-bottom: 30px;
+    }
+
+
+    .article-section .title h3 {
+        font-size: 100px;
+        text-align: center;
+    }
+
+    .article-slider.left {
+        padding-inline: 10px;
+    }
+
+    .article-slider.right {
+        padding-inline: 10px;
+    }
+
+    .made-by-col {
+        background-image: none;
+    }
+
+    .organizers {
+        justify-content: center;
+    }
+}
+
+@media only screen and (max-width: 575px) {
+    .row{
+        padding-left: 0px !important;
+        padding-right: 0px !important;
+        margin-left: 3px;
+        margin-right: 3px;
+    }
+    .row > *{
+        padding-left: 4px !important;
+        padding-right: 4px !important;
+    }
+
+    .festival-card .festival-footer{
+        margin-right: 0;
+    }
+    .min-w-xs-50{
+        min-width: 50%;
+    }
+    .festival-card .festival-image img {
+        /*width: 80%;*/
+    }
+    .festival-card .festival-image {
+        padding-left: 0px;
+        padding-right: 0px;
+    }
+
+    .festival-card {
+        margin: 10px;
+        border: 0.9px solid #dddd;
+    }
+
+    .festival-browser-container {
+        width: 100%;
+    }
+    .festival-card .festival-image {
+        padding-left: 0px;
+        padding-right: 0px;
+    }
+
+    .festival-card {
+        margin: 10px;
+        border: 0.7px solid #dddd;
+        border-top: none;
+    }
+
+    .festival-browser-container {
+        width: 100%;
+    }
+
+    .slider-section img {
+        height: 200px;
+    }
+
+    .slider.full-width .slick-arrow {
+        bottom: 10px;
+    }
+
+    .slider.full-width .slick-arrow.slick-prev {
+        left: 10px;
+    }
+
+    .slider.full-width .slick-arrow.slick-next {
+        left: 60px;
+    }
+
+
+    .article-section .title h3 {
+        font-size: 60px;
+    }
+
+    .before-footer .inner-content h3 {
+        font-size: 22px;
+    }
+
+    .festival-single .side-box {
+        width: 100%;
+        margin-inline: 0;
+    }
+
+    .festival-meta-box h1 {
+        font-size: 18px;
+    }
+
+    .festival-meta-box img {
+        width: 60px;
+        margin-inline-end: 10px;
+    }
+
+    .festival-meta-box {
+        align-items: flex-start;
+    }
+
+    .artist-single .films span {
+        font-size: 16px;
+        margin-inline-end: 15px;
+    }
+}

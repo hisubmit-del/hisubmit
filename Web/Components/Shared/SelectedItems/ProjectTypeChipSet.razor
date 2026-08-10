@@ -1,0 +1,30 @@
+﻿
+@using HiSubmit.Client.SharedModels.Extensions
+@switch (SelectedProjectType)
+{
+    case ProjectType.Film:
+        <MudChip T="string" Size="Size.Small" Variant="Variant.Text" Color="Color.Info" >@SelectedProjectType.ToDisplay()</MudChip>
+        break;
+    case ProjectType.Music:
+        <MudChip T="string"   Size="Size.Small" Variant="Variant.Text" Color="Color.Success" >@SelectedProjectType.ToDisplay()</MudChip>
+        break;
+    case ProjectType.Art:
+        <MudChip T="string"   Size="Size.Small" Variant="Variant.Text" Color="Color.Default" >@SelectedProjectType.ToDisplay()</MudChip>
+        break;
+    case ProjectType.Photography:
+        <MudChip T="string"   Size="Size.Small" Variant="Variant.Text" Color="Color.Default" >@SelectedProjectType.ToDisplay()</MudChip>
+        break;
+    case ProjectType.VR_XR:
+        <MudChip T="string"  Size="Size.Small" Variant="Variant.Text" Color="Color.Default" >@SelectedProjectType.ToDisplay()</MudChip>
+        break;
+    case ProjectType.Script_ScreenWriting:
+        <MudChip T="string"  Size="Size.Small" Variant="Variant.Text" Color="Color.Default" >@SelectedProjectType.ToDisplay()</MudChip>
+        break;
+    default:
+        throw new ArgumentOutOfRangeException();
+}
+
+@code {
+    [Parameter]
+    public ProjectType SelectedProjectType { get; set; }
+}

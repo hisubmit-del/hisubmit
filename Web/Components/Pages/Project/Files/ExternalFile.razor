@@ -1,0 +1,47 @@
+﻿@using Hisubmit.Client.SharedModels.Features.Projects.Commands.UploadProjectFile
+@inject IStringLocalizer<ExternalFile> Localize
+<EditForm OnValidSubmit="SaveAsync" EditContext="_editContext">
+    <FluentValidationValidator @ref="_fluentValidationValidator"></FluentValidationValidator>
+    <MudGrid>
+        <MudItem xs="12" sm="12" md="6" Class="mb-3">
+            <MudTextField @bind-Value="_file.Name" 
+                          For="@(() => _file.Name)" Label="@Localize["Name"]"
+                          Variant="Variant.Filled" Margin="Margin.Dense"/>
+        </MudItem>
+        <MudItem xs="12"  md="6" Class="mb-3">
+            <MudSelect T="ProjectFilePosition"
+                       @bind-Value="_file.Position" Label="Position"
+                       Variant="Variant.Filled" AnchorOrigin="Origin.BottomCenter">
+                @foreach (var value in Enum.GetValues<ProjectFilePosition>())
+                {
+                    <MudSelectItem Value="value" />
+                }
+            </MudSelect>
+        </MudItem>
+        <MudItem xs="12"  md="6" Class="mb-3">
+            <MudTextField @bind-Value="_file.FileURl" 
+                          For="@(() => _file.FileURl)" Label="@Localize["File url"]"
+                          Variant="Variant.Filled" Margin="Margin.Dense"/>
+        </MudItem>
+        <MudItem xs="12"  md="6" Class="mb-3">
+            <MudTextField @bind-Value="_file.Password" 
+                          For="@(() => _file.Password)" Label="@Localize["Password"]"
+                          Variant="Variant.Filled" Margin="Margin.Dense"/>
+        </MudItem>
+        <MudItem xs="12"  md="6" Class="mb-3">
+            <MudTextField @bind-Value="_file.FileDescription"
+                          For="@(() => _file.FileDescription)" Label="@Localize["Description"]"
+                          Lines="3" Variant="Variant.Filled" Margin="Margin.Dense"/>
+        </MudItem>
+        <MudItem xs="12" Class="mb-3">
+            <LoadingButton Processing="_processing" 
+                           Variant="Variant.Filled" Class="ma-2" 
+                           ButtonType="ButtonType.Submit" 
+                           StartIcon="@Icons.Material.Filled.Save" Color="Color.Info">
+                @Localize["Save"]
+            </LoadingButton>
+            <MudButton OnClick="Cancel"  Variant="Variant.Filled" 
+                       Class="ma-2">Cancel</MudButton>
+        </MudItem>
+    </MudGrid>
+</EditForm>

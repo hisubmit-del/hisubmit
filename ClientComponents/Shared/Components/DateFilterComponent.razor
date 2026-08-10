@@ -1,0 +1,42 @@
+﻿@using Hisubmit.Hisubmit.Client.SharedModels.Features.Payments
+@using HiSubmit.Client.SharedModels.Extensions
+
+
+<div class="d-flex gap-1">
+    <MudText Class="py-2">@Title :</MudText>
+    <MudSelect Class="mw-200" T="TimePeriod?" Variant="Variant.Outlined"
+               Margin="Margin.Dense" Dense="true" @bind-Value="Model.Period">
+         <MudSelectItem T="TimePeriod?" value="@(null as TimePeriod?)">All time</MudSelectItem>
+        @foreach (var item in Enum.GetValues<TimePeriod>())
+        {
+            <MudSelectItem T="TimePeriod?" value="@(item as TimePeriod?)">@item.ToDisplay()</MudSelectItem>
+        }
+    </MudSelect>
+    
+
+   @if (Model.Period == TimePeriod.Period || Model.Period == TimePeriod.Equal)
+    {
+        <MudDatePicker Margin="Margin.Dense"  Variant="Variant.Outlined" 
+                       Clearable="true"
+                       Dense="true" For="() => Model.Date1" @bind-Date="Model.Date1"/>
+    }
+    @if (Model.Period == TimePeriod.Period)
+    {
+        <MudDatePicker  Margin="Margin.Dense" Variant="Variant.Outlined" 
+                         Clearable="true"
+                        Dense="true"  For="() => Model.Date2" @bind-Date="Model.Date2"/>
+    }
+    else
+    {
+        <span style="width: 100px"></span>
+    }
+</div>
+
+@code {
+    [Parameter] public DateFilter Model { get; set; } = new();
+ //   [Parameter] public EventCallback<DateFilter>ModelChanged { get; set; } = new();
+
+    [Parameter]
+    public string Title { get; set; }
+
+}

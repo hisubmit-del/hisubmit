@@ -1,0 +1,107 @@
+﻿@page "/festival/artCategory"
+@attribute [Authorize(Policy = Permissions.ArtCategory.View)]
+@inject IStringLocalizer<ArtCategories> Localize
+@using global::Hisubmit.Client.SharedModels.Features.Brands.Queries.GetAll
+@inherits BaseAdminPages
+
+<MudContainer MaxWidth="MaxWidth.Large">
+    <HeroTitle Title="@Localize["ArtCategory"]" Description="@Localize["Manage ArtCategory."]" />
+    @if (!_loaded)
+    {
+        <MudProgressCircular Color="Color.Primary" Indeterminate="true" />
+    }
+    else
+    {
+        <MudTable Hover="true" Elevation="25" Items="_categoryList" Dense="@_dense" Bordered="@_bordered" Striped="@_striped" Filter="new Func<GetAllArtCategoryResponse, bool>(Search)" @bind-brand="_category">
+            <ToolBarContent>
+                <div class="justify-center mud-text-align-center min-w-xs-50">
+                    <MudHidden Breakpoint="Breakpoint.MdAndDown">
+                        @if (_canCreateArtCategory)
+                        {
+                            <MudButton DisableElevation Variant="Variant.Filled" Color="Color.Primary" OnClick="(() => InvokeModal())" StartIcon="@Icons.Material.Filled.Add" IconColor="Color.Surface">@Localize["Create"]</MudButton>
+                            <MudButton DisableElevation Variant="Variant.Filled" OnClick="GetArtCategoryAsync" StartIcon="@Icons.Material.Filled.Refresh" IconColor="Color.Surface" Color="Color.Secondary">@Localize["Reload"]</MudButton>
+                            @if (_canExportArtCategory)
+                            {
+                                <MudButton DisableElevation Variant="Variant.Filled" OnClick="ExportToExcel" StartIcon="@Icons.Custom.FileFormats.FileExcel" IconColor="Color.Secondary" Color="Color.Surface" Style="margin-left: 5px;">@Localize["Export"]</MudButton>
+                            }
+                        }
+                        else
+                        {
+                            <MudButton DisableElevation Variant="Variant.Filled" OnClick="GetArtCategoryAsync" StartIcon="@Icons.Material.Filled.Refresh" IconColor="Color.Surface" Color="Color.Secondary">@Localize["Reload"]</MudButton>
+                            @if (_canExportArtCategory)
+                            {
+                                <MudButton DisableElevation Variant="Variant.Filled" OnClick="ExportToExcel" StartIcon="@Icons.Custom.FileFormats.FileExcel" IconColor="Color.Secondary" Color="Color.Surface" Style="margin-left: 5px;">@Localize["Export"]</MudButton>
+                            }
+                        }
+                    </MudHidden>
+                    <MudHidden Breakpoint="Breakpoint.LgAndUp">
+                        @if (_canCreateArtCategory)
+                        {
+                            <MudIconButton Size="Size.Small"  DisableElevation Variant="Variant.Filled" Color="Color.Primary" OnClick="(() => InvokeModal())" Icon="@Icons.Material.Filled.Add" />
+                            <MudIconButton Size="Size.Small"  DisableElevation Variant="Variant.Filled" OnClick="GetArtCategoryAsync" Icon="@Icons.Material.Filled.Refresh"  Color="Color.Secondary"/>
+                            @if (_canExportArtCategory)
+                            {
+                                <MudIconButton Size="Size.Small" DisableElevation Variant="Variant.Filled" OnClick="ExportToExcel" Icon="@Icons.Custom.FileFormats.FileExcel"  Color="Color.Surface" Style="margin-left: 5px;"/>
+                            }
+                        }
+                        else
+                        {
+                            <MudIconButton Size="Size.Small"  DisableElevation Variant="Variant.Filled" OnClick="GetArtCategoryAsync" Icon="@Icons.Material.Filled.Refresh"  Color="Color.Secondary"/>
+                            @if (_canExportArtCategory)
+                            {
+                                <MudIconButton Size="Size.Small"  DisableElevation Variant="Variant.Filled" OnClick="ExportToExcel" Icon="@Icons.Custom.FileFormats.FileExcel"  Color="Color.Surface" Style="margin-left: 5px;"/>
+                            }
+                        }
+                    </MudHidden>
+                </div>
+                <MudSpacer />
+                @if (_canSearchArtCategory)
+                {
+                    <MudTextField @bind-Value="_searchString" Immediate="true"  Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0 mb-3"></MudTextField>
+                }
+            </ToolBarContent>
+            <HeaderContent>
+                <MudTh><MudTableSortLabel SortBy="new Func<GetAllArtCategoryResponse, object>(x => x.Name)">@Localize["Name"]</MudTableSortLabel></MudTh>
+                <MudTh><MudTableSortLabel SortBy="new Func<GetAllArtCategoryResponse, object>(x => x.Description)">@Localize["Description"]</MudTableSortLabel></MudTh>
+                <MudTh Style="text-align:right">@Localize["Actions"]</MudTh>
+            </HeaderContent>
+            <RowTemplate>
+                <MudTd DataLabel="Name">
+                    <MudHighlighter Text="@context.Name" HighlightedText="@_searchString" />
+                </MudTd>
+                <MudTd DataLabel="Description">
+                    <MudHighlighter Text="@context.Description" HighlightedText="@_searchString" />
+                </MudTd>
+                <MudTd DataLabel="Actions" Style="text-align: right">
+                    @if (_canEditArtCategory || _canDeleteArtCategory)
+                    {
+                        <MudMenu Label="@Localize["Actions"]" Variant="Variant.Filled" DisableElevation="true" EndIcon="@Icons.Material.Filled.KeyboardArrowDown" IconColor="Color.Secondary" Direction="Direction.Left" OffsetX="true">
+                            @if (_canEditArtCategory)
+                            {
+                                <MudMenuItem OnTouch="() => InvokeModal(context.Id)" OnClick="@(() => InvokeModal(context.Id))">@Localize["Edit"]</MudMenuItem>
+                            }
+                            @if (_canDeleteArtCategory)
+                            {
+                                <MudMenuItem OnTouch="@(() => Delete(context.Id))" OnClick="@(() => Delete(context.Id))">@Localize["Delete"]</MudMenuItem>
+                            }
+                        </MudMenu>
+                    }
+                    else
+                    {
+                        <MudButton Variant="Variant.Filled"
+                           DisableElevation="true"
+                           StartIcon="@Icons.Material.Filled.DoNotTouch"
+                           IconColor="Color.Secondary"
+                           Size="Size.Small"
+                           Color="Color.Surface">
+                            @Localize["No Allowed Actions"]
+                        </MudButton>
+                    }
+                </MudTd>
+            </RowTemplate>
+            <PagerContent>
+                <TablePager />
+            </PagerContent>
+        </MudTable>
+    }
+</MudContainer>

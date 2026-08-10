@@ -1,0 +1,20 @@
+﻿@page "/PdfTemplate"
+@using HiSubmit.Application.Extensions
+@model HiSubmit.Server.Pages.PdfTemplate
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <title>Title</title>
+</head>
+<body>
+<div style="height: 100%;background-color: #eeeeee">
+    <img style="display: inline; float: left;margin-top: 10px; height: 60px;width: auto"
+         alt="hisubmit" src="@($"data:image/png;base64,{Convert.ToBase64String("Files/Logos/1.JPG".ConvertImageToByteArray())}")"/>
+    <h3 style="display: inline;float: right;margin-top: 30px;">hisubmit.com</h3>
+</div>
+    <hr style="color: #bbbbbb;;height: 3px;background-color: #bbbbbb"/>
+</body>
+
+</html>

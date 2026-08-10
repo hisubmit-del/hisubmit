@@ -1,0 +1,91 @@
+﻿@using Hisubmit.Client.SharedModels.Extensions
+@inject IStringLocalizer<FestivalTimeLine> Localize
+@if (_loaded)
+{
+    <MudCard Class="text-center time-line-box pt-2 border-radius-20">
+        <div Class="mt-2">
+            <MudText Typo="Typo.h5" Align="Align.Center" Class="mb-2">Time Line</MudText>
+        </div>
+        <MudTimeline Class="text-start" TimelineOrientation="TimelineOrientation.Vertical" TimelinePosition="TimelinePosition.Start">
+            @foreach (var time in TimeLines)
+            {
+                if (time.Nearest)
+                {
+                    <MudTimelineItem Variant="Variant.Filled" DotStyle="background:red;border:2px solid red;">
+                        <MudText Color="Color.Tertiary" Typo="Typo.body2">  @time.Name</MudText>
+                        <MudText Color="Color.Tertiary" Typo="Typo.body2">@time.Date.ToLongDate()</MudText>
+                    </MudTimelineItem>
+                }
+                else
+                {
+                    <MudTimelineItem Variant="Variant.Filled" DotStyle="background:white;border:2px solid red;">
+                        <MudText Class="fg-grey" Typo="Typo.button">  @time.Name</MudText>
+                        <MudText Class="fg-grey" Typo="Typo.body2">@time.Date.ToLongDate()</MudText>
+                    </MudTimelineItem>
+                }
+            }
+
+
+        </MudTimeline>
+        @* <MudButton  *@
+        @*            Variant="Variant.Filled"  *@
+        @*            FullWidth="true" *@
+        @*            Color="Color.Primary" *@
+        @*            Size="Size.Small" *@
+        @*            OnClick="Submit"  *@
+        @*            class="submit-btn"> *@
+        @*     Submit Now *@
+        @* </MudButton> *@
+        <MudButton Color="Color.Tertiary"
+                   Variant="Variant.Filled"
+                   OnClick="Submit"
+                   Size="Size.Small"
+                   Class="text-center mx-auto my-3">Submit now</MudButton>
+    </MudCard>
+
+    @* <div class="side-box festival-status mud-elevation-1 light-box-gradiaint w-100"> *@
+    @*             <h3>@Localize["Timeline"]</h3> *@
+    @*             <ul class="deadline"> *@
+    @*                 @foreach (var time in TimeLines) *@
+    @*                 { *@
+    @*                     <li class="@(time.Nearest ? "active" : "")"> *@
+    @*                         <p> *@
+    @*                             <span class="date">@time.Date.ToLongDate()</span> *@
+    @*                         </p> *@
+    @*                         <span> *@
+    @*                             @time.Name *@
+    @*                         </span> *@
+    @*                     </li> *@
+    @*                 } *@
+    @*             </ul> *@
+    @*         </div> *@
+}
+else
+{
+
+
+    <MudCard Style="border-radius: 10px">
+        <MudCardContent>
+            <MudSkeleton Width="40%" />
+            <MudSkeleton Width="60%" Class="mb-3" />
+
+            <MudSkeleton Width="40%" />
+            <MudSkeleton Width="60%" Class="mb-3" />
+
+            <MudSkeleton Width="40%" />
+            <MudSkeleton Width="70%" Class="mb-3" />
+
+            <MudSkeleton Width="40%" />
+            <MudSkeleton Width="50%" Class="mb-3" />
+
+            <MudSkeleton Width="40%" />
+            <MudSkeleton Width="60%" Class="mb-3" />
+
+            <MudSkeleton Width="40%" />
+            <MudSkeleton Width="60%" Class="mb-3" />
+
+            <MudSkeleton Width="40%" />
+            <MudSkeleton Width="50%" Class="mb-3" />
+        </MudCardContent>
+    </MudCard>
+}

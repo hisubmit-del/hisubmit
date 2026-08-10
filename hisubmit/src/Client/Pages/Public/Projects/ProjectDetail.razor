@@ -1,0 +1,273 @@
+﻿@page "/project/{ProjectUrl}"
+@inject IStringLocalizer<FilmProjectDetail> Localize
+@using HiSubmit.Client.Pages.Public.Projects.ProjectDetails
+@using HiSubmit.Client.Pages.Public.Projects.Specifications
+@using HiSubmit.Client.Shared.NavMenues
+@using Hisubmit.Client.SharedModels.Features.Advertises.Commands
+@using Hisubmit.Client.SharedModels.Features.Permissions.Queries
+@using Hisubmit.Client.SharedModels.Features.Projects.Commands.UploadProjectFile
+@inherits BasePublicPages
+
+
+<MudContainer MaxWidth="MaxWidth.Large">
+    @if (_loadedProjectDetail)
+    {
+        <div class="container mt-2 pa-2">
+            <CascadingValue Value="_permissions">
+                <MudContainer MaxWidth="MaxWidth.Large">
+                    @if (_headerFiles.Any())
+                    {
+                        @switch (_headerFiles.First().FileFormat)
+                        {
+                            case FileFormat.Video:
+                                <FilmProjectDetail DetailLoaded="_loaded"
+                                                   Project="Project" Files="_headerFiles" />
+                                break;
+                            case FileFormat.Image:
+                                <PhotographyProjectDetail DetailLoaded="_loaded" Files="_headerFiles"
+                                                          Project="Project" ProjectId="Project.Id" />
+                                break;
+                            case FileFormat.Music:
+                                <MusicProjectDetail DetailLoaded="_loaded"
+                                                    Files="_headerFiles" Project="Project" />
+                                break;
+                            default:
+                                <ScriptProjectDetail DetailLoaded="_loaded"
+                                                     Files="_headerFiles" Project="Project" />
+                                break;
+                        }
+                    }
+                    else
+                    {                        
+                                <PhotographyProjectDetail DetailLoaded="_loaded" 
+                                                          Project="Project" ProjectId="Project.Id" /> 
+                    }
+
+                   
+                        <ProjectTitle Project="@Project"
+                                      @bind-FilmSpecification="FilmSpecification"
+                                      @bind-PhotographySpecification="PhotographySpecification"
+                                      @bind-MusicSpecification="MusicSpecification"
+                                      @bind-ScriptSpecification="ScriptSpecification"
+                                      @bind-VrXrSpecification="VrXrSpecification" />
+                 
+                </MudContainer>
+
+            @if (_permissions == ProjectPermissionResponse.Write)
+                {
+                     <MudButton Color="Color.Primary" StartIcon="@Icons.Material.Filled.Edit" Variant="Variant.Filled"
+                               Size="Size.Small" Href=@($"/user/project/{Project.Id}")>Edit Project Information</MudButton>
+                    <MudButton Color="Color.Secondary" StartIcon="@Icons.Material.Filled.Edit" Variant="Variant.Filled"
+                               Size="Size.Small" OnClick="AddEditHeaderFiles">Edit header Files</MudButton>
+
+                }
+                <MudGrid>
+                    <MudItem xs="12" lg="9">
+                        <h4 class="sponsored-festival-title"> Brief Synopsis</h4>
+                        <div class="pa-2">
+                            <p>
+                                @Project.EnglishBriefSynopsis
+                            </p>
+                        </div>
+
+                        @if (Project.HasNoneEnglishTitle)
+                        {
+                            <h4 class="sponsored-festival-title"> Brief Synopsis(Original)</h4>
+                            <div class="pa-2">
+                                <p>
+                                    @Project.OriginalBriefSynopsis
+                                </p>
+                            </div>
+                        }
+                        @if (Files.Any(p => p.IsLocalFile
+                    && p.FileFormat ==FileFormat.Image && p.Position==ProjectFilePosition.Gallery))
+                        {
+                            <MudCard Elevation="1" Class="pa-3 text-center mb-3">
+                                <MudText Typo="Typo.h6" Class="mb-5" Align="Align.Center">Gallery</MudText>
+
+                                <div class="gallery-tab-slider mb-5 pb-4 mt-5">
+                                    <div class="tab-content" id="gallery-tab-slider-tabContent">
+                                        <div class="gallery-slider " id="gallery-project-slider">
+                                            @{
+                                                var images = Files.Where(p => p.IsLocalFile && p.FileFormat == FileFormat.Image);
+                                                @foreach (var item in images)
+                                                {
+                                                    <a class="mx-3">
+                                                        <img onclick="@(() => GalleryImagesOverallyService.ShowImageOverlay
+                                                                      (images.Select(p => new ImageDto
+                                                                      {
+                                                                          Id=p.Id,
+                                                                          Url = p.LocalFileURL,
+                                                                          Title = p.FileDescription
+                                                                      }).ToArray(), new ImageDto()
+                                                                      {
+                                                                          Id=item.Id,
+                                                                          Url = item.LocalFileURL,
+                                                                          Title = item.FileDescription
+                                                                      }))"
+                                                             src="@item.LocalFileURL" alt="@item.Name">
+                                                    </a>
+                                                }
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </MudCard>
+                        }
+                        @if (_permissions == ProjectPermissionResponse.Write)
+                        {
+                            <MudButton Color="Color.Secondary" Variant="Variant.Filled"
+                                       StartIcon="@Icons.Material.Filled.Edit"
+                                       Size="Size.Small" OnClick="AddEditGallery"> Add To Gallery</MudButton>
+                        }
+                    </MudItem>
+                    <MudItem xs="12" lg="3">
+                        <ProjectContact Project="Project" />
+                        <ProjectDistribution ProjectId="Project.Id" />
+                        <SecondaryExternalLink Files="@(Files.Where(q =>q.Position!=ProjectFilePosition.Header
+                                                                        &&   !q.IsLocalFile).ToList())"
+                                               DetailLoaded="_loadedProjectDetail" />
+                        @if (_permissions == ProjectPermissionResponse.Write)
+                        {
+                            <MudButton Color="Color.Secondary" Variant="Variant.Filled" Class="mt-2"
+                                       StartIcon="@Icons.Material.Filled.Edit"
+                                       Size="Size.Small" OnClick="AddExternalFiles"> Add External Files</MudButton>
+                        }
+                        <ProjectSecondaryFiles Files="Files" DetailLoaded="_loadedProjectDetail" />
+                       @if (_permissions == ProjectPermissionResponse.Write)
+                        {
+                            <MudButton Color="Color.Secondary" Variant="Variant.Filled"
+                                       StartIcon="@Icons.Material.Filled.Edit"
+                                       Size="Size.Small" OnClick="AddFiles"> Add  Local File</MudButton>
+                        }
+                    </MudItem>
+                </MudGrid>
+                @if (Awards.Any() || ScreenAwards.Any())
+                {
+                    <h4 class="sponsored-festival-title my-2"> Screenings/Awards</h4>
+
+                    <MudCard>
+                        <div class="gallery-tab-slider mb-5 pb-4 mt-5">
+                            <div class="tab-content" id="gallery-tab-slider-tabContent">
+                                <div class="tab-pane fade show active" id="pills-about" role="tabpanel"
+                                     aria-labelledby="pills-about-tab">
+                                    <div class="gallery-slider screen-awards " id="award-project-slider">
+                                         @if(ScreenAwards is { Count: > 0 })
+                                        {
+                                        @foreach (var award in ScreenAwards)
+                                        {
+                                            <div>
+                                                <MudGrid Class="screen-award-item">
+                                                    <MudItem xs="6" lg="4" Class="text-end my-auto">
+                                                        <MudAvatar Size="Size.Large">
+                                                            <MudImage Src="@award.ImageUrl" Alt="@award.Title"></MudImage>
+                                                        </MudAvatar>
+                                                    </MudItem>
+                                                    <MudItem xs="6" lg="8" Class="pl-0 d-flex flex-column flex-grow-1 ">
+                                                        <MudText Typo="Typo.h6">@award.Title</MudText>
+                                                        <p Typo="Typo.subtitle2">@award.AwardSelection</p>
+                                                        <p Typo="Typo.subtitle2">@award.ScreeningDate.Year</p>
+                                                    </MudItem>
+                                                </MudGrid>
+                                            </div>
+                                        }
+                                        }
+                                        @if(Awards is { Count: > 0 })
+                                        {
+                                              @foreach (var award in Awards)
+                                        {
+                                            <div>
+                                                <MudGrid Class="screen-award-item">
+                                                    <MudItem xs="6" lg="4" Class="text-end my-auto">
+                                                        <MudAvatar Size="Size.Large">
+                                                            <MudImage Src="@award.ImageUrl" Alt="@award.Title"></MudImage>
+                                                        </MudAvatar>
+                                                    </MudItem>
+                                                    <MudItem xs="6" lg="8" Class="pl-0 d-flex flex-column flex-grow-1">
+                                                        <MudText Typo="Typo.h6">@award.Title</MudText>
+                                                        <p Typo="Typo.subtitle2">@award.AwardsWon</p>
+                                                        <p Typo="Typo.subtitle2">@award.Location</p>
+                                                    </MudItem>
+                                                </MudGrid>
+                                            </div>
+                                        }
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </MudCard>
+                }
+            </CascadingValue>
+        </div>
+
+
+
+    }
+    else
+    {
+        <ProjectDetailSkeleton />
+    }
+
+
+</MudContainer>
+@if (_loadedProjectDetail)
+{
+    <div class="mt-3 text-start project-specification">
+        <div class="container mx-auto">
+            <h4 class="sponsored-festival-title light-title mt-2 mb-3">Specification</h4>
+            @switch (Project.ProjectType)
+            {
+                case ProjectType.Film:
+                    <FilmSpecification Model="@FilmSpecification" />
+                    break;
+                case ProjectType.Photography:
+                    <PhotographicSpecification Model="@PhotographySpecification" />
+                    break;
+                case ProjectType.Music:
+                    <MusicSpecification Model="@MusicSpecification" />
+                    break;
+                case ProjectType.Script_ScreenWriting:
+                    <ScriptSpecification Model="@ScriptSpecification" />
+                    break;
+                case ProjectType.VR_XR:
+                    <VrXrSpecification Model="@VrXrSpecification" />
+                    break;
+            }
+        </div>
+        @* <div class="mt-2"> *@
+        @* </div> *@
+    </div>
+    <MudContainer MaxWidth="MaxWidth.Medium">
+        <MudGrid Class="user-card-data">
+            <MudItem xs="6" md="2" Class="text-end">
+                <MudAvatar Rounded="true" Style="width:120px;height:120px" Square="true">
+                    <MudImage Src="@Project.UserImageUrl"></MudImage>
+                </MudAvatar>
+            </MudItem>
+            <MudItem xs="6" md="3" Class="text-user mt-auto">
+                <MudText Typo="Typo.subtitle1" Class="mb-2">
+                    <MudIcon Icon="@Icons.Material.Filled.Person" Color="Color.Tertiary"
+                             Size="Size.Small"></MudIcon> @Project.UserFullName
+                </MudText>
+                <MudText Class="mb-2">
+                    <MudIcon Icon="@Icons.Material.Filled.Email"
+                             Color="Color.Tertiary" Size="Size.Small" /> @Project.Email
+                </MudText>
+            </MudItem>
+            <MudItem xs="12" md="7" Class="d-flex align-content-center mt-auto justify-content-center flex-wrap flex-grow-1 gap-4">
+                <MudText Class="mb-2">
+                    <MudIcon Icon="@Icons.Material.Filled.Phone"
+                             Color="Color.Tertiary" Size="Size.Small" /> @Project.PhoneNumber
+                </MudText>
+                @if (Project.Address != null)
+                {
+                    <MudText>
+                        <MudIcon Icon="@Icons.Material.Filled.LocationOn"
+                                 Color="Color.Tertiary" Size="Size.Small" /> @Project.Address.ToShortString()
+                    </MudText>
+                }
+            </MudItem>
+        </MudGrid>
+    </MudContainer>
+}
