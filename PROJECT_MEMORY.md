@@ -356,6 +356,8 @@ migration اصلی فعلی در `hisubmit/src/Infrastructure/Migrations/2025070
   deployment branch `production-publish-20260816` was created from the
   compatible publish history at commit `a4a99ec`. Plesk should use this new
   branch if the old repository clone still does not refresh.
+- The first UI redesign Release output is now the fast-forward child
+  `7aa11f2` on `production-publish-20260816`.
 
 ## UI redesign checkpoint (2026-08-16)
 
