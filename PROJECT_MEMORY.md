@@ -368,5 +368,10 @@ migration اصلی فعلی در `hisubmit/src/Infrastructure/Migrations/2025070
   must include both a venue and an address linked through `Addresses.VenueId`.
 - During verification, `GET /api/v1/public/Festival/GetAllNews?FestivalId=12`
   incorrectly returned news belonging to festival 13. The public controller
-  currently does not enable the festival-specific filter; this is the next
-  source-code fix to apply and retest.
+  did not enable the festival-specific filter. The controller now enables that
+  filter whenever `FestivalId` is present. On the rebuilt local app, festival
+  12 returned only its own news, while the no-`FestivalId` public news endpoint
+  continued to return global and festival news.
+- The rebuilt local app also returned HTTP 200 for demo festival products,
+  tickets, and deadline categories. The source build completed with zero
+  errors; existing package and compiler warnings remain tracked separately.

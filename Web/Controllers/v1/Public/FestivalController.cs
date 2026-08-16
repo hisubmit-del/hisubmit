@@ -162,6 +162,9 @@ public class FestivalController : BasePublicController<FestivalController>
     public async Task<IActionResult> GetAll([FromQuery] GetAllNewQuery query)
     {
         query.IsEnable = true;
+        // This endpoint is used by a festival detail page. When a festival
+        // id is supplied, do not leak news belonging to other festivals.
+        query.GetFestivalNews = query.FestivalId.HasValue;
         return Ok(await Mediator.Send(query));
     }
 
