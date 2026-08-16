@@ -349,3 +349,24 @@ migration اصلی فعلی در `hisubmit/src/Infrastructure/Migrations/2025070
 - Plesk should track `production-publish` and use Manual `Deploy now`.
 - The real `appsettings.Production.json` must remain host-local in
   `httpdocs`; it must never be committed to the compiled branch.
+
+## Local demo-data verification checkpoint (2026-08-16)
+
+- Added `tools\seed-demo-local.sql`, an idempotent, local-only seed script for
+  `HiSubmitDB50`. It is not called by application startup and does not modify
+  production.
+- The seed creates two demo festivals, festival/event-category deadlines,
+  news, a product, a ticket with a linked venue/address, one artist project
+  and submission, a referee assignment, and product/ticket purchase records.
+- Demo accounts use the existing local `johndoe` password hash and therefore
+  use password `123Pa$$word!` only on the local demo database. They are:
+  `demo.artist@hisubmit.test`, `demo.festival@hisubmit.test`,
+  `demo.referee@hisubmit.test`, `demo.productbuyer@hisubmit.test`, and
+  `demo.ticketbuyer@hisubmit.test`.
+- Verified locally over HTTP: home, FAQ, Terms, festival deadline categories,
+  festival products, festival news, and festival tickets. The ticket seed
+  must include both a venue and an address linked through `Addresses.VenueId`.
+- During verification, `GET /api/v1/public/Festival/GetAllNews?FestivalId=12`
+  incorrectly returned news belonging to festival 13. The public controller
+  currently does not enable the festival-specific filter; this is the next
+  source-code fix to apply and retest.
