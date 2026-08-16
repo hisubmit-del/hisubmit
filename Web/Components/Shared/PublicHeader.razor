@@ -20,6 +20,24 @@
             <li>
                 <a class="public-nav-link" href="/" @onclick="CloseMobileMenu">Browse festivals</a>
             </li>
+            <li>
+                <a class="public-nav-link public-nav-link--featured" href="/news" @onclick="CloseMobileMenu">
+                    <MudIcon Icon="@Icons.Material.Outlined.Newspaper" Size="Size.Small" />
+                    <span>News</span>
+                </a>
+            </li>
+            <li>
+                <a class="public-nav-link" href="/store" @onclick="CloseMobileMenu">
+                    <MudIcon Icon="@Icons.Material.Outlined.Storefront" Size="Size.Small" />
+                    <span>Store</span>
+                </a>
+            </li>
+            <li>
+                <a class="public-nav-link" href="/tickets" @onclick="CloseMobileMenu">
+                    <MudIcon Icon="@Icons.Material.Outlined.LocalActivity" Size="Size.Small" />
+                    <span>Tickets</span>
+                </a>
+            </li>
             @foreach (var item in Items)
             {
                 <li>
@@ -64,6 +82,24 @@
                     <ul>
                         <li>
                             <a class="public-nav-link" href="/">Browse festivals</a>
+                        </li>
+                        <li>
+                            <a class="public-nav-link public-nav-link--featured" href="/news">
+                                <MudIcon Icon="@Icons.Material.Outlined.Newspaper" Size="Size.Small" />
+                                <span>News</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="public-nav-link" href="/store">
+                                <MudIcon Icon="@Icons.Material.Outlined.Storefront" Size="Size.Small" />
+                                <span>Store</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="public-nav-link" href="/tickets">
+                                <MudIcon Icon="@Icons.Material.Outlined.LocalActivity" Size="Size.Small" />
+                                <span>Tickets</span>
+                            </a>
                         </li>
                         @foreach (var item in Items)
                         {

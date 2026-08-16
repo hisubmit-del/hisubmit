@@ -2,78 +2,81 @@
 @inherits BasePublicPages
 
 <SeoMetaTags PageId="0" PageType="@PageType.NewsList" OgImageUrl="https://hisubmit.com/media/logo/1.JPG" />
-<section class="article-section">
-    @if (_loaded && _news.Any())
-    {
-        <MudContainer MaxWidth="MaxWidth.Large">
-            @{
-                var n = _news.FirstOrDefault(p=>p.IsPined);
-                <div class="news-top">
-                    <img src="@n.BannerUrl" />
+<section class="public-content-page news-hub-page">
+    <MudContainer MaxWidth="MaxWidth.Large">
+        <div class="public-page-hero news-hub-hero">
+            <div>
+                <MudChip T="string" Color="Color.Warning" Variant="Variant.Text">HiSubmit editorial</MudChip>
+                <MudText Typo="Typo.h1">Stories behind the entries</MudText>
+                <MudText Typo="Typo.body1" Class="public-page-hero__copy">
+                    Festival announcements, artist insights and useful updates from the creative competition community.
+                </MudText>
+            </div>
+            <div class="public-page-hero__icon">
+                <MudIcon Icon="@Icons.Material.Outlined.AutoStories" Size="Size.Large" />
+            </div>
+        </div>
 
-                    <MudCard Class="pa-1 pa-md-3 news-desc">
-                        @* <MudCardMedia Image="@($"/{New.BannerUrl}")" alt="@New.Title" Height="200"/> *@
-                        <MudCardContent>
-                            @if (!string.IsNullOrWhiteSpace(n.FestivalName))
-                            {
-                                <MudChip T="string" Variant="Variant.Text" Color="Color.Info">
-                                    @n.FestivalName 
-                                </MudChip>
-                            }
-                            else
-                            {
-                                <MudChip T="string" Variant="Variant.Text" Color="Color.Info">Admin</MudChip>
-                            }
-                            <MudText Typo="Typo.h5">
-                                <a href="@($"/new/{n.Id}")">@n.Title</a>
-                            </MudText>
-                        </MudCardContent>
-                        <MudCardActions>
-                            <MudAvatar>
-                                <MudImage Src="@(string.IsNullOrWhiteSpace(n.FestivalLogoURL)?ClientAppConstants.SmallLogoUrl :n.FestivalLogoURL)"></MudImage>
-                            </MudAvatar>
-                            <MudText Inline="true" Typo="Typo.body2" Class="ml-1" Color="Color.Default">@(string.IsNullOrWhiteSpace(n.FestivalName) ? "Admin" : n.FestivalName)</MudText>
-                            <MudSpacer />
-                            <MudText Inline="true" Typo="Typo.body2" Color="Color.Default">@n.CreatedOn.ToLongDateString()</MudText>
-                        </MudCardActions>
-                    </MudCard>
+        <div class="public-toolbar">
+            <div>
+                <MudText Typo="Typo.h5">Latest news</MudText>
+                <MudText Typo="Typo.body2" Class="text-muted">Follow every festival from one calm, searchable feed.</MudText>
+            </div>
+            <MudTextField Class="public-toolbar__search"
+                          DebounceInterval="500"
+                          @bind-Value="@SearchString"
+                          Variant="Variant.Outlined"
+                          Placeholder="Search news..."
+                          Adornment="Adornment.End"
+                          OnAdornmentClick="Search"
+                          AdornmentColor="Color.Primary"
+                          AdornmentIcon="@Icons.Material.Filled.Search" />
+        </div>
+
+        @if (!_loaded)
+        {
+            <MudProgressLinear Indeterminate="true" Color="Color.Primary" Class="my-8" />
+        }
+        else if (_news.Any())
+        {
+            var pinned = _news.FirstOrDefault(p => p.IsPined);
+            @if (pinned is not null)
+            {
+                <div class="news-featured-card">
+                    <img src="@pinned.BannerUrl" alt="@pinned.Title" />
+                    <div class="news-featured-card__content">
+                        <MudChip T="string" Color="Color.Info" Variant="Variant.Text">
+                            @(string.IsNullOrWhiteSpace(pinned.FestivalName) ? "HiSubmit" : pinned.FestivalName)
+                        </MudChip>
+                        <MudText Typo="Typo.h3">
+                            <a href="@($"/new/{pinned.Id}/{Uri.EscapeDataString(pinned.Title ?? "news")}")">@pinned.Title</a>
+                        </MudText>
+                        <MudText Typo="Typo.body1">@pinned.ShortDescription</MudText>
+                        <a class="public-text-link" href="@($"/new/{pinned.Id}/{Uri.EscapeDataString(pinned.Title ?? "news")}")">
+                            Read the full story <MudIcon Icon="@Icons.Material.Filled.ArrowForward" Size="Size.Small" />
+                        </a>
+                    </div>
                 </div>
             }
 
-            <MudGrid Justify="Justify.Center"
-                     class="festival-key-search-box text-center justify-center px-lg-14 px-2 my-10">
-                <MudItem xs="12" md="6" xl="5">
-                    <MudTextField DebounceInterval="500"
-                                  @bind-Value="@SearchString"
-                                  Variant="Variant.Outlined"                                 
-                                  Adornment="Adornment.End"       
-                                  OnAdornmentClick="Search"
-                                  AdornmentColor="Color.Surface"
-                                  AdornmentIcon="@Icons.Material.Filled.Search" />
-                </MudItem>
-            </MudGrid>
-
-            <MudGrid>
-                <MudText Typo="Typo.h1"
-                         Class="align-self-start  news-title  flex-1 my-8">
-                   Read Art Competitions latest news and updates here 
-                </MudText>
-            </MudGrid>
-            <div>
-                <MudText Typo="Typo.subtitle2" Class="my-4" Inline="false">Last Post</MudText>
-            </div>
-            <MudGrid>
-
-                @foreach (var n in _news.Where(p => !p.IsPined))
+            <MudGrid Class="news-grid">
+                @foreach (var item in _news.Where(p => !p.IsPined))
                 {
-                    <MudItem xs="12" md="6" lg="4" class="mb-4">
-                        <NewBox New="n" ShowFestivalName="true"/>
+                    <MudItem xs="12" sm="6" lg="4">
+                        <NewBox New="item" ShowFestivalName="true" />
                     </MudItem>
                 }
-
             </MudGrid>
             <Pagination ChangedCurrentPage="ChangePage" TotalPage="_newResponse.TotalPages" CurrentPage="@PageNumber" />
-        </MudContainer>
-    }
+        }
+        else
+        {
+            <div class="public-empty-state">
+                <MudIcon Icon="@Icons.Material.Outlined.Article" Size="Size.Large" />
+                <MudText Typo="Typo.h6">No stories found</MudText>
+                <MudText Typo="Typo.body2">Try a different keyword or check back soon.</MudText>
+            </div>
+        }
+    </MudContainer>
 </section>
 

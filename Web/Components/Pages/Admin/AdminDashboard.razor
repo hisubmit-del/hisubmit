@@ -5,6 +5,15 @@
 
 @inject IStringLocalizer<AdminDashboard> Localize
 @inherits BaseAdminPages
+<div class="dashboard-page-shell">
+<div class="dashboard-page-intro">
+    <div>
+        <MudText Typo="Typo.overline">Administration centre</MudText>
+        <MudText Typo="Typo.h3">The whole platform, at a glance</MudText>
+        <MudText Typo="Typo.body2">Monitor growth, approvals, revenue and the health of every workflow.</MudText>
+    </div>
+    <MudIcon Icon="@Icons.Material.Outlined.DashboardCustomize" Size="Size.Large" />
+</div>
 <MudGrid Class="mt-3">
     <MudItem xs="6" sm="4" md="4" lg="2">
         <MudPaper Elevation="25"
@@ -286,3 +295,4 @@
         </MudPaper>
     </MudItem>
 </MudGrid>
+    </div>

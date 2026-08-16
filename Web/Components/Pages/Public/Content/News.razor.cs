@@ -57,6 +57,7 @@ public partial class News
     public string SearchString { get; set; }
     private async Task LoadNews(GetAllNewRequest request)
     {
+        _request = request;
         request.ReturnLastNews = true;
         if (ApplicationState.TryTakeFromJson
                 <PaginatedResult<GetAllNewResponse>>

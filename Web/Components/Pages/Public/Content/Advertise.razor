@@ -1,99 +1,123 @@
-﻿@using HiSubmit.Client.SharedModels.Extensions
+@using HiSubmit.Client.SharedModels.Extensions
 @using Hisubmit.Client.SharedModels.Enums.Advertises
 @inject IStringLocalizer<Advertise> Localize
 
-
 @page "/advertise"
-@inherits BasePublicPages 
+@inherits BasePublicPages
 @attribute [AllowAnonymous]
 
 <SeoMetaTags PageId="0" PageType="@PageType.Advertise" OgImageUrl="https://hisubmit.com/media/logo/1.JPG" />
 
-<MudContainer MaxWidth="MaxWidth.Medium">
-    <div class="festival-single">
-        <MudCard>
-        <div class="title-text mb-3 pa-6">
-            <h2>Advertise</h2>
-            <p>
-                The Toronto Short Film festival is open to short films from any country which are under 50
-                minutes in length.The Toronto Short Film festival is open to short films from any country
-                which
-                are under 50 minutes in length.The Toronto Short Film festival is open to short films from
-                any
-                country which are under 50 minutes in length.The Toronto Short Film festival is open to
-                short
-                films from any country which are under 50 minutes in length.The Toronto Short Film festival
-                is
-                open to short films from any country which are under 50 minutes in length.
-            </p>
+<section class="public-content-page advertise-page">
+    <MudContainer MaxWidth="MaxWidth.Large">
+        <div class="public-page-hero advertise-hero">
+            <div>
+                <MudChip T="string" Color="Color.Warning" Variant="Variant.Text">Grow your reach</MudChip>
+                <MudText Typo="Typo.h1">Put your festival or practice in front of the right audience</MudText>
+                <MudText Typo="Typo.body1" Class="public-page-hero__copy">
+                    Tell us what you want to promote. Our team will recommend the right placement across festival pages,
+                    editorial content and the HiSubmit audience.
+                </MudText>
+            </div>
+            <div class="public-page-hero__icon">
+                <MudIcon Icon="@Icons.Material.Outlined.Campaign" Size="Size.Large" />
+            </div>
         </div>
 
-        <MudPaper Class="pa-8">
-                <MudItem xs="12">
+        <MudGrid Class="advertise-layout">
+            <MudItem xs="12" md="5">
+                <MudPaper Class="advertise-benefits pa-6">
+                    <MudText Typo="Typo.h5">Choose a goal</MudText>
+                    <MudText Typo="Typo.body2" Class="text-muted mb-4">
+                        A clearer brief helps us design a campaign that converts attention into entries, ticket sales or product orders.
+                    </MudText>
+                    <div class="advertise-benefit">
+                        <MudIcon Icon="@Icons.Material.Outlined.Visibility" />
+                        <div><MudText Typo="Typo.subtitle1">Be discovered</MudText><MudText Typo="Typo.body2">Reach artists browsing active competitions.</MudText></div>
+                    </div>
+                    <div class="advertise-benefit">
+                        <MudIcon Icon="@Icons.Material.Outlined.Article" />
+                        <div><MudText Typo="Typo.subtitle1">Tell your story</MudText><MudText Typo="Typo.body2">Build trust with a sponsored editorial feature.</MudText></div>
+                    </div>
+                    <div class="advertise-benefit">
+                        <MudIcon Icon="@Icons.Material.Outlined.MarkEmailRead" />
+                        <div><MudText Typo="Typo.subtitle1">Own the moment</MudText><MudText Typo="Typo.body2">Ask about newsletter placement for a focused launch.</MudText></div>
+                    </div>
+                </MudPaper>
+            </MudItem>
+            <MudItem xs="12" md="7">
+                <MudPaper Class="advertise-form-card pa-4 pa-md-8">
+                    <MudText Typo="Typo.h5">Start an advertising request</MudText>
+                    <MudText Typo="Typo.body2" Class="text-muted mb-6">
+                        Share the essentials. We will follow up with availability, pricing and next steps.
+                    </MudText>
                     <EditForm Model="_advertise" OnSubmit="SaveAsync">
-                        <FluentValidationValidator @ref="_fluentValidationValidator"/>
-                            <MudGrid>
-                                <MudItem xs="12" md="6">
-                                    <MudSelect Variant="Variant.Filled" T="AdvertiseType"
-                                               @bind-Value="@_advertise.AdvertiseType" 
-                                               For="() => _advertise.AdvertiseType" Label="@Localize["ItemType"]">
-                                        @foreach (AdvertiseType type in Enum.GetValues<AdvertiseType>())
-                                        {
-                                            <MudSelectItem Value="@type">@type.ToDisplay()</MudSelectItem>
-                                        }
-                                    </MudSelect>
-                                </MudItem>
-                                <MudItem xs="12" md="6">
-                                    <MudTextField @bind-Value="_advertise.Email" For="() => _advertise.Email" 
-                                                  Label="@Localize["Email"]" Variant="Variant.Filled"></MudTextField>
-                                </MudItem>
+                        <FluentValidationValidator @ref="_fluentValidationValidator" />
+                        <MudGrid>
+                            <MudItem xs="12" md="6">
+                                <MudSelect Variant="Variant.Outlined" T="AdvertiseType"
+                                           @bind-Value="_advertise.AdvertiseType"
+                                           For="() => _advertise.AdvertiseType"
+                                           Label="Placement type">
+                                    @foreach (AdvertiseType type in Enum.GetValues<AdvertiseType>())
+                                    {
+                                        <MudSelectItem Value="@type">@type.ToDisplay()</MudSelectItem>
+                                    }
+                                </MudSelect>
+                            </MudItem>
+                            <MudItem xs="12" md="6">
+                                <MudTextField @bind-Value="_advertise.Email" For="() => _advertise.Email"
+                                              Label="@Localize["Email"]" Variant="Variant.Outlined" />
+                            </MudItem>
+                            <MudItem xs="12">
+                                <MudTextField @bind-Value="_advertise.Description" For="() => _advertise.Description"
+                                              Lines="5" Label="Campaign brief" HelperText="Tell us who you want to reach, what you are promoting and your preferred timing."
+                                              Variant="Variant.Outlined" />
+                            </MudItem>
+                        </MudGrid>
 
-                                <MudItem xs="12" md="12">
-                                    <MudTextField @bind-Value="_advertise.Description" For="() => _advertise.Description"
-                                                  Lines="3" Label="@Localize["Description"]" Variant="Variant.Filled"></MudTextField>
-                                </MudItem>
-                            </MudGrid>
-
-                            @if (_advertise.AdvertiseType == AdvertiseType.Banner)
-                            {
-                                <MudGrid Class="mt-3 d-flex align-baseline">
+                        @if (_advertise.AdvertiseType == AdvertiseType.Banner)
+                        {
+                            <div class="advertise-upload-section">
+                                <MudText Typo="Typo.subtitle1">Creative assets</MudText>
+                                <MudText Typo="Typo.body2" Class="text-muted">Upload the images you want our team to review.</MudText>
+                                <MudGrid Class="mt-2">
                                     @foreach (var image in _advertise.Images)
                                     {
-                                        <MudItem xs="12" md="4">
+                                        <MudItem xs="12" sm="6">
                                             <ImageUploader @bind-UploadRequest="image.UploadRequest"
-                                                           @bind-Url="image.Url" DeleteImage="() => DeleteImage(image)"></ImageUploader>
-                                            <MudTextField @bind-Value="@image.Title" 
-                                                          For="() => image.Title" Label="@Localize["Title"]"></MudTextField>
+                                                           @bind-Url="image.Url" DeleteImage="() => DeleteImage(image)" />
+                                            <MudTextField @bind-Value="image.Title" For="() => image.Title" Label="Asset title" Variant="Variant.Outlined" />
                                         </MudItem>
                                     }
-                                    <MudButton StartIcon="@Icons.Material.Filled.Add" Title="Add Image" Class="mb-3"  Style="height: 40px"
-                                               OnClick="AddImage">@Localize["Add Image"]</MudButton>
                                 </MudGrid>
-                            }
-                            else
-                            {
-                                <MudGrid Class="mt-3 d-felx align-baseline">
+                                <MudButton StartIcon="@Icons.Material.Filled.Add" Variant="Variant.Text" OnClick="AddImage">Add image</MudButton>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="advertise-upload-section">
+                                <MudText Typo="Typo.subtitle1">Supporting files</MudText>
+                                <MudText Typo="Typo.body2" Class="text-muted">Attach a brief, media kit or other useful material.</MudText>
+                                <MudGrid Class="mt-2">
                                     @foreach (var file in _advertise.Files)
                                     {
-                                        <MudItem sm="12" md="4" lg="4" Class="mb-3">
-                                            <FileUploader @bind-UploadRequest="file.UploadRequest" 
-                                                          DeleteImage="() => DeleteFiles(file)"></FileUploader>
+                                        <MudItem xs="12" sm="6">
+                                            <FileUploader @bind-UploadRequest="file.UploadRequest" DeleteImage="() => DeleteFiles(file)" />
                                         </MudItem>
                                     }
-                                    
-
-                                    <MudButton Style="height: 40px"  Class="mb-3" StartIcon="@Icons.Material.Filled.Add" Title="Add File" 
-                                               OnClick="AddFile">@Localize["Add File"]</MudButton>
                                 </MudGrid>
-                            }
-                        <MudItem xs="12" Class="ma-3 mt-5 justify-center">
-                            <LoadingButton  Class="my-1 w-25" Processing="_processing"
-                                           Variant="Variant.Filled" Color="Color.Primary" 
-                                           ButtonType="ButtonType.Submit">@Localize["Send Advertise Filter"]</LoadingButton>
-                        </MudItem>
+                                <MudButton StartIcon="@Icons.Material.Filled.Add" Variant="Variant.Text" OnClick="AddFile">Add file</MudButton>
+                            </div>
+                        }
+                        <LoadingButton Class="advertise-submit mt-6" Processing="_processing"
+                                       Variant="Variant.Filled" Color="Color.Primary"
+                                       ButtonType="ButtonType.Submit">
+                            Send advertising request
+                        </LoadingButton>
                     </EditForm>
-                </MudItem>
-        </MudPaper>
-        </MudCard>
-    </div>
-</MudContainer>
+                </MudPaper>
+            </MudItem>
+        </MudGrid>
+    </MudContainer>
+</section>

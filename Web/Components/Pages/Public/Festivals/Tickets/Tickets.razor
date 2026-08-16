@@ -1,43 +1,53 @@
-﻿@page "/tickets/{FestivalId:int}"
+@page "/tickets/{FestivalId:int}"
+@page "/tickets"
 @layout PublicMainLayout
 @attribute [AllowAnonymous]
+@using Web.Components.Pages.Public.Festivals.Components
 
-<MudCard>
-    <MudGrid>
-        <MudItem xs="12" lg="3"></MudItem>
-        <MudItem xs="12" lg="9">
-            @* <MudGrid> *@
-            @foreach (var ticket in tickets)
-            {
-                <MudItem xs="12">
-                    <MudPaper Class="ticket">
-                        <MudGrid Style="height: 100%">
-                            <MudItem Style="height:100%" xs="12" md="4">
-                                <MudPaper Elevation="0" Style="background: none;">
-                                    <MudStack Justify="Justify.SpaceAround">
-                                        <MudText Align="Align.Center" Typo="Typo.subtitle1">@ticket.Title</MudText>
-                                        <MudText Align="Align.Center" Typo="Typo.subtitle2">
-                                            Price:
-                                            @ticket.Cost
-                                        </MudText>
-                                        <MudText Align="Align.Center" Typo="Typo.subtitle2">
-                                            Venue:
-                                            @ticket.VenueName
-                                        </MudText>
-                                    </MudStack>
-                                </MudPaper>
-                            </MudItem>
-                            <MudDivider Style="width: 3px;color: #2a3940" Vertical="true" FlexItem="true"></MudDivider>
-                            <MudText xs="12" md="8">
-                                <MudPaper Elevation="0" Class="pa-3" Style="background: none">
-                                    <MudText Align="Align.Center" Typo="Typo.body1">@ticket.Description</MudText>
-                                </MudPaper>
-                            </MudText>
-                        </MudGrid>
-                    </MudPaper>
-                </MudItem>
-            }
-            @* </MudGrid> *@
-        </MudItem>
-    </MudGrid>
-</MudCard>
+<section class="public-content-page tickets-page">
+    <MudContainer MaxWidth="MaxWidth.Large">
+        <div class="public-page-hero tickets-hero">
+            <div>
+                <MudChip T="string" Color="Color.Warning" Variant="Variant.Text">Live experiences</MudChip>
+                <MudText Typo="Typo.h1">Your next seat is here</MudText>
+                <MudText Typo="Typo.body1" Class="public-page-hero__copy">
+                    Compare event tickets and festival badges with clear dates, venues and availability before you buy.
+                </MudText>
+            </div>
+            <MudIcon Icon="@Icons.Material.Outlined.LocalActivity" Class="public-page-hero__icon" Size="Size.Large" />
+        </div>
+
+        <div class="public-toolbar">
+            <div>
+                <MudText Typo="Typo.h5">Available tickets &amp; badges</MudText>
+                <MudText Typo="Typo.body2" Class="text-muted">Only currently enabled offers are shown.</MudText>
+            </div>
+            <MudTextField @bind-Value="_searchString"
+                          OnKeyUp="Search"
+                          Variant="Variant.Outlined"
+                          Placeholder="Search by title or venue..."
+                          Adornment="Adornment.End"
+                          AdornmentIcon="@Icons.Material.Filled.Search"
+                          AdornmentColor="Color.Primary" />
+        </div>
+
+        @if (!_loaded)
+        {
+            <MudProgressLinear Indeterminate="true" Color="Color.Primary" Class="my-8" />
+        }
+        else if (tickets.Any())
+        {
+            <div class="ticket-market-grid">
+                <FestivalTickets Tickets="tickets" />
+            </div>
+        }
+        else
+        {
+            <div class="public-empty-state">
+                <MudIcon Icon="@Icons.Material.Outlined.EventBusy" Size="Size.Large" />
+                <MudText Typo="Typo.h6">No tickets are available right now</MudText>
+                <MudText Typo="Typo.body2">Try a different search or return when a festival opens its box office.</MudText>
+            </div>
+        }
+    </MudContainer>
+</section>

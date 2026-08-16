@@ -6,6 +6,7 @@ using Hisubmit.Client.SharedModels.Features.SoldTickets.Commands;
 using Hisubmit.Client.SharedModels.Features.Tickets.Queries.GetAllTicket;
 using HiSubmit.Client.Infrastructure.Managers.PublicTicket;
 using Web.Components.Shared.Components;
+using Web.Components.Pages.Public.Festivals.Components;
 using Hisubmit.Client.SharedModels.Enums;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
@@ -54,9 +55,10 @@ public partial class Tickets
     {
         var response = await TicketManager.GetAllAsync(new GetAllTicketQuery()
         {
-            FestivalId = FestivalId,
+            FestivalId = FestivalId == 0 ? null : FestivalId,
             GetAllData = true,
-            GetActiveTicket = true
+            GetActiveTicket = true,
+            SearchString = _searchString
         });
         if (response.Succeeded)
         {
@@ -69,6 +71,11 @@ public partial class Tickets
                 _snackBar.Add(message, Severity.Error);
             }
         }
+    }
+
+    private async Task Search(Microsoft.AspNetCore.Components.Web.KeyboardEventArgs _)
+    {
+        await LoadTickets();
     }
 
     private async Task<TableData<GetAllTicketResponse>> ServerReload(TableState state ,System.Threading.CancellationToken  token)

@@ -1,0 +1,62 @@
+@page "/store"
+@inherits BasePublicPages
+@attribute [AllowAnonymous]
+
+<SeoMetaTags PageId="0" PageType="@PageType.Product" OgImageUrl="https://hisubmit.com/media/logo/1.JPG" />
+
+<section class="public-content-page store-page">
+    <MudContainer MaxWidth="MaxWidth.Large">
+        <div class="public-page-hero store-hero">
+            <div>
+                <MudChip T="string" Color="Color.Warning" Variant="Variant.Text">Festival marketplace</MudChip>
+                <MudText Typo="Typo.h1">Find something worth taking home</MudText>
+                <MudText Typo="Typo.body1" Class="public-page-hero__copy">
+                    Discover festival editions, artist-made products and experiences curated by the competitions you follow.
+                </MudText>
+            </div>
+            <MudButton Href="/tickets" Variant="Variant.Outlined" Color="Color.Primary" StartIcon="@Icons.Material.Outlined.LocalActivity">
+                Browse tickets
+            </MudButton>
+        </div>
+
+        <div class="public-toolbar">
+            <div>
+                <MudText Typo="Typo.h5">All products</MudText>
+                <MudText Typo="Typo.body2" Class="text-muted">A single storefront for every participating festival.</MudText>
+            </div>
+            <MudTextField @bind-Value="_searchString"
+                          OnKeyUp="Search"
+                          Variant="Variant.Outlined"
+                          Placeholder="Search products..."
+                          Adornment="Adornment.End"
+                          AdornmentIcon="@Icons.Material.Filled.Search"
+                          AdornmentColor="Color.Primary" />
+        </div>
+
+        @if (!_loaded)
+        {
+            <MudProgressLinear Indeterminate="true" Color="Color.Primary" Class="my-8" />
+        }
+        else if (_products.Any())
+        {
+            <MudGrid Class="store-grid">
+                @foreach (var product in _products)
+                {
+                    <MudItem xs="12" sm="6" lg="4" xl="3">
+                        <FestivalProductBox Product="product" />
+                    </MudItem>
+                }
+            </MudGrid>
+            <Pagination ChangedCurrentPage="ChangePage" TotalPage="_response.TotalPages" CurrentPage="@_pageNumber" />
+        }
+        else
+        {
+            <div class="public-empty-state">
+                <MudIcon Icon="@Icons.Material.Outlined.Storefront" Size="Size.Large" />
+                <MudText Typo="Typo.h6">The marketplace is waiting for its next collection</MudText>
+                <MudText Typo="Typo.body2">Try another search or explore a festival to see its products.</MudText>
+            </div>
+        }
+    </MudContainer>
+</section>
+

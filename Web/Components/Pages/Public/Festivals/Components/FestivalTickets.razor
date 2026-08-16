@@ -107,6 +107,12 @@
         }
         else
         {
+            if (!venueId.HasValue)
+            {
+                _snackBar.Add("This ticket is not ready for purchase because its venue is missing.", Severity.Warning);
+                return;
+            }
+
             var dialogOption = new DialogOptions()
                 {
                     CloseButton = true,

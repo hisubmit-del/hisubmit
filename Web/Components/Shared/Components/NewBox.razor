@@ -6,8 +6,10 @@
         max-height: 100%;
     }
 </style>
-<MudCard Class="pa-1 pa-md-3">
-    <img src="@New.BannerUrl" height="200px" class="max-width-100 max-height-100" alt="@New.Title" />
+<MudCard Class="pa-1 pa-md-3 editorial-card">
+    <a class="editorial-card__image" href="@($"/new/{New.Id}/{Uri.EscapeDataString(New.Title ?? "news")}")">
+        <img src="@New.BannerUrl" height="200px" class="max-width-100 max-height-100" alt="@New.Title" />
+    </a>
     @* <MudCardMedia Image="@($"/{New.BannerUrl}")" alt="@New.Title" Height="200"/> *@
     <MudCardContent>
         @if (ShowFestivalName && !string.IsNullOrWhiteSpace(New.FestivalName))
@@ -21,7 +23,7 @@
             <MudChip T="string" Variant="Variant.Text" Color="Color.Info">Admin</MudChip>
         }
         <MudText Typo="Typo.h5" Class="h-3em">
-            <a href="@($"/new/{New.Id}")">@New.Title</a>
+            <a href="@($"/new/{New.Id}/{Uri.EscapeDataString(New.Title ?? "news")}")">@New.Title</a>
         </MudText>
     </MudCardContent>
     <MudCardActions>
@@ -95,7 +97,7 @@
 
     protected override Task OnInitializedAsync()
     {
-        _count = New.ShortDescription.Length;
+        _count = New.ShortDescription?.Length ?? 0;
         if (_count > 200) _count = 200;
         return base.OnInitializedAsync();
     }

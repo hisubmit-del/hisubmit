@@ -1,4 +1,5 @@
 ﻿@page "/new/{NewId:int}/{Title}"
+@page "/new/{NewId:int}"
 @inherits BasePublicPages
 
 <SeoMetaTags PageId="@NewId.ToString()" PageType="@PageType.News" OgImageUrl=@($"https://hisubmit.com{_new.BannerUrl}") />
