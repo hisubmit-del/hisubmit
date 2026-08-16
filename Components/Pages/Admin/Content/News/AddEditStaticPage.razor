@@ -1,0 +1,49 @@
+﻿@page "/admin/static-page"
+@page "/admin/static-page/{PageId:int}"
+@inherits BaseAdminPages
+@inject IStringLocalizer<AddEditStaticPage> Localizer
+<MudContainer MaxWidth="MaxWidth.Large">
+    <HeroTitle Title="Add/Edit Static Page" Description="Add or Edit Static Pages like as Contact us and ..."></HeroTitle>
+    <MudCard Elevation="25" Class="pa-4">
+        <EditForm Model="_staticPage" OnSubmit="SaveAsync">
+            <FluentValidationValidator @ref="_fluentValidationValidator" />
+            <MudGrid>
+                <MudItem xs="12" md="6">
+                    <MudTextField @bind-Value="_staticPage.Title"
+                                  For="() => _staticPage.Title" Label="@Localizer["Title"]" Variant="Variant.Filled"></MudTextField>
+                </MudItem>
+                <MudItem xs="12" md="6">
+                    <MudTextField @bind-Value="_staticPage.Link"
+                                  For="() => _staticPage.Link" Label="@Localizer["Link"]" Variant="Variant.Filled"></MudTextField>
+                </MudItem>
+            </MudGrid>
+            <MudGrid>
+                <MudItem xs="12">
+                    <MudSwitch Class="my-3" T="bool" Size="Size.Large"
+                               @bind-Value="@_staticPage.IsEnable" For="() => _staticPage.IsEnable"
+                               Label="@Localizer["Show In Site"]" Color="Color.Success" />
+                </MudItem>
+            </MudGrid>
+            <MudGrid>
+                <MudItem xs="12" Class="h-100">
+                    <CustomeRichTextEditor MinHeight="360px" @bind-Body="@_staticPage.Content" />
+                </MudItem>
+            </MudGrid>
+
+            <AddEditSeoTagForm Model="@_staticPage.SeoTag" />
+
+            <MudGrid>
+                <MudItem xs="12" Class="d-flex">
+                    <MudSpacer />
+                     <MudButtonGroup OverrideStyles="false"> 
+                        <MudButton Variant="Variant.Filled" Href="/admin/static-pages">Back To List</MudButton>
+                        <LoadingButton  Class="sticky-bottom-mobile"
+                                        StartIcon="@Icons.Material.Filled.Save"
+                                       Processing="_processing" Variant="Variant.Filled"
+                                       Color="Color.Primary" ButtonType="ButtonType.Submit">@Localizer["Save"]</LoadingButton>
+                     </MudButtonGroup> 
+                </MudItem>
+            </MudGrid>
+        </EditForm>
+    </MudCard>
+</MudContainer>

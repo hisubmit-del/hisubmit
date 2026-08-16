@@ -1,0 +1,32 @@
+.spinner-box[b-8nu1s1l010] {
+    min-height: 320px;
+    display: grid;
+    place-items: center;
+}
+
+.spinner[b-8nu1s1l010] {
+    width: 3rem;
+    height: 3rem;
+    border: 0.35rem solid rgba(78, 126, 149, 0.16);
+    border-top-color: var(--brand-primary, #4e7e95);
+    border-right-color: var(--brand-accent, #ff834d);
+    border-radius: 50%;
+    animation: spin-b-8nu1s1l010 0.8s linear infinite;
+}
+
+@keyframes spin-b-8nu1s1l010 {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .spinner[b-8nu1s1l010] {
+        animation-duration: 1.6s;
+    }
+}
+

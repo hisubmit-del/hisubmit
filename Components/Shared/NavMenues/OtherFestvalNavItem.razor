@@ -1,0 +1,157 @@
+﻿@inject IStringLocalizer<OtherFestvalNavItem> Localize
+
+<MudNavLink IconColor="Color.Tertiary" Href="/festival/dashboard" Match="NavLinkMatch.All" Icon="@Icons.Material.Outlined.Dashboard">
+    @Localize["Dashboard"]
+</MudNavLink>
+
+@if (CanView(Permissions.Festival.View))
+{
+    <MudNavLink Href="/festival/edit" IconColor="Color.Tertiary" Match="NavLinkMatch.All" Icon="@Icons.Material.Outlined.Edit">
+        @Localize["Edit"]
+    </MudNavLink>
+}
+@if (CanView(Permissions.Submits.View) ||
+ CanView(Permissions.SubmissionForm.View) || 
+     CanView(Permissions.JudgingForm.View))
+{
+    <MudNavGroup IconColor="Color.Tertiary" Icon="@Icons.Material.Filled.AppRegistration" Title="Submits" Expanded="false">
+        @if (CanView(Permissions.Submits.View))
+        {
+            <MudNavLink IconColor="Color.Tertiary" Href="/festival/submits" Icon="@Icons.Material.Outlined.AppRegistration">
+                @Localize["festival Submits"]
+            </MudNavLink>
+        }
+        @if (CanView(Permissions.SubmissionForm.View))
+        {
+            <MudNavLink IconColor="Color.Tertiary" Href="/festival/question" Icon="@Icons.Material.Outlined.FormatSize">
+                @Localize["Submission form"]
+            </MudNavLink>
+        }
+        @if (CanView(Permissions.JudgingForm.View))
+        {
+            <MudNavLink IconColor="Color.Tertiary" Href="@($"/festival/judging")" Icon="@Icons.Material.Outlined.Score">
+                @Localize["Judging form"]
+            </MudNavLink>
+        }
+    </MudNavGroup>
+}
+
+@if (CanView(Permissions.Ticket.View) || 
+     CanView(Permissions.Venue.View) ||
+     CanView(Permissions.SoldTickets.View))
+{
+    <MudNavGroup IconColor="Color.Tertiary" Icon="@Icons.Material.Filled.AirplaneTicket" Title="Tickets" Expanded="false">
+        @if (CanView(Permissions.Venue.View))
+        {
+            <MudNavLink IconColor="Color.Tertiary" Href="/festival/venues" Icon="@Icons.Material.Outlined.Apartment">
+                @Localize["Venues"]
+            </MudNavLink>
+        }
+        @if (CanView(Permissions.Ticket.View))
+        {
+            <MudNavLink Href="/festival/tickets" Icon="@Icons.Material.Outlined.AirplaneTicket">
+                @Localize["Tickets"]
+            </MudNavLink>
+        }
+        @if (CanView(Permissions.SoldTickets.View))
+        {
+            <MudNavLink IconColor="Color.Tertiary" Href="/festival/soldTicketsList" Icon="@Icons.Material.Outlined.Money">
+                @Localize["Tickets sold"]
+            </MudNavLink>
+        }
+    </MudNavGroup>
+}
+
+@if (CanView(Permissions.FestivalChat.View) || 
+CanView(Permissions.Reviews.View) || 
+     CanView(Permissions.FestivalNews.View))
+{
+    <MudNavGroup Icon="@Icons.Material.Filled.SocialDistance" Title="Communication" Expanded="false">
+        @if (CanView(Permissions.FestivalNews.View))
+        {
+            <MudNavLink IconColor="Color.Tertiary" Href="/festival/chat" Icon="@Icons.Material.Outlined.Chat">
+                @Localize["Chat"]
+            </MudNavLink>
+        }
+        @if (CanView(Permissions.Reviews.View))
+        {
+            <MudNavLink IconColor="Color.Tertiary" Href="/festival/reviews" Icon="@Icons.Material.Outlined.Reviews">
+                @Localize["Reviews"]
+            </MudNavLink>
+        }
+        @if (CanView(Permissions.FestivalNews.View))
+        {
+            <MudNavLink IconColor="Color.Tertiary" Href="/festival/news" Icon="@Icons.Material.Outlined.Newspaper">
+                @Localize["News"]
+            </MudNavLink>
+        }
+        @if (CanView(Permissions.FestivalSeo.View))
+        {
+            <MudNavLink IconColor="Color.Tertiary" Href="/festival/seo" Icon="@Icons.Material.Filled.Search">
+                @Localize["Seo"]
+            </MudNavLink>
+        }
+    </MudNavGroup>
+}
+
+@if (CanView(Permissions.FestivalProducts.View))
+{
+    <MudNavGroup IconColor="Color.Tertiary" Icon="@Icons.Material.Filled.ProductionQuantityLimits" 
+                 Title="Products" 
+                 Expanded="false">
+        <MudNavLink Href="/festival/products" IconColor="Color.Tertiary"
+                    Icon="@Icons.Material.Outlined.ProductionQuantityLimits">
+            @Localize["Products"]
+        </MudNavLink>
+        <MudNavLink Href="/festival/productsSold" IconColor="Color.Tertiary"
+                    Icon="@Icons.Material.Outlined.Money">
+            @Localize["Products Sold"]
+        </MudNavLink>
+    </MudNavGroup>
+}
+@if (CanView(Permissions.SubUser.View) || CanView(Permissions.SubUserRole.View))
+{
+    <MudNavGroup IconColor="Color.Tertiary" Icon="@Icons.Material.Filled.SupervisorAccount" Title="Sub Users" Expanded="false">
+        @if (CanView(Permissions.SubUser.View))
+        {
+            <MudNavLink Href="/festival/subUser/users" IconColor="Color.Tertiary"
+                        Icon="@Icons.Material.Filled.SupervisorAccount">@Localize["Users"]</MudNavLink>
+        }
+        @if (CanView(Permissions.SubUserRole.View))
+        {
+            <MudNavLink Href="/festival/subUser/roles" IconColor="Color.Tertiary"
+                        Icon="@Icons.Material.Filled.Policy">@Localize["Roles"]</MudNavLink>
+        }
+    </MudNavGroup>
+}
+@if (CanView(Permissions.FestivalPayment.PaymentInformation) || 
+     CanView(Permissions.FestivalPayment.CartItem))
+{
+    <MudNavGroup Icon="@Icons.Material.Filled.Money"  IconColor="Color.Tertiary"
+                 Expanded="false" Title="Financial">
+        @if (CanView(Permissions.FestivalPayment.PaymentInformation))
+        {
+            <MudNavLink Href="/festival/payment-information"  IconColor="Color.Tertiary"
+                        Icon="@Icons.Material.Outlined.CreditCard">Payment Information</MudNavLink>
+        }
+        @if (CanView(Permissions.FestivalPayment.CartItem))
+        {
+            @* <MudNavLink Href="/festival/payments" Icon="@Icons.Material.Outlined.Payments">Payments</MudNavLink> *@
+        }
+    </MudNavGroup>
+}
+
+@code {
+
+    [Parameter]
+    public int FestivalId { get; set; }
+
+    [Parameter] 
+    public List<string> Claims { get; set; }
+
+    private bool CanView(string claim)
+    {
+        return Claims.Any(p => p == claim);
+    }
+
+}

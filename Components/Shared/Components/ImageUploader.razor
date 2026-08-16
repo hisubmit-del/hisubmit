@@ -1,0 +1,269 @@
+﻿@using System.IO
+@using global::Hisubmit.Client.SharedModels.Requests
+@using global::Hisubmit.Client.SharedModels.Enums
+@using global::Hisubmit.Client.SharedModels.Requests
+@inject IStringLocalizer<ImageUploader> Localize;
+
+
+<style>
+    .image-upload-box{
+    position:relative;
+    display: inline-block;
+    height: @Height;
+    width: @Width;
+    border: 2px solid #eeeeee;
+    border-radius: 5px;
+    }
+    .image-upload-box .edit-button {
+    position:absolute;
+     top: 5px;
+     left: 5px
+    }
+    .image-upload-box .delete-button{
+     position:absolute;
+         top: 5px;
+         right: 5px
+    }
+    .image-upload-box .image-size{
+    position: absolute;
+    width: 100%;
+    bottom: 5px;
+    left: 0;
+    text-align: center;
+    background: #ffffff;
+    color: #1a1d20;
+    background: rgba(253,253,253,00.6)             
+    }
+    .image-upload-box .loading-cover{
+    position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        z-index: 1000;
+       text-align: center;
+       color: white;
+       max-width: 100%;
+       padding-top: 25px;
+       background: rgba(0,0,0,0.7);
+    }
+     .h-100{
+     height: 100%;
+     }
+</style>
+<div class="image-upload-box">
+    <MudImage alt="@(ImageAlt ?? "image")"
+              Src="@(!string.IsNullOrWhiteSpace(Url) ? Url : ClientAppConstants.NoImageUrl)"
+              class="w-100 h-100"/>
+
+    @if (!string.IsNullOrWhiteSpace(Title))
+    {
+        <MudText Typo="Typo.body1">@Title</MudText>
+    }
+    <InputFile accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp" id="@_imageId" hidden OnChange="UploadImageAsync"/>
+
+    <MudIconButton
+        Class="edit-button"
+        HtmlTag="label"
+        Icon="@Icons.Material.Filled.Upload" 
+        Size="Size.Small" Variant="Variant.Filled" 
+        for="@_imageId"
+        Color="Color.Tertiary"/>
+
+    
+    @if (!HideDeleteButton)
+    {
+        <MudIconButton Class="delete-button"
+                       Icon="@Icons.Material.Filled.Delete"
+                       Size="Size.Small" Variant="Variant.Filled"
+                       OnClick="DeleteImageAsync"
+                       Color="Color.Tertiary" />
+    }
+    
+
+    @if (!string.IsNullOrWhiteSpace(SuggestedSize))
+    {
+        <div class="image-size">
+            Suggested size  : @SuggestedSize
+        </div>
+    }
+ @if (_processing)
+    {
+    <div class="loading-cover">
+        <MudProgressCircular Indeterminate="true" Color="Color.Tertiary" Class="ma-auto"/>
+    </div>
+    }
+    @if (!string.IsNullOrWhiteSpace(_validationMessage))
+    {
+        <MudAlert Dense="true" Severity="Severity.Error" Variant="Variant.Outlined" Class="mt-2">@_validationMessage</MudAlert>
+    }
+</div>
+
+@code {
+    [Parameter]
+    public string SuggestedSize { get; set; }
+    private string _url;
+
+    [Parameter]
+    public string Url
+    {
+        set
+        {
+            //   if (!string.IsNullOrWhiteSpace(value))
+            _url = value;
+        }
+        get => _url;
+    }
+
+    [Parameter] public EventCallback<string> UrlChanged { get; set; }
+
+    [Parameter] public EventCallback<UploadRequest> DeleteImage { get; set; }
+
+
+
+    [Parameter] public EventCallback<UploadRequest> UploadRequestChanged { get; set; }
+
+    [Parameter] public UploadRequest UploadRequest { get; set; } = new();
+
+    [Parameter] public EventCallback<string> ImageAltChanged { get; set; }
+
+    [Parameter] public string ImageAlt { get; set; }
+
+    [Parameter] public string UploadButtonText { get; set; } = "Upload";
+
+    [Parameter] public string Width { get; set; } = "170px";
+
+    [Parameter] public string Height { get; set; } = "170px";
+
+    [Parameter] public string MaxHeight { get; set; } = "100%";
+    
+
+    [Parameter] public bool HideDeleteButton { get; set; }
+    [Parameter] public int MaxSize { get; set; }
+
+    [Parameter]
+    public string Title{ get; set; }
+
+
+    private string _imageId;
+    private bool _processing;
+    private string? _validationMessage;
+    private static readonly HashSet<string> AllowedExtensions = new(StringComparer.OrdinalIgnoreCase)
+    {
+        ".jpg",
+        ".jpeg",
+        ".png",
+        ".webp"
+    };
+
+    protected override Task OnInitializedAsync()
+    {
+        
+        var f = new Random();
+        _imageId = $"upload-image-{f.Next(2000)}";
+        UploadRequest ??= new UploadRequest();
+        return base.OnInitializedAsync();
+    }
+
+    private IBrowserFile _imageFile;
+    private string pUrl;
+
+    private async Task DeleteImageAsync()
+    {
+        Url = string.Empty;
+        UploadRequest = new UploadRequest();
+        _validationMessage = null;
+        await DeleteImage.InvokeAsync(UploadRequest);
+        await UrlChanged.InvokeAsync(Url);
+        await UploadRequestChanged.InvokeAsync(UploadRequest);
+        
+        await InvokeAsync(StateHasChanged);
+    }
+
+
+    private async Task UploadImageAsync(InputFileChangeEventArgs e)
+    {
+        var file = e.File;
+        var extension = Path.GetExtension(file.Name);
+        var fileName = $"{Guid.NewGuid()}{extension}";
+        var maxAllowedSize = MaxSize > 0 ? MaxSize : 10 * 1024 * 1024;
+        _validationMessage = null;
+        _processing = true;
+
+        if (!AllowedExtensions.Contains(extension) || !file.ContentType.StartsWith("image/", StringComparison.OrdinalIgnoreCase))
+        {
+            _validationMessage = Localize["Please select a JPG, PNG, or WEBP image."];
+            _processing = false;
+            return;
+        }
+
+        if (file.Size > maxAllowedSize)
+        {
+            _validationMessage = Localize["Please select a file smaller than {0} MB.", Math.Max(1, maxAllowedSize / 1024 / 1024)];
+            _processing = false;
+            return;
+        }
+
+        using var stream = file.OpenReadStream(maxAllowedSize: maxAllowedSize);
+
+        using var ms = new MemoryStream();
+        await stream.CopyToAsync(ms);
+        var buffer = ms.ToArray();
+
+        UploadRequest = new UploadRequest
+        {
+            Data = buffer,
+            Extension = extension,
+            UploadType = UploadType.FestivalLogo,
+            FileName = fileName
+        };
+
+        ImageAlt = UploadRequest.FileName;
+
+        await UploadRequestChanged.InvokeAsync(UploadRequest);
+        Url = $"data:{file.ContentType};base64,{Convert.ToBase64String(buffer)}";
+        await UrlChanged.InvokeAsync(Url);
+        await ImageAltChanged.InvokeAsync(ImageAlt);
+        _processing = false;
+    }
+
+
+
+    // private async Task UploadImageAsync(InputFileChangeEventArgs e)
+    // {
+    //     //if (e == null) return;
+    //     if (MaxSize < e.File.Size)
+    //     {
+    //         //show snack bar error;
+    //     }
+    //     _imageFile = e.File;
+    //     if (_imageFile != null)
+    //     {
+    //         _processing = true;
+    //         var extension = Path.GetExtension(_imageFile.Name);
+    //         var format = "image/png";
+    //         var fileName = $"{Guid.NewGuid()}{extension}";
+    //         var imageFile = await e.File.RequestImageFileAsync(format, 2000, 2000);
+    //         var buffer = new byte[imageFile.Size];
+    //         await imageFile.OpenReadStream(maxAllowedSize: 5000 * 5000).ReadAsync(buffer);
+    //         // Url = $"data:{format};base64,{Convert.ToBase64String(buffer)}";
+    //         UploadRequest = new UploadRequest
+    //         {
+    //             Data = buffer,
+    //             Extension = extension,
+    //             UploadType = UploadType.FestivalLogo,
+    //             FileName = fileName
+    //         };
+            
+    //         ImageAlt = UploadRequest.FileName;
+    //         _processing = false;
+    //     }
+    //     pUrl = Url;
+    //     await UploadRequestChanged.InvokeAsync(UploadRequest);
+    //     await InvokeAsync(StateHasChanged);
+    //     Url = pUrl;
+    //     await UrlChanged.InvokeAsync(Url);
+    //     await ImageAltChanged.InvokeAsync(ImageAlt);
+    //     await InvokeAsync(StateHasChanged);
+    // }
+}

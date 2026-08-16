@@ -1,0 +1,167 @@
+﻿@using global::Hisubmit.Client.SharedModels.Features.FooterItems
+@inject IStringLocalizer<PublicHeader> Localize
+
+<div class="side-menu-bac @(_isMobileMenuOpen ? "show" : string.Empty)"
+     aria-hidden="@(!_isMobileMenuOpen)"
+     @onclick="CloseMobileMenu"></div>
+<div class="side-menu @(_isMobileMenuOpen ? "show" : string.Empty)"
+     aria-hidden="@(!_isMobileMenuOpen)">
+    <a href="/" class="logo">
+        <img src="assets/img/logo.png" alt="HiSubmit">
+    </a>
+    <MudIconButton Class="side-menu-close"
+                   Icon="@Icons.Material.Outlined.Close"
+                   Color="Color.Inherit"
+                   UserAttributes="@(new() { { "aria-label", "Close navigation menu" } })"
+                   OnClick="CloseMobileMenu" />
+    <div class="menu">
+        <ul>
+            <li>
+                <MudLink Href="/" OnClick="CloseMobileMenu">
+                    <MudButton Variant="Variant.Text" Color="Color.Dark">Browse festivals</MudButton>
+                </MudLink>
+            </li>
+            @foreach (var item in Items)
+            {
+                <li>
+                    <MudLink Href="@item.Link" OnClick="CloseMobileMenu">
+                        <MudButton Variant="Variant.Text" Color="Color.Dark">@item.Title</MudButton>
+                    </MudLink>
+                </li>
+            }
+            <AuthorizeView>
+                <NotAuthorized>
+                    <li style="margin-inline-end: 7px">
+                        <MudLink Href="/login" OnClick="CloseMobileMenu">
+                            <MudChip T="string" Variant="Variant.Filled" Class="w-100" Icon="@Icons.Material.Outlined.Login" Color="Color.Dark">Login</MudChip>
+                        </MudLink>
+                    </li>
+                    <li>
+                        <MudLink Href="/register" OnClick="CloseMobileMenu">
+                            <MudButton Variant="Variant.Text" Class="w-100" StartIcon="@Icons.Material.Outlined.AppRegistration" Color="Color.Dark">Signup</MudButton>
+                        </MudLink>
+                    </li>
+                </NotAuthorized>
+            </AuthorizeView>
+        </ul>
+    </div>
+</div>
+
+<header id="site-header" class="site-header mud-elevation-1 site-header-background">
+    <div class="main-header">
+        <div class="container">
+            <div class="row main-header-row mx-0" style="height: 60px">
+                <a href="/" class="logo pl-0 d-none d-sm-block">
+                    <img class="d-none d-sm-block" src="assets/img/logo.png" alt="logo">
+                </a>
+                <MudIconButton Class="side-menu-toggle d-flex d-lg-none" 
+                               Icon="@Icons.Material.Outlined.Menu" 
+                               Color="Color.Inherit"
+                               UserAttributes="@(new() { { "aria-label", "Open navigation menu" }, { "aria-expanded", _isMobileMenuOpen.ToString().ToLowerInvariant() } })"
+                               OnClick="ToggleMobileMenu"></MudIconButton>
+                <MudSpacer/>
+                <div class="menu d-none d-lg-block ">
+                    <ul>
+                        <li>
+                            <MudLink Href="/">
+                                <MudButton Variant="Variant.Text"
+                                           Color="Color.Dark">Browse festivals</MudButton>
+                            </MudLink>
+                        </li>
+                        @foreach (var item in Items)
+                        {
+                            <li>
+                                <MudLink Href="@item.Link">
+                                    <MudButton Variant="Variant.Text" 
+                                               Color="Color.Dark">@item.Title</MudButton>
+                                </MudLink>
+                            </li>
+                        }
+                        <MudSpacer/>
+                        <AuthorizeView>
+                            <NotAuthorized>
+                                <MudHidden Breakpoint="Breakpoint.MdAndUp">
+                                    <li style="margin-inline-end: 7px">
+                                        <MudLink Href="/login">
+                                            <MudChip T="string" Variant="Variant.Filled" Icon="@Icons.Material.Outlined.Login" 
+                                                     Color="Color.Dark">Login</MudChip>
+                                        </MudLink>
+                                    </li>
+                                    <li>
+                                        <MudLink Href="/register">
+                                            <MudButton Variant="Variant.Text" 
+                                                       StartIcon="@Icons.Material.Outlined.AppRegistration"
+                                                       Color="Color.Dark">Signup</MudButton>
+                                        </MudLink>
+                                    </li>
+                                </MudHidden>
+                            </NotAuthorized>
+                        </AuthorizeView>
+                    </ul>
+                </div>
+                <MudSpacer/>
+                <AuthorizeView>
+                    <Authorized>
+                        <NotificationDropDown/>
+                        <UserCartItems/>
+                        <UserCard ShowAnotherAccount="true" UserInHeader="true"/>
+                    </Authorized>
+                    <NotAuthorized>
+                        <MudHidden Breakpoint="Breakpoint.SmAndDown">
+                            <li style="margin-inline-end: 7px">
+                                <MudLink Href="/login">
+                                    <MudChip T="string" Variant="Variant.Filled" Icon="@Icons.Material.Outlined.Login" 
+                                             Color="Color.Dark">Login</MudChip>
+                                </MudLink>
+                            </li>
+                            <li>
+                                <MudLink Href="/register">
+                                    <MudButton Variant="Variant.Text" 
+                                               StartIcon="@Icons.Material.Outlined.AppRegistration" 
+                                               Color="Color.Dark">Signup</MudButton>
+                                </MudLink>
+                            </li>
+                        </MudHidden>
+                    </NotAuthorized>
+                </AuthorizeView>
+
+                <a href="/" class="logo pl-0 d-block d-sm-none">
+                    <img class="d-block d-sm-none" src="media/logo/logosmal.png" style="width: 57px;height: 57px;" alt="logo">
+                </a>
+            </div>
+        </div>
+    </div>
+</header>
+
+@code {
+
+    [Parameter]
+    public string ImageDataUrl { get; set; }
+
+    [Parameter]
+    public char FirstLetterOfName { get; set; }
+
+    [Parameter]
+    public EventCallback LogoutClicked { get; set; }
+
+    [Parameter]
+    public List<FooterItemDto> Items { get; set; } = new();
+
+    private bool _isMobileMenuOpen;
+
+    private async Task Logout()
+    {
+        await LogoutClicked.InvokeAsync();
+    }
+
+    private void ToggleMobileMenu()
+    {
+        _isMobileMenuOpen = !_isMobileMenuOpen;
+    }
+
+    private void CloseMobileMenu()
+    {
+        _isMobileMenuOpen = false;
+    }
+
+}

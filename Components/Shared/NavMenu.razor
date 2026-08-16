@@ -1,0 +1,143 @@
+﻿@inject IStringLocalizer<NavMenu> Localize
+@using Web.Components.Shared.NavMenues
+
+<AuthorizeView>
+    <Authorized>
+       @*  <MudHidden Breakpoint="Breakpoint.LgAndUp">
+            @if (AccountPages)
+            {
+                <MudButton EndIcon="@Icons.Material.Filled.ArrowForward"
+                           Style="position:absolute;top:0;left:0"
+                           FullWidth="true" Class="py-4" IconColor="Color.Tertiary" Color="Color.Tertiary"
+                           Variant="Variant.Text" OnClick="ToggleMenuItem">
+                    @Localize["Main Menu"]
+                </MudButton>
+            }
+            else
+            {
+                <MudButton StartIcon="@Icons.Material.Filled.ArrowBack" 
+                           Style="position:absolute;top:0;left:0"
+                           FullWidth="true" Class="py-4" IconColor="Color.Tertiary" Color="Color.Tertiary"
+                           Variant="Variant.Text" OnClick="ToggleMenuItem">
+                    @Localize["Account Menu"]
+                </MudButton>
+            }
+        </MudHidden> *@
+        <MudHidden Breakpoint="Breakpoint.LgAndUp">
+            <UserCard FromNavMenu="true" @ref="_userCardComponent" ShowAnotherAccount="true"/>
+        </MudHidden>
+        <MudHidden Breakpoint="Breakpoint.MdAndDown">
+            <UserCard FromNavMenu="true" @ref="_userCardComponent" ShowAnotherAccount="false"/>
+        </MudHidden>
+    </Authorized>
+</AuthorizeView>
+<MudNavMenu Dense="false" Class="linear-background"
+            Rounded="true" Margin="Margin.Normal" Color="Color.Tertiary">
+@*     <MudHidden Breakpoint="Breakpoint.MdAndDown">
+        @if (IsAdminRole)
+        {
+            if (_adminSelectedFestival)
+            {
+                <FestivalNavMenu/>
+            }
+            else
+            {
+                <AdminNavMenu/>
+            }
+        }
+        else
+        {
+            if (SelectedFestivalId == null)
+            {
+                <ArtistNavMenu/>
+                <RefreenavMenu/>
+            }
+            else
+            {
+                if (FestivalId == SelectedFestivalId)
+                {
+                    <FestivalNavMenu/>
+                }
+                else
+                {
+                    <OtherFestivalNavMenu SelectedFestivalId="SelectedFestivalId.Value"/>
+                }
+            }
+        }
+    </MudHidden>
+    <MudHidden Breakpoint="Breakpoint.LgAndUp"> *@
+        <AuthorizeView>
+            <Authorized>
+@* 
+                @if (AccountPages)
+                { *@
+                    @if (ShowCreateFestivalButton)
+                    {
+                        <MudButton OnClick="AddFestival"
+                                   Class="my-1 w-100"
+                                   Variant="Variant.Filled"
+                                   FullWidth="true"
+                                   Color="Color.Primary">
+                            Create Your festival
+                        </MudButton>
+                    }
+
+                    <AdminNavMenu></AdminNavMenu>
+                    @if (!IsAdminRole)
+                    {
+                        if (SelectedFestivalId == null)
+                        {
+                            <ArtistNavMenu/>
+                            <RefreenavMenu/>
+                        }
+                        else
+                        {
+                            if (FestivalId == SelectedFestivalId)
+                            {
+                                <FestivalNavMenu/>
+                            }
+                            else
+                            {
+                                <OtherFestivalNavMenu SelectedFestivalId="SelectedFestivalId.Value"/>
+                            }
+                        }
+                    }
+                @* } *@
+
+                @*      else
+                {
+                    <MudNavLink Href="/">
+                        @Localize["Browse festival"]
+                    </MudNavLink>
+
+                    foreach (var item in MenuItems.Where
+                                 (p => p.Position == MenuItemPosition.Header))
+                    {
+                        <MudNavLink Href="@item.Link">
+                            @item.Title
+                        </MudNavLink>
+                    }
+                } *@
+            </Authorized>
+            @* <NotAuthorized> *@
+               @*  <MudNavLink Href="/">
+                    @Localize["Browse festival"]
+                </MudNavLink>
+
+                @foreach (var item in MenuItems.Where
+                              (p => p.Position == MenuItemPosition.Header))
+                {
+                    <MudNavLink Href="@item.Link">
+                        @item.Title
+                    </MudNavLink>
+                } *@
+              @*   <MudNavLink Href="/account/login" Icon="@Icons.Material.Outlined.Login">
+                    @Localize["Login"]
+                </MudNavLink>
+                <MudNavLink Href="/register" Icon="@Icons.Material.Outlined.AppRegistration">
+                    @Localize["Signup"]
+                </MudNavLink> *@
+            @* </NotAuthorized> *@
+        </AuthorizeView>
+    @* </MudHidden> *@
+</MudNavMenu>

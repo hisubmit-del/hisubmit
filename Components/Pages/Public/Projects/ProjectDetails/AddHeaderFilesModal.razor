@@ -1,0 +1,152 @@
+﻿@using Hisubmit.Client.SharedModels.Features.Projects.Commands.UploadProjectFile
+
+@inject  IStringLocalizer<AddHeaderFilesModal> Localize
+<MudDialog>
+    <DialogContent>
+        @if (!ShowForm)
+        {
+            <MudRadioGroup T="bool" @bind-Value="IsLocalFile">
+                <MudRadio Value="true">Insert File</MudRadio>
+                <MudRadio Value="false">Link File</MudRadio>
+            </MudRadioGroup>
+        
+            <MudButton Color="Color.Info" Size="Size.Small" Class="mt-2"
+                       OnClick="ChangeShowForm" Variant="Variant.Filled">Next</MudButton>
+        }
+        else
+        {
+            if (IsLocalFile)
+            {
+
+                        <EditForm Model="ProjectFile">
+                <MudGrid>                                              
+                                <FluentValidationValidator @ref="_fluentValidationValidator"></FluentValidationValidator>
+                                <MudItem sm="12" md="6" >
+                                    <MudTextField @bind-Value="ProjectFile.Name"
+                                                  For="@(() => ProjectFile.Name)" Label="@Localize["Name"]"
+                                                  Variant="Variant.Filled" Margin="Margin.Dense" />
+                                </MudItem>
+                                <MudItem sm="12" md="6" >
+
+                                    <MudSelect T="ProjectFilePosition"
+                                        Margin="Margin.Dense"
+                                               @bind-Value="ProjectFile.Position" Label="Position"
+                                               Variant="Variant.Filled" AnchorOrigin="Origin.BottomCenter">
+                                        @foreach (var value in Enum.GetValues<ProjectFilePosition>())
+                                        {
+                                            <MudSelectItem Value="value" />
+                                        }
+                                    </MudSelect>
+                                    @*  <MudSwitch T="bool" Color="Color.Secondary"
+                               @bind-Value="Model.IsMainFile"
+                               For="@(() => Model.IsMainFile)"
+                               Label="@Localize["Is Main File"]"/> *@
+                                </MudItem>
+                                <MudItem sm="12" md="6" >
+                                    <MudSelect T="FileFormat"
+                                        Margin="Margin.Dense"
+                                               Value="ProjectFile.FileFormat" Label="Format"
+                                               ValueChanged="(val)=>ChangeAcceptFile(val)"
+                                               Variant="Variant.Filled" AnchorOrigin="Origin.BottomCenter">
+                                        @foreach (FileFormat value in Enum.GetValues(typeof(FileFormat)))
+                                        {
+                                            <MudSelectItem Value="value" />
+                                        }
+                                    </MudSelect>
+                                </MudItem>
+                                <MudItem xs="12" md="6" >
+                                    <MudTextField @bind-Value="ProjectFile.FileDescription"
+                                                  For="@(() => ProjectFile.FileDescription)"
+                                                  Label="@Localize["Description"]"
+                                                  Lines="3" Variant="Variant.Filled"
+                                                  Margin="Margin.Dense" />
+                                </MudItem>
+                            </MudGrid>
+
+                        </EditForm>
+                       
+                        <MudGrid>
+                    <MudItem sm="12" >
+                        <InputFile id="fileInput" accept="@_acceptFile"
+                                   OnChange="AddToBrowserFile" hidden multiple />
+                        <MudButton HtmlTag="label"
+                                   Variant="Variant.Filled"
+                                   Color="Color.Primary"
+                                   StartIcon="@Icons.Material.Filled.CloudUpload"
+                                   for="fileInput"
+                                   Disabled="@(string.IsNullOrWhiteSpace(ProjectFile.Name))">
+                            @Localize["Choose File"]
+                        </MudButton>
+                        <MudText Inline="true" Typo="Typo.caption">@_selectedFileName</MudText>
+                    </MudItem>
+                    @if (_uploading)
+                    {
+                        <MudProgressLinear Color="Color.Primary" Value="@_percent" Class="my-7" />
+                    }
+                    @* <div>@_echo</div> *@
+                    <MudItem sm="12" Class="mb-3">
+                        <LoadingButton Processing="_processing"
+                                       ProcessingTitle="@_processingTitle" Variant="Variant.Filled"
+                                       ButtonType="ButtonType.Button" OnClick="SaveAsync"
+                                       StartIcon="@Icons.Material.Filled.Save" Color="Color.Primary">
+                            @Localize["Upload"]
+                        </LoadingButton>
+                    </MudItem>
+                </MudGrid>
+            }
+
+            else
+            {
+                <EditForm OnValidSubmit="SaveAsync" Model="ProjectFile">
+                    <FluentValidationValidator @ref="_fluentValidationValidator"></FluentValidationValidator>
+                    <MudGrid>
+                        <MudItem xs="12" sm="12" md="6" >
+                            <MudTextField @bind-Value="ProjectFile.Name"
+                                          For="@(() => ProjectFile.Name)" Label="@Localize["Name"]"
+                                          Variant="Variant.Filled" Margin="Margin.Dense" />
+                        </MudItem>
+                        <MudItem xs="12" md="6" >
+                            <MudSelect T="ProjectFilePosition"
+                                Margin="Margin.Dense"
+                                       @bind-Value="ProjectFile.Position" Label="Position"
+                                       Variant="Variant.Filled" AnchorOrigin="Origin.BottomCenter">
+                                @foreach (var value in Enum.GetValues<ProjectFilePosition>())
+                                {
+                                    <MudSelectItem Value="value" />
+                                }
+                            </MudSelect>
+                        </MudItem>
+                        <MudItem xs="12" md="6" >
+                            <MudTextField @bind-Value="ProjectFile.FileURl"
+                                          For="@(() => ProjectFile.FileURl)" Label="@Localize["File url"]"
+                                          Variant="Variant.Filled" Margin="Margin.Dense" />
+                        </MudItem>
+                        <MudItem xs="12" md="6" >
+                            <MudTextField @bind-Value="ProjectFile.Password"
+                                          For="@(() => ProjectFile.Password)" Label="@Localize["Password"]"
+                                          Variant="Variant.Filled" Margin="Margin.Dense" />
+                        </MudItem>
+                        <MudItem xs="12" md="6">
+                            <MudTextField @bind-Value="ProjectFile.FileDescription"
+                                          For="@(() => ProjectFile.FileDescription)" Label="@Localize["Description"]"
+                                          Lines="3" Variant="Variant.Filled" Margin="Margin.Dense" />
+                        </MudItem>
+                        <MudItem xs="12" >
+                            <LoadingButton Processing="_processing"
+                                           Variant="Variant.Filled" Class="ma-2 px-2"
+                                           ButtonType="ButtonType.Submit"
+                                           StartIcon="@Icons.Material.Filled.Save" Color="Color.Info">
+                                @Localize["Save"]
+                            </LoadingButton>                            
+                        </MudItem>
+                    </MudGrid>
+                </EditForm>
+            }
+        }
+    </DialogContent>
+    
+    <DialogActions>
+        <MudButton OnClick="Cancel" Variant="Variant.Filled"
+                   Class="ma-2">Cancel</MudButton>
+    </DialogActions>
+</MudDialog>

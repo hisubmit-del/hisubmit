@@ -1,0 +1,82 @@
+﻿@page "/identity/role-permissions/{Id}"
+
+@using global::Hisubmit.Client.SharedModels.Responses.Identity
+@inject IStringLocalizer<RolePermissions> Localizer
+@attribute [Authorize(Policy = $"{Permissions.RoleClaims.View}")]
+@inherits Web.Components.Pages.Admin.BaseAdminPages
+
+
+
+<MudContainer MaxWidth="MaxWidth.Large">
+    <HeroTitle Title="Manage Permission" Description="@Description" />
+    @if (!_loaded)
+    {
+        <MudProgressCircular Color="Color.Primary" Indeterminate="true" />
+    }
+    else
+    {
+        <MudTabs Elevation="25" Rounded="true" Centered="true" ApplyEffectsToContainer="true" AlwaysShowScrollButtons="true">
+            @foreach (var group in GroupedRoleClaims.Keys)
+            {
+                var selectedRoleClaimsInGroup = GroupedRoleClaims[group].Where(c => c.Selected).ToList();
+                var allRoleClaimsInGroup = GroupedRoleClaims[group].ToList();
+
+                <MudTabPanel Text="@group" BadgeData="@($"{selectedRoleClaimsInGroup.Count}/{allRoleClaimsInGroup.Count}")"
+                             Style="padding-right: 43px; text-transform: none;"
+                             BadgeColor="@GetGroupBadgeColor(selectedRoleClaimsInGroup.Count, allRoleClaimsInGroup.Count)">
+
+                    <MudTable Hover="true" Elevation="25"
+                              Items="@allRoleClaimsInGroup" Dense="@_dense" Bordered="@_bordered"
+                              Striped="@_striped" Filter="new Func<RoleClaimResponse, bool>(Search)"
+                              >
+                        <ToolBarContent>
+                            @if (_canEditRolePermissions)
+                            {
+                                <div class="justify-center mud-text-align-center">
+                                    <MudButton Variant="Variant.Filled" Color="Color.Primary"
+                                               Class="sticky-bottom-mobile ml-auto"
+                                                      StartIcon="@Icons.Material.Filled.Add"
+                                                      Processing="_processing"
+                                                       OnClick="SaveAsync"
+                                                      ButtonType="ButtonType.Submit">
+                                        @Localizer["Update Role Permissions"]
+                                    </MudButton>
+                                </div>
+                            }
+                            <MudSpacer/>
+
+                        </ToolBarContent>
+                        <HeaderContent>
+                            <MudTh>
+                                @Localizer["Title"]
+                            </MudTh>
+                            <MudTh>
+                               @Localizer["Description"]
+                            </MudTh>
+                            <MudTh>
+                              @Localizer["Enable"]
+                            </MudTh>
+                        </HeaderContent>
+                        <RowTemplate>
+                            <MudTd DataLabel="@Localizer["Title"]">
+                                <MudHighlighter Text="@context.Title" HighlightedText="@_searchString"/>
+                            </MudTd>
+                            <MudTd DataLabel="@Localizer["Description"]">
+                                <MudHighlighter Text="@context.Description" HighlightedText="@_searchString"/>
+                            </MudTd>
+                            <MudTd DataLabel="@Localizer["Enable"]">
+                                <MudCheckBox T="bool"
+                                             @bind-Value="@context.Selected" Disabled="@(!_canEditRolePermissions)" Color="Color.Secondary"/>
+                            </MudTd>
+                        </RowTemplate>
+                    
+                        <PagerContent>
+                            <TablePager/>
+                        </PagerContent>
+                    </MudTable>
+                </MudTabPanel>
+            }
+        </MudTabs>
+    }
+</MudContainer>
+

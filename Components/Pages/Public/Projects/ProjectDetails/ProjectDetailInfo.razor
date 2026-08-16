@@ -1,0 +1,73 @@
+﻿@if (DetailLoaded)
+{
+    <div class="my-4 position-relative" style="background-color: #f7fafa">
+        @if (Project.HasNoneEnglishTitle)
+        {
+           
+            if (_originalLanguage)
+            {
+                <p class="px-lg-7 pt-4 pb-7  pa-3 mb-4">
+                    @Project.OriginalBriefSynopsis
+                </p>
+            }
+            else
+            {
+                <p class="px-lg-7 pt-4 pb-7 pa-3 mb-4">
+                    @Project.EnglishBriefSynopsis
+                </p>
+            }
+        }
+        else
+        {
+            <p class="px-lg-7 pt-4 pb-7 pa-3 mb-4"> @Project.EnglishBriefSynopsis</p>
+        }
+      @if (Project.HasNoneEnglishTitle)
+      {
+          <MudSwitch T="bool" class="ml-3 position-absolute bottom-0 right-0" 
+                     @bind-Value="_originalLanguage" Color="Color.Primary" Label="Original Language"/>
+      }
+    </div>
+
+
+    <ul class="nav nav-pills mb-0 bg-light-blue" id="pills-tab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="credits-tab" data-bs-toggle="pill" data-bs-target="#credits"
+                    type="button" role="tab" aria-controls="credits" aria-selected="false">
+                Credits
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="award-tab" data-bs-toggle="pill"
+                    data-bs-target="#award" type="button" role="tab"
+                    aria-controls="award" aria-selected="false">
+                Awards
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="distribution-information-tab" data-bs-toggle="pill"
+                    data-bs-target="#distribution-information" type="button" role="tab"
+                    aria-controls="distribution-information" aria-selected="false">
+                Distribution Information
+            </button>
+        </li>
+    </ul>
+    <div class="tab-content mb-md-5 pl-4 pr-4 pb-4  bg-light-blue" id="pills-tabContent">
+        <div class="tab-pane fade" id="credits" role="tabpanel" aria-labelledby="credits-tab">
+            <ProjectCredits Credits="Credits"/>
+        </div>
+        <div class="tab-pane fade" id="award" role="tabpanel"
+             aria-labelledby="distribution-information-tab">
+            <ProjectAwards ProjectId="Project.Id"/>
+        </div>
+        <div class="tab-pane fade" id="distribution-information" role="tabpanel"
+             aria-labelledby="distribution-information-tab">
+            <ProjectDistribution ProjectId="Project.Id"/>
+        </div>
+    </div>
+}
+else
+{
+    <MudSkeleton Height="300px" SkeletonType="SkeletonType.Rectangle"
+                 Animation="Animation.Wave">
+    </MudSkeleton>
+}

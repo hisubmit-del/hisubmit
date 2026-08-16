@@ -1,0 +1,238 @@
+﻿@page "/Account/Login"
+@attribute [AllowAnonymous]
+@inject IStringLocalizer<Login> Localize
+@using System.ComponentModel.DataAnnotations
+@using HiSubmit.Application.Interfaces.Services.Storage
+@using Microsoft.AspNetCore.Authentication
+@using Microsoft.AspNetCore.Identity
+@using Microsoft.AspNetCore.Session
+
+
+@inject SignInManager<BlazorHeroUser> SignInManager
+@inject ILogger<Login> Logger
+@inject NavigationManager NavigationManager
+@inject IdentityRedirectManager RedirectManager
+
+@using MudBlazor.StaticInput
+
+
+<PageTitle>Log in</PageTitle>
+
+
+<MudGrid Class="mt-lg-8" Justify="Justify.Center">
+
+    <MudItem xs="12" md="6" lg="5" Class="pl-0">
+
+        <MudPaper Class="pa-5">
+            @if (errorMessage is { Length: > 0 })
+            {
+                <MudAlert Severity="Severity.Error" Class="mb-4">
+                    <MudText>@errorMessage</MudText>
+                </MudAlert>
+            }
+            <EditForm Model="Input" method="post" OnValidSubmit="LoginUser" FormName="login">
+                @* <FluentValidationValidator @ref="_fluentValidationValidator"/> *@
+                <ValidationSummary class="text-danger" role="alert" />
+                <MudGrid Class=" pa-lg-8 pa-2">
+                    <DataAnnotationsValidator />
+                    <MudItem xs="12">
+                        <div class="d-flex justify-center">
+                            <MudText Color="Color.Primary" Typo="Typo.h4">Sign In</MudText>
+                        </div>
+                    </MudItem>
+                    <MudItem xs="12" Class="text-center">
+                        <MudImage Style="width: 60%" Src="@ClientAppConstants.LogoUrl"></MudImage>
+                    </MudItem>
+                   
+                    <MudItem xs="12">
+                        <div class="d-flex justify-center">
+                            <MudText>
+                                @Localize["Don't have an account?"] <MudLink Href="/register">@Localize["Register here"]</MudLink>
+                            </MudText>
+                        </div>
+                    </MudItem>
+                    <MudItem xs="12">
+                        @*   <MudTextField T="string" Label="@Localize["E-mail"]"
+                                      Required="true" Variant="Variant.Outlined"
+                                      @bind-Value="Input.Email" For="@(() => Input.Email)" />
+                         *@
+                        <MudStaticTextField For="@(() => Input.Email)" @bind-Value="Input.Email" 
+                                            Label="Email" Placeholder="name@example.com" 
+                                            Variant="Variant.Outlined"
+                                            Margin="Margin.Dense"
+                                            UserAttributes="@(new() { { "autocomplete", "username" }, { "aria-required", "true" } } )" />
+                    </MudItem>
+
+                    <MudItem xs="12">
+                      @*   <MudTextField Label="@Localize["Password"]"
+                                      @bind-Value="Input.Password" Variant="Variant.Outlined"
+                                      For="@(() => Input.Password)"
+                                      Required="true" /> *@
+                                      
+                      <MudStaticTextField For="@(() => Input.Password)" @bind-Value="Input.Password" 
+                                          Variant="Variant.Outlined"
+                                          Margin="Margin.Dense"
+                                          Label="Password" InputType="InputType.Password" Placeholder="password" 
+                                            UserAttributes="@(new() { { "autocomplete", "current-password" }, { "aria-required", "true" } } )" />
+                    </MudItem>
+                    <MudItem xs="12" Class="d-flex justify-space-between align-center">
+                        @* <MudCheckBox T="bool" Label="@Localize["Remember me?"]" Color="Color.Primary" Class="ml-n1"></MudCheckBox> *@
+                        <MudStaticCheckBox For="@(() => Input.RememberMe)" 
+                                           Class="ml-n1"
+                                           @bind-Value="Input.RememberMe">Remember me</MudStaticCheckBox>
+                    </MudItem>
+                    <MudItem xs="12" Class="d-flex justify-center">
+                        <MudStaticButton Variant="Variant.Filled" 
+                                         Color="Color.Primary" FullWidth="true" 
+                                         Style="width: 100%;"
+                                         FormAction="FormAction.Submit">Login</MudStaticButton>
+
+                        @* <LoadingButton ButtonType="ButtonType.Submit"
+                                       Variant="Variant.Filled"
+                                       Color="Color.Dark" Size="Size.Large"
+                                       Style="width: 100%;">@Localize["Sign In"]</LoadingButton> *@
+                    </MudItem>
+                    <MudItem xs="12" Class="text-center">
+                        <MudLink Typo="Typo.body1" Href="/account/forgot-password">@Localize["Forgot password?"]</MudLink>
+                    </MudItem>
+
+                </MudGrid>
+            </EditForm>
+        </MudPaper>
+    </MudItem>
+</MudGrid>
+
+@* <h1>Log in</h1>
+<div class="row">
+    <div class="col-md-4">
+        <section>
+            <StatusMessage Message="@errorMessage" />
+            <EditForm Model="Input" method="post" OnValidSubmit="LoginUser" FormName="login">
+                <DataAnnotationsValidator />
+                <h2>Use a local account to log in.</h2>
+                <hr />
+                <ValidationSummary class="text-danger" role="alert" />
+                <div class="form-floating mb-3">
+                    <InputText @bind-Value="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
+                    <label for="email" class="form-label">Email</label>
+                    <ValidationMessage For="() => Input.Email" class="text-danger" />
+                </div>
+                <div class="form-floating mb-3">
+                    <InputText type="password" @bind-Value="Input.Password" class="form-control" autocomplete="current-password" aria-required="true" placeholder="password" />
+                    <label for="password" class="form-label">Password</label>
+                    <ValidationMessage For="() => Input.Password" class="text-danger" />
+                </div>
+                <div class="checkbox mb-3">
+                    <label class="form-label">
+                        <InputCheckbox @bind-Value="Input.RememberMe" class="darker-border-checkbox form-check-input" />
+                        Remember me
+                    </label>
+                </div>
+                <div>
+                    <button type="submit" class="w-100 btn btn-lg btn-primary">Log in</button>
+                </div>
+                <div>
+                    <p>
+                        <a href="Account/ForgotPassword">Forgot your password?</a>
+                    </p>
+                    <p>
+                        <a href="@(NavigationManager.GetUriWithQueryParameters("Account/Register", new Dictionary<string, object?> { ["ReturnUrl"] = ReturnUrl }))">Register as a new user</a>
+                    </p>
+                    <p>
+                        <a href="Account/ResendEmailConfirmation">Resend email confirmation</a>
+                    </p>
+                </div>
+            </EditForm>
+        </section>
+    </div>
+    <div class="col-md-6 col-md-offset-2">
+        <section>
+            <h3>Use another service to log in.</h3>
+            <hr />
+            <ExternalLoginPicker />
+        </section>
+    </div>
+</div> *@
+
+@code {
+    private string? errorMessage;
+
+    [Inject]
+    private IServerStorageService SessionStore { get; set; }
+
+    [CascadingParameter]
+    private HttpContext HttpContext { get; set; } = default!;
+
+    [SupplyParameterFromForm]
+    private InputModel Input { get; set; } = new();
+
+    [SupplyParameterFromQuery]
+    private string? ReturnUrl { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (HttpMethods.IsGet(HttpContext.Request.Method))
+        {
+            // Clear the existing external cookie to ensure a clean login process
+            await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
+        }
+    }
+
+    public async Task LoginUser()
+    {
+        var result = await SignInManager
+            .PasswordSignInAsync(Input.Email, Input.Password, 
+                Input.RememberMe, lockoutOnFailure: false);
+
+        var festivalClaims = HttpContext.User.FindFirst(ApplicationClaimTypes.FestivalId);
+
+        if (festivalClaims!=null)
+        {
+            HttpContext.Response.Cookies.Append(
+                ApplicationClaimTypes.SelectedFestival,
+                festivalClaims.Value!,
+                new CookieOptions
+                {
+                    Expires = DateTimeOffset.UtcNow.AddDays(3),
+                    HttpOnly = true,
+                    Secure = true,
+                    IsEssential = false
+                });
+        }
+
+        if (result.Succeeded)
+        {
+            Logger.LogInformation("User logged in.");
+            RedirectManager.RedirectTo("/");
+        }
+        else if (result.RequiresTwoFactor)
+        {
+            RedirectManager.RedirectTo(
+                "Account/LoginWith2fa",
+                new() { ["returnUrl"] = ReturnUrl, ["rememberMe"] = Input.RememberMe });
+        }
+        else if (result.IsLockedOut)
+        {
+            Logger.LogWarning("User account locked out.");
+            RedirectManager.RedirectTo("Account/Lockout");
+        }
+        else
+        {
+            errorMessage = "Error: Invalid login attempt.";
+        }
+    }
+
+    private sealed class InputModel
+    {
+        [Required]
+        [EmailAddress]
+        public string Email { get; set; } = "";
+
+        [Required]
+        [DataType(DataType.Password)]
+        public string Password { get; set; } = "";
+
+        [Display(Name = "Remember me?")]
+        public bool RememberMe { get; set; }
+    }
+}

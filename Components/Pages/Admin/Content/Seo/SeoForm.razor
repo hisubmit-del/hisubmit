@@ -1,0 +1,40 @@
+﻿@page "/admin/content/seo"
+
+@using HiSubmit.Client.SharedModels.Extensions
+@inject IStringLocalizer<SeoForm> Localizer
+
+@inherits BaseAdminPages
+<MudContainer MaxWidth="MaxWidth.Medium">
+    <HeroTitle Title="Seo Setting" Description="Seo Setting For Specific Pages In your site"></HeroTitle>
+    <MudCard Elevation="25" Class="pa-5">
+        <EditForm Model="_seoTags" OnSubmit="SaveAsync">
+            <FluentValidationValidator @ref="_fluentValidationValidator" />
+            <MudGrid>
+                <MudItem xs="12" md="6" Class="mb-3">
+                    <MudSelect T="PageType" Label="@Localizer["Page"]"
+                               ValueChanged="(type) => ChangePageType(type)" Value="_pageType"
+                               For="@(() => _pageType)" Variant="Variant.Filled">
+                        @foreach (PageType pageType in Enum.GetValues(typeof(PageType)))
+                        {
+                            @if (pageType != PageType.News && pageType != PageType.FestivalPage && pageType != PageType.StaticPage)
+                            {
+                                <MudSelectItem Value="pageType">@pageType.ToDisplay()</MudSelectItem>
+                            }
+                        }
+                    </MudSelect>
+                </MudItem>
+            </MudGrid>
+            <AddEditSeoTagForm Model="_seoTags" />
+            <MudGrid>
+                <MudItem xs="12" Class="d-flex">
+                    <MudSpacer/>
+                    <LoadingButton Class="my-2 sticky-bottom-mobile" Processing="_processing"
+                                   StartIcon="@Icons.Material.Filled.Save"
+                                   Variant="Variant.Filled" Color="Color.Primary" 
+                                   ButtonType="ButtonType.Submit">@Localizer["Save"]</LoadingButton>
+                </MudItem>
+            </MudGrid>
+        </EditForm>
+    </MudCard>
+
+</MudContainer>

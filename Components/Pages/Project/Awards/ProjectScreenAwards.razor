@@ -1,0 +1,70 @@
+﻿@inject IStringLocalizer<ProjectScreenAwards> Localize
+
+@using HiSubmit.Client.SharedModels.Extensions
+@if (!_Loaded)
+{
+}
+else
+{
+    if(Request.ScreenWritings.Any())
+    {
+        <MudPaper Elevation="4" Class="pa-2 pa-lg-4">
+            <MudText Typo="Typo.subtitle1">Screen awards</MudText>
+            <EditForm EditContext="_editContext">
+                <FluentValidationValidator @ref="_fluentValidationValidator"/>
+                @foreach(var award in Request.ScreenWritings){
+                    <MudGrid Class="pl-lg-3 pr-lg-3 pt-3 pb-3">
+                        <MudItem xs="12" md="6">
+                            <MudItem>
+                                <MudTextField @bind-Value="@award.Title" 
+                                              Label="@Localize["Title"]" For="@(() => award.Title)"
+                                              Variant="Variant.Filled" Margin="Margin.Dense"/>
+                            </MudItem>
+                        </MudItem>
+                        <MudItem xs="12" md="6">
+                            <MudTextField @bind-Value="@award.City"
+                                          Label="@Localize["City"]" For="@(() => award.City)"
+                                          Variant="Variant.Filled" Margin="Margin.Dense"/>
+                        </MudItem>
+                        <MudItem xs="12" md="6">
+                            <NewCountrySelector  Required="true"
+                                                 @bind-CountryId="@award.CountryId"
+                                                 @bind-CountryId:event="CountryChanged"/>
+                        </MudItem>
+                        <MudItem xs="12" md="6">
+                            <MudDatePicker Label="Screen Date" 
+                                           PickerVariant="PickerVariant.Dialog"
+                                           For="@(() => award.ScreeningDate)"
+                                           Editable="true" @bind-Date="@award.ScreeningDate" 
+                                           DateFormat="@DateTimeExtension.LongDateFormat"
+                                           DisableToolbar="true"/>
+                        </MudItem>
+                        <MudItem xs="12" md="6">
+                            <MudTextField @bind-Value="@award.Premiere" 
+                                          Label="@Localize["Premiere"]" For="@(() => award.Premiere)"
+                                          Variant="Variant.Filled" Margin="Margin.Dense"/>
+                        </MudItem>
+                        <MudItem xs="12" md="6">
+                            <MudTextField @bind-Value="@award.AwardSelection"
+                                          Label="@Localize["Award / Selection"]"
+                                          For="@(() => award.AwardSelection)" 
+                                          Variant="Variant.Filled" Margin="Margin.Dense"/>
+                        </MudItem>
+                        <MudItem xs="12" md="6">
+                                                    <ImageUploader @bind-Url="@award.ImageUrl" @bind-UploadRequest="@award.UploadRequest"/>
+                                                </MudItem>
+                        <MudItem>
+                            <MudButton OnClick="() => DeleteAward(award)" 
+                                       EndIcon="@Icons.Material.Filled.Delete" 
+                                       Color="Color.Error">Delete award</MudButton>
+                        </MudItem>
+                        <CustomDivider/>
+                    </MudGrid>
+                }
+            </EditForm>
+        </MudPaper>
+    }
+    <MudButton EndIcon="@Icons.Material.Filled.Add" Class="mb-2 mt-6" 
+               OnClick="AddAward" Color="Color.Default" 
+               Variant="Variant.Filled">@Localize["Add screen award"]</MudButton>
+}

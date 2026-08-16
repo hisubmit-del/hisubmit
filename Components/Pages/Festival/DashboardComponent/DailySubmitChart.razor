@@ -1,0 +1,34 @@
+﻿@inject IStringLocalizer<DailySubmitChart> Localize
+<MudPaper Class="pa-3">
+
+   @if (Submits.Any())
+   {
+      if (!Loaded)
+      {
+         <CustomeProgress />
+      }
+      else
+      {
+         <MudChart Style="overflow: scroll"
+                   ChartOptions="@(new ChartOptions() 
+                                 {YAxisLines = true,LineStrokeWidth = 9,
+                                    MaxNumYAxisTicks = _maxTick, 
+                                    YAxisTicks = _tick })"
+                   ChartType="ChartType.Line"
+                   ChartSeries="@_series" 
+                   XAxisLabels="@_xLabels"
+                   Height="240px" Width="100%">
+            <CustomGraphics>
+               <MudPaper  Style="@($"background-color:{Colors.BlueGray.Lighten5}")"></MudPaper>
+            </CustomGraphics>
+         </MudChart>
+      }      
+   }
+   else
+   {
+      <MudAlert Variant="Variant.Text"
+                Severity="Severity.Info">
+         @Localize["There is no Submit"]
+      </MudAlert>
+   }
+</MudPaper>

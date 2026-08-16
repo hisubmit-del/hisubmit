@@ -1,0 +1,112 @@
+﻿
+@using HiSubmit.Client.SharedModels.Extensions
+@using global::Hisubmit.Client.SharedModels.Enums
+
+@inject IStringLocalizer<AddAdvertiseBanner> Localize
+
+<EditForm Model="@Model" OnValidSubmit="SaveAsync">
+    <FluentValidationValidator @ref="_fluentValidationValidator"/>
+    <MudDialog>
+        <TitleContent>
+            @{
+                if (Model.Id == 0)
+                {
+                    <MudText Typo="Typo.h6">
+                        <MudIcon Icon="@Icons.Material.Filled.Add" Class="mr-3 mb-n1"/>
+                        @Localize["Add Banner"]
+                    </MudText>
+                }
+                else
+                {
+                    <MudText Typo="Typo.h6">
+                        <MudIcon Icon="@Icons.Material.Filled.Update" Class="mr-3 mb-n1"/>
+                        @Localize["Update Banner"]
+                    </MudText>
+                }
+            }
+        </TitleContent>
+        <DialogContent>
+            <MudGrid>
+                <MudItem xs="12" md="12">
+                    <MudSelect T="AdvertiseBannerPosition" For="() => Model.Position"
+                               Variant="Variant.Outlined" Margin="Margin.Dense"
+                               @bind-Value="Model.Position" Label="@Localize["Position"]">
+                        @foreach (var value in Enum.GetValues<AdvertiseBannerPosition>())
+                        {
+                            <MudSelectItem Value="value">@value.ToDisplay()</MudSelectItem>
+                        }
+                    </MudSelect>
+                </MudItem>
+
+                <MudItem xs="12" md="6">
+                    <MudDatePicker For="@(() => Model.OpenDateTime)"
+                                   Variant="Variant.Outlined" Margin="Margin.Dense"
+                                   PickerVariant="PickerVariant.Dialog"
+                                   @bind-Date="Model.OpenDateTime" Label="@Localize["Open Date"]"/>
+                </MudItem>
+                <MudItem xs="12" md="6">
+                    <MudDatePicker For="@(() => Model.CloseDateTime)"
+                                   Variant="Variant.Outlined" Margin="Margin.Dense"
+                                   PickerVariant="PickerVariant.Dialog"
+                                   @bind-Date="Model.CloseDateTime" Label="@Localize["Close Date"]"/>
+                </MudItem>
+                
+                <MudItem xs="12" md="6">
+                    <MudItem>
+                        <MudAvatar Square="true" >
+                            <MudImage Src="@Model.Url" Style="height: auto; width: auto; max-height: 80px"></MudImage>
+                        </MudAvatar>
+                    </MudItem>
+                    <MudItem>
+                        <InputFile id="fileInput" hidden OnChange="UploadFiles"/>
+                        <div>
+                            @if (string.IsNullOrWhiteSpace(Model.Url))
+                            {
+                                <MudButton HtmlTag="label"
+                                           Variant="Variant.Text"
+                                           Color="Color.Primary"
+                                           Size="Size.Small"
+                                           StartIcon="@Icons.Material.Filled.CloudUpload"
+                                           for="fileInput">
+                                    @Localize["Upload"]
+                                </MudButton>
+                            }
+                            @if (!string.IsNullOrEmpty(Model.Url))
+                            {
+                                <MudButton Variant="Variant.Text"
+                                           Color="Color.Info"
+                                           StartIcon="@Icons.Material.Filled.RemoveRedEye"
+                                           Size="Size.Small"
+                                           Link="@(Model.Url)" Target="_blank">
+                                    @Localize["View"]
+                                </MudButton>
+                                <MudButton Variant="Variant.Text"
+                                           Color="Color.Error"
+                                           StartIcon="@Icons.Material.Filled.Delete"
+                                           Size="Size.Small"
+                                           OnClick="DeleteAsync">
+                                    @Localize["Delete"]
+                                </MudButton>
+                            }
+                        </div>
+                    </MudItem>
+                </MudItem>
+            </MudGrid>
+        </DialogContent>
+        <DialogActions>
+            <MudButton DisableElevation Variant="Variant.Filled" OnClick="Cancel">@Localize["Cancel"]</MudButton>
+            @if (Model.Id != 0)
+            {
+                <LoadingButton Processing="_processing" DisableElevation Variant="Variant.Filled" 
+                               ButtonType="ButtonType.Submit" Disabled="@(!Validated)" 
+                               Color="Color.Secondary">@Localize["Update"]</LoadingButton>
+            }
+            else
+            {
+                <LoadingButton Processing="_processing" DisableElevation Variant="Variant.Filled"
+                               ButtonType="ButtonType.Submit" Disabled="@(!Validated)" 
+                               Color="Color.Success">@Localize["Save"]</LoadingButton>
+            }
+        </DialogActions>
+    </MudDialog>
+</EditForm>

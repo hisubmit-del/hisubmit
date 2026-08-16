@@ -1,0 +1,62 @@
+﻿@inject IStringLocalizer<RegisterUserModal> _localizer
+
+<EditForm Model="@_registerUserModel" OnValidSubmit="SubmitAsync">
+    <FluentValidationValidator @ref="_fluentValidationValidator"/>
+    <MudDialog>
+        <TitleContent>
+            @{
+                <MudText Typo="Typo.h6">
+                    <MudIcon Icon="@Icons.Material.Filled.VerifiedUser" Class="mr-3 mb-n1"/>
+                    @_localizer["Register User"]
+                </MudText>
+            }
+        </TitleContent>
+        <DialogContent>
+            <MudGrid>
+                <MudItem xs="12" md="6">
+                    <MudTextField For="@(() => _registerUserModel.FirstName)"
+                                  @bind-Value="_registerUserModel.FirstName"
+                                  Variant="Variant.Outlined"
+                                  Margin="Margin.Dense"
+                                  Label="@_localizer["First Name"]"/>
+                </MudItem>
+                <MudItem xs="12" md="6">
+                    <MudTextField For="@(() => _registerUserModel.LastName)"
+                                  Variant="Variant.Outlined"
+                                  Margin="Margin.Dense"
+                                  @bind-Value="_registerUserModel.LastName" Label="@_localizer["Last Name"]"/>
+                </MudItem>
+                <MudItem xs="12" md="6">
+                    <MudTextField For="@(() => _registerUserModel.Email)" InputType="InputType.Email"
+                                  Variant="Variant.Outlined"
+                                  Margin="Margin.Dense"
+                                  @bind-Value="_registerUserModel.Email" Label="@_localizer["Email"]"/>
+
+                </MudItem>
+                <MudItem xs="12" md="6">
+                    <MudTextField For="@(() => _registerUserModel.Password)" InputType="@_passwordInput" 
+                                  Adornment="Adornment.End" AdornmentIcon="@_passwordInputIcon"
+                                  Variant="Variant.Outlined"
+                                  Margin="Margin.Dense"
+                                  OnAdornmentClick="TogglePasswordVisibility"
+                                  @bind-Value="_registerUserModel.Password" Label="@_localizer["Password"]"/>
+
+                </MudItem>
+                <MudItem xs="12" md="6">
+
+                    <MudCheckBox T="bool" @bind-Value="@_registerUserModel.ActivateUser"
+                                 Label="@_localizer["Activate User?"]" Color="Color.Primary"></MudCheckBox>
+                    <MudCheckBox T="bool" @bind-Value="@_registerUserModel.AutoConfirmEmail" 
+                                 Label="@_localizer["Auto Confirm Email?"]" Color="Color.Primary"></MudCheckBox>
+                </MudItem>
+            </MudGrid>
+        </DialogContent>
+        <DialogActions>
+            <MudButton Variant="Variant.Filled" OnClick="Cancel">@_localizer["Cancel"]</MudButton>
+            @{
+                <LoadingButton Processing="_processing" Variant="Variant.Filled" ButtonType="ButtonType.Submit" Disabled="@(!Validated)" 
+                           Color="Color.Success">@_localizer["Register"]</LoadingButton>
+            }
+        </DialogActions>
+    </MudDialog>
+</EditForm>

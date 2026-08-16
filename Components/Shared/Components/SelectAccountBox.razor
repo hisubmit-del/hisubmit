@@ -1,0 +1,232 @@
+﻿@namespace Web.Components.Shared.Components
+@using HiSubmit.Client.SharedModels.Constants.Role
+@using MudBlazor.StaticInput
+
+@if (_cuttrentSelectedAccount)
+{
+    @if (!AdminLogin)
+    {
+        <MudListItem T="string" Class="py-0" Href="@ReturnUrl">
+            <MudCard Elevation="0" Square="true" Style="background-color: transparent">
+                <MudCardHeader Class="pa-0">
+                    <CardHeaderAvatar>
+                        @if (string.IsNullOrEmpty(ImageDataUrl))
+                        {
+                            <MudAvatar Style="height:30px; width:30px;" Color="Color.Dark">@FirstLetterOfName</MudAvatar>
+                        }
+                        else
+                        {
+                            <MudAvatar Style="height:30px; width:30px;">
+                                <MudImage Src="@ImageDataUrl" Alt="@FullName"/>
+                            </MudAvatar>
+                        }
+                    </CardHeaderAvatar>
+                    <CardHeaderContent>
+                        <MudText Typo="Typo.body2">@FullName</MudText>
+                        <MudText Typo="Typo.caption" Align="Align.Center">@AccountType</MudText>
+                    </CardHeaderContent>
+                </MudCardHeader>
+            </MudCard>
+        </MudListItem>
+    }
+    else
+    {
+        <MudListItem T="string" Class="py-0" Href="@ReturnUrl">
+            <MudCard Elevation="0" Square="true" Style="background-color: transparent">
+                <MudCardHeader Class="pa-0">
+                    <CardHeaderAvatar>
+                        @if (string.IsNullOrEmpty(ImageDataUrl))
+                        {
+                            <MudAvatar Style="height:30px; width:30px;" Color="Color.Dark">@FirstLetterOfName</MudAvatar>
+                        }
+                        else
+                        {
+                            <MudAvatar Style="height:30px; width:30px;">
+                                <MudImage Src="@ImageDataUrl" Alt="@FullName" />
+                            </MudAvatar>
+                        }
+                    </CardHeaderAvatar>
+                    <CardHeaderContent>
+                        <MudText Typo="Typo.body2">@FullName</MudText>
+
+
+                    </CardHeaderContent>
+                </MudCardHeader>
+            </MudCard>
+        </MudListItem>
+        <MudListItem T="string" Class="py-0">
+            <form action="/account/manage/admin-logout-from-festival" method="post">
+
+                <AntiforgeryToken />
+                <input type="hidden" name="ReturnUrl" value="admin/festivals" />
+
+                @if (FestivalId != null)
+                {
+                    <input type="hidden" name="FestivalId" value="@FestivalId" />
+                }
+
+                <MudStaticButton FormAction="FormAction.Submit"
+                                 Color="Color.Primary"
+                                 StartIcon="@Icons.Material.Filled.Logout"
+                                 class="w-100">
+                    <MudText Typo="Typo.caption">LogOut from festival</MudText>
+                </MudStaticButton>
+            </form>
+        </MudListItem>
+    }
+   
+}
+else
+{
+    @if (!AdminLogin)
+    {
+        <form action="/account/manage/select-account" method="post">
+
+            <AntiforgeryToken />
+            <input type="hidden" name="ReturnUrl" value="@ReturnUrl" />
+
+            @if (FestivalId != null)
+            {
+                <input type="hidden" name="FestivalId" value="@FestivalId" />
+            }
+
+            <button type="submit" class="w-100">
+                <MudListItem T="string" Class="py-0">
+                    <MudCard Elevation="0" Square="true" Style="background-color: transparent">
+                        <MudCardHeader Class="pa-0">
+                            <CardHeaderAvatar>
+                                @if (string.IsNullOrEmpty(ImageDataUrl))
+                                {
+                                    <MudAvatar Style="height:30px; width:30px;" Color="Color.Dark">@FirstLetterOfName</MudAvatar>
+                                }
+                                else
+                                {
+                                    <MudAvatar Style="height:30px; width:30px;">
+                                        <MudImage Src="@ImageDataUrl" Alt="@FullName" />
+                                    </MudAvatar>
+                                }
+                            </CardHeaderAvatar>
+                            <CardHeaderContent>
+                                <MudText Typo="Typo.body2">@FullName</MudText>
+                                <MudText Typo="Typo.caption" Align="Align.Center">@AccountType</MudText>
+                            </CardHeaderContent>
+                        </MudCardHeader>
+                    </MudCard>
+                </MudListItem>
+            </button>
+        </form>
+    }
+    else
+    {
+
+        <MudListItem T="string" Class="py-0" Href="@ReturnUrl">
+            <MudCard Elevation="0" Square="true" Style="background-color: transparent">
+                <MudCardHeader Class="pa-0">
+                    <CardHeaderAvatar>
+                        @if (string.IsNullOrEmpty(ImageDataUrl))
+                        {
+                            <MudAvatar Style="height:30px; width:30px;" Color="Color.Dark">@FirstLetterOfName</MudAvatar>
+                        }
+                        else
+                        {
+                            <MudAvatar Style="height:30px; width:30px;">
+                                <MudImage Src="@ImageDataUrl" Alt="@FullName" />
+                            </MudAvatar>
+                        }
+                    </CardHeaderAvatar>
+                    <CardHeaderContent>
+                        <MudText Typo="Typo.body2">@FullName</MudText>
+
+
+                    </CardHeaderContent>
+                </MudCardHeader>
+            </MudCard>
+        </MudListItem>
+        <MudListItem T="string" Class="py-0">
+            <form action="/account/manage/admin-logout-from-festival" method="post">
+
+                <AntiforgeryToken />
+                <input type="hidden" name="ReturnUrl" value="admin/festivals" />
+
+                @if (FestivalId != null)
+                {
+                    <input type="hidden" name="FestivalId" value="@FestivalId" />
+                }
+
+                <MudStaticButton FormAction="FormAction.Submit"
+                                 Color="Color.Primary"
+                                 StartIcon="@Icons.Material.Filled.Logout"
+                                 class="w-100">
+                    <MudText Typo="Typo.caption">LogOut from festival</MudText>
+                </MudStaticButton>
+            </form>
+        </MudListItem>
+
+    }
+}
+
+@code {
+
+    [Parameter]
+    public string ImageDataUrl { get; set; }
+
+    [Parameter]
+    public string FullName { get; set; }
+
+    [Parameter]
+    public int? FestivalId { get; set; }
+
+    [Parameter]
+    public bool AdminLogin { get; set; }
+
+    public string AccountType { get; set; }
+
+    private char FirstLetterOfName { get; set; }
+
+    private string ReturnUrl;
+
+    private bool _cuttrentSelectedAccount=false;
+    private bool _isAdmin;
+    protected override async Task OnParametersSetAsync()
+    {
+        FirstLetterOfName = FullName[0];
+
+        _isAdmin = (await AuthenticationManager.CurrentUser())
+            .IsInRole(RoleConstants.AdministratorRole);
+
+        if (FestivalId != null && FestivalId != 0)
+        {
+            AccountType = "festival";
+            ReturnUrl = "festival/dashboard";
+        }
+        else if (_isAdmin)
+        {
+            AccountType = "Admin";
+            ReturnUrl = "admin/dashboard";
+        }
+        else
+        {
+            AccountType = "Artist";
+            ReturnUrl = "user/dashboard";
+        }
+
+        _cuttrentSelectedAccount =await IsSelectedAccount();
+        await base.OnParametersSetAsync();
+    }
+
+    protected async Task<bool> IsSelectedAccount()
+    {
+        var selectedFestivalId = await AuthenticationManager.GetSelectedFestivalId();
+        var adminLoginFestivalId = await AuthenticationManager.GetAdminLoginToFestivalId();
+
+        if (_isAdmin)
+            return true;
+        else
+        {
+            if (selectedFestivalId == FestivalId)
+                return true;
+        }
+
+        return false;
+    }
+}

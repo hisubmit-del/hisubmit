@@ -1,0 +1,15 @@
+﻿@inject IStringLocalizer<AllIncomes> Localizer
+@page "/admin/income/payments"
+@inherits BaseAdminPages
+
+<MudContainer MaxWidth="MaxWidth.Large">
+    <HeroTitle Title="@Localizer["Incomes"]" Description="@Localizer["HiSubmit All incomes"]" />
+    <MudTabs Elevation="25" Color="Color.Transparent" Rounded="true" PanelClass="mt-6">
+        <MudTabPanel Text="@Localizer["Receipts"]">
+            <Carts />
+        </MudTabPanel>
+        <MudTabPanel Text="@Localizer["Cart Items"]">
+            <Web.Components.Pages.Admin.Incomes.CartItems />
+        </MudTabPanel>
+    </MudTabs>
+</MudContainer>

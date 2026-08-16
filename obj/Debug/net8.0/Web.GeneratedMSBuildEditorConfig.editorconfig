@@ -1,0 +1,1592 @@
+is_global = true
+build_property.TargetFramework = net8.0
+build_property.TargetFrameworkIdentifier = .NETCoreApp
+build_property.TargetFrameworkVersion = v8.0
+build_property.TargetPlatformMinVersion = 
+build_property.UsingMicrosoftNETSdkWeb = true
+build_property.ProjectTypeGuids = 
+build_property.InvariantGlobalization = 
+build_property.PlatformNeutralAssembly = 
+build_property.EnforceExtendedAnalyzerRules = 
+build_property.EntryPointFilePath = 
+build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property.RootNamespace = Web
+build_property.RootNamespace = Web
+build_property.ProjectDir = D:\websites\hisubmit\web\
+build_property.EnableComHosting = 
+build_property.EnableGeneratedComInterfaceComImportInterop = 
+build_property.RazorLangVersion = 8.0
+build_property.SupportLocalizedComponentNames = 
+build_property.GenerateRazorMetadataSourceChecksumAttributes = 
+build_property.MSBuildProjectDirectory = D:\websites\hisubmit\web
+build_property._RazorSourceGeneratorDebug = 
+build_property.EffectiveAnalysisLevelStyle = 8.0
+build_property.EnableCodeStyleSeverity = 
+
+[D:/websites/hisubmit/web/Components/Account/Pages/AccessDenied.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xBY2NvdW50XFBhZ2VzXEFjY2Vzc0RlbmllZC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Account/Pages/ConfirmEmail.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xBY2NvdW50XFBhZ2VzXENvbmZpcm1FbWFpbC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Account/Pages/ConfirmEmailChange.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xBY2NvdW50XFBhZ2VzXENvbmZpcm1FbWFpbENoYW5nZS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Account/Pages/ExternalLogin.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xBY2NvdW50XFBhZ2VzXEV4dGVybmFsTG9naW4ucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Account/Pages/ForgotPassword.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xBY2NvdW50XFBhZ2VzXEZvcmdvdFBhc3N3b3JkLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Account/Pages/ForgotPasswordConfirmation.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xBY2NvdW50XFBhZ2VzXEZvcmdvdFBhc3N3b3JkQ29uZmlybWF0aW9uLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Account/Pages/InvalidPasswordReset.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xBY2NvdW50XFBhZ2VzXEludmFsaWRQYXNzd29yZFJlc2V0LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Account/Pages/InvalidUser.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xBY2NvdW50XFBhZ2VzXEludmFsaWRVc2VyLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Account/Pages/Lockout.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xBY2NvdW50XFBhZ2VzXExvY2tvdXQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Account/Pages/Login.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xBY2NvdW50XFBhZ2VzXExvZ2luLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Account/Pages/LoginWith2fa.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xBY2NvdW50XFBhZ2VzXExvZ2luV2l0aDJmYS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Account/Pages/LoginWithRecoveryCode.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xBY2NvdW50XFBhZ2VzXExvZ2luV2l0aFJlY292ZXJ5Q29kZS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Account/Pages/Manage/ChangePassword.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xBY2NvdW50XFBhZ2VzXE1hbmFnZVxDaGFuZ2VQYXNzd29yZC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Account/Pages/Manage/DeletePersonalData.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xBY2NvdW50XFBhZ2VzXE1hbmFnZVxEZWxldGVQZXJzb25hbERhdGEucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Account/Pages/Manage/Disable2fa.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xBY2NvdW50XFBhZ2VzXE1hbmFnZVxEaXNhYmxlMmZhLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Account/Pages/Manage/Email.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xBY2NvdW50XFBhZ2VzXE1hbmFnZVxFbWFpbC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Account/Pages/Manage/EnableAuthenticator.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xBY2NvdW50XFBhZ2VzXE1hbmFnZVxFbmFibGVBdXRoZW50aWNhdG9yLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Account/Pages/Manage/ExternalLogins.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xBY2NvdW50XFBhZ2VzXE1hbmFnZVxFeHRlcm5hbExvZ2lucy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Account/Pages/Manage/GenerateRecoveryCodes.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xBY2NvdW50XFBhZ2VzXE1hbmFnZVxHZW5lcmF0ZVJlY292ZXJ5Q29kZXMucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Account/Pages/Manage/Index.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xBY2NvdW50XFBhZ2VzXE1hbmFnZVxJbmRleC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Account/Pages/Manage/PersonalData.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xBY2NvdW50XFBhZ2VzXE1hbmFnZVxQZXJzb25hbERhdGEucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Account/Pages/Manage/ResetAuthenticator.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xBY2NvdW50XFBhZ2VzXE1hbmFnZVxSZXNldEF1dGhlbnRpY2F0b3IucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Account/Pages/Manage/SetPassword.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xBY2NvdW50XFBhZ2VzXE1hbmFnZVxTZXRQYXNzd29yZC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Account/Pages/Manage/TwoFactorAuthentication.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xBY2NvdW50XFBhZ2VzXE1hbmFnZVxUd29GYWN0b3JBdXRoZW50aWNhdGlvbi5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Account/Pages/Manage/_Imports.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xBY2NvdW50XFBhZ2VzXE1hbmFnZVxfSW1wb3J0cy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Account/Pages/Register.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xBY2NvdW50XFBhZ2VzXFJlZ2lzdGVyLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Account/Pages/RegisterConfirmation.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xBY2NvdW50XFBhZ2VzXFJlZ2lzdGVyQ29uZmlybWF0aW9uLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Account/Pages/ResendEmailConfirmation.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xBY2NvdW50XFBhZ2VzXFJlc2VuZEVtYWlsQ29uZmlybWF0aW9uLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Account/Pages/ResetPassword.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xBY2NvdW50XFBhZ2VzXFJlc2V0UGFzc3dvcmQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Account/Pages/ResetPasswordConfirmation.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xBY2NvdW50XFBhZ2VzXFJlc2V0UGFzc3dvcmRDb25maXJtYXRpb24ucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Account/Pages/_Imports.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xBY2NvdW50XFBhZ2VzXF9JbXBvcnRzLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Account/Shared/AccountLayout.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xBY2NvdW50XFNoYXJlZFxBY2NvdW50TGF5b3V0LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Account/Shared/ExternalLoginPicker.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xBY2NvdW50XFNoYXJlZFxFeHRlcm5hbExvZ2luUGlja2VyLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Account/Shared/ManageLayout.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xBY2NvdW50XFNoYXJlZFxNYW5hZ2VMYXlvdXQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Account/Shared/ManageNavMenu.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xBY2NvdW50XFNoYXJlZFxNYW5hZ2VOYXZNZW51LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Account/Shared/RedirectToLogin.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xBY2NvdW50XFNoYXJlZFxSZWRpcmVjdFRvTG9naW4ucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Account/Shared/ShowRecoveryCodes.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xBY2NvdW50XFNoYXJlZFxTaG93UmVjb3ZlcnlDb2Rlcy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Account/Shared/StatusMessage.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xBY2NvdW50XFNoYXJlZFxTdGF0dXNNZXNzYWdlLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/App.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xBcHAucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Admin/AdminDashboard.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xBZG1pblxBZG1pbkRhc2hib2FyZC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Admin/Advertise/AddAdvertiseBanner.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xBZG1pblxBZHZlcnRpc2VcQWRkQWR2ZXJ0aXNlQmFubmVyLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Admin/Advertise/AdvertiseDetail.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xBZG1pblxBZHZlcnRpc2VcQWR2ZXJ0aXNlRGV0YWlsLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Admin/Advertise/AdvertiseRequestDetail.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xBZG1pblxBZHZlcnRpc2VcQWR2ZXJ0aXNlUmVxdWVzdERldGFpbC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Admin/Advertise/Advertises.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xBZG1pblxBZHZlcnRpc2VcQWR2ZXJ0aXNlcy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Admin/Advertise/Banners.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xBZG1pblxBZHZlcnRpc2VcQmFubmVycy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Admin/Catalog/AddEditArtCategoryModal.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xBZG1pblxDYXRhbG9nXEFkZEVkaXRBcnRDYXRlZ29yeU1vZGFsLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Admin/Catalog/ArtCategories.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xBZG1pblxDYXRhbG9nXEFydENhdGVnb3JpZXMucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Admin/Comminucation/NewChat.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xBZG1pblxDb21taW51Y2F0aW9uXE5ld0NoYXQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Admin/Content/FAQ/AddEditStaticPageModal.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xBZG1pblxDb250ZW50XEZBUVxBZGRFZGl0U3RhdGljUGFnZU1vZGFsLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Admin/Content/FAQ/FAQList.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xBZG1pblxDb250ZW50XEZBUVxGQVFMaXN0LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Admin/Content/News/AddEditFooterItem.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xBZG1pblxDb250ZW50XE5ld3NcQWRkRWRpdEZvb3Rlckl0ZW0ucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Admin/Content/News/AddEditNew.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xBZG1pblxDb250ZW50XE5ld3NcQWRkRWRpdE5ldy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Admin/Content/News/AddEditStaticPage.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xBZG1pblxDb250ZW50XE5ld3NcQWRkRWRpdFN0YXRpY1BhZ2UucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Admin/Content/News/Contents.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xBZG1pblxDb250ZW50XE5ld3NcQ29udGVudHMucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Admin/Content/News/FooterItem.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xBZG1pblxDb250ZW50XE5ld3NcRm9vdGVySXRlbS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Admin/Content/News/News.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xBZG1pblxDb250ZW50XE5ld3NcTmV3cy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Admin/Content/News/StaticPages.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xBZG1pblxDb250ZW50XE5ld3NcU3RhdGljUGFnZXMucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Admin/Content/Seo/SeoForm.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xBZG1pblxDb250ZW50XFNlb1xTZW9Gb3JtLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Admin/FestivalFocuses/AddEditFestivalFocusModal.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xBZG1pblxGZXN0aXZhbEZvY3VzZXNcQWRkRWRpdEZlc3RpdmFsRm9jdXNNb2RhbC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Admin/FestivalFocuses/FestivalFocus.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xBZG1pblxGZXN0aXZhbEZvY3VzZXNcRmVzdGl2YWxGb2N1cy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Admin/Festivals/Component1.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xBZG1pblxGZXN0aXZhbHNcQ29tcG9uZW50MS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Admin/Festivals/FestivalDetails.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xBZG1pblxGZXN0aXZhbHNcRmVzdGl2YWxEZXRhaWxzLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Admin/Festivals/FestivalList.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xBZG1pblxGZXN0aXZhbHNcRmVzdGl2YWxMaXN0LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Admin/Festivals/PaymentDetail.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xBZG1pblxGZXN0aXZhbHNcUGF5bWVudERldGFpbC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Admin/Festivals/ViolationReport.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xBZG1pblxGZXN0aXZhbHNcVmlvbGF0aW9uUmVwb3J0LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Admin/Incomes/AllIncomes.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xBZG1pblxJbmNvbWVzXEFsbEluY29tZXMucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Admin/Incomes/CartItems.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xBZG1pblxJbmNvbWVzXENhcnRJdGVtcy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Admin/Incomes/Carts.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xBZG1pblxJbmNvbWVzXENhcnRzLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Admin/Notifications/Notifications.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xBZG1pblxOb3RpZmljYXRpb25zXE5vdGlmaWNhdGlvbnMucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Admin/Payment/Commissions.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xBZG1pblxQYXltZW50XENvbW1pc3Npb25zLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Admin/Products/AddEditProductModal.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xBZG1pblxQcm9kdWN0c1xBZGRFZGl0UHJvZHVjdE1vZGFsLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Admin/Products/Products.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xBZG1pblxQcm9kdWN0c1xQcm9kdWN0cy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Admin/Tickets/Tickets.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xBZG1pblxUaWNrZXRzXFRpY2tldHMucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Admin/_AdminLayout.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xBZG1pblxfQWRtaW5MYXlvdXQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Auth.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xBdXRoLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Authentication/ConfirmedEmail.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xBdXRoZW50aWNhdGlvblxDb25maXJtZWRFbWFpbC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Authentication/Login.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xBdXRoZW50aWNhdGlvblxMb2dpbi5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Authentication/Register.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xBdXRoZW50aWNhdGlvblxSZWdpc3Rlci5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Component1.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xDb21wb25lbnQxLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Counter.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xDb3VudGVyLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Error.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xFcnJvci5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Festival/Chats/NewChats.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xGZXN0aXZhbFxDaGF0c1xOZXdDaGF0cy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Festival/Dashboard.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xGZXN0aXZhbFxEYXNoYm9hcmQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Festival/DashboardComponent/CategoryDeadLineSubmitChart.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xGZXN0aXZhbFxEYXNoYm9hcmRDb21wb25lbnRcQ2F0ZWdvcnlEZWFkTGluZVN1Ym1pdENoYXJ0LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Festival/DashboardComponent/CategorySubmitChart.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xGZXN0aXZhbFxEYXNoYm9hcmRDb21wb25lbnRcQ2F0ZWdvcnlTdWJtaXRDaGFydC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Festival/DashboardComponent/DailySubmitChart.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xGZXN0aXZhbFxEYXNoYm9hcmRDb21wb25lbnRcRGFpbHlTdWJtaXRDaGFydC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Festival/DashboardComponent/FestivalDetailBox.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xGZXN0aXZhbFxEYXNoYm9hcmRDb21wb25lbnRcRmVzdGl2YWxEZXRhaWxCb3gucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Festival/DashboardComponent/FestivalImageSlider.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xGZXN0aXZhbFxEYXNoYm9hcmRDb21wb25lbnRcRmVzdGl2YWxJbWFnZVNsaWRlci5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Festival/DashboardComponent/FestivalTimeLine.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xGZXN0aXZhbFxEYXNoYm9hcmRDb21wb25lbnRcRmVzdGl2YWxUaW1lTGluZS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Festival/DashboardComponent/LastSubmitTable.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xGZXN0aXZhbFxEYXNoYm9hcmRDb21wb25lbnRcTGFzdFN1Ym1pdFRhYmxlLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Festival/DashboardComponent/PurchaseChart.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xGZXN0aXZhbFxEYXNoYm9hcmRDb21wb25lbnRcUHVyY2hhc2VDaGFydC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Festival/DashboardComponent/PurchaseDunateChart.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xGZXN0aXZhbFxEYXNoYm9hcmRDb21wb25lbnRcUHVyY2hhc2VEdW5hdGVDaGFydC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Festival/DashboardComponent/SubmitJudgingStatusChart.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xGZXN0aXZhbFxEYXNoYm9hcmRDb21wb25lbnRcU3VibWl0SnVkZ2luZ1N0YXR1c0NoYXJ0LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Festival/Festival.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xGZXN0aXZhbFxGZXN0aXZhbC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Festival/FestivalEditComponent/AddEditDeadLineEntry.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xGZXN0aXZhbFxGZXN0aXZhbEVkaXRDb21wb25lbnRcQWRkRWRpdERlYWRMaW5lRW50cnkucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Festival/FestivalEditComponent/AddEditEventCategory.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xGZXN0aXZhbFxGZXN0aXZhbEVkaXRDb21wb25lbnRcQWRkRWRpdEV2ZW50Q2F0ZWdvcnkucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Festival/FestivalEditComponent/AddEditEventVenueModal.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xGZXN0aXZhbFxGZXN0aXZhbEVkaXRDb21wb25lbnRcQWRkRWRpdEV2ZW50VmVudWVNb2RhbC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Festival/FestivalEditComponent/AddEditFestivalFileModal.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xGZXN0aXZhbFxGZXN0aXZhbEVkaXRDb21wb25lbnRcQWRkRWRpdEZlc3RpdmFsRmlsZU1vZGFsLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Festival/FestivalEditComponent/AddEventOrganizerModal.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xGZXN0aXZhbFxGZXN0aXZhbEVkaXRDb21wb25lbnRcQWRkRXZlbnRPcmdhbml6ZXJNb2RhbC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Festival/FestivalEditComponent/ContactAndVenue.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xGZXN0aXZhbFxGZXN0aXZhbEVkaXRDb21wb25lbnRcQ29udGFjdEFuZFZlbnVlLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Festival/FestivalEditComponent/DeadLineEntry.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xGZXN0aXZhbFxGZXN0aXZhbEVkaXRDb21wb25lbnRcRGVhZExpbmVFbnRyeS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Festival/FestivalEditComponent/EventOrganizer.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xGZXN0aXZhbFxGZXN0aXZhbEVkaXRDb21wb25lbnRcRXZlbnRPcmdhbml6ZXIucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Festival/FestivalEditComponent/FestivalAdditionalSetting.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xGZXN0aXZhbFxGZXN0aXZhbEVkaXRDb21wb25lbnRcRmVzdGl2YWxBZGRpdGlvbmFsU2V0dGluZy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Festival/FestivalEditComponent/FestivalDeadline.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xGZXN0aXZhbFxGZXN0aXZhbEVkaXRDb21wb25lbnRcRmVzdGl2YWxEZWFkbGluZS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Festival/FestivalEditComponent/FestivalDetail.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xGZXN0aXZhbFxGZXN0aXZhbEVkaXRDb21wb25lbnRcRmVzdGl2YWxEZXRhaWwucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Festival/FestivalEditComponent/FestivalEventCategory.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xGZXN0aXZhbFxGZXN0aXZhbEVkaXRDb21wb25lbnRcRmVzdGl2YWxFdmVudENhdGVnb3J5LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Festival/FestivalEditComponent/FestivalFile.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xGZXN0aXZhbFxGZXN0aXZhbEVkaXRDb21wb25lbnRcRmVzdGl2YWxGaWxlLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Festival/FestivalEditComponent/FestivalImages.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xGZXN0aXZhbFxGZXN0aXZhbEVkaXRDb21wb25lbnRcRmVzdGl2YWxJbWFnZXMucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Festival/FestivalEditComponent/FestivalVenue.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xGZXN0aXZhbFxGZXN0aXZhbEVkaXRDb21wb25lbnRcRmVzdGl2YWxWZW51ZS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Festival/JudgingProjects/AddProjectsToRefree.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xGZXN0aXZhbFxKdWRnaW5nUHJvamVjdHNcQWRkUHJvamVjdHNUb1JlZnJlZS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Festival/JudgingProjects/AddReferesToProject.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xGZXN0aXZhbFxKdWRnaW5nUHJvamVjdHNcQWRkUmVmZXJlc1RvUHJvamVjdC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Festival/Judging/AddJudgingButton.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xGZXN0aXZhbFxKdWRnaW5nXEFkZEp1ZGdpbmdCdXR0b24ucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Festival/Judging/AddJudgingFiled.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xGZXN0aXZhbFxKdWRnaW5nXEFkZEp1ZGdpbmdGaWxlZC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Festival/Judging/Judging.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xGZXN0aXZhbFxKdWRnaW5nXEp1ZGdpbmcucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Festival/News/AddEditNew.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xGZXN0aXZhbFxOZXdzXEFkZEVkaXROZXcucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Festival/News/News.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xGZXN0aXZhbFxOZXdzXE5ld3MucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Festival/Notifications/Notifications.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xGZXN0aXZhbFxOb3RpZmljYXRpb25zXE5vdGlmaWNhdGlvbnMucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Festival/Payments/Components/FestivalPaymentState.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xGZXN0aXZhbFxQYXltZW50c1xDb21wb25lbnRzXEZlc3RpdmFsUGF5bWVudFN0YXRlLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Festival/Payments/Components/FestivalPaymentStateChart.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xGZXN0aXZhbFxQYXltZW50c1xDb21wb25lbnRzXEZlc3RpdmFsUGF5bWVudFN0YXRlQ2hhcnQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Festival/Payments/DiscountCodes/AddEditDiscountCodeModal.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xGZXN0aXZhbFxQYXltZW50c1xEaXNjb3VudENvZGVzXEFkZEVkaXREaXNjb3VudENvZGVNb2RhbC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Festival/Payments/DiscountCodes/DiscountCodesList.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xGZXN0aXZhbFxQYXltZW50c1xEaXNjb3VudENvZGVzXERpc2NvdW50Q29kZXNMaXN0LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Festival/Payments/IncomeItems.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xGZXN0aXZhbFxQYXltZW50c1xJbmNvbWVJdGVtcy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Festival/Payments/PaymentInformation.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xGZXN0aXZhbFxQYXltZW50c1xQYXltZW50SW5mb3JtYXRpb24ucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Festival/ProductsSold/ProductSoldDetailDialog.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xGZXN0aXZhbFxQcm9kdWN0c1NvbGRcUHJvZHVjdFNvbGREZXRhaWxEaWFsb2cucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Festival/ProductsSold/ProductsSoldList.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xGZXN0aXZhbFxQcm9kdWN0c1NvbGRcUHJvZHVjdHNTb2xkTGlzdC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Festival/Products/AddEditProductModal.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xGZXN0aXZhbFxQcm9kdWN0c1xBZGRFZGl0UHJvZHVjdE1vZGFsLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Festival/Products/AddProduct.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xGZXN0aXZhbFxQcm9kdWN0c1xBZGRQcm9kdWN0LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Festival/Products/Products.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xGZXN0aXZhbFxQcm9kdWN0c1xQcm9kdWN0cy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Festival/ProjectJudgings/JudgingDetail.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xGZXN0aXZhbFxQcm9qZWN0SnVkZ2luZ3NcSnVkZ2luZ0RldGFpbC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Festival/ProjectJudgings/ProjectJudgingForm.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xGZXN0aXZhbFxQcm9qZWN0SnVkZ2luZ3NcUHJvamVjdEp1ZGdpbmdGb3JtLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Festival/ProjectJudgings/SubmitDetail.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xGZXN0aXZhbFxQcm9qZWN0SnVkZ2luZ3NcU3VibWl0RGV0YWlsLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Festival/ProjectJudgings/SubmitDetailComponents/SelectedCategories.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xGZXN0aXZhbFxQcm9qZWN0SnVkZ2luZ3NcU3VibWl0RGV0YWlsQ29tcG9uZW50c1xTZWxlY3RlZENhdGVnb3JpZXMucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Festival/ProjectJudgings/SubmitDetailComponents/SubmitFormAnswers.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xGZXN0aXZhbFxQcm9qZWN0SnVkZ2luZ3NcU3VibWl0RGV0YWlsQ29tcG9uZW50c1xTdWJtaXRGb3JtQW5zd2Vycy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Festival/Reviews/Review.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xGZXN0aXZhbFxSZXZpZXdzXFJldmlldy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Festival/Seo/SeoForm.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xGZXN0aXZhbFxTZW9cU2VvRm9ybS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Festival/SoldTickets/SoldTicketsList.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xGZXN0aXZhbFxTb2xkVGlja2V0c1xTb2xkVGlja2V0c0xpc3QucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Festival/SubmissionQuestion/AddEditQuestion.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xGZXN0aXZhbFxTdWJtaXNzaW9uUXVlc3Rpb25cQWRkRWRpdFF1ZXN0aW9uLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Festival/SubmissionQuestion/Questions.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xGZXN0aXZhbFxTdWJtaXNzaW9uUXVlc3Rpb25cUXVlc3Rpb25zLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Festival/Submits/FinalResultModal.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xGZXN0aXZhbFxTdWJtaXRzXEZpbmFsUmVzdWx0TW9kYWwucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Festival/Submits/SubmitFilterForm.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xGZXN0aXZhbFxTdWJtaXRzXFN1Ym1pdEZpbHRlckZvcm0ucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Festival/Submits/SubmitsList.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xGZXN0aXZhbFxTdWJtaXRzXFN1Ym1pdHNMaXN0LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Festival/SubUsers/AddExistingUserToFestivalModal.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xGZXN0aXZhbFxTdWJVc2Vyc1xBZGRFeGlzdGluZ1VzZXJUb0Zlc3RpdmFsTW9kYWwucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Festival/SubUsers/FestivalRolePermission.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xGZXN0aXZhbFxTdWJVc2Vyc1xGZXN0aXZhbFJvbGVQZXJtaXNzaW9uLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Festival/SubUsers/FestivalRoles.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xGZXN0aXZhbFxTdWJVc2Vyc1xGZXN0aXZhbFJvbGVzLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Festival/SubUsers/FestivalSubUser.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xGZXN0aXZhbFxTdWJVc2Vyc1xGZXN0aXZhbFN1YlVzZXIucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Festival/SubUsers/FestivalSubUserRoles.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xGZXN0aXZhbFxTdWJVc2Vyc1xGZXN0aXZhbFN1YlVzZXJSb2xlcy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Festival/Tickets/Ticket.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xGZXN0aXZhbFxUaWNrZXRzXFRpY2tldC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Festival/Tickets/Tickets.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xGZXN0aXZhbFxUaWNrZXRzXFRpY2tldHMucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Festival/Tickets/Venue/AddEditShowHall.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xGZXN0aXZhbFxUaWNrZXRzXFZlbnVlXEFkZEVkaXRTaG93SGFsbC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Festival/Tickets/Venue/VenuesList.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xGZXN0aXZhbFxUaWNrZXRzXFZlbnVlXFZlbnVlc0xpc3QucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/FileGroupDemo.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xGaWxlR3JvdXBEZW1vLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Home.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xIb21lLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Identity/Account.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xJZGVudGl0eVxBY2NvdW50LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Identity/Forgot.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xJZGVudGl0eVxGb3Jnb3QucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Identity/Profile.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xJZGVudGl0eVxQcm9maWxlLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Identity/RegisterUserModal.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xJZGVudGl0eVxSZWdpc3RlclVzZXJNb2RhbC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Identity/Reset.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xJZGVudGl0eVxSZXNldC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Identity/RoleModal.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xJZGVudGl0eVxSb2xlTW9kYWwucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Identity/RolePermissions.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xJZGVudGl0eVxSb2xlUGVybWlzc2lvbnMucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Identity/Roles.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xJZGVudGl0eVxSb2xlcy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Identity/Security.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xJZGVudGl0eVxTZWN1cml0eS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Identity/SpecialAccount.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xJZGVudGl0eVxTcGVjaWFsQWNjb3VudC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Identity/UserProfile.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xJZGVudGl0eVxVc2VyUHJvZmlsZS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Identity/UserRoles.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xJZGVudGl0eVxVc2VyUm9sZXMucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Identity/Users.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xJZGVudGl0eVxVc2Vycy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Misc/AddEditDocumentModal.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xNaXNjXEFkZEVkaXREb2N1bWVudE1vZGFsLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Misc/AddEditDocumentTypeModal.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xNaXNjXEFkZEVkaXREb2N1bWVudFR5cGVNb2RhbC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Misc/DocumentStore.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xNaXNjXERvY3VtZW50U3RvcmUucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Misc/DocumentTypes.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xNaXNjXERvY3VtZW50VHlwZXMucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Misc/ExtendedAttribute/DocumentExtendedAttributes.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xNaXNjXEV4dGVuZGVkQXR0cmlidXRlXERvY3VtZW50RXh0ZW5kZWRBdHRyaWJ1dGVzLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Project/AddEditProject.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xQcm9qZWN0XEFkZEVkaXRQcm9qZWN0LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Project/AddEditProjectCredit.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xQcm9qZWN0XEFkZEVkaXRQcm9qZWN0Q3JlZGl0LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Project/AddEditProjectFile.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xQcm9qZWN0XEFkZEVkaXRQcm9qZWN0RmlsZS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Project/AddEditProjectInformation.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xQcm9qZWN0XEFkZEVkaXRQcm9qZWN0SW5mb3JtYXRpb24ucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Project/AddEditProjectSpecification.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xQcm9qZWN0XEFkZEVkaXRQcm9qZWN0U3BlY2lmaWNhdGlvbi5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Project/Awards/ProjectAwards.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xQcm9qZWN0XEF3YXJkc1xQcm9qZWN0QXdhcmRzLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Project/Awards/ProjectDistribuationInformation.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xQcm9qZWN0XEF3YXJkc1xQcm9qZWN0RGlzdHJpYnVhdGlvbkluZm9ybWF0aW9uLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Project/Awards/ProjectDistribuationInformationItem.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xQcm9qZWN0XEF3YXJkc1xQcm9qZWN0RGlzdHJpYnVhdGlvbkluZm9ybWF0aW9uSXRlbS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Project/Awards/ProjectScreenAwards.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xQcm9qZWN0XEF3YXJkc1xQcm9qZWN0U2NyZWVuQXdhcmRzLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Project/EditProjectSubmitterInformation.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xQcm9qZWN0XEVkaXRQcm9qZWN0U3VibWl0dGVySW5mb3JtYXRpb24ucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Project/Files/AddMusicFile.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xQcm9qZWN0XEZpbGVzXEFkZE11c2ljRmlsZS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Project/Files/AddPhotoModal.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xQcm9qZWN0XEZpbGVzXEFkZFBob3RvTW9kYWwucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Project/Files/ExternalFile.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xQcm9qZWN0XEZpbGVzXEV4dGVybmFsRmlsZS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Project/Files/LocalFile.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xQcm9qZWN0XEZpbGVzXExvY2FsRmlsZS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Project/ProjectAwardAndDistribution.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xQcm9qZWN0XFByb2plY3RBd2FyZEFuZERpc3RyaWJ1dGlvbi5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Project/ProjectFileConflictWays.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xQcm9qZWN0XFByb2plY3RGaWxlQ29uZmxpY3RXYXlzLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Project/ProjectFilterForm.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xQcm9qZWN0XFByb2plY3RGaWx0ZXJGb3JtLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Project/ProjectsList.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xQcm9qZWN0XFByb2plY3RzTGlzdC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Project/Specification/FilmSpecification.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xQcm9qZWN0XFNwZWNpZmljYXRpb25cRmlsbVNwZWNpZmljYXRpb24ucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Project/Specification/MusicSpecification.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xQcm9qZWN0XFNwZWNpZmljYXRpb25cTXVzaWNTcGVjaWZpY2F0aW9uLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Project/Specification/PhotographySpecification.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xQcm9qZWN0XFNwZWNpZmljYXRpb25cUGhvdG9ncmFwaHlTcGVjaWZpY2F0aW9uLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Project/Specification/ScriptSpecification.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xQcm9qZWN0XFNwZWNpZmljYXRpb25cU2NyaXB0U3BlY2lmaWNhdGlvbi5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Project/Specification/VrXrSpecification.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xQcm9qZWN0XFNwZWNpZmljYXRpb25cVnJYclNwZWNpZmljYXRpb24ucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Public/Content/Advertise.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xQdWJsaWNcQ29udGVudFxBZHZlcnRpc2UucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Public/Content/New.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xQdWJsaWNcQ29udGVudFxOZXcucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Public/Content/News.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xQdWJsaWNcQ29udGVudFxOZXdzLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Public/Content/Product.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xQdWJsaWNcQ29udGVudFxQcm9kdWN0LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Public/Content/StaticPages/StaticPage.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xQdWJsaWNcQ29udGVudFxTdGF0aWNQYWdlc1xTdGF0aWNQYWdlLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Public/FAQ.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xQdWJsaWNcRkFRLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Public/Festivals/Components/FestivalApproved.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xQdWJsaWNcRmVzdGl2YWxzXENvbXBvbmVudHNcRmVzdGl2YWxBcHByb3ZlZC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Public/Festivals/Components/FestivalCategories.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xQdWJsaWNcRmVzdGl2YWxzXENvbXBvbmVudHNcRmVzdGl2YWxDYXRlZ29yaWVzLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Public/Festivals/Components/FestivalCategorySelected.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xQdWJsaWNcRmVzdGl2YWxzXENvbXBvbmVudHNcRmVzdGl2YWxDYXRlZ29yeVNlbGVjdGVkLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Public/Festivals/Components/FestivalContact.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xQdWJsaWNcRmVzdGl2YWxzXENvbXBvbmVudHNcRmVzdGl2YWxDb250YWN0LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Public/Festivals/Components/FestivalFiles.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xQdWJsaWNcRmVzdGl2YWxzXENvbXBvbmVudHNcRmVzdGl2YWxGaWxlcy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Public/Festivals/Components/FestivalGallery.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xQdWJsaWNcRmVzdGl2YWxzXENvbXBvbmVudHNcRmVzdGl2YWxHYWxsZXJ5LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Public/Festivals/Components/FestivalGalleryModal.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xQdWJsaWNcRmVzdGl2YWxzXENvbXBvbmVudHNcRmVzdGl2YWxHYWxsZXJ5TW9kYWwucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Public/Festivals/Components/FestivalNews.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xQdWJsaWNcRmVzdGl2YWxzXENvbXBvbmVudHNcRmVzdGl2YWxOZXdzLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Public/Festivals/Components/FestivalOrginizer.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xQdWJsaWNcRmVzdGl2YWxzXENvbXBvbmVudHNcRmVzdGl2YWxPcmdpbml6ZXIucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Public/Festivals/Components/FestivalProducts.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xQdWJsaWNcRmVzdGl2YWxzXENvbXBvbmVudHNcRmVzdGl2YWxQcm9kdWN0cy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Public/Festivals/Components/FestivalQualifiers.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xQdWJsaWNcRmVzdGl2YWxzXENvbXBvbmVudHNcRmVzdGl2YWxRdWFsaWZpZXJzLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Public/Festivals/Components/FestivalReviews.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xQdWJsaWNcRmVzdGl2YWxzXENvbXBvbmVudHNcRmVzdGl2YWxSZXZpZXdzLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Public/Festivals/Components/FestivalSubmissionAddress.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xQdWJsaWNcRmVzdGl2YWxzXENvbXBvbmVudHNcRmVzdGl2YWxTdWJtaXNzaW9uQWRkcmVzcy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Public/Festivals/Components/FestivalTickets.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xQdWJsaWNcRmVzdGl2YWxzXENvbXBvbmVudHNcRmVzdGl2YWxUaWNrZXRzLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Public/Festivals/Components/FestivalTimeLine.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xQdWJsaWNcRmVzdGl2YWxzXENvbXBvbmVudHNcRmVzdGl2YWxUaW1lTGluZS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Public/Festivals/Components/FestivalVenue.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xQdWJsaWNcRmVzdGl2YWxzXENvbXBvbmVudHNcRmVzdGl2YWxWZW51ZS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Public/Festivals/FestivalDetail.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xQdWJsaWNcRmVzdGl2YWxzXEZlc3RpdmFsRGV0YWlsLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Public/Festivals/Home.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xQdWJsaWNcRmVzdGl2YWxzXEhvbWUucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Public/Festivals/Tickets/Tickets.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xQdWJsaWNcRmVzdGl2YWxzXFRpY2tldHNcVGlja2V0cy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Public/NotFoundPage.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xQdWJsaWNcTm90Rm91bmRQYWdlLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Public/Projects/ProjectCredits.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xQdWJsaWNcUHJvamVjdHNcUHJvamVjdENyZWRpdHMucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Public/Projects/ProjectDetail.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xQdWJsaWNcUHJvamVjdHNcUHJvamVjdERldGFpbC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Public/Projects/ProjectDetailSkeleton.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xQdWJsaWNcUHJvamVjdHNcUHJvamVjdERldGFpbFNrZWxldG9uLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Public/Projects/ProjectDetails/AddHeaderFilesModal.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xQdWJsaWNcUHJvamVjdHNcUHJvamVjdERldGFpbHNcQWRkSGVhZGVyRmlsZXNNb2RhbC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Public/Projects/ProjectDetails/ExternalMainFile.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xQdWJsaWNcUHJvamVjdHNcUHJvamVjdERldGFpbHNcRXh0ZXJuYWxNYWluRmlsZS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Public/Projects/ProjectDetails/FilmProjectDetail.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xQdWJsaWNcUHJvamVjdHNcUHJvamVjdERldGFpbHNcRmlsbVByb2plY3REZXRhaWwucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Public/Projects/ProjectDetails/MusicProjectDetail.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xQdWJsaWNcUHJvamVjdHNcUHJvamVjdERldGFpbHNcTXVzaWNQcm9qZWN0RGV0YWlsLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Public/Projects/ProjectDetails/PhotographyProjectDetail.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xQdWJsaWNcUHJvamVjdHNcUHJvamVjdERldGFpbHNcUGhvdG9ncmFwaHlQcm9qZWN0RGV0YWlsLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Public/Projects/ProjectDetails/ProjectAwards.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xQdWJsaWNcUHJvamVjdHNcUHJvamVjdERldGFpbHNcUHJvamVjdEF3YXJkcy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Public/Projects/ProjectDetails/ProjectContact.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xQdWJsaWNcUHJvamVjdHNcUHJvamVjdERldGFpbHNcUHJvamVjdENvbnRhY3QucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Public/Projects/ProjectDetails/ProjectDetailInfo.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xQdWJsaWNcUHJvamVjdHNcUHJvamVjdERldGFpbHNcUHJvamVjdERldGFpbEluZm8ucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Public/Projects/ProjectDetails/ProjectDistribution.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xQdWJsaWNcUHJvamVjdHNcUHJvamVjdERldGFpbHNcUHJvamVjdERpc3RyaWJ1dGlvbi5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Public/Projects/ProjectDetails/ProjectSecondaryFiles.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xQdWJsaWNcUHJvamVjdHNcUHJvamVjdERldGFpbHNcUHJvamVjdFNlY29uZGFyeUZpbGVzLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Public/Projects/ProjectDetails/ProjectTitle.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xQdWJsaWNcUHJvamVjdHNcUHJvamVjdERldGFpbHNcUHJvamVjdFRpdGxlLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Public/Projects/ProjectDetails/RateProject.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xQdWJsaWNcUHJvamVjdHNcUHJvamVjdERldGFpbHNcUmF0ZVByb2plY3QucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Public/Projects/ProjectDetails/ScriptProjectDetail.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xQdWJsaWNcUHJvamVjdHNcUHJvamVjdERldGFpbHNcU2NyaXB0UHJvamVjdERldGFpbC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Public/Projects/ProjectDetails/SecondaryExternalLink.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xQdWJsaWNcUHJvamVjdHNcUHJvamVjdERldGFpbHNcU2Vjb25kYXJ5RXh0ZXJuYWxMaW5rLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Public/Projects/ProjectDetails/SubProjectTypes.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xQdWJsaWNcUHJvamVjdHNcUHJvamVjdERldGFpbHNcU3ViUHJvamVjdFR5cGVzLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Public/Projects/ProjectDetails/VRXRProjectDetail.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xQdWJsaWNcUHJvamVjdHNcUHJvamVjdERldGFpbHNcVlJYUlByb2plY3REZXRhaWwucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Public/Projects/Specifications/FilmSpecification.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xQdWJsaWNcUHJvamVjdHNcU3BlY2lmaWNhdGlvbnNcRmlsbVNwZWNpZmljYXRpb24ucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Public/Projects/Specifications/MusicSpecification.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xQdWJsaWNcUHJvamVjdHNcU3BlY2lmaWNhdGlvbnNcTXVzaWNTcGVjaWZpY2F0aW9uLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Public/Projects/Specifications/PhotographicSpecification.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xQdWJsaWNcUHJvamVjdHNcU3BlY2lmaWNhdGlvbnNcUGhvdG9ncmFwaGljU3BlY2lmaWNhdGlvbi5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Public/Projects/Specifications/ScriptSpecification.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xQdWJsaWNcUHJvamVjdHNcU3BlY2lmaWNhdGlvbnNcU2NyaXB0U3BlY2lmaWNhdGlvbi5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Public/Projects/Specifications/VrXrSpecification.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xQdWJsaWNcUHJvamVjdHNcU3BlY2lmaWNhdGlvbnNcVnJYclNwZWNpZmljYXRpb24ucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Public/SpecialAccount.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xQdWJsaWNcU3BlY2lhbEFjY291bnQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/User/Communication/NewChat.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xVc2VyXENvbW11bmljYXRpb25cTmV3Q2hhdC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/User/Dashboard.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xVc2VyXERhc2hib2FyZC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/User/Notifications/Notifications.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xVc2VyXE5vdGlmaWNhdGlvbnNcTm90aWZpY2F0aW9ucy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/User/Products/ProductSoldDetailDialog.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xVc2VyXFByb2R1Y3RzXFByb2R1Y3RTb2xkRGV0YWlsRGlhbG9nLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/User/Products/ProductsSoldList.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xVc2VyXFByb2R1Y3RzXFByb2R1Y3RzU29sZExpc3QucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/User/Referee/Dashboard.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xVc2VyXFJlZmVyZWVcRGFzaGJvYXJkLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/User/Referee/Refrees.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xVc2VyXFJlZmVyZWVcUmVmcmVlcy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/User/ShoppingCart/Carts.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xVc2VyXFNob3BwaW5nQ2FydFxDYXJ0cy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/User/ShoppingCart/CheckPaidResult.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xVc2VyXFNob3BwaW5nQ2FydFxDaGVja1BhaWRSZXN1bHQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/User/ShoppingCart/ShoppingCart.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xVc2VyXFNob3BwaW5nQ2FydFxTaG9wcGluZ0NhcnQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/User/Submits/SubmitsList.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xVc2VyXFN1Ym1pdHNcU3VibWl0c0xpc3QucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/User/Submits/WithDrawDialog.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xVc2VyXFN1Ym1pdHNcV2l0aERyYXdEaWFsb2cucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/User/Tickets/SoldTicketsList.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xVc2VyXFRpY2tldHNcU29sZFRpY2tldHNMaXN0LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Utilities/AuditTrails.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xVdGlsaXRpZXNcQXVkaXRUcmFpbHMucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Pages/Weather.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xXZWF0aGVyLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Routes.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xSb3V0ZXMucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Shared/Components/AddBadgeToCartModal.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xTaGFyZWRcQ29tcG9uZW50c1xBZGRCYWRnZVRvQ2FydE1vZGFsLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Shared/Components/AddEditCategoryDeadLineFee.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xTaGFyZWRcQ29tcG9uZW50c1xBZGRFZGl0Q2F0ZWdvcnlEZWFkTGluZUZlZS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Shared/Components/AddEditExtendedAttributeModal.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xTaGFyZWRcQ29tcG9uZW50c1xBZGRFZGl0RXh0ZW5kZWRBdHRyaWJ1dGVNb2RhbC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Shared/Components/AddFestivalModal.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xTaGFyZWRcQ29tcG9uZW50c1xBZGRGZXN0aXZhbE1vZGFsLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Shared/Components/AddressComponent.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xTaGFyZWRcQ29tcG9uZW50c1xBZGRyZXNzQ29tcG9uZW50LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Shared/Components/AddTicketToCartModal.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xTaGFyZWRcQ29tcG9uZW50c1xBZGRUaWNrZXRUb0NhcnRNb2RhbC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Shared/Components/Base/FestivalAuthorizeView.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xTaGFyZWRcQ29tcG9uZW50c1xCYXNlXEZlc3RpdmFsQXV0aG9yaXplVmlldy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Shared/Components/CartemTypeBadge.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xTaGFyZWRcQ29tcG9uZW50c1xDYXJ0ZW1UeXBlQmFkZ2UucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Shared/Components/CartItems.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xTaGFyZWRcQ29tcG9uZW50c1xDYXJ0SXRlbXMucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Shared/Components/CategoryDescriptionToolTip.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xTaGFyZWRcQ29tcG9uZW50c1xDYXRlZ29yeURlc2NyaXB0aW9uVG9vbFRpcC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Shared/Components/Chats/ChatBox.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xTaGFyZWRcQ29tcG9uZW50c1xDaGF0c1xDaGF0Qm94LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Shared/Components/Chats/ChatContactBox.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xTaGFyZWRcQ29tcG9uZW50c1xDaGF0c1xDaGF0Q29udGFjdEJveC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Shared/Components/CheckBox.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xTaGFyZWRcQ29tcG9uZW50c1xDaGVja0JveC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Shared/Components/ChipsetTextField.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xTaGFyZWRcQ29tcG9uZW50c1xDaGlwc2V0VGV4dEZpZWxkLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Shared/Components/CopyToClipboard.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xTaGFyZWRcQ29tcG9uZW50c1xDb3B5VG9DbGlwYm9hcmQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Shared/Components/CountrySelector.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xTaGFyZWRcQ29tcG9uZW50c1xDb3VudHJ5U2VsZWN0b3IucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Shared/Components/CustomDivider.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xTaGFyZWRcQ29tcG9uZW50c1xDdXN0b21EaXZpZGVyLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Shared/Components/CustomeProgress.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xTaGFyZWRcQ29tcG9uZW50c1xDdXN0b21lUHJvZ3Jlc3MucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Shared/Components/CustomeRichTextEditor.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xTaGFyZWRcQ29tcG9uZW50c1xDdXN0b21lUmljaFRleHRFZGl0b3IucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Shared/Components/DateFilterComponent.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xTaGFyZWRcQ29tcG9uZW50c1xEYXRlRmlsdGVyQ29tcG9uZW50LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Shared/Components/DividerAndTitle.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xTaGFyZWRcQ29tcG9uZW50c1xEaXZpZGVyQW5kVGl0bGUucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Shared/Components/DividerNameValue.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xTaGFyZWRcQ29tcG9uZW50c1xEaXZpZGVyTmFtZVZhbHVlLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Shared/Components/ExtendedAttributes.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xTaGFyZWRcQ29tcG9uZW50c1xFeHRlbmRlZEF0dHJpYnV0ZXMucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Shared/Components/ExtendedAttributesBase.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xTaGFyZWRcQ29tcG9uZW50c1xFeHRlbmRlZEF0dHJpYnV0ZXNCYXNlLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Shared/Components/FavoriteFestival.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xTaGFyZWRcQ29tcG9uZW50c1xGYXZvcml0ZUZlc3RpdmFsLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Shared/Components/FestivalBox.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xTaGFyZWRcQ29tcG9uZW50c1xGZXN0aXZhbEJveC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Shared/Components/FestivalProductBox.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xTaGFyZWRcQ29tcG9uZW50c1xGZXN0aXZhbFByb2R1Y3RCb3gucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Shared/Components/FileGroupViewer.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xTaGFyZWRcQ29tcG9uZW50c1xGaWxlR3JvdXBWaWV3ZXIucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Shared/Components/FileUploader.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xTaGFyZWRcQ29tcG9uZW50c1xGaWxlVXBsb2FkZXIucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Shared/Components/Footer.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xTaGFyZWRcQ29tcG9uZW50c1xGb290ZXIucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Shared/Components/FormCreator.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xTaGFyZWRcQ29tcG9uZW50c1xGb3JtQ3JlYXRvci5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Shared/Components/FormCreatorWithAnswer.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xTaGFyZWRcQ29tcG9uZW50c1xGb3JtQ3JlYXRvcldpdGhBbnN3ZXIucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Shared/Components/GroupCheckBox.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xTaGFyZWRcQ29tcG9uZW50c1xHcm91cENoZWNrQm94LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Shared/Components/HeroTitle.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xTaGFyZWRcQ29tcG9uZW50c1xIZXJvVGl0bGUucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Shared/Components/ICons/GoldIcon.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xTaGFyZWRcQ29tcG9uZW50c1xJQ29uc1xHb2xkSWNvbi5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Shared/Components/ICons/IGold.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xTaGFyZWRcQ29tcG9uZW50c1xJQ29uc1xJR29sZC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Shared/Components/ImageUploader.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xTaGFyZWRcQ29tcG9uZW50c1xJbWFnZVVwbG9hZGVyLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Shared/Components/JudgingStatusChip.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xTaGFyZWRcQ29tcG9uZW50c1xKdWRnaW5nU3RhdHVzQ2hpcC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Shared/Components/LanguageSelector.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xTaGFyZWRcQ29tcG9uZW50c1xMYW5ndWFnZVNlbGVjdG9yLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Shared/Components/LoadingButton.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xTaGFyZWRcQ29tcG9uZW50c1xMb2FkaW5nQnV0dG9uLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Shared/Components/MessageAlert.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xTaGFyZWRcQ29tcG9uZW50c1xNZXNzYWdlQWxlcnQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Shared/Components/NewBox.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xTaGFyZWRcQ29tcG9uZW50c1xOZXdCb3gucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Shared/Components/NewBoxWithoutShortDescription.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xTaGFyZWRcQ29tcG9uZW50c1xOZXdCb3hXaXRob3V0U2hvcnREZXNjcmlwdGlvbi5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Shared/Components/NewCountrySelector.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xTaGFyZWRcQ29tcG9uZW50c1xOZXdDb3VudHJ5U2VsZWN0b3IucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Shared/Components/NotificationDropDown.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xTaGFyZWRcQ29tcG9uZW50c1xOb3RpZmljYXRpb25Ecm9wRG93bi5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Shared/Components/NumericFilter.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xTaGFyZWRcQ29tcG9uZW50c1xOdW1lcmljRmlsdGVyLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Shared/Components/Payments/AddFestivalPaymentItemDialog.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xTaGFyZWRcQ29tcG9uZW50c1xQYXltZW50c1xBZGRGZXN0aXZhbFBheW1lbnRJdGVtRGlhbG9nLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Shared/Components/Payments/FestivalPaymentInformationModal.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xTaGFyZWRcQ29tcG9uZW50c1xQYXltZW50c1xGZXN0aXZhbFBheW1lbnRJbmZvcm1hdGlvbk1vZGFsLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Shared/Components/Payments/FestivalPaymentItemsList.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xTaGFyZWRcQ29tcG9uZW50c1xQYXltZW50c1xGZXN0aXZhbFBheW1lbnRJdGVtc0xpc3QucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Shared/Components/Payments/PaypalButtons.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xTaGFyZWRcQ29tcG9uZW50c1xQYXltZW50c1xQYXlwYWxCdXR0b25zLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Shared/Components/ProductTypeChip.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xTaGFyZWRcQ29tcG9uZW50c1xQcm9kdWN0VHlwZUNoaXAucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Shared/Components/ProjectBox.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xTaGFyZWRcQ29tcG9uZW50c1xQcm9qZWN0Qm94LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Shared/Components/Projects/ProjectInformationCart.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xTaGFyZWRcQ29tcG9uZW50c1xQcm9qZWN0c1xQcm9qZWN0SW5mb3JtYXRpb25DYXJ0LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Shared/Components/ReadMore.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xTaGFyZWRcQ29tcG9uZW50c1xSZWFkTW9yZS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Shared/Components/ResponsiveButton.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xTaGFyZWRcQ29tcG9uZW50c1xSZXNwb25zaXZlQnV0dG9uLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Shared/Components/ReviewDialog.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xTaGFyZWRcQ29tcG9uZW50c1xSZXZpZXdEaWFsb2cucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Shared/Components/SelectAccount.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xTaGFyZWRcQ29tcG9uZW50c1xTZWxlY3RBY2NvdW50LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Shared/Components/SelectAccountBox.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xTaGFyZWRcQ29tcG9uZW50c1xTZWxlY3RBY2NvdW50Qm94LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Shared/Components/SubmitStatusChip.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xTaGFyZWRcQ29tcG9uZW50c1xTdWJtaXRTdGF0dXNDaGlwLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Shared/Components/TablePager.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xTaGFyZWRcQ29tcG9uZW50c1xUYWJsZVBhZ2VyLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Shared/Components/ThemSelector.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xTaGFyZWRcQ29tcG9uZW50c1xUaGVtU2VsZWN0b3IucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Shared/Components/TicketTypeChip.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xTaGFyZWRcQ29tcG9uZW50c1xUaWNrZXRUeXBlQ2hpcC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Shared/Components/UserCard.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xTaGFyZWRcQ29tcG9uZW50c1xVc2VyQ2FyZC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Shared/Components/UserCartItems.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xTaGFyZWRcQ29tcG9uZW50c1xVc2VyQ2FydEl0ZW1zLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Shared/Components/UserControllers/CheckBoxList.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xTaGFyZWRcQ29tcG9uZW50c1xVc2VyQ29udHJvbGxlcnNcQ2hlY2tCb3hMaXN0LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Shared/Components/UserControllers/CustomDateRanger.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xTaGFyZWRcQ29tcG9uZW50c1xVc2VyQ29udHJvbGxlcnNcQ3VzdG9tRGF0ZVJhbmdlci5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Shared/Components/UserControllers/CustomeSlider.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xTaGFyZWRcQ29tcG9uZW50c1xVc2VyQ29udHJvbGxlcnNcQ3VzdG9tZVNsaWRlci5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Shared/Components/UserControllers/FestivalBrowserBox.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xTaGFyZWRcQ29tcG9uZW50c1xVc2VyQ29udHJvbGxlcnNcRmVzdGl2YWxCcm93c2VyQm94LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Shared/Components/UserControllers/Pagination.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xTaGFyZWRcQ29tcG9uZW50c1xVc2VyQ29udHJvbGxlcnNcUGFnaW5hdGlvbi5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Shared/Components/UserControllers/TitleWithIcon.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xTaGFyZWRcQ29tcG9uZW50c1xVc2VyQ29udHJvbGxlcnNcVGl0bGVXaXRoSWNvbi5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Shared/Components/UserDataCard.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xTaGFyZWRcQ29tcG9uZW50c1xVc2VyRGF0YUNhcmQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Shared/Dialogs/AddProductSold.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xTaGFyZWRcRGlhbG9nc1xBZGRQcm9kdWN0U29sZC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Shared/Dialogs/ApprovedEmail.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xTaGFyZWRcRGlhbG9nc1xBcHByb3ZlZEVtYWlsLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Shared/Dialogs/DeleteConfirmation.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xTaGFyZWRcRGlhbG9nc1xEZWxldGVDb25maXJtYXRpb24ucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Shared/Dialogs/EmptyItemForReleaseFestival.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xTaGFyZWRcRGlhbG9nc1xFbXB0eUl0ZW1Gb3JSZWxlYXNlRmVzdGl2YWwucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Shared/Dialogs/ErrorItemDialog.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xTaGFyZWRcRGlhbG9nc1xFcnJvckl0ZW1EaWFsb2cucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Shared/Dialogs/FileUploadDialog.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xTaGFyZWRcRGlhbG9nc1xGaWxlVXBsb2FkRGlhbG9nLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Shared/Dialogs/InfoDialog.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xTaGFyZWRcRGlhbG9nc1xJbmZvRGlhbG9nLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Shared/Dialogs/Logout.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xTaGFyZWRcRGlhbG9nc1xMb2dvdXQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Shared/Dialogs/NeedToLogin.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xTaGFyZWRcRGlhbG9nc1xOZWVkVG9Mb2dpbi5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Shared/Dialogs/SaveAndNext.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xTaGFyZWRcRGlhbG9nc1xTYXZlQW5kTmV4dC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Shared/Dialogs/SuccessfullyProccess.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xTaGFyZWRcRGlhbG9nc1xTdWNjZXNzZnVsbHlQcm9jY2Vzcy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Shared/Dialogs/SuccessRegisterAccount.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xTaGFyZWRcRGlhbG9nc1xTdWNjZXNzUmVnaXN0ZXJBY2NvdW50LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Shared/Error.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xTaGFyZWRcRXJyb3IucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Shared/FestivalMainLayout.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xTaGFyZWRcRmVzdGl2YWxNYWluTGF5b3V0LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Shared/Forbidden.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xTaGFyZWRcRm9yYmlkZGVuLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Shared/MainLayout.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xTaGFyZWRcTWFpbkxheW91dC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Shared/MainNavMenu.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xTaGFyZWRcTWFpbk5hdk1lbnUucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Shared/NavMenu.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xTaGFyZWRcTmF2TWVudS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Shared/NavMenues/AdminNavMenu.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xTaGFyZWRcTmF2TWVudWVzXEFkbWluTmF2TWVudS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Shared/NavMenues/ArtistNavMenu.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xTaGFyZWRcTmF2TWVudWVzXEFydGlzdE5hdk1lbnUucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Shared/NavMenues/FestivalNavMenu.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xTaGFyZWRcTmF2TWVudWVzXEZlc3RpdmFsTmF2TWVudS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Shared/NavMenues/OtherFestivalNavMenu.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xTaGFyZWRcTmF2TWVudWVzXE90aGVyRmVzdGl2YWxOYXZNZW51LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Shared/NavMenues/OtherFestvalNavItem.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xTaGFyZWRcTmF2TWVudWVzXE90aGVyRmVzdHZhbE5hdkl0ZW0ucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Shared/NavMenues/RefreenavMenu.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xTaGFyZWRcTmF2TWVudWVzXFJlZnJlZW5hdk1lbnUucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Shared/NotFoundLayout.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xTaGFyZWRcTm90Rm91bmRMYXlvdXQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Shared/NotfoundPage.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xTaGFyZWRcTm90Zm91bmRQYWdlLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Shared/PublicFooter.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xTaGFyZWRcUHVibGljRm9vdGVyLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Shared/PublicHeader.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xTaGFyZWRcUHVibGljSGVhZGVyLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Shared/PublicMainLayout.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xTaGFyZWRcUHVibGljTWFpbkxheW91dC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Shared/RedirectToLogin.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xTaGFyZWRcUmVkaXJlY3RUb0xvZ2luLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Shared/SecoundMainLayout.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xTaGFyZWRcU2Vjb3VuZE1haW5MYXlvdXQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Shared/SelectedItems/FeeStatusItem.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xTaGFyZWRcU2VsZWN0ZWRJdGVtc1xGZWVTdGF0dXNJdGVtLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Shared/SelectedItems/FestivalPaymentTypeChip.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xTaGFyZWRcU2VsZWN0ZWRJdGVtc1xGZXN0aXZhbFBheW1lbnRUeXBlQ2hpcC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Shared/SelectedItems/FestivalStatusItems.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xTaGFyZWRcU2VsZWN0ZWRJdGVtc1xGZXN0aXZhbFN0YXR1c0l0ZW1zLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Shared/SelectedItems/ProjectTypeChipSet.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xTaGFyZWRcU2VsZWN0ZWRJdGVtc1xQcm9qZWN0VHlwZUNoaXBTZXQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Shared/SeoTags/AddEditSeoTagForm.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xTaGFyZWRcU2VvVGFnc1xBZGRFZGl0U2VvVGFnRm9ybS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Shared/SeoTags/SeoMetaTags.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xTaGFyZWRcU2VvVGFnc1xTZW9NZXRhVGFncy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/_Imports.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xfSW1wb3J0cy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Components/Shared/Components/Spinner.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xTaGFyZWRcQ29tcG9uZW50c1xTcGlubmVyLnJhem9y
+build_metadata.AdditionalFiles.CssScope = b-8nu1s1l010
+
+[D:/websites/hisubmit/web/Pages/PdfTemplate.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUGRmVGVtcGxhdGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Views/Emails/TestEmail.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRW1haWxzXFRlc3RFbWFpbC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Views/Emails/_CartEmail.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRW1haWxzXF9DYXJ0RW1haWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Views/Emails/_CartFactor.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRW1haWxzXF9DYXJ0RmFjdG9yLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Views/Emails/_ConfirmedEmail.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRW1haWxzXF9Db25maXJtZWRFbWFpbC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Views/Emails/_EmailLayout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRW1haWxzXF9FbWFpbExheW91dC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Views/Emails/_EventEndDateNotificationEmail.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRW1haWxzXF9FdmVudEVuZERhdGVOb3RpZmljYXRpb25FbWFpbC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Views/Emails/_EventStartDateNotificationEmail.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRW1haWxzXF9FdmVudFN0YXJ0RGF0ZU5vdGlmaWNhdGlvbkVtYWlsLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Views/Emails/_NewSubmission.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRW1haWxzXF9OZXdTdWJtaXNzaW9uLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Views/Emails/_NotificationDateEmail.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRW1haWxzXF9Ob3RpZmljYXRpb25EYXRlRW1haWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Views/Emails/_NotificationEmailAddUserToFestivalForUser.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRW1haWxzXF9Ob3RpZmljYXRpb25FbWFpbEFkZFVzZXJUb0Zlc3RpdmFsRm9yVXNlci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Views/Emails/_NotificationEmailRegisteredUserToFestivalForUser.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRW1haWxzXF9Ob3RpZmljYXRpb25FbWFpbFJlZ2lzdGVyZWRVc2VyVG9GZXN0aXZhbEZvclVzZXIuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Views/Emails/_OpenDateNotificationEmail.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRW1haWxzXF9PcGVuRGF0ZU5vdGlmaWNhdGlvbkVtYWlsLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Views/Emails/_PublicNotificationEmail.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRW1haWxzXF9QdWJsaWNOb3RpZmljYXRpb25FbWFpbC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Views/Emails/_RefereeAddToProjectEmail.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRW1haWxzXF9SZWZlcmVlQWRkVG9Qcm9qZWN0RW1haWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Views/Emails/_RefereeSubmitJudgingFroProject.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRW1haWxzXF9SZWZlcmVlU3VibWl0SnVkZ2luZ0Zyb1Byb2plY3QuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Views/Emails/_SubmitRate.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRW1haWxzXF9TdWJtaXRSYXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Views/Emails/_TicketSealed.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRW1haWxzXF9UaWNrZXRTZWFsZWQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Views/Emails/_WelcomeHisubmit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRW1haWxzXF9XZWxjb21lSGlzdWJtaXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Views/Tickets/Badge.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGlja2V0c1xCYWRnZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Views/Tickets/CartFactor.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGlja2V0c1xDYXJ0RmFjdG9yLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/websites/hisubmit/web/Views/Tickets/Tickets.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGlja2V0c1xUaWNrZXRzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 

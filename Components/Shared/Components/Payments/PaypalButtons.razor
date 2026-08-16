@@ -1,0 +1,20 @@
+﻿@inject HttpClient HttpClient
+
+<div Class="container">
+    @if (IsLoading)
+    {
+        <MudSkeleton Class="mb-2 rounded-xl" SkeletonType="SkeletonType.Rectangle"
+        Animation="Animation.Wave" Width="100%" Height="50px" />
+        <MudSkeleton Class="mb-2 rounded-xl"  SkeletonType="SkeletonType.Rectangle" 
+        Animation="Animation.Wave"  Width="100%" Height="50px" />
+        <MudSkeleton Class="mb-2 rounded-xl"  SkeletonType="SkeletonType.Rectangle"
+        Animation="Animation.Wave"  Width="100%" Height="50px" />
+    }
+@*     else
+    { *@
+        @PaypalButtonSdk
+
+        <div id="@ContainerId">
+        </div>
+    @* } *@
+</div>

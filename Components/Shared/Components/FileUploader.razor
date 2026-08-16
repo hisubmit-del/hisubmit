@@ -1,0 +1,147 @@
+﻿@using System.IO
+@using global::Hisubmit.Client.SharedModels.Requests
+@using global::Hisubmit.Client.SharedModels.Enums
+@inject IStringLocalizer<ImageUploader> Localize;
+
+<InputFile id="@UploadRequest.ImageId" hidden OnChange="UploadImageAsync"/>
+@if (_imageFile != null)
+{
+    <MudText>@_imageFile.Name</MudText>
+}
+@if (!string.IsNullOrWhiteSpace(_validationMessage))
+{
+    <MudAlert Severity="Severity.Error" Dense="true" Variant="Variant.Outlined" Class="mt-2">@_validationMessage</MudAlert>
+}
+<div>
+    <MudButton HtmlTag="label"
+               Variant="Variant.Text"
+               Color="Color.Primary"
+               Size="Size.Small"
+               StartIcon="@Icons.Material.Filled.CloudUpload"
+               for="@UploadRequest.ImageId">
+        @UploadButtonText
+    </MudButton>
+    @if (!string.IsNullOrEmpty(Url))
+    {
+        <MudButton Variant="Variant.Text"
+                   Color="Color.Error"
+                   StartIcon="@Icons.Material.Filled.Delete"
+                   OnClick="DeleteImageAsync"
+                   Size="Size.Small">
+            @Localize["Delete"]
+        </MudButton>
+    }
+</div>
+
+@code {
+
+    private string _url;
+
+    [Parameter]
+    public string Url
+    {
+        set
+        {
+            if (!string.IsNullOrWhiteSpace(value))
+                _url = value;
+        }
+        get => _url;
+    }
+
+    [Parameter]
+    public EventCallback<string> UrlChanged { get; set; }
+
+    [Parameter]
+    public EventCallback<UploadRequest> DeleteImage { get; set; }
+
+    [Parameter]
+    public EventCallback<UploadRequest> UploadRequestChanged { get; set; }
+
+    [Parameter]
+    public UploadRequest UploadRequest { get; set; } = new();
+
+    [Parameter]
+    public EventCallback<string> ImageAltChanged { get; set; }
+
+    [Parameter]
+    public string ImageAlt { get; set; }
+
+    [Parameter]
+    public string UploadButtonText { get; set; } = "Upload";
+
+    [Parameter]
+    public string Width { get; set; } = "200px";
+
+    [Parameter]
+    public string Height { get; set; } = "200px";
+
+    [Parameter]
+    public string MaxHeight { get; set; } = "100%";
+    protected override Task OnInitializedAsync()
+    {
+        Console.WriteLine("Image uploader initlize");
+        UploadRequest ??= new UploadRequest();
+        return base.OnInitializedAsync();
+    }
+
+    private IBrowserFile _imageFile;
+    private string? _validationMessage;
+    private static readonly HashSet<string> AllowedExtensions = new(StringComparer.OrdinalIgnoreCase)
+    {
+        ".jpg",
+        ".jpeg",
+        ".png",
+        ".webp"
+    };
+    private const long MaxFileSize = 5 * 1024 * 1024;
+
+    private async Task DeleteImageAsync()
+    {
+        Url = string.Empty;
+        UploadRequest = new UploadRequest();
+        _validationMessage = null;
+        await DeleteImage.InvokeAsync(UploadRequest);
+    }
+
+    private async Task UploadImageAsync(InputFileChangeEventArgs e)
+    {
+        _imageFile = e.File;
+        _validationMessage = null;
+        if (_imageFile != null)
+        {
+            var extension = Path.GetExtension(_imageFile.Name);
+            if (!AllowedExtensions.Contains(extension) || !_imageFile.ContentType.StartsWith("image/", StringComparison.OrdinalIgnoreCase))
+            {
+                _validationMessage = Localize["Please select a JPG, PNG, or WEBP image."];
+                return;
+            }
+
+            if (_imageFile.Size > MaxFileSize)
+            {
+                _validationMessage = Localize["Please select an image smaller than 5 MB."];
+                return;
+            }
+
+            var format = "image/png";
+            var fileName = $"{Guid.NewGuid()}{extension}";
+            var imageFile = await e.File.RequestImageFileAsync(format, 400, 400);
+            await using var stream = imageFile.OpenReadStream(MaxFileSize);
+            using var ms = new MemoryStream();
+            await stream.CopyToAsync(ms);
+            var buffer = ms.ToArray();
+            Url = $"data:{format};base64,{Convert.ToBase64String(buffer)}";
+            UploadRequest = new UploadRequest()
+            {
+                Data = buffer,
+                Extension = extension,
+                UploadType = UploadType.FestivalLogo,
+                FileName = fileName
+            };
+            ImageAlt = UploadRequest.FileName;
+        }
+        await UploadRequestChanged.InvokeAsync(UploadRequest);
+        await UrlChanged.InvokeAsync(Url);
+        await ImageAltChanged.InvokeAsync(ImageAlt);
+    }
+
+}

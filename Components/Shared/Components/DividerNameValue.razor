@@ -1,0 +1,74 @@
+﻿@inherits MudDivider
+<style>
+    .line-with-text {
+        position: relative;
+        margin: 20px 5px; /* فاصله بین خط و متن */
+    }
+
+        .line-with-text hr {
+            border: none;
+            border-top: 1px dotted white;
+            margin: 0;
+            padding: 0;
+            height: 0 !important;
+        }
+
+    .text-container {
+        display: flex;
+        justify-content: space-between;
+        position: absolute;
+        top: -10px; /* فاصله بین خط و متن را تعیین می کند */
+        left: 50%; /* قرار دادن متن در مرکز */
+        transform: translateX(-50%);
+        background-color: transparent; /* پس زمینه متن */
+        padding: 0 0;
+        width: 100%;
+        /* حاشیه داخلی دو سمت */
+    }
+
+    .name, .value {
+        background-color: @BackGround;
+    }
+    @colorStyle2
+    @colorStyle
+
+</style>
+<div class=@($"line-with-text {id}")>
+    <hr>
+    <div class="text-container">
+        <MudText Typo="Typo.subtitle2" class="name pr-2">
+            <MudIcon Size="Size.Small" Icon="@Icon" />
+            @Name
+        </MudText>
+        <MudText Typo="Typo.body1" class="value pl-2">@Value</MudText>
+    </div>
+</div>
+@code {
+    [Parameter]
+    public string Name { get; set; }
+    [Parameter]
+    public string Value { get; set; }
+    [Parameter]
+    public string Icon { get; set; }
+
+    private string id;
+    string colorStyle = "";
+    string colorStyle2="";
+
+    [Parameter] public string IconColor { get; set; } = "currentColor";
+
+    [Parameter]
+    public string BackGround { get; set; } = "#fff";
+
+    protected override Task OnParametersSetAsync()
+    {
+        var random = new Random();
+        id = $"item-{random.Next(100000).ToString()}";
+    colorStyle = $".line-with-text.{id} .mud-icon-root.mud-svg-icon {{   fill: {IconColor} !important;}}";
+    colorStyle2 = $".line-with-text.{id}  {{   color: {IconColor} !important;}}";
+        return base.OnParametersSetAsync();
+    }
+
+
+
+}

@@ -1,0 +1,194 @@
+﻿@using HiSubmit.Client.SharedModels.Extensions
+@model HiSubmit.Application.Models.Tickets.TicketViewModel
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>@Model.TicketTitle</title>
+    @* <link rel="stylesheet" href="./style.css"> *@
+    @* <script src="https://cdnjs.cloudflare.com/ajax/libs/prefixfree/1.0.7/prefixfree.min.js"></script> *@
+    <style>
+        .cardWrap {
+          width: 35em;
+          margin: 1em auto;
+          color: #4e7e95;
+          font-family: sans-serif;
+        }
+        
+        .card {
+          /*background: linear-gradient(to bottom, #4e7e95 0%, #4e7e95 26%, #ecedef 26%, #ecedef 100%);*/
+          background: #ecedef;
+          height: 11em;
+          float: left;
+          position: relative;
+          padding: 1em;
+          margin-top: 80px;
+        }
+        
+        .cardLeft {
+          border-top-left-radius: 8px;
+          border-bottom-left-radius: 8px;
+          width: 16em;
+        }
+        
+        .cardRight {
+          width: 9em;
+          border-left: 0.18em dashed #fff;
+          border-top-right-radius: 8px;
+          border-bottom-right-radius: 8px;
+        }
+        .cardRight:before, .cardRight:after {
+          content: "";
+          position: absolute;
+          display: block;
+          width: 0.9em;
+          height: 0.9em;
+          background: #fff;
+          border-radius: 50%;
+          left: -0.5em;
+        }
+        .cardRight:before {
+          top: -0.4em;
+        }
+        .cardRight:after {
+          bottom: -0.4em;
+        }
+        
+        h1 {
+          font-size: 1.1em;
+          margin-top: 0;
+        }
+        h1 span {
+          font-weight: normal;
+        }
+        
+        .title, .name, .seat, .time {
+          text-transform: uppercase;
+          font-weight: normal;
+        }
+        .title h2, .name h2, .seat h2, .time h2 {
+          font-size: 0.9em;
+          color: #525252;
+          margin: 0;
+        }
+        .title span, .name span, .seat span, .time span {
+          font-size: 0.7em;
+          color: #a2aeae;
+          text-transform: none;
+        }
+        
+        .title {
+          margin: 2em 0 0 0;
+        }
+        
+        .name, .seat {
+          margin: 0.7em 0 0 0;
+        }
+        
+        .time {
+          margin: 0.7em 0 0 1em;
+        }
+        
+        .seat, .time {
+          float: left;
+        }
+        
+        .eye {
+          position: relative;
+          width: 2em;
+          height: 1.5em;
+          background: #fff;
+          margin: 0 auto;
+          border-radius: 1em/0.6em;
+          z-index: 1;
+        }
+        .eye:before, .eye:after {
+          content: "";
+          display: block;
+          position: absolute;
+          border-radius: 50%;
+        }
+        .eye:before {
+          width: 1em;
+          height: 1em;
+          background: #4e7e95;
+          z-index: 2;
+          left: 8px;
+          top: 4px;
+        }
+        .eye:after {
+          width: 0.5em;
+          height: 0.5em;
+          background: #fff;
+          z-index: 3;
+          left: 12px;
+          top: 8px;
+        }
+        
+        .number {
+          text-align: center;
+          
+        }
+        .number h3 {
+          color: #4e7e95;
+          margin: 0.9em 0 0 0;
+          font-size: 0.9em;
+        }
+        .number span {
+          display: block;
+          color: #a2aeae;
+          font-size: 0.7em;
+        }
+        
+        .barcode {       
+          margin: 2px;
+          width: 100%;
+          text-align: center;
+        }
+        .barcode img{
+        width: 60px;
+        height: 60px;
+        }
+    </style>
+</head>
+
+<body>
+
+@for (var i = 0; i < Model.Count; i++)
+{
+  <div class="cardWrap">
+    <div class="card cardLeft">
+      <h1>@Model.TicketTitle</h1>
+      @* <div class="title"> *@
+      @*   <h2> *@
+      @*     Name *@
+      @*   </h2> *@
+      @*   <span>@Model.ShowTimeName</span> *@
+      @* </div> *@
+      <div class="name">
+        <h2>Email</h2>
+        <span> @Model.Email</span>
+      </div>
+      <div class="seat">
+        <h2>Event Date</h2>
+        <span>@Model.StartDate.ToLongDateTime()</span>
+      </div>
+    
+
+    </div>
+    <div class="card cardRight">
+      <div class="eye"></div>
+      <div class="number">
+        <h3>Get Ticket</h3>
+        <span>https://hisubmit.com/ticket</span>
+        <span>@Model.GuidString</span>
+      </div>
+      <div class="barcode">
+        <img src="data:image/png;base64,@Convert.ToBase64String(Model.QRCode)"/>
+      </div>
+    </div>
+  </div>
+}
+</body>
+</html>

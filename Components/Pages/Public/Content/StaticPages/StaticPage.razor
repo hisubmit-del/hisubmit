@@ -1,0 +1,81 @@
+﻿@page "/{URL}"
+
+@page "/terms"
+
+@using HiSubmit.Client.Infrastructure.Managers.Contents
+@using global::Hisubmit.Client.SharedModels.Features.StaticPages.Queries
+@inherits Web.Components.Pages.Public.BasePublicPages
+
+<SeoMetaTags PageId="@_page.Id.ToString()" PageType="@PageType.StaticPage" OgImageUrl="https://hisubmit.com/media/logo/1.JPG" />
+
+<MudGrid>
+    <MudItem xs="12" lg="12">
+        <MudContainer MaxWidth="MaxWidth.Medium">
+            <MudPaper Elevation="0" Class="pa-4" Style="background-color: #eef4f5">
+                <h3>@_page.Title</h3>
+                <MudItem>
+                    @((MarkupString)_page.Content)
+                </MudItem>
+            </MudPaper>
+        </MudContainer>
+    </MudItem>
+</MudGrid>
+
+@if (_page.Id != 0)
+{
+    <SeoMetaTags  PageId="@_page.Id.ToString()" PageType="@PageType.StaticPage"/>
+}
+@code {
+    [Parameter]
+    public string URL { get; set; }
+
+    [Inject]
+    private IContentManager ContentManager { get; set; }
+
+    private GetDetailStaticPageResponse _page = new();
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (string.IsNullOrWhiteSpace(URL))
+            URL = "terms";
+
+        await LoadPage();
+        await base.OnParametersSetAsync();
+    }
+
+    private async Task LoadPage()
+    {
+        var response = await ContentManager.GetStaticPage(new GetDetailStaticPageQuery
+            {
+                Link = $"/{URL}"
+            });
+        if (response.Succeeded)
+        {
+            _page = response.Data;
+        }
+        else
+        {
+            if (string.Equals(URL, "terms", StringComparison.OrdinalIgnoreCase))
+            {
+                _page = new GetDetailStaticPageResponse
+                {
+                    Title = "Terms and Conditions",
+                    Link = "/terms",
+                    IsEnable = true,
+                    Content = "<p>These terms govern the use of the HiSubmit platform by artists, festivals, judges and visitors.</p>" +
+                              "<p>Users are responsible for the accuracy of submitted information and for respecting the rules of each festival.</p>" +
+                              "<p>Festival-specific rules, fees and deadlines are displayed on the relevant festival page and apply to each submission.</p>" +
+                              "<p>By using HiSubmit, you agree to these terms and to the applicable privacy and payment policies.</p>"
+                };
+            }
+            else
+            {
+                _navigationManager.NavigateTo("/notFound",false);
+            }
+            // foreach (var message in response.Messages)
+            // {
+            //     _snackBar.Add(message, Severity.Error);
+            // }
+        }
+    }
+}
