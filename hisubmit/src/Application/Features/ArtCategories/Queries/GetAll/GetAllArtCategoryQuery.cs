@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using HiSubmit.Application.Interfaces.Repositories;
 using HiSubmit.Domain.Entities.Catalog;
-using HiSubmit.Client.SharedModels.Constants.Application;
 using HiSubmit.Client.SharedModels.Wrapper;
 using LazyCache;
 using MediatR;

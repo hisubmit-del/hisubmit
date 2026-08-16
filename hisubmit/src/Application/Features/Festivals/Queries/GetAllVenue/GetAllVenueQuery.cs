@@ -18,7 +18,7 @@ namespace HiSubmit.Application.Features.Festivals.Queries.GetAllVenue
     {
         public int FestivalId { get; set; }
 
-        public string SearchString { get; set; }
+        public new string SearchString { get; set; }
     }
 
     public class GetAllVenueQueryHandler(

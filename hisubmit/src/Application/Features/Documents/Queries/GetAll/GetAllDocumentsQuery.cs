@@ -16,7 +16,7 @@ namespace HiSubmit.Application.Features.Documents.Queries.GetAll
 {
     public class GetAllDocumentsQuery :PagedRequest, IRequest<PaginatedResult<GetAllDocumentsResponse>>
     {
-        public string SearchString { get; set; }
+        public new string SearchString { get; set; }
 
         public GetAllDocumentsQuery(int pageNumber, int pageSize, string searchString)
         {

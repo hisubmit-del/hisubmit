@@ -26,7 +26,7 @@ public class GetAllSoldTicketQuery:PagedRequest,IRequest<PaginatedResult<GetAllS
     public  int? FestivalId { get; set; }
     public  int? TicketId { get; set; }
     public  int? VenueId { get; set; }
-    public  string SearchString { get; set; }
+    public new string SearchString { get; set; }
     public  SoldTicketStatus? SoldTicketStatus { get; set; }
 }
 

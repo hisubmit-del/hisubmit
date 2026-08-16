@@ -10,7 +10,6 @@ using HiSubmit.Application.Interfaces.Repositories;
 using HiSubmit.Application.Interfaces.Services;
 using HiSubmit.Application.Requests;
 using Hisubmit.Client.SharedModels.Features.Advertises.Commands;
-using HiSubmit.Client.SharedModels.Wrapper;
 using HiSubmit.Domain.Entities.Advertise;
 using HiSubmit.Domain.Entities.Festivals;
 using HiSubmit.Domain.Entities.Files;

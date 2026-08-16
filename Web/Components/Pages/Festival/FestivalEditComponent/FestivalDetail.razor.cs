@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using Blazored.FluentValidation;
 using Blazored.LocalStorage;
-using Hisubmit.Client.SharedModels.Enums;
 using Hisubmit.Client.SharedModels.Features.FestivalQualifyers.Queries.GetAll;
 using Hisubmit.Client.SharedModels.Features.Festivals.Commands.CreateFestival;
 using Hisubmit.Client.SharedModels.Features.Festivals.Queries.GetAllOrginizer;

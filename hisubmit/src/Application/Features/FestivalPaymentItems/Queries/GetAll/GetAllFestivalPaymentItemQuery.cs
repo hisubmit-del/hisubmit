@@ -18,7 +18,7 @@ namespace HiSubmit.Application.Features.FestivalPaymentItems.Queries.GetAll;
 public class GetAllFestivalPaymentItemQuery
     :PagedRequest,IRequest<PaginatedResult<GetAllFestivalPaymentItemResponse>>
 {
-    public  string SearchString { get; set; }
+    public new string SearchString { get; set; }
     public  int? FestivalId { get; set; }
     public  RequestAccountType AccountType { get; set; }
 }

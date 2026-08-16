@@ -11,8 +11,8 @@ public partial class CustomDateRanger
 
     #region Parameters
 
-    [Parameter] public string PlaceholderStart { get; set; }
-    [Parameter] public string PlaceholderEnd { get; set; }
+    [Parameter] public new string PlaceholderStart { get; set; }
+    [Parameter] public new string PlaceholderEnd { get; set; }
     [Parameter] public DateTime? StartDate { get; set; }
 
     [Parameter] public DateTime? EndDate { get; set; }

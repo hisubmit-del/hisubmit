@@ -22,7 +22,7 @@ public class GetAllSoldProductQuery :
     PagedRequest, IRequest<PaginatedResult<GetAllSoldProductResponse>>
 {
     public int? FestivalId { get; set; }
-    public string SearchString { get; set; }
+    public new string SearchString { get; set; }
     public RequestAccountType RequestAccountType { get; set; }
 }
 

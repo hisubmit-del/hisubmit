@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Security.Claims;
-using Web.Extensions;
 using Microsoft.AspNetCore.Components;
 using System.Threading.Tasks;
 using FluentValidation;

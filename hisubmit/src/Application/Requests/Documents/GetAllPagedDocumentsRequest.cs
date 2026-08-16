@@ -4,6 +4,6 @@ namespace HiSubmit.Application.Requests.Documents
 {
     public class GetAllPagedDocumentsRequest : PagedRequest
     {
-        public string SearchString { get; set; }
+        public new string SearchString { get; set; }
     }
 }

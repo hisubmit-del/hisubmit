@@ -32,10 +32,9 @@ public class EmailSenderHandler : IRequestHandler<EmailSender, IResult>
 
     public async Task<IResult> Handle(EmailSender request, CancellationToken cancellationToken)
     {
-        const string name = "User";
         // var welcomeModel = new WelcomeViewModel()
         // {
-        //     FullName = name
+        //     FullName = "User"
         // };
         var model = new NotificationEmailRegisteredUserByFestivalForUserViewModel()
         {

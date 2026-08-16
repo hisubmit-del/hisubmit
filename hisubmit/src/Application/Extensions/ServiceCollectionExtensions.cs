@@ -5,7 +5,6 @@ using HiSubmit.Application.Features.ExtendedAttributes.Queries.GetAll;
 using HiSubmit.Application.Features.ExtendedAttributes.Queries.GetAllByEntityId;
 using HiSubmit.Application.Features.ExtendedAttributes.Queries.GetById;
 using HiSubmit.Domain.Contracts;
-using HiSubmit.Client.SharedModels.Wrapper;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using System.Collections.Generic;

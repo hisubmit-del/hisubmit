@@ -22,7 +22,7 @@ namespace HiSubmit.Application.Features.ProjectJudgings.Queries.GetAll
         public string UserId { get; set; }
         public int? FestivalId { get; set; }
         public bool GetCurrentUser { get; set; }
-        public string SearchString { get; set; }
+        public new string SearchString { get; set; }
     }
 
 

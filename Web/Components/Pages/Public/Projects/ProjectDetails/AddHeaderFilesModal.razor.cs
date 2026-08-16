@@ -77,7 +77,6 @@ public partial class AddHeaderFilesModal
         //    return;
         if (IsLocalFile)
         {
-            var result = false;
             _processing = true;
             _processingTitle = "Uploading";
             const long cSize = 1024 * 400;
@@ -163,12 +162,9 @@ public partial class AddHeaderFilesModal
 
     private async Task UpdateFileUrl(AddEditProjectFileURLRequest request)
     {
-        var result = false;
-
         var response = await ProjectManager.UpdateProjectFileURL(request);
         if (response.Succeeded)
         {
-            result = true;
             _snackBar.Add(Localize["Project Updated"], MudBlazor.Severity.Success);
             DialogInstance.Close();
         }

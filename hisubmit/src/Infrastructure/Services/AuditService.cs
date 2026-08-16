@@ -5,7 +5,6 @@ using HiSubmit.Application.Responses.Audit;
 using HiSubmit.Infrastructure.Contexts;
 using HiSubmit.Infrastructure.Models.Audit;
 using HiSubmit.Infrastructure.Specifications;
-using HiSubmit.Client.SharedModels.Wrapper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
 using System;

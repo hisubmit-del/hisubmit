@@ -7,7 +7,6 @@ using Hisubmit.Client.SharedModels.Features.AdminFestival.Commands.UpdateFestiva
 using HiSubmit.Domain.Entities.Festivals;
 using HiSubmit.Domain.Enums;
 using HiSubmit.Client.SharedModels.Wrapper;
-using HiSubmit.Client.SharedModels.Wrapper;
 using MediatR;
 using Microsoft.Extensions.Localization;
 

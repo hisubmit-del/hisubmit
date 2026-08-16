@@ -21,7 +21,7 @@ namespace HiSubmit.Application.Features.Reviews.Queries;
 public class GetAllReviewQuery : PagedRequest, IRequest<PaginatedResult<GetAllReviewResponse>>
 {
     public int? FestivalId { get; set; }
-    public  string SearchString { get; set; }
+    public new string SearchString { get; set; }
     public string UserId { get; set; }
     public  CommentType Type { get; set; }
 }

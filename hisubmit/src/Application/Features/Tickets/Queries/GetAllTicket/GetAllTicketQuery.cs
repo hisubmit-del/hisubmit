@@ -23,7 +23,7 @@ public class GetAllTicketQuery:PagedRequest, IRequest<PaginatedResult<GetAllTick
 {
     public int? FestivalId { get; set; }
     public  TicketType? TicketType { get; set; }
-    public  string SearchString { get; set; }
+    public new string SearchString { get; set; }
     public  bool? GetActiveTicket { get; set; }
     public  bool? IsEnable { get; set; }
 }

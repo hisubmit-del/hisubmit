@@ -163,7 +163,7 @@ namespace Web.Components.Shared
                                 new AuthenticationHeaderValue("Bearer", token);
                         }
                     }
-                    catch (Exception ex)
+                    catch
                     {
                         _snackBar.Add(Localize["You are Logged Out by hub connection."], Severity.Error);
                         await AuthenticationManager.Logout();
