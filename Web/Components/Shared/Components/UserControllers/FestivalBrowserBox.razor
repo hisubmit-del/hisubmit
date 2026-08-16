@@ -38,7 +38,7 @@
                 <div class="col text-center d-sm-flex justify-content-end ">
                     @if (Festival.FestivalDateStatus == FestivalDateStatus.Submit)
                     {
-                        <button onclick="@Submit" class="btn btn-light btn-submit-now btn-sm " type="button"
+                        <button @onclick="Submit" class="btn btn-light btn-submit-now btn-sm " type="button"
                                 style="margin-right: 4px;">
                             Submit now
                         </button>
@@ -58,7 +58,7 @@
                             Open Soon
                         </button>
                     }
-                    <button onclick="@GoToFestivalDetail" class="btn btn-light btn-show-detail btn-sm " type="button"
+                    <button @onclick="GoToFestivalDetail" class="btn btn-light btn-show-detail btn-sm " type="button"
                             style="margin-right: 4px;">
                         View festival
                     </button>
