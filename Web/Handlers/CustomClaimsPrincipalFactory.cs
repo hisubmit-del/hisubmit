@@ -18,22 +18,26 @@ public class CustomClaimsPrincipalFactory(
 BlazorHeroContext dbContext)
     : UserClaimsPrincipalFactory<BlazorHeroUser, BlazorHeroRole>(userManager, roleManager, optionsAccessor)
 {
-    private readonly ClaimsIdentity _claimsIdentity = new(IdentityConstants.ApplicationScheme);
     protected override async Task<ClaimsIdentity> GenerateClaimsAsync(BlazorHeroUser user)
     {
+        var identityOptions = optionsAccessor.Value.ClaimsIdentity;
+        var claimsIdentity = new ClaimsIdentity(
+            authenticationType: IdentityConstants.ApplicationScheme,
+            nameType: identityOptions.UserNameClaimType,
+            roleType: identityOptions.RoleClaimType);
 
         var userRoles = await UserManager.GetRolesAsync(user);
 
-        await AddBaseIdentityClaims(user);
+        await AddBaseIdentityClaims(claimsIdentity, user);
 
-        await AddRolesToClaims(userRoles,user.Id);
+        await AddRolesToClaims(claimsIdentity, userRoles, user.Id);
 
-        await AddFestivalIdToClaims(userRoles, user.Id);
+        await AddFestivalIdToClaims(claimsIdentity, userRoles, user.Id);
 
-        return _claimsIdentity;
+        return claimsIdentity;
     }
 
-    private Task AddBaseIdentityClaims(BlazorHeroUser user)
+    private async Task AddBaseIdentityClaims(ClaimsIdentity claimsIdentity, BlazorHeroUser user)
     {
         var identity = new List<Claim>()
         {
@@ -43,10 +47,23 @@ BlazorHeroContext dbContext)
             new(ClaimTypes.Surname, user.LastName),
             new(ClaimTypes.MobilePhone, user.PhoneNumber ?? string.Empty)
         };
-        _claimsIdentity.AddClaims(identity);
-        return Task.CompletedTask;
+        claimsIdentity.AddClaims(identity);
+
+        if (UserManager.SupportsUserSecurityStamp)
+        {
+            var securityStamp = await UserManager.GetSecurityStampAsync(user);
+            if (!string.IsNullOrWhiteSpace(securityStamp))
+            {
+                claimsIdentity.AddClaim(new Claim(
+                    optionsAccessor.Value.ClaimsIdentity.SecurityStampClaimType,
+                    securityStamp));
+            }
+        }
     }
-    private async Task AddRolesToClaims(IList<string> userRoles,string userId)
+    private async Task AddRolesToClaims(
+        ClaimsIdentity claimsIdentity,
+        IList<string> userRoles,
+        string userId)
     {
         var festivalAccess = new Dictionary<int, string[]>();
         var festivalId =await  GetFestivalId(userRoles,userId);
@@ -61,35 +78,38 @@ BlazorHeroContext dbContext)
 
             if (role is not { FestivalId: null } && role.Name != RoleConstants.FestivalRole)
             {
-                if (role.Name != null) _claimsIdentity.AddClaim(new(ApplicationClaimTypes.FestivalRole, role.Name));
+                if (role.Name != null) claimsIdentity.AddClaim(new(ApplicationClaimTypes.FestivalRole, role.Name));
                 festivalAccess.Add(role.FestivalId.Value, access.Select(p => p.Value).ToArray());
             }
 
             else if (roleName == RoleConstants.FestivalRole && festivalId!=null)
             {
-                if (role.Name != null) _claimsIdentity.AddClaim(new(ClaimTypes.Role, role.Name));
+                if (role.Name != null) claimsIdentity.AddClaim(new(ClaimTypes.Role, role.Name));
                     festivalAccess.Add(festivalId.Value, access.Select(p => p.Value).ToArray());
             }
 
             else
             {
                 //Add Role
-                if (role.Name != null) _claimsIdentity.AddClaim(new(ClaimTypes.Role, role.Name));
+                if (role.Name != null) claimsIdentity.AddClaim(new(ClaimTypes.Role, role.Name));
                 foreach (var a in access)
-                    _claimsIdentity.AddClaim(new(ApplicationClaimTypes.Permission, a.Value));
+                    claimsIdentity.AddClaim(new(ApplicationClaimTypes.Permission, a.Value));
             }
         }
 
         var accessJson = JsonSerializer.Serialize(festivalAccess);
-        _claimsIdentity.AddClaim(new Claim(ApplicationClaimTypes.FestivalPermission, accessJson));
+        claimsIdentity.AddClaim(new Claim(ApplicationClaimTypes.FestivalPermission, accessJson));
     }
-    private async Task AddFestivalIdToClaims(IList<string> userRoles, string userId)
+    private async Task AddFestivalIdToClaims(
+        ClaimsIdentity claimsIdentity,
+        IList<string> userRoles,
+        string userId)
     {
         var fesId = await GetFestivalId(userRoles, userId);
 
         if (fesId != null)
         {
-            _claimsIdentity.AddClaim(new(ApplicationClaimTypes.FestivalId, fesId.ToString()!));
+            claimsIdentity.AddClaim(new(ApplicationClaimTypes.FestivalId, fesId.ToString()!));
             //_claimsIdentity.AddClaim(new(ApplicationClaimTypes.SelectedFestival, fesId.ToString()!));
         }
 

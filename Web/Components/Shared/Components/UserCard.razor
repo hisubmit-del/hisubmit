@@ -56,8 +56,17 @@
                 </MudCard>
                 @if (ShowAnotherAccount)
                 {
+                    @if (_isAdmin)
+                    {
+                        <SelectAccountBox FullName="Administrator"
+                                          IsAdminAccount="true"
+                                          ImageDataUrl="@ImageDataUrl" />
+                        <MudDivider />
+                    }
+
                     <SelectAccountBox FullName="@($"{FirstName} {SecondName}")"
-                                      FestivalId="null" ImageDataUrl="@ImageDataUrl" />
+                                      IsPersonalAccount="true"
+                                      ImageDataUrl="@ImageDataUrl" />
                     
                     <MudDivider />
                     if (FestivalId != 0)
@@ -72,7 +81,7 @@
                     {
                        
                         <SelectAccountBox FullName="@item.Name"
-                                          AdminLogin="item.AdminLogin"
+                                          AdminLogin="@item.AdminLogin"
                                           FestivalId="@item.Id" ImageDataUrl="@item.LogoURL" />
                        
                         <MudDivider />
@@ -129,20 +138,30 @@ else
         </MudCard>
         @if (ShowAnotherAccount)
         {
+            @if (_isAdmin)
+            {
+                <SelectAccountBox FullName="Administrator"
+                                  IsAdminAccount="true"
+                                  ImageDataUrl="@ImageDataUrl" />
+                <MudDivider />
+            }
+
             <SelectAccountBox FullName="@($"{FirstName} {SecondName}")"
-                              FestivalId="null" ImageDataUrl="@ImageDataUrl" />
+                              IsPersonalAccount="true"
+                              ImageDataUrl="@ImageDataUrl" />
             <MudDivider />
 
             if (FestivalId != 0)
             {
-                <SelectAccountBox FullName="@Festival.Name" FestivalId="FestivalId" ImageDataUrl="@Festival.LogoURL" />
+                <SelectAccountBox FullName="@Festival.Name" FestivalId="@FestivalId" ImageDataUrl="@Festival.LogoURL" />
                 <MudDivider />
             }
 
                 foreach (var item in  
                 FestivalNames.Where(p=>p.Id!=FestivalId))
                 {
-                    <SelectAccountBox FullName="@item.Name" FestivalId="item.Id" ImageDataUrl="@item.LogoURL" />
+                    <SelectAccountBox FullName="@item.Name" AdminLogin="@item.AdminLogin"
+                                      FestivalId="@item.Id" ImageDataUrl="@item.LogoURL" />
                     <MudDivider />
                 }
 

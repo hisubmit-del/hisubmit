@@ -63,7 +63,7 @@ services.AddAuthorization();
 
 //services.AddServerSideBlazor();
 
-services.AddCookieAuthentication();
+services.AddCookieAuthentication(builder.Environment);
 
 services.AddScoped<IUserClaimsPrincipalFactory<BlazorHeroUser>, CustomClaimsPrincipalFactory>();
 

@@ -404,3 +404,27 @@ migration اصلی فعلی در `hisubmit/src/Infrastructure/Migrations/2025070
   Identity username. It now resolves the user by email first and signs in
   with the stored username. The demo credentials were verified through the
   local login API.
+
+## Administrator access and account switching checkpoint (2026-08-16)
+
+- The real local database confirms `amir@mohammadi.com` is active, confirmed,
+  and belongs to the global `Administrator` role. No production user or
+  password was changed.
+- `CustomClaimsPrincipalFactory` now creates a fresh claims identity for every
+  sign-in instead of reusing one identity instance between users. It also adds
+  the security-stamp claim required by the revalidation provider.
+- The administrator dashboard now explicitly requires the
+  `Administrator` role. The local administrator account returned HTTP 200 for
+  `/admin/dashboard` and HTTP 200 with `succeeded=true` from
+  `/api/v1/admin/adminDashboard/GetAccountStatusCount`.
+- The account switcher now exposes a distinct Administrator account alongside
+  the personal account and festival accounts. Fixed Razor parameters that were
+  accidentally passed as literal strings (`item.Id`, `item.AdminLogin`, and
+  `FestivalId`).
+- Account-selection cookies now use `Secure` only when the current request is
+  HTTPS, allowing local HTTP testing while preserving secure cookies in
+  production. Redirect paths are normalized to safe local absolute paths.
+- Local validation command:
+  `dotnet run --project .\Web\Web.csproj --launch-profile http`
+  from `D:\websites\hisubmit`. The source build completed with zero errors;
+  existing dependency/compiler warnings remain tracked separately.

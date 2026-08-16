@@ -179,6 +179,12 @@ else
     [Parameter]
     public bool AdminLogin { get; set; }
 
+    [Parameter]
+    public bool IsAdminAccount { get; set; }
+
+    [Parameter]
+    public bool IsPersonalAccount { get; set; }
+
     public string AccountType { get; set; }
 
     private char FirstLetterOfName { get; set; }
@@ -189,25 +195,30 @@ else
     private bool _isAdmin;
     protected override async Task OnParametersSetAsync()
     {
-        FirstLetterOfName = FullName[0];
+        FirstLetterOfName = string.IsNullOrWhiteSpace(FullName) ? '?' : FullName[0];
 
         _isAdmin = (await AuthenticationManager.CurrentUser())
             .IsInRole(RoleConstants.AdministratorRole);
 
-        if (FestivalId != null && FestivalId != 0)
+        if (IsAdminAccount)
+        {
+            AccountType = "Administrator";
+            ReturnUrl = "/admin/dashboard";
+        }
+        else if (FestivalId != null && FestivalId != 0)
         {
             AccountType = "festival";
-            ReturnUrl = "festival/dashboard";
+            ReturnUrl = "/festival/dashboard";
         }
-        else if (_isAdmin)
+        else if (IsPersonalAccount)
         {
-            AccountType = "Admin";
-            ReturnUrl = "admin/dashboard";
+            AccountType = "Personal";
+            ReturnUrl = "/user/dashboard";
         }
         else
         {
             AccountType = "Artist";
-            ReturnUrl = "user/dashboard";
+            ReturnUrl = "/user/dashboard";
         }
 
         _cuttrentSelectedAccount =await IsSelectedAccount();
@@ -219,14 +230,22 @@ else
         var selectedFestivalId = await AuthenticationManager.GetSelectedFestivalId();
         var adminLoginFestivalId = await AuthenticationManager.GetAdminLoginToFestivalId();
 
-        if (_isAdmin)
-            return true;
-        else
+        if (AdminLogin)
+            return adminLoginFestivalId == FestivalId;
+
+        if (IsAdminAccount)
+            return _isAdmin && selectedFestivalId == null && adminLoginFestivalId == null &&
+                   _navigationManager.ToBaseRelativePath(_navigationManager.Uri)
+                       .StartsWith("admin", StringComparison.OrdinalIgnoreCase);
+
+        if (FestivalId is > 0)
         {
-            if (selectedFestivalId == FestivalId)
-                return true;
+            return selectedFestivalId == FestivalId && adminLoginFestivalId == null;
         }
 
-        return false;
+        return selectedFestivalId == null && adminLoginFestivalId == null &&
+               (!_isAdmin ||
+                !_navigationManager.ToBaseRelativePath(_navigationManager.Uri)
+                    .StartsWith("admin", StringComparison.OrdinalIgnoreCase));
     }
 }

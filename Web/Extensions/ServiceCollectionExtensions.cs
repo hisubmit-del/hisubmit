@@ -221,7 +221,9 @@ internal static class ServiceCollectionExtensions
     }
 
 
-    public static IServiceCollection AddCookieAuthentication(this IServiceCollection services)
+    public static IServiceCollection AddCookieAuthentication(
+        this IServiceCollection services,
+        IWebHostEnvironment environment)
     {
         services
             .AddAuthentication(IdentityConstants.ApplicationScheme)
@@ -270,7 +272,9 @@ internal static class ServiceCollectionExtensions
             options.ExpireTimeSpan = TimeSpan.FromDays(2);
             options.SlidingExpiration = true; // تمدید خودکار با فعالیت کاربر
             options.Cookie.HttpOnly = true;
-            options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+            options.Cookie.SecurePolicy = environment.IsDevelopment()
+                ? CookieSecurePolicy.SameAsRequest
+                : CookieSecurePolicy.Always;
         });
 
         //builder.Services.AddAuthentication(options =>

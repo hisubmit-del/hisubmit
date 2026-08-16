@@ -131,7 +131,9 @@ namespace Microsoft.AspNetCore.Routing
                         {
                             Expires = DateTimeOffset.UtcNow.AddDays(3),
                             HttpOnly = true,
-                            Secure = true,
+                            Secure = context.Request.IsHttps,
+                            SameSite = SameSiteMode.Lax,
+                            Path = "/",
                             IsEssential = false
                         });
                 }
@@ -140,7 +142,7 @@ namespace Microsoft.AspNetCore.Routing
                     context.Response.Cookies.Delete(cookieName);
                 }
 
-                return TypedResults.LocalRedirect($"~/{returnUrl}");
+                return TypedResults.LocalRedirect(NormalizeLocalRedirect(returnUrl));
             }).DisableAntiforgery();
 
             manageGroup.MapPost("/admin-login-to-festival",
@@ -160,7 +162,9 @@ namespace Microsoft.AspNetCore.Routing
                         {
                             Expires = DateTimeOffset.UtcNow.AddDays(1),
                             HttpOnly = true,
-                            Secure = true,
+                            Secure = context.Request.IsHttps,
+                            SameSite = SameSiteMode.Lax,
+                            Path = "/",
                             IsEssential = false
                         });
                 }
@@ -169,7 +173,7 @@ namespace Microsoft.AspNetCore.Routing
                     context.Response.Cookies.Delete(cookieName);
                 }
 
-                return TypedResults.LocalRedirect($"~/{returnUrl}");
+                return TypedResults.LocalRedirect(NormalizeLocalRedirect(returnUrl));
             }).DisableAntiforgery();
 
 
@@ -183,9 +187,19 @@ namespace Microsoft.AspNetCore.Routing
 
                     context.Response.Cookies.Delete(cookieName);
 
-                    return TypedResults.LocalRedirect($"~/{returnUrl}");
+                    return TypedResults.LocalRedirect(NormalizeLocalRedirect(returnUrl));
                 }).DisableAntiforgery();
             return accountGroup;
+        }
+
+        private static string NormalizeLocalRedirect(string? returnUrl)
+        {
+            if (string.IsNullOrWhiteSpace(returnUrl))
+                return "/";
+
+            return returnUrl.StartsWith("/", StringComparison.Ordinal)
+                ? returnUrl
+                : $"/{returnUrl}";
         }
     }
 }

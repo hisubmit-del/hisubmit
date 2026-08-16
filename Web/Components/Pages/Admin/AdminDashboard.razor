@@ -1,5 +1,7 @@
 ﻿@page "/admin/dashboard"
 @using Web.Components.Shared.SelectedItems
+@using HiSubmit.Client.SharedModels.Constants.Role
+@attribute [Authorize(Roles = RoleConstants.AdministratorRole)]
 
 @inject IStringLocalizer<AdminDashboard> Localize
 @inherits BaseAdminPages
