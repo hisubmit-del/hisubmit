@@ -352,6 +352,22 @@ migration اصلی فعلی در `hisubmit/src/Infrastructure/Migrations/2025070
 - After the news-filter fix, the Release output was rebuilt and force-updated
   on GitHub as `production-publish` commit `fd68069`. The actual production
   settings file was excluded; Plesk must retain its host-local copy.
+- Because Plesk continued to show its cached old history after Pull, a new
+  deployment branch `production-publish-20260816` was created from the
+  compatible publish history at commit `a4a99ec`. Plesk should use this new
+  branch if the old repository clone still does not refresh.
+
+## UI redesign checkpoint (2026-08-16)
+
+- The first UI redesign phase modernizes the public header and mobile drawer
+  without changing business behavior: nested link/button navigation was
+  replaced with real accessible links, login/signup actions were unified,
+  brand/tagline spacing was improved, and the existing color palette and
+  account widgets were preserved.
+- The UI change is intentionally isolated in
+  `Web\Components\Shared\PublicHeader.razor` and
+  `Web\wwwroot\css\site-modern.css`; the source build completed with zero
+  errors.
 
 ## Local demo-data verification checkpoint (2026-08-16)
 
