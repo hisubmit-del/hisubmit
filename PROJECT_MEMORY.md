@@ -340,3 +340,12 @@ migration اصلی فعلی در `hisubmit/src/Infrastructure/Migrations/2025070
 - `Web/appsettings.Production.json` is intentionally ignored by Git and must
   remain host-local. `Web/appsettings.Production.template.json` is the safe
   source-controlled template.
+
+## Plesk compiled deployment branch (2026-08-16)
+
+- Source branch: `recovery-clean-20260816`.
+- Compiled deployment branch: `production-publish`.
+- The compiled branch contains only a successful Release publish output.
+- Plesk should track `production-publish` and use Manual `Deploy now`.
+- The real `appsettings.Production.json` must remain host-local in
+  `httpdocs`; it must never be committed to the compiled branch.
