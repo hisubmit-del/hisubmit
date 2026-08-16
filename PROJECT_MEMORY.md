@@ -428,3 +428,25 @@ migration اصلی فعلی در `hisubmit/src/Infrastructure/Migrations/2025070
   `dotnet run --project .\Web\Web.csproj --launch-profile http`
   from `D:\websites\hisubmit`. The source build completed with zero errors;
   existing dependency/compiler warnings remain tracked separately.
+
+## Festival public route and local build checkpoint (2026-08-16)
+
+- The attached failed build was caused by a running `Web.exe` locking copied
+  assemblies, not by the warning count. Stopping the exact Web process before
+  rebuilding resolves `MSB3021/MSB3027` file-lock errors.
+- Public festival details now accept both `/festivalpage/{FestivalUrl}` and
+  `/festival/{FestivalUrl}`. Existing links using the shorter route no longer
+  return 404; footer and festival-card navigation use the canonical
+  `/festivalpage/{FestivalUrl}` route.
+- Festival prerender state keys are now namespaced by the festival URL. This
+  prevents cached images, news, products, organizers, qualifiers, or festival
+  details from one festival being reused for another festival.
+- The detail page now guards against a missing festival response instead of
+  dereferencing `Festival` during initialization.
+- Verified locally with the Aurora demo festival:
+  all three route spellings (`festival`, `festivalpage`, `festivalPage`)
+  returned HTTP 200 and rendered festival content.
+- The build currently completes with zero errors and approximately 1,527
+  existing warnings. Warning cleanup is deferred to categorized commits:
+  dependency/security warnings first, then real compiler/nullability issues,
+  then obsolete/unused-code warnings. No blanket suppression is allowed.

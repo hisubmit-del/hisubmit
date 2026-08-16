@@ -7,6 +7,8 @@
 @inherits BasePublicPages
 @* @layout PublicMainLayout  *@
 @attribute [AllowAnonymous]
+@page "/festival/{FestivalUrl}"
+
 
 
 @if (FestivalId != 0)
@@ -14,7 +16,7 @@
     <SeoMetaTags PageId="@Festival.Id.ToString()" PageType="@PageType.FestivalPage"
                  OgImageUrl=@($"https://hisubmit.com{Festival.LogoURL}") />
 }
-@if (_loaded)
+@if (_loaded && Festival is not null)
 {
 	@* <div class="w-100"> *@
 		

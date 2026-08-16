@@ -78,7 +78,7 @@ public partial class FestivalDetail
         _subscription = ApplicationState.RegisterOnPersisting(PersistFestival);
 
         await LoadFestivalDetail();
-        if (Festival.Public)
+        if (Festival is { Public: true })
         {
             FestivalId = Festival.Id;
             await LoadFestivalImages();
@@ -131,7 +131,9 @@ private async Task LoadFiles(){
     private async Task LoadFestivalDetail()
     {
         if (ApplicationState.TryTakeFromJson<GetFestivalDetailResponse>
-                ("festival", out var stored))
+                (StateKey("festival"), out var stored) &&
+            stored is not null &&
+            string.Equals(stored.URL, FestivalUrl, StringComparison.OrdinalIgnoreCase))
         {
             Festival = stored;
         }
@@ -203,7 +205,7 @@ private async Task LoadFiles(){
     private async Task LoadNews()
     {
         if (ApplicationState.TryTakeFromJson<List<GetAllNewResponse>>
-                ("festivalNews", out var stored))
+                (StateKey("festivalNews"), out var stored))
         {
             _festivalNews = stored;
         }
@@ -229,7 +231,7 @@ private async Task LoadFiles(){
     private async Task LoadProducts()
     {
         if (ApplicationState.TryTakeFromJson<List<GetAllPagedProductsResponse>>
-                ("products", out var stored))
+                (StateKey("products"), out var stored))
         {
             _products = stored;
         }
@@ -254,7 +256,7 @@ private async Task LoadFiles(){
     private async Task LoadFestivalImages()
     {
         if (ApplicationState.TryTakeFromJson<List<GetAllFestivalImageResponse>>
-                ("imageCovers", out var stored))
+                (StateKey("imageCovers"), out var stored))
         {
             _imageCovers = stored;
             _images = _imageCovers.Where(p => p.ImageType == ImageType.Images).ToList();
@@ -340,15 +342,18 @@ private async Task LoadFiles(){
     
     private Task PersistFestival()
     {
-        ApplicationState.PersistAsJson("imageCovers", _imageCovers);
-        ApplicationState.PersistAsJson("Organizers", Organizers);
-        ApplicationState.PersistAsJson("products", _products);
-        ApplicationState.PersistAsJson("festivalNews", _festivalNews);
-        ApplicationState.PersistAsJson("tickets", _tickets);
-        ApplicationState.PersistAsJson("festival", Festival);
-        ApplicationState.PersistAsJson("qualifiers", Qualifiers);
+        ApplicationState.PersistAsJson(StateKey("imageCovers"), _imageCovers);
+        ApplicationState.PersistAsJson(StateKey("Organizers"), Organizers);
+        ApplicationState.PersistAsJson(StateKey("products"), _products);
+        ApplicationState.PersistAsJson(StateKey("festivalNews"), _festivalNews);
+        ApplicationState.PersistAsJson(StateKey("tickets"), _tickets);
+        ApplicationState.PersistAsJson(StateKey("festival"), Festival);
+        ApplicationState.PersistAsJson(StateKey("qualifiers"), Qualifiers);
         return Task.CompletedTask;
     }
+
+    private string StateKey(string name) =>
+        $"festival:{FestivalUrl?.Trim().ToLowerInvariant()}:{name}";
 
     #endregion
 
@@ -392,7 +397,7 @@ private async Task LoadFiles(){
     private async Task LoadQualifiers()
     {
         if (ApplicationState.TryTakeFromJson<List<GetAllFestivalQualifiersResponse>>
-                ("qualifiers", out var stored))
+                (StateKey("qualifiers"), out var stored))
         {
             Qualifiers = stored;
         }
@@ -427,7 +432,7 @@ private async Task LoadFiles(){
     private async Task LoadOrganizer()
     {
         if (ApplicationState.TryTakeFromJson<List<GetAllEventOrganizerResponse>>
-                ("Organizers", out var stored))
+                (StateKey("Organizers"), out var stored))
         {
             Organizers = stored;
         }
