@@ -21,7 +21,7 @@
 	@* <div class="w-100"> *@
 		
 			 @* <MudContainer MaxWidth="MaxWidth.Large" Class="festival-page-container">  *@
-			 <MudContainer MaxWidth="MaxWidth.Large" > 
+			 <MudContainer MaxWidth="MaxWidth.Large" Class="festival-detail-page">
 			@if (!Festival.Public)
 			{
 				<MudAlert Class="mt-5">
@@ -30,7 +30,7 @@
 			}
 			else
 			{
-				<div class="festival-cover">
+				<div class="festival-cover festival-detail-hero">
 					@if (_covers.Any())
 					{
 						<img src="@(_covers.FirstOrDefault()!.Url)" alt="cover-image-@Festival.Name" />
@@ -99,11 +99,11 @@
 					</div>
 				</div>
 
-				<div class="row">
+				<div class="row festival-detail-layout">
 					
 					<div class="col-12 col-lg-3" ></div>
 					<div class="col-12 col-lg-6">
-						<div class="festival-title mt-2 text-center d-relative">
+						<div class="festival-title festival-detail-heading mt-2 text-center d-relative">
 							<MudText Typo="Typo.h1" Class="mb-2" Align="Align.Center">
 								@Festival.Name
                                 @if(Festival.FeeStatus == FeeStatus.Special)
@@ -144,7 +144,7 @@
 					</div>
 				
 					<div class="col-12 col-lg-9" >
-						 <div>
+						 <div class="festival-detail-content">
 							<MudTabs MinimumTabWidth="40px" PanelClass="mt-3" Elevation="0" Ripple="true"
 								 Class="background-transparent festival-detail-text">
 							<MudTabPanel Text="festival Detail" Class="text-transform-none ">
@@ -336,7 +336,7 @@ Id=p.Id
 	@if (Festival.Public && _products != null && _products.Any())
 	{
 
-		<div class="w-100 festival-product">
+		<div class="w-100 festival-product festival-product-section">
 			<MudText Typo="Typo.h6" Class="my-4" Color="Color.Surface">
 				<MudIcon Color="Color.Surface" Icon="@Icons.Material.Filled.ShoppingCart"></MudIcon> FestivalId Product
 			</MudText>

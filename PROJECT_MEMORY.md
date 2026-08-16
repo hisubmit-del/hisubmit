@@ -450,3 +450,20 @@ migration اصلی فعلی در `hisubmit/src/Infrastructure/Migrations/2025070
   existing warnings. Warning cleanup is deferred to categorized commits:
   dependency/security warnings first, then real compiler/nullability issues,
   then obsolete/unused-code warnings. No blanket suppression is allowed.
+
+## Public festival UI redesign checkpoint (2026-08-16)
+
+- Began the visual redesign locally while production deployment remains
+  intentionally deferred.
+- Modernized the public festival browser and festival detail presentation
+  without changing submission, purchase, news, ticket, filter, or navigation
+  handlers. Added a visual hero, featured festival cards, clearer search/filter
+  hierarchy, result headings, improved festival card actions, detail-page
+  heading/layout treatment, and a stronger product section.
+- Changes are isolated to:
+  `Web\Components\Pages\Public\Festivals\Home.razor`,
+  `Web\Components\Pages\Public\Festivals\FestivalDetail.razor`, and
+  `Web\wwwroot\css\site-modern.css`.
+- Local build completed with 0 errors. Local HTTP checks returned 200 for `/`,
+  `/festivals`, `/festival/demo-aurora-arts-film-2026`, `/terms`, and `/term`
+  after starting the rebuilt application.
