@@ -327,8 +327,8 @@ migration اصلی فعلی در `hisubmit/src/Infrastructure/Migrations/2025070
 
 - Every code or configuration change must be committed with a clear message
   before the next change is started, so the project can be reverted safely.
-- The current tested branch is `recovery-clean-20260816`; its latest published
-  commit is `3a9c107`.
+- The current tested branch is `recovery-clean-20260816`; the latest source
+  commits are `3442602` (demo seed) and `0cd4b83` (festival news filtering).
 - The Plesk Git repository is connected to
   `https://github.com/hisubmit-del/hisubmit.git`, currently tracking
   `recovery-clean-20260816`, with deployment to `\httpdocs` set to Manual by
@@ -349,6 +349,9 @@ migration اصلی فعلی در `hisubmit/src/Infrastructure/Migrations/2025070
 - Plesk should track `production-publish` and use Manual `Deploy now`.
 - The real `appsettings.Production.json` must remain host-local in
   `httpdocs`; it must never be committed to the compiled branch.
+- After the news-filter fix, the Release output was rebuilt and force-updated
+  on GitHub as `production-publish` commit `fd68069`. The actual production
+  settings file was excluded; Plesk must retain its host-local copy.
 
 ## Local demo-data verification checkpoint (2026-08-16)
 
