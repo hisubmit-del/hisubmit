@@ -331,7 +331,9 @@ migration اصلی فعلی در `hisubmit/src/Infrastructure/Migrations/2025070
   commit is `3a9c107`.
 - The Plesk Git repository is connected to
   `https://github.com/hisubmit-del/hisubmit.git`, currently tracking
-  `recovery-clean-20260816`, with automatic deployment to `\httpdocs`.
+  `recovery-clean-20260816`, with deployment to `\httpdocs` set to Manual by
+  the owner. The owner manually uploads the Release publish output and the
+  host-local `appsettings.Production.json`.
 - Plesk currently deploys repository files directly. It must not be treated as
   a replacement for `dotnet publish` until a Windows deployment action is
   configured and verified.
