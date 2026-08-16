@@ -29,14 +29,15 @@
             <MudGrid Justify="Justify.Center"
                      class="festival-key-search-box text-center justify-center px-lg-14 px-2 my-10">
                 <MudItem xs="12" md="6" xl="5">
-                    <MudTextField DebounceInterval="500"
-                                  @bind-Value="@SearchString"
-                                  @onkeypress="Search"
+                    <MudTextField @bind-Value="@SearchString"
+                                  @onkeydown="HandleSearchKeyDown"
                                   Variant="Variant.Outlined"                                 
                                   Adornment="Adornment.End"       
                                   OnAdornmentClick="Search"
                                   AdornmentColor="Color.Surface"
-                                  AdornmentIcon="@Icons.Material.Filled.Search" />
+                                  AdornmentIcon="@Icons.Material.Filled.Search"
+                                  Placeholder="Search questions and answers"
+                                  Clearable="true" />
                 </MudItem>
             </MudGrid>
 
@@ -62,7 +63,7 @@
                             <MudText Typo="Typo.subtitle2">
                                 @selected.Title
                             </MudText>
-                            <p lass="mt-2">
+                            <p class="mt-2">
                                 @selected.Content
                             </p>
                         }
@@ -73,7 +74,7 @@
                         @foreach (var d in _faqResponse.Data.Where(p => p.FaqType == FaqType.General))
                         {
                             <div class="my-2">
-                                <button class="w-100" @onclick="@(() => SetSelect(d))">
+                                <button type="button" class="w-100" @onclick="@(() => SetSelect(d))">
                                     <MudGrid Class="my-2 left-item d-flex flex-grow-1 gap-2 ">
                                         <MudAvatar Color="Color.Tertiary"></MudAvatar>
                                         <MudText  Class="flex-1" Align="Align.Start" Typo="Typo.subtitle2">
@@ -103,7 +104,7 @@
                             <MudText Typo="Typo.subtitle2">
                                 @selected.Title
                             </MudText>
-                            <p lass="mt-2">
+                            <p class="mt-2">
                                 @selected.Content
                             </p>
                         }
@@ -114,7 +115,7 @@
                         @foreach (var d in _faqResponse.Data.Where(p => p.FaqType == FaqType.Festival))
                         {
                             <div  class="my-2">
-                                <button class="w-100" @onclick="@(() => SetSelect(d))">
+                                <button type="button" class="w-100" @onclick="@(() => SetSelect(d))">
                                     <MudGrid Class="my-2 left-item d-flex flex-grow-1 gap-2 ">
                                         <MudAvatar Color="Color.Tertiary"></MudAvatar>
                                         <MudText  Class="flex-1" Align="Align.Start" Typo="Typo.subtitle2">
@@ -144,7 +145,7 @@
                             <MudText Typo="Typo.subtitle2">
                                 @selected.Title
                             </MudText>
-                            <p lass="mt-2">
+                            <p class="mt-2">
                                 @selected.Content
                             </p>
                         }
@@ -156,7 +157,7 @@
                                           p.FaqType == FaqType.Artist))
                             {
                                 <div  class="my-2">
-                                    <button class="w-100" @onclick="@(() => SetSelect(d))">
+                                    <button type="button" class="w-100" @onclick="@(() => SetSelect(d))">
                                         <MudGrid Class="my-2 left-item d-flex flex-grow-1 gap-2 ">
                                                 <MudAvatar Color="Color.Tertiary"></MudAvatar>
                                                 <MudText  Class="flex-1" Align="Align.Start" Typo="Typo.subtitle2">

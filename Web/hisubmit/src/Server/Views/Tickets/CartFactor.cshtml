@@ -1,0 +1,265 @@
+﻿@using HiSubmit.Application.Extensions
+@using Hisubmit.Client.SharedModels.Enums
+@using HiSubmit.Client.SharedModels.Extensions
+@using Hisubmit.Client.SharedModels.Features.Payments.Queries
+@model Hisubmit.Client.SharedModels.Features.Payments.Queries.GetAllCartsResponse
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Cart</title>
+</head>
+<body style="font-family: Arial, Helvetica, sans-serif;">
+<style>
+    .cart-table{
+    margin: 5px 5px 20px 5px;   
+    width: 100%;    
+    }
+    .cart-table,.cart-table tr ,.cart-table td,.cart-table th{
+    border: 1px solid #eeeeee;
+    
+    }
+    .cart-table th,.cart-table td{
+    padding: 5px;
+    /*height: 100%;*/
+    }
+     .question-box p{
+     font-size: 14px;
+     }
+</style>
+
+@* <div style="height: 100%;margin-bottom: 20px"> *@
+@*     <img style="display: inline; float: left; height: 70px;width: auto" *@
+@*          alt="hisubmit" src="@($"data:image/png;base64,{Convert.ToBase64String("Files/Logos/1.JPG".ConvertImageToByteArray())}")" /> *@
+@*     <span style="display: inline;float: right;margin-top: auto;margin-bottom: auto">hisubmit.com</span> *@
+@*      *@
+@*         <h3 style="margin: 20px">Submit Detail</h3> *@
+@* </div> *@
+
+    @* <div  style="display: block"> *@
+    @* *@
+    @* </div> *@
+    @* *@
+    @if (Model.CartItems.Any(p => p.CartItemType == CartItemType.ServiceFee || p.CartItemType == CartItemType.Submit))
+    {
+      <h3 style="margin: 20px">Submit Detail</h3> 
+    <table class="cart-table" style="width: 100%;">
+    <tr style="text-align: center; background-color: #dedede;height: 40px">
+        <th>ProductProductFestivalId</th>
+        <th>Project</th>
+        <th>Category</th>
+        <th>Tracking Code</th>
+        <th>Type </th>
+        <th>Price</th>
+    </tr>
+    @foreach (var item in Model.CartItems
+                  .Where(p => p.CartItemType == CartItemType.ServiceFee || p.CartItemType == CartItemType.Submit).GroupBy(p => p.FestivalId))
+    {
+        var projectSpan = item
+            .Count(p => p.ProjectName == item.First().ProjectName);
+        var categorySpan = item
+            .Count(p => p.ProjectName == item.First().ProjectName
+                        && p.SubmitCategoriesName == item.First().SubmitCategoriesName);
+        var tCodeSpan = item
+            .Count(p => p.ProjectName == item.First().ProjectName
+                        && p.SubmitCategoriesName == item.First().SubmitCategoriesName
+                        && p.SubmitTrackCode == item.First().SubmitTrackCode);
+
+        <tr style="text-align: center;height: 50px;background-color: #eeeeee">
+            <td rowspan="@(item.Count() + 1)">
+                <div>
+                    <img src="@($"data:image/png;base64,{Convert.ToBase64String(item.First().ImageUrl.ConvertImageToByteArray())}")"
+                         height="40px" width="40px" alt="@item.First().FestivalName"/>
+                    <h6> @item.First().FestivalName</h6>
+                </div>
+            </td>
+            <td rowspan="@projectSpan">
+                @item.First().ProjectName
+            </td >
+            <td rowspan="@categorySpan">
+                @item.First().SubmitCategoriesName
+            </td >
+            <td rowspan="@tCodeSpan"> @item.First().SubmitTrackCode </td>
+            <td > @item.First().CartItemType.ToDisplay() </td >
+            <td > @item.First().Price.ToString("N2") </td >
+        </tr>
+        foreach (var i in item.Where(p => p != item.First()))
+        {
+            var indexItem = item
+                .Where(p => p != item.First()).ToList().IndexOf(i);
+            //var projectSpan = item.GroupBy(p => p.SubmitTrackCode).Count() + 1;
+            GetCartItemResponse previousItem;
+            if (indexItem == 0)
+            {
+                previousItem = item.First();
+            }
+            else
+            {
+                previousItem = item.Where(p => p != item.First()).ToList()[indexItem - 1];
+            }
+
+            <tr style="text-align: center;height: 50px;background-color: #eeeeee">
+                @if (previousItem.ProjectName != i.ProjectName)
+                {
+                    var projectSpan2 = item.Count(p =>
+                        p.ProjectName == i.ProjectName);
+
+                    <td rowspan="@projectSpan2">@i.ProjectName</td>
+                }
+                @if (previousItem.ProjectName != i.ProjectName || previousItem.SubmitCategoriesName != i.SubmitCategoriesName)
+                {
+                    var projectSpan2 = item.Count(p =>
+                        p.ProjectName == i.ProjectName && p.SubmitCategoriesName == i.SubmitCategoriesName);
+
+                    <td rowspan="@projectSpan2">@i.SubmitCategoriesName</td>
+                }
+                @if (previousItem.ProjectName != i.ProjectName
+                     || previousItem.SubmitCategoriesName != i.SubmitCategoriesName || i.SubmitTrackCode != previousItem.SubmitTrackCode)
+                {
+                    var projectSpan2 = item.Count(p =>
+                        p.ProjectName == i.ProjectName && p.SubmitCategoriesName == i.SubmitCategoriesName
+                                                       && p.SubmitTrackCode == i.SubmitTrackCode);
+
+                    <td rowspan="@projectSpan2">@item.First().SubmitTrackCode</td>
+                }
+
+                <td>@i.CartItemType.ToDisplay()</td>
+                <td>@i.Price.ToString("N2")</td>
+            </tr>
+        }
+    }
+</table>
+
+    }
+
+@if (Model.CartItems.Any(p => p.CartItemType == CartItemType.Product))
+{
+    <hr style="color: #eeeeee;margin: 5px"/>
+        <h3 style="margin: 20px">Purchased Product Details </h3>
+    <table class="cart-table">
+        <tr style="text-align: center; background-color: #dedede;">
+            <th>ProductProductFestivalId</th>
+            <th>Product</th>
+            <th>Price</th>
+        </tr>
+        @foreach (var item in Model.CartItems
+                      .Where(p => p.CartItemType == CartItemType.Product).GroupBy(p => p.FestivalId))
+        {
+            <tr style="text-align: center;background-color: #eeeeee">
+                <td rowspan="@(item.Count() + 1)">
+                    @item.First().FestivalName
+                </td>
+                <td>@item.First().ProductName</td>
+                <td>@item.First().Price</td>
+            </tr>
+            foreach (var i in item.Where(p => p != item.First()))
+            {
+                <tr style="text-align: center;background-color: #eeeeee">
+                    <td>@i.ProductName</td>
+                    <td>@i.Price.ToString("C2")</td>
+                </tr>
+            }
+        }
+    </table>
+}
+
+
+@if (Model.CartItems.Any(p => p.CartItemType == CartItemType.Badge
+                              || p.CartItemType == CartItemType.Ticket))
+{
+    <hr style="color: #eeeeee;margin: 5px"/>
+        <h3 style="margin: 20px">Purchased Ticket Details </h3>
+    <table class="cart-table">
+        <tr style="text-align: center; background-color: #dedede;">
+            <th>ProductProductFestivalId</th>
+            <th>Ticket</th>
+            <th>Price</th>
+        </tr>
+        @foreach (var item in Model.CartItems
+                      .Where(p => p.CartItemType == CartItemType.Badge || p.CartItemType==CartItemType.Ticket).GroupBy(p => p.FestivalId))
+        {
+            <tr style="text-align: center;background-color: #eeeeee">
+                <td rowspan="@(item.Count() + 1)">
+                    @item.First().FestivalName
+                </td>
+                <td>@item.First().SoldTicketName</td>
+                <td>@item.First().Price</td>
+            </tr>
+            foreach (var i in item.Where(p => p != item.First()))
+            {
+                <tr style="text-align: center;background-color: #eeeeee">
+                    <td>@i.SoldTicketName</td>
+                    <td>@i.Price.ToString("C2")</td>
+                </tr>
+            }
+        }
+    </table>
+}
+<hr style="color: #eeeeee;margin: 5px"/>
+<h3 style="margin: 20px">Payment Information </h3>
+<table class="cart-table"
+       style="border-radius:4px; width: 100%">
+    <tbody style="padding: 4px;">
+    <tr style="text-align: center;height: 50px;   background-color: #dedede;">
+        <th>Paypal Email</th>
+        <th>Payment Id</th>
+        <th>Paid date</th>
+        <th>Total Price</th>
+    </tr>
+    <tr style="text-align: center;height: 50px; background-color: #eeeeee;">
+        <td>@Model.Email</td>
+        <td>@Model.PaymentId</td>
+        <td>@Model.CartDate.ToShortDateString()</td>
+        <td>@Model.Price.ToString("N2")</td>
+    </tr>
+    @* <tr style="text-align: center;"> *@
+    @*     <td colspan="4">Cart Items</td> *@
+    @* </tr> *@
+    @* <tr style="text-align: center;"> *@
+    @*     <th colspan="2">Title</th> *@
+    @*     <th>Item Type</th> *@
+    @*     <th >Cost</th> *@
+    @* </tr> *@
+    @* @foreach (var item in Model.CartItems) *@
+    @* { *@
+    @*     <tr style="text-align: center;"> *@
+    @*         <td colspan="2">@item.Title</td> *@
+    @*         <td>@item.CartItemType.ToDisplay()</td> *@
+    @*         <td >@item.Price.ToString("C2")</td> *@
+    @*     </tr> *@
+    @* } *@
+    </tbody>
+</table>
+
+
+ <div class="mt-3 question-box">
+                Frequently Asked Questions after submission 
+                
+                <h3 class="mt-2">What happens next?</h3>
+                <p> If you’ve added a digital file to your project, you’re all set! If not, please visit [My Projects] to upload or link a digital file, or mail a hard copy to the festival by the entry deadline. Please check the festival submission guidelines 
+                </p>
+               <h3  class="mt-2"> When will I find out if my project is selected?</h3>
+               <p> You can check the current status of all your submissions on your [Submissions] page. 
+                The festival is responsible to inform you and you may contact the festivals support for that.
+                </p>
+                <h3  class="mt-2">Can I update or make changes to my project file?</h3>
+                <p>Yes, you can update your digital project file anytime. Simply go to [My Projects] to manage your project file.
+                But keep in touch with festival and let they know about your changes, because they may exported your submissions information. 
+                </p>
+                <h3  class="mt-2">Can I withdraw my project from a festival?</h3>
+               <p> Yes, you can withdraw your project from a festival at any time. Visit [Submissions](#) and click on Withdraw. Please note that withdrawing does not automatically issue a refund, and you must let festival know about it personally. 
+                The festival will only loose their access to your project page in Hisubmit website. 
+                </p>
+                <h3  class="mt-2">What is the refund policy?</h3>
+               <p> Refunds are handled at the discretion of the festivals to which you’ve submitted. Please contact the festival directly if you have a refund request.
+                </p>
+                <h3  class="mt-2">What is the submission platform's duty regarding my artwork file?</h3>
+               <p> The submission platform has no duty regarding the artwork copyright  submitted by the artist to the contest. The responsibility for the project remains with the artist.
+                </p>
+                <h3  class="mt-2">How do I reach customer service?</h3>
+                <p> For questions about a festival, we recommend contacting the festival directly. You can also reach Hisubmit Support at [support@hisubmit.com]. We’re happy to help!
+                </p>
+            </div>
+</body>
+</html>

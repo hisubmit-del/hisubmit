@@ -1,0 +1,120 @@
+﻿@inject IStringLocalizer<FormCreatorWithAnswer> Localize
+
+
+<MudCard Class="pa-4">
+    @if (HasHeader)
+    {
+        @HeaderContent
+    }
+    <MudContainer>
+        @if (_loaded)
+        {
+            foreach (var question in Questions)
+            {
+                switch (question.Questiontype)
+                {
+                    case Questiontype.CheckBox:
+
+                        <MudGrid class="mb-3">
+                            <MudItem xs="12" md="4" Class="d-flex mb-2">
+                                <MudText Typo="Typo.subtitle2" Class="my-auto">
+                                    @question.Title
+                                </MudText>
+                            </MudItem>
+                            <MudItem xs="12" md="8" Class="d-flex">
+                                @{
+                                    var questionOptions = CheckedBoxOptions[question.Id];
+                                    foreach (var option in questionOptions)
+                                    {
+                                        <MudItem xs="6" md="3" Class="d-flex">
+                                            <MudCheckBox Size="Size.Small" T="bool" @bind-Value="option.IsSelected">
+                                                @option.Name
+                                            </MudCheckBox>
+                                        </MudItem>
+                                    }
+                                }
+                            </MudItem>
+                        </MudGrid>
+
+                        break;
+
+                    case Questiontype.DropDownMenu:
+                        <MudGrid class="mb-3">
+                            <MudItem xs="12" md="4" Class="d-flex">
+                                <MudText Typo="Typo.subtitle2" Class="my-auto">
+                                    @question.Title
+                                </MudText>
+                            </MudItem>
+                            <MudItem>
+                                <MudSelect Variant="Variant.Outlined"
+                                           @bind-Value="@(SelectedOptions[question.Id])">
+                                    @foreach (var option in question.Options)
+                                    {
+                                        <MudSelectItem Value="@option.Id">
+                                            @option.Title
+                                        </MudSelectItem>
+                                    }
+                                </MudSelect>
+                            </MudItem>
+                        </MudGrid>
+                        break;
+
+                    case Questiontype.True_False:
+
+                        <MudGrid class="mb-3">
+                            <MudItem xs="12" md="4" Class="d-flex">
+                                <MudText Typo="Typo.subtitle2" Class="my-auto">
+                                    @question.Title
+                                </MudText>
+                            </MudItem>
+                            <MudItem>
+                                <MudSelect Variant="Variant.Outlined"
+                                           @bind-Value="@(TrueOrFalseDictionary[question.Id])">
+                                    <MudSelectItem Value="true">@Localize["True"]</MudSelectItem>
+                                    <MudSelectItem Value="false">@Localize["False"]</MudSelectItem>
+                                </MudSelect>
+                            </MudItem>
+                        </MudGrid>
+                        break;
+
+                    case Questiontype.Text:
+                        <MudGrid class="mb-3">
+                            <MudItem xs="12" md="4" Class="d-flex">
+                                <MudText Typo="Typo.subtitle2" Class="my-auto">
+                                    @question.Title
+                                </MudText>
+                            </MudItem>
+                            <MudItem>
+                                <MudTextField Variant="Variant.Outlined" Class="w-350"
+                                              @bind-Value="TextAndTextAreas[question.Id]"></MudTextField>
+                            </MudItem>
+                        </MudGrid>
+                        break;
+
+                    case Questiontype.TextArea:
+                        <MudGrid class="mb-3">
+                            <MudItem xs="12" md="4" Class="d-flex">
+                                <MudText Typo="Typo.subtitle2" Class="mt-3">
+                                    @question.Title
+                                </MudText>
+                            </MudItem>
+                            <MudItem>
+                                <MudTextField Lines="3" Variant="Variant.Outlined" Class="w-350"
+                                              @bind-Value="TextAndTextAreas[question.Id]"></MudTextField>
+                            </MudItem>
+                        </MudGrid>
+                        break;
+                }
+            }
+            if (!ReadOnlyMood)
+            {
+                <MudButton Class="mt-2 mb-4"
+                           ButtonType="ButtonType.Button"
+                           Variant="Variant.Filled"
+                           OnClick="SubmitForm">
+                    @SubmitButtonText
+                </MudButton>
+            }
+        }
+    </MudContainer>
+</MudCard>

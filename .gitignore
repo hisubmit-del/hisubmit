@@ -382,6 +382,9 @@ deployment/Logs/
 deployment/Files/
 deployment/private-files/
 
+# Local recovery archive created before the 2026-08-16 source cleanup
+cleanup-recovery-*.zip
+
 # Exclude platform-specific native libs not needed on Windows IIS server
 deployment/*.dylib
 deployment/*.so

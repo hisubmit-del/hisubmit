@@ -1,0 +1,96 @@
+﻿@inject IStringLocalizer<EditProjectSubmitterInformation> localizer
+
+
+
+<MudCard Elevation="25">
+    <MudCardHeader>
+        <CardHeaderContent>
+            <MudText Typo="Typo.h3">@localizer["Submitter  Information"]</MudText>
+
+        </CardHeaderContent>
+    </MudCardHeader>
+    @if (!Loaded)
+    {
+        <MudContainer MaxWidth="MaxWidth.Medium" >
+            <Spinner/>
+        </MudContainer>
+    }
+    else
+    {
+        if (ProjectId == 0)
+        {
+            <MudCardContent>
+                <MudContainer MaxWidth="MaxWidth.Medium" Class="object-center">
+                    <MudChip  T="string" Disabled="true" Variant="Variant.Text" Color="Color.Warning"> First:Add project detail</MudChip>
+                </MudContainer>
+            </MudCardContent>
+        }
+        else
+        {
+            <MudCardContent>
+                <MudContainer MaxWidth="MaxWidth.Medium">
+                    <MudGrid>
+                        <MudItem xs="12" sm="12" md="12">
+                            <EditForm OnValidSubmit="SaveAsync" EditContext="_EditForm">
+                                <FluentValidationValidator @ref="_fluentValidationValidator"></FluentValidationValidator>
+                                <MudGrid>
+
+                                    <MudItem xs="12" md="6">
+                                        <MudItem Class="mb-8">
+                                            <MudTextField @bind-Value="_model.Email" Label="@localizer["Email"]" 
+                                                          For="@(() => _model.Email)"
+                                                          Variant="Variant.Filled" Margin="Margin.Dense" />
+                                        </MudItem>
+
+                                    </MudItem>
+                                    <MudItem xs="12" md="6">
+                                        <MudItem Class="mb-8">
+                                            <MudTextField @bind-Value="_model.PhoneNumber" Label="@localizer["Phone"]"
+                                                          For="@(() => _model.PhoneNumber)" 
+                                                          Variant="Variant.Filled" Margin="Margin.Dense" />
+                                        </MudItem>
+
+                                    </MudItem>
+                                    <MudItem xs="12">
+                                        <AddressComponent Address="_model.Address"></AddressComponent>
+                                    </MudItem>
+                                    <MudItem xs="12" md="6">
+                                        <MudItem Class="mb-2">
+                                            <MudDatePicker PickerVariant="PickerVariant.Dialog" Variant="Variant.Filled"  
+                                                           AutoClose="true" @bind-Date="_model.BirthDate" 
+                                                           For="@(()=>_model.BirthDate)" Rounded="true" 
+                                                           Elevation="1" Label="@localizer["BirthDate"]" />
+                                        </MudItem>
+
+                                    </MudItem>
+                                    <MudItem xs="12" md="6">
+                                        <MudItem Class="mb-2">
+                                            <MudSelect T="Gender" Label="Gender" Variant="Variant.Filled" AnchorOrigin="Origin.BottomCenter">
+                                             @foreach (Gender value in Enum.GetValues(typeof(Gender)) )
+                                             {
+                                                <MudSelectItem Value="value" />                                               
+                                             } 
+                                            </MudSelect>
+                                        </MudItem>
+                                    </MudItem>
+                                </MudGrid>
+                            </EditForm>
+                        </MudItem>
+                    </MudGrid>
+                </MudContainer>
+            </MudCardContent>
+            <MudPaper Class="d-flex justify-end flex-grow-1" Elevation="0">
+                <MudPaper Class="mr-2 mb-2" Elevation="0">
+                     <MudButtonGroup Variant="Variant.Filled" OverrideStyles="false">
+                         <LoadingButton Processing="_processing" Variant="Variant.Filled" ButtonType="ButtonType.Submit"
+                                        OnClick="SaveAsync" StartIcon="@Icons.Material.Filled.Save" Color="Color.Primary">
+                        @localizer["Save"]
+                    </LoadingButton>
+                         <MudButton Variant="Variant.Filled" OnClick="GoNext" EndIcon="@Icons.Material.Filled.ArrowRight" 
+                                    Color="Color.Secondary"> @localizer["Next"]</MudButton>
+                     </MudButtonGroup>
+                </MudPaper>
+            </MudPaper>
+        }
+    }
+</MudCard>

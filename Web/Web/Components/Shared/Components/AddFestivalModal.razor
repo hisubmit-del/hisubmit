@@ -1,0 +1,25 @@
+﻿@inject IStringLocalizer<AddFestivalModal> _localizer
+
+
+<EditForm Model="@_festival" OnValidSubmit="SubmitFestival">
+    <FluentValidationValidator @ref="_fluentValidationValidator"/>
+    <MudDialog>
+        <TitleContent>
+            <MudText Typo="Typo.h6">
+                <MudIcon Icon="@Icons.Material.Filled.Add" Class="mr-3 mb-n1"/>
+                @_localizer["Create Your Festival festival"]
+            </MudText>
+        </TitleContent>
+        <DialogContent>
+            <MudTextField For="@(() => _festival.Name)"
+                          Margin="Margin.Dense" Variant="Variant.Filled"
+                          @bind-Value="_festival.Name" Label="@_localizer["Festival Name"]"/>
+        </DialogContent>
+        <DialogActions>
+            <MudButton Variant="Variant.Filled" OnClick="Cancel">@_localizer["Cancel"]</MudButton>
+            <LoadingButton Processing="_processing" Variant="Variant.Filled"
+                           ButtonType="ButtonType.Submit" Disabled="@(!_validate)"
+                           Color="Color.Success">@_localizer["Save Festival"]</LoadingButton>
+        </DialogActions>
+    </MudDialog>
+</EditForm>

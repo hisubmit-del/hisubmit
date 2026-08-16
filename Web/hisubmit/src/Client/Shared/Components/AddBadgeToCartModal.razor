@@ -1,0 +1,35 @@
+﻿@inject IStringLocalizer<AddFestivalModal> _localizer
+
+
+<EditForm Model="@SoldBadge" OnValidSubmit="SaveAsync">
+    <FluentValidationValidator @ref="_fluentValidationValidator"/>
+    <MudDialog>
+        <TitleContent>
+            <MudText Typo="Typo.h6">
+                <MudIcon Icon="@Icons.Material.Filled.Add" Class="mr-3 mb-n1"/>
+                @_localizer["Add To Cart"]
+            </MudText>
+        </TitleContent>
+        <DialogContent>
+            <MudGrid>
+                <MudItem xs="12" md="6">
+                    <MudNumericField InputMode="InputMode.numeric" Label="Count" Variant="Variant.Filled"   @bind-Value="SoldBadge.Count" For="() => SoldBadge.Count" Max="@MaxCount" />
+                </MudItem>
+
+                <MudItem xs="12" md="6">
+                    <MudCheckBox T="bool" @bind-Value="@SoldBadge.ForOtherUser" Color="Color.Primary">@_localizer["Buy for another"]</MudCheckBox>
+                </MudItem>
+                @if (SoldBadge.ForOtherUser)
+                {
+                    <MudItem xs="12" md="6">
+                        <MudTextField For="@(() => SoldBadge.OtherUserEmail)" @bind-Value="SoldBadge.OtherUserEmail" Label="@_localizer["Another  Email"]"/>
+                    </MudItem>
+                }
+            </MudGrid>
+        </DialogContent>
+        <DialogActions>
+            <MudButton Variant="Variant.Filled" OnClick="Cancel">@_localizer["Cancel"]</MudButton>
+            <LoadingButton Processing="_processing" Variant="Variant.Filled" ButtonType="ButtonType.Submit" Color="Color.Info">@_localizer["Add To Cart"]</LoadingButton>
+        </DialogActions>
+    </MudDialog>
+</EditForm>

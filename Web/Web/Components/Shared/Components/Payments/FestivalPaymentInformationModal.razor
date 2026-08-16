@@ -1,0 +1,71 @@
+﻿@using global::Hisubmit.Client.SharedModels.Features.FestivalPaymentsInformation.Queries.GetDetail
+@inject IStringLocalizer<FestivalPaymentInformationModal> Localize;
+
+<MudDialog>
+    <TitleContent>
+        <MudText Typo="Typo.h6">
+            <MudIcon Icon="@Icons.Material.Filled.Assessment" Class="mr-3 mb-n1"/>
+            @Localize["Product Sold Detail"]
+        </MudText>
+    </TitleContent>
+    <DialogContent>
+        @if (Information != null)
+        {
+            <MudGrid>
+                <MudItem xs="12" lg="6">
+                    <DividerAndTitle Title="ItemType" Class="ma-3" />
+                    <MudStack Row="true" Class="mb-4" Justify="Justify.SpaceBetween">
+                        <MudText Typo="Typo.subtitle2">@Localize["ItemType"]:</MudText>
+                        <MudText Typo="Typo.body1">@Information.Type</MudText>
+                    </MudStack>
+                    <DividerAndTitle Title="Paypal" Class="ma-5" />
+
+                    <MudStack Row="true" Class="mb-4" Justify="Justify.SpaceBetween">
+                        <MudText Typo="Typo.subtitle2">@Localize["Email Address"]:</MudText>
+                        <MudText Typo="Typo.body1">@Information.PaypalEmail</MudText>
+                    </MudStack>
+
+                </MudItem>
+                <MudItem xs="12" lg="6">
+                    <DividerAndTitle Title="Credit Card" Class="ma-3" />
+                    <MudStack Row="true" Class="mb-4" Justify="Justify.SpaceBetween">
+                        <MudText Typo="Typo.subtitle2">@Localize["Card"]:</MudText>
+                        <MudText Typo="Typo.body1">@Information.CardNumber</MudText>
+                    </MudStack>
+                    <MudStack Row="true" Class="mb-4" Justify="Justify.SpaceBetween">
+                        <MudText Typo="Typo.subtitle2">@Localize["Expires"]:</MudText>
+                        <MudText Typo="Typo.body1">@Information.Expires</MudText>
+                    </MudStack>
+                    <MudStack Row="true" Class="mb-4" Justify="Justify.SpaceBetween">
+                        <MudText Typo="Typo.subtitle2">@Localize["CVC"]:</MudText>
+                        <MudText Typo="Typo.body1">@Information.CVC</MudText>
+                    </MudStack>
+                </MudItem>
+            </MudGrid>
+        }
+        else
+        {
+            <MudAlert Variant="Variant.Text" Severity="Severity.Warning">
+                @Localize["No payment information entered"]
+            </MudAlert>
+        }
+    </DialogContent>
+    <DialogActions>
+        <MudButton DisableElevation Variant="Variant.Filled" OnClick="Close">@Localize["Ok"]</MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code{
+
+    [Parameter]
+    public GetFestivalPaymentInformationDetailResponse Information { get; set; }
+
+    [CascadingParameter]
+    public IMudDialogInstance Dialog { get; set; }
+
+    private void Close()
+    {
+        Dialog.Close();
+    }
+
+}

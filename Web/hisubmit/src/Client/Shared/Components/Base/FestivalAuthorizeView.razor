@@ -1,0 +1,12 @@
+﻿@using HiSubmit.Client.SharedModels.Constants.Role
+<AuthorizeView Roles="@RoleConstants.AdministratorRole">
+    <Authorized>
+        @ChildContent
+    </Authorized>
+    <NotAuthorized>
+        @if (_canView)
+        {
+            @ChildContent
+        }
+    </NotAuthorized>
+</AuthorizeView>

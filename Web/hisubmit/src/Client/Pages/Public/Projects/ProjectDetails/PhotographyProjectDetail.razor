@@ -1,0 +1,173 @@
+﻿@using global::Hisubmit.Client.SharedModels.Features.Permissions.Queries
+@using HiSubmit.Client.SharedModels.Extensions
+@using System.IO
+
+
+<style>
+    .border-image {
+        border: 3px solid rgb(226, 226, 226);
+        border-radius: 5px;
+        /* width: 600px; */
+        height: 400px;
+        position: relative;
+        background-image: url("assets/img/download222.jfif");
+    }
+
+    .border-image img {
+        max-width: 90%;
+        max-height: 80%;
+        display: block;
+        margin: auto;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: unset;
+        border-radius: 0px;
+    }
+
+    .project-banner{
+        width:100%;
+    }
+</style>
+
+@* <MudContainer MaxWidth="MaxWidth.Large"> *@
+@if (_loaded && DetailLoaded)
+{
+    <div class="project-image">
+        @if (Files is not {Count: > 0})
+        {
+            //set project banner to base photo
+            <MudImage Class="project-banner" Src="@Project.FileURl" />
+        }
+        else
+        {
+            @if (Files.Count == 1)
+            {
+                <MudImage Class="project-banner" Src="@Files.First().LocalFileURL" />
+            }
+            else if (Files.Any(p => p.IsLocalFile))
+            {
+                <section class="slider-section">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-12 col-lg-8">
+                                <div class="slider project-photo-slider" id="photographic-project-slider">
+                                    @foreach (var image in Files)
+                                    {
+                                        <div>
+                                            <div class="border-image">
+                                                <img class="board-img" src="@image.LocalFileURL" alt="@image.Name">
+                                            </div>
+
+                                            <p>@image.FileDescription</p>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                            <div class="col-12 col-lg-4">
+                                <div class="modern-section">
+                                    <div class="side-box">
+                                        <div class="images">
+                                            @foreach (var image in Files)
+                                            {
+                                                <img src="@image.LocalFileURL"
+                                                     alt="@image.Name">
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            }
+            @if (Files.Any(p => !p.IsLocalFile))
+            {
+                <div class="row">
+                    @foreach (var item in Files.Where(p => p.IsMainFile && p.IsLocalFile))
+                    {
+                        <div class="col-12 col-md-6 ">
+                            <ExternalMainFile File="item"></ExternalMainFile>
+                        </div>
+                    }
+                </div>
+            }
+        }
+    </div>
+   
+}
+else
+{
+    <div class="container">
+        <div class="row">
+            <div class="col-12 col-lg-8">
+                <MudSkeleton SkeletonType="SkeletonType.Rectangle"
+                             Animation="Animation.Wave"
+                             Height="400px">
+                </MudSkeleton>
+            </div>
+            <div class="col-12 col-lg-4">
+                <div class="modern-section">
+                    <div class="side-box">
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <MudSkeleton SkeletonType="SkeletonType.Rectangle"
+                                             Animation="Animation.Wave"
+                                             Height="120px">
+                                </MudSkeleton>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mb-5">
+
+        <div class="col-lg-3 col-sm-6 col-12">
+            <MudSkeleton Width="60%"></MudSkeleton>
+            <MudSkeleton Width="50%" Class="mb-5"></MudSkeleton>
+
+            <MudSkeleton Width="60%"></MudSkeleton>
+            <MudSkeleton Width="50%" Class="mb-5"></MudSkeleton>
+
+            <MudSkeleton Width="60%"></MudSkeleton>
+            <MudSkeleton Width="50%" Class="mb-5"></MudSkeleton>
+
+            <MudSkeleton Width="60%"></MudSkeleton>
+            <MudSkeleton Width="50%" Class="mb-5"></MudSkeleton>
+        </div>
+
+        <div class="col-lg-3 col-sm-6 col-12">
+            <MudSkeleton Width="60%"></MudSkeleton>
+            <MudSkeleton Width="50%" Class="mb-5"></MudSkeleton>
+
+            <MudSkeleton Width="60%" Class="mb-2"></MudSkeleton>
+            <MudSkeleton Width="50%" Class="mb-2"></MudSkeleton>
+            <MudSkeleton Width="50%" Class="mb-2"></MudSkeleton>
+            <MudSkeleton Width="50%" Class="mb-2"></MudSkeleton>
+            <MudSkeleton Width="50%" Class="mb-2"></MudSkeleton>
+        </div>
+
+        <div class="col-lg-3 col-sm-6 col-12">
+            @for (int i = 0; i < 5; i++)
+            {
+                <MudCard Elevation="0">
+                    <MudCardHeader>
+                        <CardHeaderAvatar>
+                            <MudSkeleton SkeletonType="SkeletonType.Rectangle" Class="rounded"
+                                         Animation="Animation.Wave" Height="30px" Width="30px"/>
+                        </CardHeaderAvatar>
+                        <CardHeaderContent>
+                            <MudSkeleton Animation="Animation.Wave" Width="60%"/>
+                        </CardHeaderContent>
+                    </MudCardHeader>
+                </MudCard>
+            }
+
+        </div>
+        <div class="col-lg-3 col-sm-6 col-12"></div>
+    </div>
+}
+@* </MudContainer> *@

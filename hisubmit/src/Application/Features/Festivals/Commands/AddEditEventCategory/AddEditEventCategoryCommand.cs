@@ -131,7 +131,7 @@ namespace HiSubmit.Application.Features.Festivals.Commands.AddEditEventCategory
         {
             var festival = await _unitOfWork.Repository<Festival>()
                 .GetByIdAsync(festivalId);
-            var f = new List<int>();
+            var f = new List<double>();
             
             foreach (var d in catFees)
             {

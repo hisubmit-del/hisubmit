@@ -1,0 +1,62 @@
+﻿@using HiSubmit.Client.SharedModels.Extensions
+@inject IStringLocalizer<FestivalVenue> Localize
+
+<MudGrid Class="mt-2">
+    <MudItem xs="12" md="2" Class="spa">
+        <MudStack Row="true" Justify="Justify.SpaceBetween">
+            <MudText Typo="Typo.subtitle2">@Localize["Venues"] </MudText>
+          @if (!IsAdmin)
+          {
+              <MudHidden Breakpoint="Breakpoint.MdAndUp">
+                  <MudButton Disabled="ReadOnlyMood" Variant="Variant.Filled" 
+                             Color="Color.Default" OnClick="() => InvokeModal()" Size="Size.Small"
+                             StartIcon="@Icons.Material.Filled.Add" IconColor="Color.Surface">
+                      @Localize["Add Venue"]
+                  </MudButton>
+              </MudHidden>
+          }
+        </MudStack>
+    </MudItem>
+
+    <MudItem xs="12" md="9">
+        <MudTable Class="default-table" Items="@_venues" Dense="true" Hover="true" Breakpoint="Breakpoint.Sm" LoadingProgressColor="Color.Info">
+            <HeaderContent>
+                <MudTh>@Localize["Name"]</MudTh>
+                <MudTh>@Localize["ItemType"]</MudTh>
+                <MudTh>
+                 @if (!IsAdmin)
+                 {
+                     <MudButton Disabled="ReadOnlyMood" Variant="Variant.Filled" Color="Color.Default" OnClick="() => InvokeModal()" Size="Size.Medium"
+                                StartIcon="@Icons.Material.Filled.Add" IconColor="Color.Surface">
+                         @Localize["Add Venue"]
+                     </MudButton>
+                 }
+                </MudTh>
+            </HeaderContent>
+            <RowTemplate>
+                <MudTd DataLabel="Name">@context.Name</MudTd>
+                <MudTd DataLabel="ItemType">
+                    <MudChip T="string" Size="Size.Small">@context.VenueType.ToDisplay()</MudChip>
+                </MudTd>
+
+                <MudTd DataLabel="Actions">
+                   @if (!IsAdmin)
+                   {
+                       <MudHidden Breakpoint="Breakpoint.LgAndUp">
+                           <MudMenu Label="@Localize["Actions"]" Variant="Variant.Filled" DisableElevation="true"
+                                    EndIcon="@Icons.Material.Filled.KeyboardArrowDown" IconColor="Color.Secondary" Direction="Direction.Left" OffsetX="true">
+
+                               <MudMenuItem OnClick="() => InvokeModal(context.Id)">@Localize["Edit"]</MudMenuItem>
+                               <MudMenuItem OnClick="() => DeleteAsync(context.Id, context.Name)">@Localize["Delete"]</MudMenuItem>
+                           </MudMenu>
+                       </MudHidden>
+                       <MudHidden Breakpoint="Breakpoint.MdAndDown">
+                           <MudIconButton Disabled="ReadOnlyMood" Icon="@Icons.Material.Filled.Delete" OnClick="() => DeleteAsync(context.Id, context.Name)" Size="Size.Small" aria-label="delete"></MudIconButton>
+                           <MudIconButton Disabled="ReadOnlyMood" Icon="@Icons.Material.Filled.Edit" OnClick="() => InvokeModal(context.Id)" Size="Size.Small" aria-label="Edit"></MudIconButton>
+                       </MudHidden>
+                   }
+                </MudTd>
+            </RowTemplate>
+        </MudTable>
+    </MudItem>
+</MudGrid>

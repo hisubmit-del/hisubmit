@@ -9,7 +9,7 @@
     <MudItem xs="12" md="6" lg="4">
         <MudNumericField @bind-Value="Fee.StandardFee" 
                          Margin="Margin.Dense" 
-                         T="int?"
+                         T="double?"
                          Min="0"
                          For="()=>Fee.StandardFee"
                          Label="@Localizer["Standard Fee"]" 
@@ -19,7 +19,7 @@
         <MudNumericField @bind-Value="Fee.StudentFee"
                          Margin="Margin.Dense" 
                          Min="0"
-                         T="int?"
+                         T="double?"
                          For="()=>Fee.StudentFee" 
                          Label="@Localizer["Student Fee"]"
                          Variant="Variant.Outlined" />
@@ -28,7 +28,7 @@
         <MudNumericField @bind-Value="Fee.GoldFee" 
                          Margin="Margin.Dense"
                          Min="0"
-                         T="int?"
+                         T="double?"
                          For="()=>Fee.GoldFee"
                          Label="@Localizer["Gold Fee"]"
                          Variant="Variant.Outlined" />

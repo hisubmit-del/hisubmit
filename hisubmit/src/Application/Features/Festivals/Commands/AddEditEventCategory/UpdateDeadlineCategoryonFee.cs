@@ -7,9 +7,9 @@ namespace HiSubmit.Application.Features.Festivals.Commands.AddEditEventCategory
         public int Id { get; set; }
         public int EventCategoryId { get; set; }
         public int DeadLineId { get; set; }
-        public int? GoldFee { get; set; }
-        public int? StudentFee { get; set; }
-        public int? StandardFee { get; set; }
+        public double? GoldFee { get; set; }
+        public double? StudentFee { get; set; }
+        public double? StandardFee { get; set; }
 
         public DateTime? DeadLineDate { get; set; }
         public string DeadLineName { get; set; }

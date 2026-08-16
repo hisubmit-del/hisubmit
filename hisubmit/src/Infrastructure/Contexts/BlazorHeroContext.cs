@@ -210,6 +210,12 @@ public class BlazorHeroContext : AuditableContext
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
+        // The production database and the restored local database keep the
+        // application tables in this schema. Relying on the SQL login's
+        // default schema made local Windows-authenticated requests resolve
+        // tables such as ArtCategories against dbo and fail.
+        builder.HasDefaultSchema("hisubmi1_user");
+
         foreach (var property in builder.Model.GetEntityTypes()
                      .SelectMany(t => t.GetProperties())
                      .Where(p => p.ClrType == typeof(decimal) || p.ClrType == typeof(decimal?)))

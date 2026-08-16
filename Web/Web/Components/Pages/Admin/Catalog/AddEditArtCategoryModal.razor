@@ -1,0 +1,59 @@
+﻿@inject IStringLocalizer<AddEditArtCategoryModal> Localize
+
+<EditForm Model="@ArtCategoryModel" OnValidSubmit="SaveAsync">
+    <FluentValidationValidator @ref="_fluentValidationValidator" />
+    <MudDialog>
+        <TitleContent>
+            @{
+                if (ArtCategoryModel.Id == 0)
+                {
+                    <MudText Typo="Typo.h6">
+                        <MudIcon Icon="@Icons.Material.Filled.Add" Class="mr-3 mb-n1" />
+                        @Localize["Add Art Category"]
+                    </MudText>
+                }
+                else
+                {
+                    <MudText Typo="Typo.h6">
+                        <MudIcon Icon="@Icons.Material.Filled.Update" Class="mr-3 mb-n1" />
+                        @Localize["Update Art Category"]
+                    </MudText>
+                }
+            }
+        </TitleContent>
+        <DialogContent>
+            <MudGrid>
+                <MudItem xs="12" md="6">
+                    <MudTextField T="string" For="@(() => ArtCategoryModel.Name)" 
+                                  Variant="Variant.Outlined"
+                                  Margin="Margin.Dense"
+                                  @bind-Value="ArtCategoryModel.Name" Label="@Localize["Name"]" />
+                </MudItem>
+
+                <MudItem xs="12" md="12">
+                    <MudTextField For="@(() => ArtCategoryModel.Description)" 
+                                  Variant="Variant.Outlined"
+                                  Lines="3"
+                                  Margin="Margin.Dense"
+                                  @bind-Value="ArtCategoryModel.Description" Label="@Localize["Description"]" />
+                </MudItem>
+            </MudGrid>
+        </DialogContent>
+        <DialogActions>
+            <MudButton  Variant="Variant.Filled" OnClick="Cancel">@Localize["Cancel"]</MudButton>
+            @if (ArtCategoryModel.Id != 0)
+            {
+                <LoadingButton Processing="_processing"  
+                               Variant="Variant.Filled" ButtonType="ButtonType.Submit" 
+                                Color="Color.Secondary">@Localize["Update"]</LoadingButton>
+            }
+            else
+            {
+                <LoadingButton Processing="_processing"  
+                               Variant="Variant.Filled" ButtonType="ButtonType.Submit"
+                                Color="Color.Success">@Localize["Save"]</LoadingButton>
+            }
+        </DialogActions>
+    </MudDialog>
+</EditForm>
+

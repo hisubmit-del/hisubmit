@@ -4,6 +4,7 @@ using Hisubmit.Client.SharedModels.Features.StaticPages.Queries;
 using HiSubmit.Client.Infrastructure.Managers.Contents;
 using HiSubmit.Client.SharedModels.Wrapper;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Web;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -79,6 +80,12 @@ namespace Web.Components.Pages.Public
 
         public string SearchString { get; set; }
 
+        private async Task HandleSearchKeyDown(KeyboardEventArgs args)
+        {
+            if (args.Key == "Enter")
+                await Search();
+        }
+
         private async Task Search()
         {
             var response = await ContentManager.GetAllFAQ(new GetAllStaticPageRequest()
@@ -89,10 +96,27 @@ namespace Web.Components.Pages.Public
                 IsEnable = true
             });
             if (response.Succeeded)
+            {
                 _faqResponse = response;
+                SelectFirstQuestionPerCategory();
+            }
             else
                 foreach (var message in response.Messages)
                     _snackBar.Add(message, MudBlazor.Severity.Error);
+        }
+
+        private void SelectFirstQuestionPerCategory()
+        {
+            foreach (var type in new[] { FaqType.General, FaqType.Festival, FaqType.Artist })
+            {
+                var questions = _faqResponse.Data.Where(p => p.FaqType == type).ToList();
+                foreach (var question in questions)
+                    question.IsSelected = false;
+
+                var first = questions.FirstOrDefault();
+                if (first != null)
+                    first.IsSelected = true;
+            }
         }
     }
 }

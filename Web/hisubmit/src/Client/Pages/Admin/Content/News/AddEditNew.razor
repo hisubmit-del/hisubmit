@@ -1,0 +1,41 @@
+﻿@page "/admin/new"
+@page "/admin/new/{NewId:int}"
+@inherits BaseAdminPages
+@inject IStringLocalizer<AddEditNew> Localizer
+            <MudContainer MaxWidth="MaxWidth.Large">
+<MudGrid >
+    <MudItem xs="12">
+        <MudCard Elevation="25" Class="pa-3 pa-lg-10">
+                <EditForm Model="_new" OnSubmit="SaveAsync">
+                    <FluentValidationValidator @ref="_fluentValidationValidator"/>
+                    <MudGrid>
+                        @* <MudItem xs="12" md="6"> *@
+                        @*     <MudTextField @bind-Value="_new.Title" For="() => _new.Title" Label="@Localizer["Title"]" Variant="Variant.Filled"></MudTextField> *@
+                        @*     <br/> *@
+                        @*         <MudSwitch T="bool" Size="Size.Small" @bind-Value="@_new.IsEnable" For="() => _new.IsEnable" Label="@Localizer["Show In Site"]" Color="Color.Secondary"/> *@
+                        @* </MudItem> *@
+                        <MudItem xs="12" md="6">
+                            <MudTextField For="@(() => _new.Title)" Variant="Variant.Filled"
+                                          @bind-Value="_new.Title" Label="@Localizer["Title"]"/>
+                        </MudItem>
+                        <MudItem xs="12" md="6">
+                            <ImageUploader @bind-Url=@_new.BannerUrl @bind-UploadRequest=@_new.UploadRequest />                          
+                        </MudItem>
+                    </MudGrid>
+                    <MudGrid Class="mb-2">
+                        <MudItem xs="12" lg="9">
+                            <MudTextField Lines="3" Label="@Localizer["Short Description"]" For="() => _new.ShortDescription" @bind-Value="_new.ShortDescription" Variant="Variant.Filled"></MudTextField>
+                        </MudItem>
+                    </MudGrid>
+                    <MudGrid>
+                        <MudItem xs="12" Class="h-100">
+                            <CustomeRichTextEditor MinHeight="360px" @bind-Body="@_new.Description"/>
+                        </MudItem>
+                    </MudGrid>
+                    <AddEditSeoTagForm Model="_new.SeoTag"/>
+                    <LoadingButton FullWidth="true" Class="my-2" Processing="_processing" Variant="Variant.Filled" Color="Color.Primary" ButtonType="ButtonType.Submit">@Localizer["Save"]</LoadingButton>
+                </EditForm>
+        </MudCard>
+    </MudItem>
+</MudGrid>
+            </MudContainer>

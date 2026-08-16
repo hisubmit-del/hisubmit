@@ -1,0 +1,32 @@
+﻿<MudPaper Class="pa-3 d-flex" Style="height: 100%">
+    @if (_loaded)
+    {
+        <MudChart SelectedIndexChanged="ShowTotalType"
+                  ChartType="ChartType.Pie"
+                  Width="100%"
+                  Class="ma-auto"
+                  Height="240px"
+                  ChartOptions="new ChartOptions() { ChartPalette =ChartColors.ChartPlate1 }"
+                  InputData="@_data"
+                  InputLabels="@_labels">
+            <CustomGraphics>
+                <text class="donut-inner-text" x="47%" y="35%"
+                      dominant-baseline="middle" text-anchor="middle"
+                      fill="black" font-family="Helvetica" font-size="20">
+                    @_showTitle
+                </text>
+
+                <text class="donut-inner-text" x="47%" y="50%"
+                      dominant-baseline="middle" text-anchor="middle"
+                      fill="black" font-family="Helvetica" font-size="15">
+                    @_showTotal
+                </text>
+                @if (_showTitle != "Total")
+                {
+                    <MudIconButton OnClick="ShowAllTotal"
+                                   Icon="@Icons.Material.Filled.Delete" Size="Size.Small"/>
+                }
+            </CustomGraphics>
+        </MudChart>
+    }
+</MudPaper>

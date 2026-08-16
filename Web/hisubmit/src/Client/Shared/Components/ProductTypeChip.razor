@@ -1,0 +1,28 @@
+﻿
+@using HiSubmit.Client.SharedModels.Extensions
+
+@switch (ProductType)
+{
+    case ProductType.Downloadable:
+        <MudChip T="string" Color="Color.Info"
+                 Label="Label" 
+                 Size="Size.Small"
+                 Text="@ProductType.ToDisplay()"/>
+        break;
+    case ProductType.Sent:
+        <MudChip T="string" Color="Color.Secondary" 
+                 Label="Label"  
+                 Size="Size.Small" 
+                 Text="@ProductType.ToDisplay()"/>
+        break;
+    default:
+        throw new ArgumentOutOfRangeException();
+}
+
+@code {
+    [Parameter]
+    public  ProductType ProductType { get; set; }
+
+    [Parameter]
+    public bool Label { get; set; } = true;
+}

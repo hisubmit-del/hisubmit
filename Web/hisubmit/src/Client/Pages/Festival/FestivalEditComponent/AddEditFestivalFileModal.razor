@@ -1,0 +1,103 @@
+﻿@inject IStringLocalizer<AddEditFestivalFileModal> Localize
+
+
+@using HiSubmit.Client.SharedModels.Extensions
+
+<EditForm Model="@File" OnValidSubmit="SaveAsync">
+    <FluentValidationValidator @ref="_fluentValidationValidator" />
+    <MudDialog>
+        <TitleContent>
+            @{
+                if (File.Id == 0)
+                {
+                    <MudText Typo="Typo.h6">
+                        <MudIcon Icon="@Icons.Material.Filled.Add" Class="mr-3 mb-n1" />
+                        @Localize["Add File"]
+                    </MudText>
+                }
+                else
+                {
+                    <MudText Typo="Typo.h6">
+                        <MudIcon Icon="@Icons.Material.Filled.Update" Class="mr-3 mb-n1" />
+                        @Localize["Update File"]
+                    </MudText>
+                }
+            }
+        </TitleContent>
+        <DialogContent>
+            <MudGrid>
+                <MudItem xs="12" md="6">
+                    <MudTextField For="@(() => File.Name)" @bind-Value="File.Name" Label="@Localize["Name"]" />
+                </MudItem>
+              
+                <MudItem xs="12" md="6">
+                    <MudSelect T="FileFormat" Label="@Localize["format"]" 
+                    Disabled="@(File.Id != 0 )"   @bind-Value="File.FileFormat" 
+                    For="@(()=>File.FileFormat)" Variant="Variant.Filled" >
+                      @foreach (FileFormat fileFormat in Enum.GetValues(typeof(FileFormat)))
+                      {
+                          <MudSelectItem Value="fileFormat" >@fileFormat.ToDisplay()</MudSelectItem>
+                      }
+                    </MudSelect>
+                </MudItem>
+           
+                <MudItem xs="12" md="6">
+                    <MudItem>
+                      @if (_file != null)
+                        {
+                            <MudAlert>@_file.Name</MudAlert>
+                        }
+                        @if (File.Id != 0 && !string.IsNullOrEmpty(File.FileURL))
+                        {
+                            <MudAlert>@(File.FileURL)</MudAlert>
+                        }
+                        <InputFile id="fileInput" hidden OnChange="UploadFiles" />
+                        <div>
+                            @if (File.Id == 0)
+                            {
+                                <MudButton HtmlTag="label"
+                                           Variant="Variant.Text"
+                                           Color="Color.Primary"
+                                           Size="Size.Small"
+                                           StartIcon="@Icons.Material.Filled.CloudUpload"
+                                           for="fileInput">
+                                    @Localize["Upload"]
+                                </MudButton>
+                            }
+                            else if (!string.IsNullOrEmpty(File.FileURL))
+                            {
+                                <MudButton Variant="Variant.Text"
+                                           Color="Color.Secondary"
+                                           StartIcon="@Icons.Material.Filled.CloudDownload"
+                                           Size="Size.Small"
+                                           Link="@(File.FileURL)" Target="_blank">
+                                    @Localize["Download"]
+                                </MudButton>
+
+                            }
+                        </div>
+                    </MudItem>
+                </MudItem>
+                  <MudItem xs="12" md="6">
+                    <MudTextField For="@(() => File.Description)" @bind-Value="File.Description" 
+                        Label="@Localize["Description"]" Lines="2" />
+                      </MudItem>
+            </MudGrid>
+        </DialogContent>
+        <DialogActions>
+            <MudButton Variant="Variant.Filled" OnClick="Cancel">@Localize["Cancel"]</MudButton>
+            @if (File.Id != 0)
+            {
+                <LoadingButton Processing="_processing" Variant="Variant.Filled"
+                               ButtonType="ButtonType.Submit" 
+                               Color="Color.Secondary">@Localize["Update"]</LoadingButton>
+            }
+            else
+            {
+                <LoadingButton Processing="_processing" Variant="Variant.Filled"
+                               ButtonType="ButtonType.Submit"
+                               Color="Color.Success">@Localize["Save"]</LoadingButton>
+            }
+        </DialogActions>
+    </MudDialog>
+</EditForm>

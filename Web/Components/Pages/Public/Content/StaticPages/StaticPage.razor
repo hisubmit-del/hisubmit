@@ -1,5 +1,7 @@
 ﻿@page "/{URL}"
 
+@page "/terms"
+
 @using HiSubmit.Client.Infrastructure.Managers.Contents
 @using global::Hisubmit.Client.SharedModels.Features.StaticPages.Queries
 @inherits Web.Components.Pages.Public.BasePublicPages
@@ -34,6 +36,9 @@
 
     protected override async Task OnParametersSetAsync()
     {
+        if (string.IsNullOrWhiteSpace(URL))
+            URL = "terms";
+
         await LoadPage();
         await base.OnParametersSetAsync();
     }
@@ -50,7 +55,23 @@
         }
         else
         {
-            _navigationManager.NavigateTo("/notFound",false);
+            if (string.Equals(URL, "terms", StringComparison.OrdinalIgnoreCase))
+            {
+                _page = new GetDetailStaticPageResponse
+                {
+                    Title = "Terms and Conditions",
+                    Link = "/terms",
+                    IsEnable = true,
+                    Content = "<p>These terms govern the use of the HiSubmit platform by artists, festivals, judges and visitors.</p>" +
+                              "<p>Users are responsible for the accuracy of submitted information and for respecting the rules of each festival.</p>" +
+                              "<p>Festival-specific rules, fees and deadlines are displayed on the relevant festival page and apply to each submission.</p>" +
+                              "<p>By using HiSubmit, you agree to these terms and to the applicable privacy and payment policies.</p>"
+                };
+            }
+            else
+            {
+                _navigationManager.NavigateTo("/notFound",false);
+            }
             // foreach (var message in response.Messages)
             // {
             //     _snackBar.Add(message, Severity.Error);

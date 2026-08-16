@@ -1,0 +1,101 @@
+﻿@inject IStringLocalizer<FestivalDeadline> localizer
+
+<MudCard>
+    <MudCardHeader>
+        <CardHeaderContent>
+            <MudText Typo="Typo.h3">@localizer["Dates & Deadlines"]</MudText>
+        </CardHeaderContent>
+    </MudCardHeader>
+    @if (!Loaded)
+    {
+        <MudContainer MaxWidth="MaxWidth.Medium" Style="height:300px">
+            <Spinner></Spinner>
+        </MudContainer>
+    }
+    else
+    {
+        <MudCardContent>
+          <div class="px-0 px-md-20 px-lg-20"> 
+            <EditForm EditContext="_editForm" style="margin-bottom:30px">
+                @if (!IsAdmin)
+                {
+                    <MudGrid>
+                        @if (_festival.FestivalStatus == FestivalStatus.UnderInvestigation)
+                        {
+                            <MudItem xs="12" Class="mb-2">
+                                <MudAlert Severity="Severity.Warning"> Your festival information is under review.</MudAlert>
+                            </MudItem>
+                        }
+                    </MudGrid>
+                }
+                <FluentValidationValidator @ref="_fluentValidationValidator"/>
+                <MudGrid Class="mb-3 ">
+                    <MudItem xs="12" md="2" Class="d-flex align-content-center flex-wrap">
+                        <MudText Typo="Typo.subtitle2"> @localizer["Opening Date"]:</MudText>
+                    </MudItem>
+                    <MudItem xs="12" md="4">
+                        <MudDatePicker PickerVariant="PickerVariant.Dialog"
+                                       Required="true"
+                                       Margin="Margin.Dense" Rounded="true" Variant="Variant.Filled"
+                                       DateFormat="MMMM dd,yyyy" For="() => _festival.OpeningDate"
+                                       @bind-Date="_festival.OpeningDate"/>
+                    </MudItem>
+                </MudGrid>
+                <MudGrid Class="mb-3" >
+                    <MudItem xs="12" md="2" Class="d-flex align-content-center flex-wrap">
+                        <MudText Typo="Typo.subtitle2"> @localizer["Notification Date"] :</MudText>
+                    </MudItem>
+                    <MudItem xs="12" md="4">
+                        <MudDatePicker PickerVariant="PickerVariant.Dialog"
+                                       Required="true"
+                                       Margin="Margin.Dense" Rounded="true" Variant="Variant.Filled"
+                                       DateFormat="MMMM dd,yyyy" For="() => _festival.NotificationDate"
+                                       @bind-Date="_festival.NotificationDate"/>
+                    </MudItem>
+                </MudGrid>
+
+                <MudGrid Class="mb-3">
+                    <MudItem xs="12" md="2" Class="d-flex align-content-center flex-wrap">
+                        <MudText Typo="Typo.subtitle2"> @localizer["Event  Dates"]:</MudText>
+                    </MudItem>
+                    <MudItem xs="12" md="4">
+                        <MudDatePicker PickerVariant="PickerVariant.Dialog" Margin="Margin.Dense"
+                                       Required="true"
+                                       Rounded="true" Variant="Variant.Filled" DateFormat="MMMM dd,yyyy"
+                                       For="() => _festival.EventStartDate" @bind-Date="_festival.EventStartDate"/>
+                    </MudItem>
+                    <MudItem xs="12" md="1" Class="d-flex align-content-center flex-wrap">
+                        To
+                    </MudItem>
+                    <MudItem xs="12" md="4">
+                        <MudDatePicker PickerVariant="PickerVariant.Dialog"
+                                       Margin="Margin.Dense" Rounded="true" Variant="Variant.Filled" 
+                                       DateFormat="MMMM dd,yyyy" For="() => _festival.EventEndDate" @bind-Date="_festival.EventEndDate"/>
+                    </MudItem>
+                </MudGrid>
+            </EditForm>
+            <DeadLineEntry IsAdmin="IsAdmin" ReadOnlyMood="_festival.ChangesNotAllowed" FestivalId="FestivalId"/>
+</div>
+        </MudCardContent>
+        <MudPaper Class="d-flex justify-end flex-grow-1 ">
+            <MudPaper Class="mr-2 mb-2">
+                <MudButtonGroup Variant="Variant.Outlined" OverrideStyles="false">
+                    <MudButton Variant="Variant.Filled" OnClick="GoPrev"
+                               EndIcon="@Icons.Material.Filled.ArrowLeft" Color="Color.Secondary">
+                        @localizer["Prev"]
+                    </MudButton>
+                    @if (!IsAdmin)
+                    {
+                        <LoadingButton Disabled="_festival.ChangesNotAllowed"
+                                       Processing="_proccessing" Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Save"
+                                       OnClick="SaveAsync" Color="Color.Info">
+                            @localizer["Save"]
+                        </LoadingButton>
+                    }
+                    <MudButton Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.ArrowRight" OnClick="GoNext"
+                               Color="Color.Secondary"> @localizer["Next"]</MudButton>
+                </MudButtonGroup>
+            </MudPaper>
+        </MudPaper>
+    }
+</MudCard>

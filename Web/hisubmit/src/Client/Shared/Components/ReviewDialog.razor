@@ -1,0 +1,44 @@
+﻿
+@inject IStringLocalizer<ReviewDialog> Localize
+<MudDialog>
+    <TitleContent>
+        <MudText Typo="Typo.h6">
+            @if (Type==CommentType.Review)
+            {
+                <MudIcon Icon="@Icons.Material.Filled.Reviews"  Class="mr-3 mb-n1"/>
+                @Localize["Review"]
+            }
+            else
+            {
+                <MudIcon Icon="@Icons.Material.Filled.Block" Color="Color.Error" Class="mr-3 mb-n1"/>
+                @Localize["Violation report"]
+            }
+        </MudText>
+    </TitleContent>
+    <DialogContent>
+        <EditForm Model="_model">
+            <FluentValidationValidator @ref="_fluentValidationValidator"/>
+            <MudGrid>
+               @if (Type == CommentType.Review)
+               {
+                   <MudItem xs="4" md="2">
+                       <MudText Typo="Typo.subtitle2">Rate:</MudText>
+                   </MudItem>
+                   <MudItem  xs="12" md="10">
+                       <MudRating @bind-SelectedValue="_model.Rate"/>
+                   </MudItem>
+               }
+                <MudItem xs="4" md="2">
+                    <MudText Typo="Typo.subtitle2">Message:</MudText>
+                </MudItem>
+                <MudItem xs="12" md="10">
+                    <MudTextField Variant="Variant.Filled" Lines="3" @bind-Value="_model.Text" For="() => _model.Text"></MudTextField>
+                </MudItem>
+            </MudGrid>
+        </EditForm>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel">@Localize["Cancel"]</MudButton>
+        <LoadingButton Processing="_processing" Color="Color.Primary" Variant="Variant.Filled" OnClick="SaveAsync">Send</LoadingButton>
+    </DialogActions>
+</MudDialog>

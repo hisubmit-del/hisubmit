@@ -1,0 +1,92 @@
+﻿@using global::Hisubmit.Client.SharedModels.Features.FooterItems
+@using HiSubmit.Client.Infrastructure.Managers.PublicFestival
+@using Hisubmit.Client.SharedModels.Features.AdminFestival.Queries.GetAllFestival
+@using HiSubmit.Client.SharedModels.Wrapper
+<div class="footer">
+    <MudGrid Class="py-lg-20  px-5 d-flex justify-center flex-grow-1 gap-4 festivals-footer-box">
+        @foreach (var festival in _festivalResponse.Data)
+        {
+            <NavLink Href="@($"/festival/{festival.URL}")">
+                <img src="@festival.LogoURL" alt="@festival.Name" loading="lazy"/>
+            </NavLink>
+        }
+    </MudGrid>
+
+    <MudGrid Class="footer-footer py-lg-1 px-lg-10">
+        <MudAvatar Variant="Variant.Outlined" Class="mx-1">
+            <MudIconButton Icon="@Icons.Material.Filled.Email"
+                           UserAttributes="@(new() { { "aria-label", "Contact HiSubmit by email" } })"/>
+        </MudAvatar>
+        <MudAvatar Variant="Variant.Outlined">
+            <MudIconButton Icon="@Icons.Custom.Brands.Telegram"
+                           UserAttributes="@(new() { { "aria-label", "Contact HiSubmit on Telegram" } })"/>
+        </MudAvatar>
+        <MudSpacer/>
+        <div class="menu-items">
+            @foreach (var item in Items)
+            {
+                <MudButton Color="Color.Dark" Href="@item.Link" Variant="Variant.Text">@item.Title</MudButton>
+            }
+        </div>
+        <MudSpacer/>
+        <img alt="hisubmit-logo" src="/assets/img/logo.png" class="mx-auto" loading="lazy"/>
+    </MudGrid>
+    <div class="w-100 text-center justify-content-center">
+        <MudText Typo="Typo.body1" Class="py-7">
+            Made with art and love the best combination in the world Hisubmit
+            <MudIcon Icon="@Icons.Material.Filled.Favorite" Color="Color.Tertiary"/>
+        </MudText>
+    </div>
+</div>
+
+
+@code{
+    private PaginatedResult<GetAllFestivalResponse> _festivalResponse=new([]);
+    [Parameter] public List<FooterItemDto> Items { get; set; } = new();
+
+
+    [Inject] private IPublicFestivalManager FestivalManager { get; set; }
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        ApplicationState.RegisterOnPersisting(PersistFestival);
+        await LoadFestivals();
+        await base.OnInitializedAsync();
+    }
+
+    private Task PersistFestival()
+    {
+        ApplicationState.PersistAsJson("favoriteFestivals", _festivalResponse);
+        return Task.CompletedTask;
+    }
+
+    private async Task LoadFestivals()
+    {
+        if (ApplicationState.TryTakeFromJson
+                <PaginatedResult<GetAllFestivalResponse>>
+                ("favoriteFestivals", out var stored))
+        {
+            _festivalResponse = stored;
+        }
+        else
+        {
+            var response =
+                await FestivalManager.GetAllFestival(new GetAllFestivalRequest()
+                {
+                    PageSize = 4
+                });
+            if (response.Succeeded)
+            {
+                _festivalResponse = response;
+            }
+            else
+            {
+                foreach (var message in response.Messages)
+                {
+                    _snackBar.Add(message, MudBlazor.Severity.Error);
+                }
+            }
+        }
+    }
+}
