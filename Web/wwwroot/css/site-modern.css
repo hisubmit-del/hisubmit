@@ -172,90 +172,10 @@ a:hover {
     line-height: 1.05;
 }
 
-.festival-header {
-    position: relative;
-    min-height: 210px;
-    margin: 1.5rem 0 0.5rem;
-    padding: 2.5rem 1.5rem;
-    overflow: hidden;
-    border-radius: var(--radius-lg);
-    background:
-        linear-gradient(115deg, rgba(51, 92, 103, 0.96), rgba(51, 92, 103, 0.72)),
-        url("../img/bac-art2.gif") right center / cover no-repeat;
-    box-shadow: var(--shadow-soft);
-}
-
-.festival-header::after {
-    content: "";
-    position: absolute;
-    width: 18rem;
-    height: 18rem;
-    right: -6rem;
-    bottom: -10rem;
-    border-radius: 50%;
-    background: rgba(255, 131, 77, 0.35);
-}
-
-.festival-header h1 {
-    position: relative;
-    z-index: 1;
-    max-width: 48rem;
-    color: #fff;
-    text-shadow: 0 2px 16px rgba(0, 0, 0, 0.18);
-}
-
-.festival-key-search-box {
-    position: relative;
-    z-index: 2;
-    margin-top: -1.25rem !important;
-    padding: 1rem;
-    border: 1px solid rgba(51, 92, 103, 0.12);
-    border-radius: var(--radius-lg);
-    background: rgba(255, 255, 255, 0.9);
-    box-shadow: var(--shadow-card);
-    backdrop-filter: blur(10px);
-}
-
-.festival-key-search-box .mud-input-control {
-    background: var(--surface-card);
-}
-
-.sponsored-festival-title {
-    margin-top: 2.5rem;
-    font-weight: 800;
-    letter-spacing: -0.02em;
-}
-
 .festival-sponsored-box .img-box img,
 .festival-cards .festival-card img,
 .news-top img {
     border-radius: var(--radius-md);
-}
-
-.festival-sponsored-box .img-box {
-    position: relative;
-    min-height: 9rem;
-    padding: 0.35rem;
-    border: 1px solid var(--border-soft);
-    border-radius: var(--radius-md);
-    background: var(--surface-card);
-    box-shadow: var(--shadow-card);
-}
-
-.festival-sponsored-box .img-box img {
-    display: block;
-    width: 100%;
-    height: 10rem;
-    object-fit: cover;
-}
-
-.festival-filter-form {
-    margin-top: 2rem;
-    padding: clamp(1rem, 2vw, 1.5rem);
-    border: 1px solid var(--border-soft);
-    border-radius: var(--radius-lg);
-    background: rgba(255, 255, 255, 0.76);
-    box-shadow: var(--shadow-card);
 }
 
 .festival-cards .festival-card,

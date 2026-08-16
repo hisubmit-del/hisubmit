@@ -385,6 +385,11 @@ deployment/private-files/
 # Local recovery archive created before the 2026-08-16 source cleanup
 cleanup-recovery-*.zip
 
+# Local recovery copies created during branch repair
+Web-nested-recovery-*/
+Web-origin-main-*/
+Web-stable-inner-copy-*/
+
 # Exclude platform-specific native libs not needed on Windows IIS server
 deployment/*.dylib
 deployment/*.so

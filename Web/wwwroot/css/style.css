@@ -692,7 +692,7 @@ tbody .mud-switch {
     }
 
         .menu-items .mud-button:hover {
-            transition-delay: 0s;
+            transition-delay: 500ms;
             background-color: transparent;
             color: var(--mud-palette-tertiary);
         }
@@ -706,7 +706,7 @@ tbody .mud-switch {
     }
 
 .account-items .mud-button.btn-login:hover {
-    transition-delay: 0s;
+    transition-delay: 2500ms;
     background-color: #ffffff;
     color: var(--mud-palette-tertiary);
 }
@@ -756,14 +756,14 @@ tbody .mud-switch {
     align-self: center;
     opacity: 0;
     z-index: 100;
-    transition: opacity .18s ease, color .18s ease, border-color .18s ease;
+    transition: .3s;
+    transition-duration: .8s;
     background-color: #ffff !important;
     border-color: var(--mud-palette-dark) !important;
     color: var(--mud-palette-dark) !important;
 }
 
     .btn-view-festival:hover {
-        transform: translate(-50%, -50%);
         color: var(--mud-palette-tertiary) !important;
         border-color: var(--mud-palette-tertiary) !important;
     }

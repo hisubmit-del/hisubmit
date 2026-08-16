@@ -6,7 +6,7 @@
     <MudGrid Class="py-lg-20  px-5 d-flex justify-center flex-grow-1 gap-4 festivals-footer-box">
         @foreach (var festival in _festivalResponse.Data)
         {
-            <NavLink Href="@($"/festivalpage/{festival.URL}")">
+            <NavLink Href="@($"/festival/{festival.URL}")">
                 <img src="@festival.LogoURL" alt="@festival.Name" loading="lazy"/>
             </NavLink>
         }

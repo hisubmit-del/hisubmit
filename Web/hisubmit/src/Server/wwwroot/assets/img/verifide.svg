@@ -1,7 +1,0 @@
-<svg id="verifide" xmlns="http://www.w3.org/2000/svg" width="31.098" height="31.098" viewBox="0 0 31.098 31.098">
-  <g id="shield-tick" transform="translate(0 0)">
-    <path id="Vector" d="M9.174.3,2.708,2.737A4.5,4.5,0,0,0,0,6.637v9.627a6.3,6.3,0,0,0,2.242,4.457l5.572,4.159a5.9,5.9,0,0,0,6.66,0l5.572-4.159a6.3,6.3,0,0,0,2.242-4.457V6.637a4.5,4.5,0,0,0-2.708-3.913L13.113.3A6.589,6.589,0,0,0,9.174.3Z" transform="translate(4.419 2.588)" fill="none" stroke="#051622" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/>
-    <path id="Vector-2" data-name="Vector" d="M0,3.486,2.086,5.572,7.658,0" transform="translate(11.727 11.895)" fill="none" stroke="#051622" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" opacity="0.4"/>
-    <path id="Vector-3" data-name="Vector" d="M0,0H31.1V31.1H0Z" transform="translate(31.098 31.098) rotate(180)" fill="none" opacity="0"/>
-  </g>
-</svg>
