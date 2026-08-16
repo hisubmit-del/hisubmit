@@ -6,6 +6,8 @@ using HiSubmit.Application.Features.Products.Queries.GetProductImage;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using HiSubmit.Application.Features.Products.Queries.GetById;
+using Hisubmit.Client.SharedModels.Contracts.Permission;
+using Web.Filters;
 
 namespace Web.Controllers.v1.Catalog;
 
@@ -18,6 +20,7 @@ public class ProductsController : BaseFestivalController<ProductsController>
     /// <returns>Enable 200 OK</returns>
     
     [HttpPost("GetAll")]
+    [FestivalAuthentication(Policy = Permissions.FestivalProducts.View)]
     public async Task<IActionResult> GetAll(GetAllProductsQuery query,int festivalId)
         //(int pageNumber, int pageSize, string searchString, int? festivalId,string orderBy = null)
     {
@@ -33,6 +36,7 @@ public class ProductsController : BaseFestivalController<ProductsController>
     /// <param name="id"></param>
     /// <returns>Enable 200 OK</returns>
     [HttpGet("image/{id}")]
+    [FestivalAuthentication(Policy = Permissions.FestivalProducts.View)]
     public async Task<IActionResult> GetProductImageAsync(int id)
     {
         var result = await Mediator.Send(new GetProductImageQuery(id));
@@ -46,8 +50,10 @@ public class ProductsController : BaseFestivalController<ProductsController>
     /// <param name="festivalId"></param>
     /// <returns>Enable 200 OK</returns>
     [HttpPost("Update")]
+    [FestivalAuthentication(Policy = Permissions.FestivalProducts.Edit)]
     public async Task<IActionResult> Post(AddEditProductCommand command, int festivalId)
     {
+        command.FestivalId = festivalId;
         return Ok(await Mediator.Send(command));
     }
 
@@ -57,6 +63,7 @@ public class ProductsController : BaseFestivalController<ProductsController>
     /// <param name="id"></param>
     /// <returns>Enable 200 OK response</returns>
     [HttpDelete("Delete/{id}")]
+    [FestivalAuthentication(Policy = Permissions.FestivalProducts.Edit)]
     public async Task<IActionResult> Delete(int id)
     {
         return Ok(await Mediator.Send(new DeleteProductCommand { Id = id }));
@@ -68,6 +75,7 @@ public class ProductsController : BaseFestivalController<ProductsController>
     /// <param name="searchString"></param>
     /// <returns>Enable 200 OK</returns>
     [HttpGet("export")]
+    [FestivalAuthentication(Policy = Permissions.FestivalProducts.View)]
     public async Task<IActionResult> Export(string searchString = "")
     {
         return Ok(await Mediator.Send(new ExportProductsQuery(searchString)));
@@ -75,6 +83,7 @@ public class ProductsController : BaseFestivalController<ProductsController>
     
     
     [HttpGet("Get")]
+    [FestivalAuthentication(Policy = Permissions.FestivalProducts.View)]
     public async Task<IActionResult> Get([FromQuery] GetProductByIdQuery query)
     {
         return Ok(await Mediator.Send(query));

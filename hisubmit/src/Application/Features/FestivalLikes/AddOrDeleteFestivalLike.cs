@@ -21,6 +21,13 @@ public class AddOrDeleteFestivalLikeCommandHandler(IUnitOfWork<int> unitOfWork,I
 {
     public async Task<IResult> Handle(AddOrDeleteLikeCommand request, CancellationToken cancellationToken)
     {
+        if (!currentUserService.IsAuthenticated)
+            return await Result.FailAsync("You must be logged in to like this content");
+
+        if ((request.FestivalId.HasValue && request.NewId.HasValue) ||
+            (!request.FestivalId.HasValue && !request.NewId.HasValue))
+            return await Result.FailAsync("A festival or news item is required");
+
         var userId=currentUserService.UserId;
 
         var like=await unitOfWork.Repository<Like>()

@@ -213,6 +213,7 @@ public class FestivalController : BasePublicController<FestivalController>
     /// <param name="command"></param>
     /// <returns></returns>
     [HttpPost("Review")]
+    [Authorize]
     public async Task<IActionResult> Review(AddReviewCommand command)
     {
         return Ok(await Mediator.Send(command));

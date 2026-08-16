@@ -108,16 +108,9 @@ services.AddLazyCache();
 services.AddHangfire(x =>
     x.UseSqlServerStorage(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-services.AddTransient<CookieHandler>();
-//HttpClientHandler clientHandler = new HttpClientHandler();
-//clientHandler.ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; };
-
-HttpClientHandler clientHandler = new HttpClientHandler();
-clientHandler.ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => true;
-
 services.AddTransient<CookieHandler>(); // حتماً CookieHandler رو ثبت کن
 
-services.AddSingleton<HttpClient>(sp =>
+services.AddScoped<HttpClient>(sp =>
 {
     var server = sp.GetRequiredService<IServer>();
     var addressFeature = server.Features.Get<IServerAddressesFeature>();

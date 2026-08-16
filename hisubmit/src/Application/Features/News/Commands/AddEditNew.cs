@@ -14,6 +14,7 @@ using HiSubmit.Client.SharedModels.Wrapper;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
+using HiSubmit.Client.SharedModels.Constants.Role;
 
 namespace HiSubmit.Application.Features.News.Commands;
 
@@ -38,7 +39,8 @@ public class AddEditNewCommandHandler(
     IMapper mapper,
     IUnitOfWork<int> unitOfWork,
     IStringLocalizer<AddEditNewCommandHandler> localizer,
-    IUploadService uploadService) : IRequestHandler<AddEditNewCommand, IResult>
+    IUploadService uploadService,
+    ICurrentUserService currentUserService) : IRequestHandler<AddEditNewCommand, IResult>
 {
     public async Task<IResult> Handle(AddEditNewCommand request, CancellationToken cancellationToken)
     {
@@ -65,7 +67,14 @@ public class AddEditNewCommandHandler(
         {
             var newDb = await unitOfWork.Repository<New>().GetByIdAsync(request.Id);
             if (newDb == null) return await Result.FailAsync(localizer["new not found"]);
+            if (request.FestivalId.HasValue &&
+                newDb.FestivalId != request.FestivalId &&
+                !currentUserService.IsInRole(RoleConstants.AdministratorRole))
+                return await Result.FailAsync(localizer["You cannot edit news from another festival"]);
+
             var updatedNew = mapper.Map(request, newDb);
+            if (!request.FestivalId.HasValue)
+                updatedNew.FestivalId = newDb.FestivalId;
 
             await unitOfWork.Repository<New>().UpdateAsync(updatedNew);
             var dbSeoTags = await unitOfWork.Repository<MetaTag>()
@@ -84,7 +93,7 @@ public class AddEditNewCommandHandler(
                 _mappedSeoTag.PageTitle = request.Title;
                 unitOfWork.Repository<MetaTag>().AddAsync(_mappedSeoTag);
             }
-            UpdateBannerURl(request.BannerUrl, newDb.BannerUrl, request.UploadRequest);
+            updatedNew.BannerUrl = UpdateBannerURl(request.BannerUrl, newDb.BannerUrl, request.UploadRequest);
             await unitOfWork.SaveChangesAsync(cancellationToken);
             return await Result.SuccessAsync(localizer["New Updated"]);
         }

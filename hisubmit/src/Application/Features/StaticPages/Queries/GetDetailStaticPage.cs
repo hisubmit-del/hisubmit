@@ -34,8 +34,11 @@ public class GetDetailStaticPageQueryHandler(IMapper mapper, IUnitOfWork<int> un
         }
         else
         {
+            var normalizedLink = request.Link?.Trim().Trim('/');
             staticPageAndFaq = await unitOfWork.Repository<StaticPageAndFAQ>()
-                .Entities.Where(p => p.IsEnable == request.IsEnable && p.Link == request.Link)
+                .Entities.Where(p => p.IsEnable == request.IsEnable &&
+                                     p.Link != null &&
+                                     (p.Link == normalizedLink || p.Link == "/" + normalizedLink))
                 .FirstOrDefaultAsync(cancellationToken);
         }
         if (staticPageAndFaq == null) return await Result<GetDetailStaticPageResponse>

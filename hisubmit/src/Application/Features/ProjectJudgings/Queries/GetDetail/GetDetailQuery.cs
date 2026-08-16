@@ -16,6 +16,7 @@ using HiSubmit.Domain.Enums;
 using HiSubmit.Client.SharedModels.Wrapper;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using HiSubmit.Client.SharedModels.Constants.Role;
 
 namespace HiSubmit.Application.Features.ProjectJudgings.Queries.GetDetail;
 
@@ -49,9 +50,24 @@ public class  GetProjectJudgingDetailQueryHandler:
         //     var userId = _currentUserService.UserId;
         //     request.Id=await _unitOfWork.Repository<Judging>()
         // }
-        var projectJudging =await  _unitOfWork.Repository<ProjectJudging>()
+        var dbProjectJudging = await _unitOfWork.Repository<ProjectJudging>()
             .Entities
             .Where(judging => judging.Id == request.Id)
+            .Select(judging => new { judging.Id, judging.UserId, judging.RefereeStatus })
+            .FirstOrDefaultAsync(cancellationToken);
+
+        if (dbProjectJudging == null)
+            return await Result<GetProjectJudgingDetailResponse>.FailAsync("Judging assignment not found");
+
+        if (!_currentUserService.IsAuthenticated ||
+            (!_currentUserService.IsInRole(RoleConstants.AdministratorRole) &&
+             (dbProjectJudging.UserId != _currentUserService.UserId ||
+              dbProjectJudging.RefereeStatus != RefereeStatus.Default)))
+            return await Result<GetProjectJudgingDetailResponse>.FailAsync("You do not have access to this judging assignment");
+
+        var projectJudging = await _unitOfWork.Repository<ProjectJudging>()
+            .Entities
+            .Where(judging => judging.Id == dbProjectJudging.Id)
             .Include(p => p.JudgingButton)
             .Include(p => p.JudgingFiledAnswereds)
             .Include(p => p.SubmitAnswerQuestions)

@@ -9,6 +9,9 @@ using HiSubmit.Client.SharedModels.Wrapper;
 using Hisubmit.Hisubmit.Client.SharedModels.Features;
 using Hisubmit.Hisubmit.Client.SharedModels.Features.Likes;
 using Microsoft.JSInterop;
+using MudBlazor;
+using ClientComponents.Shared.Dialogs;
+using Web.Components.Shared.Dialogs;
 
 namespace Web.Components.Pages.Public.Content
 {
@@ -44,9 +47,9 @@ namespace Web.Components.Pages.Public.Content
 
         private Task PersistFestival()
         {
-            ApplicationState.PersistAsJson("festivals", _festivalResponse);
-            ApplicationState.PersistAsJson("new", _new);
-            ApplicationState.PersistAsJson("news", _newsResponse);
+            ApplicationState.PersistAsJson(StateKey("festivals"), _festivalResponse);
+            ApplicationState.PersistAsJson(StateKey("new"), _new);
+            ApplicationState.PersistAsJson(StateKey("news"), _newsResponse);
             return Task.CompletedTask;
         }
 
@@ -73,7 +76,7 @@ namespace Web.Components.Pages.Public.Content
         {
             if (ApplicationState.TryTakeFromJson
                     <GetDetailNewResponse>
-                    ("new", out var stored))
+                    (StateKey("new"), out var stored))
             {
                 _new = stored;
             }
@@ -95,7 +98,7 @@ namespace Web.Components.Pages.Public.Content
         {
             if (ApplicationState.TryTakeFromJson
                     <PaginatedResult<GetAllNewResponse>>
-                    ("news", out var stored))
+                    (StateKey("news"), out var stored))
             {
                 _newsResponse = stored;
             }
@@ -122,14 +125,14 @@ namespace Web.Components.Pages.Public.Content
         private async Task CopyLinkToClipboard()
         {
             var text = _navigationManager.Uri;
-            await _jsRuntime.InvokeVoidAsync("clipboardCopy", text);
+            await _jsRuntime.InvokeVoidAsync("shareLink", text, _new?.Title);
         }
 
         private async Task LoadFestivals()
         {
             if (ApplicationState.TryTakeFromJson
                     <PaginatedResult<GetAllFestivalResponse>>
-                    ("festivals", out var stored))
+                    (StateKey("festivals"), out var stored))
             {
                 _festivalResponse = stored;
             }
@@ -155,7 +158,14 @@ namespace Web.Components.Pages.Public.Content
 
         private async Task UpdateLike()
         {
-            if ((await AuthenticationManager.CurrentUser()).Identity!.IsAuthenticated)
+            if ((await AuthenticationManager.CurrentUser()).Identity is not { IsAuthenticated: true })
+            {
+                _dialogService.Show<NeedToLogin>("Need To Login", new DialogParameters(),
+                    new DialogOptions { CloseButton = true, MaxWidth = MudBlazor.MaxWidth.Small, FullWidth = true });
+                return;
+            }
+
+            if ((await AuthenticationManager.CurrentUser()).Identity is { IsAuthenticated: true })
             {
                 var res = await ContentManager.AddDeleteLike
                     (new GetLikeCountRequest() { NewId = NewId });
@@ -166,6 +176,8 @@ namespace Web.Components.Pages.Public.Content
                 }
             }
         }
+
+        private string StateKey(string name) => $"news:{NewId}:{name}";
         private async Task LoadLikes()
         {
             var response = await ContentManager

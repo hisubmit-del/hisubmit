@@ -360,11 +360,12 @@ function  ScrollToElement(querySelector){
 }
 
 function FindExtra() {
-    console.log('ddsd');
-    document.querySelectorAll('*').forEach(el => {
-        if (el.offsetWidth > document.documentElement.clientWidth) {
-            console.log(el.outerHTML);
-            el.remove();
+    // This function is diagnostic only. Removing wide elements here used to
+    // delete overlays, tabs and dialog content and left the page unresponsive.
+    const viewportWidth = document.documentElement.clientWidth;
+    document.querySelectorAll('body *').forEach(el => {
+        if (el.offsetWidth > viewportWidth + 2) {
+            el.dataset.layoutOverflow = 'true';
         }
     });
 }

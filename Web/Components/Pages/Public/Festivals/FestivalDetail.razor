@@ -278,26 +278,38 @@ Id=p.Id
 						<div>
 						<MudPaper Elevation="1" Class="pa-3 text-center">
 							<MudText Typo="Typo.h5" Class="mb-5" Align="Align.Center">Write Your Comment!</MudText>
-							<MudGrid>
-								<MudItem xs="12" lg="8">
-									<MudTextField Lines="5" @bind-Value="_review.Text"
-												  Variant="Variant.Outlined" Placeholder="Text your Reviews
-              To ensure reviews are relevant and from actual festival participants,
-  you must have a selected submission to this event to be eligible to add a review."></MudTextField>
-								</MudItem>
-								<MudItem xs="12" lg="4">
-									<MudText Typo="Typo.subtitle2" Class="mb-2">Rate this festival</MudText>
-									<MudRating Class="mb-2 d-block" bind-SelectedValue="@_review.Rate"></MudRating>
-									<MudText Typo="Typo.subtitle2" @onclick="ViolationReport" Class="mb-2" Color="Color.Tertiary">
-										Report this festival
-									</MudText>
-								</MudItem>
-								<MudItem Class="text-center" xs="12" lg="12">
-									<MudButton Color="Color.Tertiary" Class="px-10"
-											   OnClick="AddComment"
-											   Variant="Variant.Filled">Post comment</MudButton>
-								</MudItem>
-							</MudGrid>
+							@if (_canReview)
+							{
+								<MudGrid>
+									<MudItem xs="12" lg="8">
+										<MudTextField Lines="5" @bind-Value="_review.Text"
+													  Variant="Variant.Outlined" Placeholder="Share your experience with this festival"></MudTextField>
+									</MudItem>
+									<MudItem xs="12" lg="4">
+										<MudText Typo="Typo.subtitle2" Class="mb-2">Rate this festival</MudText>
+										<MudRating Class="mb-2 d-block" @bind-SelectedValue="_review.Rate"></MudRating>
+										<MudText Typo="Typo.subtitle2" @onclick="ViolationReport" Class="mb-2" Color="Color.Tertiary">
+											Report this festival
+										</MudText>
+									</MudItem>
+									<MudItem Class="text-center" xs="12" lg="12">
+										<MudButton Color="Color.Tertiary" Class="px-10"
+												   OnClick="AddComment"
+												   Variant="Variant.Filled">Post comment</MudButton>
+									</MudItem>
+								</MudGrid>
+							}
+							else
+							{
+								<MudAlert Severity="Severity.Info" Variant="Variant.Outlined">
+									@_reviewEligibilityMessage
+								</MudAlert>
+								@if (UserIsAuthenticated)
+								{
+									<MudButton Color="Color.Tertiary" Variant="Variant.Text"
+											   OnClick="ViolationReport">Report this festival</MudButton>
+								}
+							}
 						</MudPaper>
 						</div>
 						</div>

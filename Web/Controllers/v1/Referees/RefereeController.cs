@@ -6,9 +6,11 @@ using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using HiSubmit.Application.Features.ProjectJudgings.Queries.GetDetail;
 using HiSubmit.Application.Features.ProjectJudgings.Queries.GetRefereeData;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Web.Controllers.v1.Referees;
 
+[Authorize]
 public class RefereeController : BaseApiController<RefereeController>
 {
     private readonly ICurrentUserService _currentUserService;
@@ -28,6 +30,8 @@ public class RefereeController : BaseApiController<RefereeController>
         // request.UserId = userId;
         query.FestivalId = null;
         query.SubmitId = null;
+        query.GetCurrentUser = true;
+        query.UserId = _currentUserService.UserId;
 
         return Ok(await Mediator.Send(query));
     }

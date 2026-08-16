@@ -21,24 +21,13 @@ public partial class FestivalAuthorizeView
 
     protected override async Task OnInitializedAsync()
     {
-        _festivalId =
-            AuthenticationManager.GetMainFestivalId() ?? 0;
+        _festivalId = AuthenticationManager.GetMainFestivalId() ?? 0;
+        _selectedFestivalId =
+            await AuthenticationManager.GetAdminLoginToFestivalId() ??
+            await AuthenticationManager.GetSelectedFestivalId() ??
+            _festivalId;
 
-
-        if (await AuthenticationManager.GetSelectedFestivalId()!=null)
-        {
-            var selectedFestivalId = await AuthenticationManager.GetSelectedFestivalId();
-            if (selectedFestivalId == null)
-            {
-                 SetFestivalIdToSelectedFestivalId();
-            }
-        }
-        else
-        {
-             SetFestivalIdToSelectedFestivalId();
-        }
-
-        if (_festivalId == _selectedFestivalId && _festivalId != 0)
+        if (_selectedFestivalId != 0 && _festivalId == _selectedFestivalId)
         {
             _canView = true;
         }
@@ -48,16 +37,11 @@ public partial class FestivalAuthorizeView
         if (festivalClaims != null)
         {
             var permissions = JsonSerializer.Deserialize<Dictionary<int, string[]>>(festivalClaims.Value);
-            if (permissions != null && permissions.TryGetValue(_festivalId, out var permission))
+            if (permissions != null && permissions.TryGetValue(_selectedFestivalId, out var permission))
             {
                 if (permission.Any(p => p == Policy))
                     _canView=true;
             }
         }
-    }
-
-    private void SetFestivalIdToSelectedFestivalId()
-    {
-        _selectedFestivalId = AuthenticationManager.GetMainFestivalId() ?? 0;
     }
 }

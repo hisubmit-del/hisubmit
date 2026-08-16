@@ -255,11 +255,38 @@ function CreateFestivalGallerySlider() {
     }
 }
 
-function clipboardCopy(text) {
-    navigator.clipboard.writeText(text).then(function () {
-        alert("Copied to clipboard!");
-    })
-        .catch(function (error) {
-            alert(error);
-        });
+async function clipboardCopy(text) {
+    try {
+        if (navigator.clipboard && window.isSecureContext) {
+            await navigator.clipboard.writeText(text);
+            return true;
+        }
+
+        const input = document.createElement('textarea');
+        input.value = text;
+        input.setAttribute('readonly', '');
+        input.style.position = 'fixed';
+        input.style.opacity = '0';
+        document.body.appendChild(input);
+        input.select();
+        const copied = document.execCommand('copy');
+        input.remove();
+        return copied;
+    } catch (error) {
+        console.error('Clipboard copy failed', error);
+        return false;
+    }
+}
+
+async function shareLink(text, title) {
+    if (navigator.share) {
+        try {
+            await navigator.share({ title: title || document.title, url: text });
+            return true;
+        } catch (error) {
+            if (error?.name === 'AbortError') return false;
+        }
+    }
+
+    return clipboardCopy(text);
 }

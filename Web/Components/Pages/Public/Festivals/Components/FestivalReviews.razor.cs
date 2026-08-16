@@ -38,7 +38,7 @@ public partial class FestivalReviews
     {
         _subscription = ApplicationState.RegisterOnPersisting(PersistFestival);
         if (ApplicationState.TryTakeFromJson<PaginatedResult<GetAllReviewResponse>>
-                ("reviewResponse", out var stored))
+                (StateKey("reviewResponse"), out var stored))
         {
             ReviewResponse = stored;
             _reviews = ReviewResponse.Data;
@@ -104,9 +104,11 @@ public partial class FestivalReviews
 
     private Task PersistFestival()
     {
-        ApplicationState.PersistAsJson("reviewResponse", ReviewResponse);
+        ApplicationState.PersistAsJson(StateKey("reviewResponse"), ReviewResponse);
         return Task.CompletedTask;
     }
+
+    private string StateKey(string name) => $"festival-reviews:{FestivalId}:{name}";
 
     #endregion
 }

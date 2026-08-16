@@ -52,6 +52,9 @@ public partial class FestivalDetail
     private bool _loaded;
     private int _currentUserSubmitId;
     private int FestivalId { get; set; }
+    private bool _canReview;
+    private string _reviewEligibilityMessage;
+    private List<GetAllSubmitsResponse> _currentUserSubmits = [];
 
     private List<GetAllEventCategoryResponse> EventCategories { get; set; }
     private GetFestivalDetailResponse Festival { get; set; }
@@ -112,7 +115,6 @@ public partial class FestivalDetail
         {
             await _jsRuntime.InvokeVoidAsync("CreateImageSlider");
             await _jsRuntime.InvokeVoidAsync("CreateOrganizerSlider");
-            await _jsRuntime.InvokeVoidAsync("FindExtra");
         }
     }
 
@@ -290,12 +292,21 @@ private async Task LoadFiles(){
     private async Task UserIsAuthenticate()
     {
         var user = await AuthenticationManager.CurrentUser();
-        if (user.Identity is { IsAuthenticated: true })
-            UserIsAuthenticated = true;
+        UserIsAuthenticated = user.Identity is { IsAuthenticated: true };
     }
 
     private async Task LoadUserSubmit()
     {
+        _currentUserSubmits = [];
+        _canReview = false;
+        _reviewEligibilityMessage = null;
+
+        if (!UserIsAuthenticated)
+        {
+            _reviewEligibilityMessage = "Sign in with an accepted submission to review this festival.";
+            return;
+        }
+
         var response = await SubmitManager.GetAll(new GetAllSubmitsRequest()
         {
             GetAllData = true,
@@ -303,11 +314,43 @@ private async Task LoadFiles(){
         });
         if (response.Succeeded)
         {
-            if (response.Data.Any(p => p.FestivalId == FestivalId))
+            _currentUserSubmits = response.Data
+                .Where(p => p.FestivalId == FestivalId)
+                .ToList();
+
+            var acceptedStatuses = new[]
             {
-                _currentUserSubmitId = response.Data.FirstOrDefault(p => p.FestivalId == FestivalId).Id;
+                JudgingStatus.Selected,
+                JudgingStatus.AwardWinner,
+                JudgingStatus.Finalist,
+                JudgingStatus.SemiFinalist,
+                JudgingStatus.QuarterFinalist,
+                JudgingStatus.Nominee,
+                JudgingStatus.HonorableMention
+            };
+
+            var acceptedSubmission = _currentUserSubmits
+                .FirstOrDefault(p => acceptedStatuses.Contains(p.JudgingStatus));
+            if (acceptedSubmission != null)
+            {
+                _currentUserSubmitId = acceptedSubmission.Id;
+                if (Festival?.EventEndDate is { } eventEndDate &&
+                    DateTime.Now >= eventEndDate.AddDays(14))
+                {
+                    _canReview = true;
+                }
+                else
+                {
+                    _reviewEligibilityMessage =
+                        "Reviews become available two weeks after the festival ends.";
+                }
             }
+            else
+                _reviewEligibilityMessage =
+                    "Only participants with an accepted submission can review this festival.";
         }
+        else if (response.Messages?.Any() == true)
+            _reviewEligibilityMessage = response.Messages.First();
 
         StateHasChanged();
     }
@@ -315,7 +358,7 @@ private async Task LoadFiles(){
     private async Task CopyLinkToClipboard()
     {
         var text = _navigationManager.Uri;
-        await _jsRuntime.InvokeVoidAsync("clipboardCopy", text);
+        await _jsRuntime.InvokeVoidAsync("shareLink", text, Festival?.Name);
     }
 
     private async Task ViolationReport()
@@ -460,6 +503,13 @@ private async Task LoadFiles(){
 
     private async Task UpdateLike()
     {
+        if (!UserIsAuthenticated)
+        {
+            _dialogService.Show<NeedToLogin>("Need To Login", new DialogParameters(),
+                new DialogOptions { CloseButton = true, MaxWidth = MaxWidth.Small, FullWidth = true });
+            return;
+        }
+
         var res = await FestivalManager.AddDeleteLike(new BaseFestivalRequest()
         {
             FestivalId = Festival.Id,
@@ -498,7 +548,7 @@ private async Task LoadFiles(){
     private AddReviewCommand _review = new();
     private async Task AddComment()
     {
-        if(string.IsNullOrWhiteSpace(_review.Text))
+        if (!_canReview || string.IsNullOrWhiteSpace(_review.Text))
             return;
         
         _review.Type = CommentType.Review;

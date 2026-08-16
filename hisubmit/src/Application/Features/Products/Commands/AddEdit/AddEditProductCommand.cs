@@ -38,8 +38,8 @@ internal class AddEditProductCommandHandler(
 
     public async Task<Result<int>> Handle(AddEditProductCommand command, CancellationToken cancellationToken)
     {
-        var isAdmin =  _currentUserService.IsInRole(RoleConstants.AdministratorRole);
         var uploadRequest = command.UploadRequest;
+        uploadRequest ??= new UploadRequest { UploadType = UploadType.Product };
         uploadRequest.UploadType = UploadType.Product;
 
         if (uploadRequest != null)
@@ -48,18 +48,23 @@ internal class AddEditProductCommandHandler(
         }
 
         var festival= await unitOfWork.Repository<Festival>().GetByIdAsync(command.FestivalId);
+        if (festival == null)
+            return await Result<int>.FailAsync(localize["Festival Not Found!"]);
 
         if (command.Id == 0)
         {
             var product = mapper.Map<Product>(command);
-            if (uploadRequest != null)
+            if (uploadRequest.Data != null && uploadRequest.Data.Any())
                 product.ImageDataURL = uploadService.UploadAsync(uploadRequest);
 
 
+            product.ProductImages ??= new List<ProductImage>();
             product.ProductImages.Clear();
 
-            foreach (var pm in command.ProductImages)
+            foreach (var pm in command.ProductImages ?? new List<ProductImageDto>())
             {
+                if (pm.UploadRequest == null || pm.UploadRequest.Data == null || !pm.UploadRequest.Data.Any())
+                    continue;
                 var url = uploadService.UploadAsync(pm.UploadRequest);
                 product.ProductImages.Add(new ProductImage() { Url = url });
             }
@@ -90,9 +95,13 @@ internal class AddEditProductCommandHandler(
 
             if (product != null)
             {
+                if (product.FestivalId != command.FestivalId &&
+                    !_currentUserService.IsInRole(RoleConstants.AdministratorRole))
+                    return await Result<int>.FailAsync(localize["You cannot edit products from another festival"]);
+
                 product.Name = command.Name ?? product.Name;
                 product.Description = command.Description ?? product.Description;
-                if (uploadRequest != null)
+                if (uploadRequest.Data != null && uploadRequest.Data.Any())
                 {
                     product.ImageDataURL = uploadService.UploadAsync(uploadRequest);
                 }
@@ -102,12 +111,11 @@ internal class AddEditProductCommandHandler(
                 product.Description = command.Description;
                 product.FestivalId = command.FestivalId == 0 ? product.FestivalId : command.FestivalId;
                 product.ProductType = (ProductType)command.ProductType;
-                product.IsEnable = isAdmin;
                 await UpdateFestivalArtCategory(command.ProductImages, command.Id);
                 await unitOfWork.Repository<Product>().UpdateAsync(product);
                 
                 var dbSeoTags = await unitOfWork.Repository<MetaTag>()
-                    .Entities.Where(p => p.PageId == product.Id.ToString() && p.Type == PageType.News)
+                    .Entities.Where(p => p.PageId == product.Id.ToString() && p.Type == PageType.Product)
                     .FirstOrDefaultAsync(cancellationToken);
                 if (dbSeoTags != null)
                 {
@@ -139,6 +147,7 @@ internal class AddEditProductCommandHandler(
 
     private async Task UpdateFestivalArtCategory(List<ProductImageDto> clientImages, int productId)
     {
+        clientImages ??= new List<ProductImageDto>();
         var dbFestivalArtCategory = await unitOfWork.Repository<ProductImage>().Entities
             .Where(p => p.ProductId == productId)
             .ToListAsync();

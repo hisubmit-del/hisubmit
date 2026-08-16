@@ -10,11 +10,14 @@ namespace HiSubmit.Client.Infrastructure.Extensions
 {
     internal static class ResultExtensions
     {
-        internal static async Task<IResult<T>> ToResult<T>(this HttpResponseMessage response)
-        {
-            if (response.StatusCode == HttpStatusCode.OK)
+    internal static async Task<IResult<T>> ToResult<T>(this HttpResponseMessage response)
+    {
+            if (response.IsSuccessStatusCode)
             {
                 var responseAsString = await response.Content.ReadAsStringAsync();
+                if (string.IsNullOrWhiteSpace(responseAsString))
+                    return new Result<T> { Succeeded = true };
+
                 var responseObject = JsonSerializer.Deserialize<Result<T>>(responseAsString, new JsonSerializerOptions
                 {
                     PropertyNameCaseInsensitive = true,
@@ -23,10 +26,15 @@ namespace HiSubmit.Client.Infrastructure.Extensions
                 return responseObject;
             }
 
+            var errorBody = await response.Content.ReadAsStringAsync();
             return new Result<T>()
             {
                 Succeeded = false,
-                Messages = new List<string>() { "Http Response Error" + response.RequestMessage?.RequestUri +response.Content}
+                Messages = new List<string>
+                {
+                    $"HTTP {(int)response.StatusCode} {response.ReasonPhrase}: " +
+                    $"{response.RequestMessage?.RequestUri} {errorBody}".Trim()
+                }
             };
         }
 
@@ -43,9 +51,12 @@ namespace HiSubmit.Client.Infrastructure.Extensions
 
         internal static async Task<IResult> ToResult(this HttpResponseMessage response)
         {
-            if (response.StatusCode == HttpStatusCode.OK)
+            if (response.IsSuccessStatusCode)
             {
                 var responseAsString = await response.Content.ReadAsStringAsync();
+                if (string.IsNullOrWhiteSpace(responseAsString))
+                    return new Result { Succeeded = true };
+
                 var responseObject = JsonSerializer.Deserialize<Result>
                 (responseAsString, new JsonSerializerOptions
                 {
@@ -55,16 +66,21 @@ namespace HiSubmit.Client.Infrastructure.Extensions
                 return responseObject;
             }
 
+            var errorBody = await response.Content.ReadAsStringAsync();
             return new Result()
             {
                 Succeeded = false,
-                Messages = new List<string>() { "Http Response Error" + response.RequestMessage?.RequestUri +response.Content }
+                Messages = new List<string>
+                {
+                    $"HTTP {(int)response.StatusCode} {response.ReasonPhrase}: " +
+                    $"{response.RequestMessage?.RequestUri} {errorBody}".Trim()
+                }
             };
         }
 
         internal static async Task<PaginatedResult<T>> ToPaginatedResult<T>(this HttpResponseMessage response)
         {
-            if (response.StatusCode == HttpStatusCode.OK)
+            if (response.IsSuccessStatusCode)
             {
                 var responseAsString = await response.Content.ReadAsStringAsync();
                 var responseObject = JsonSerializer.Deserialize<PaginatedResult<T>>(responseAsString,
@@ -74,10 +90,15 @@ namespace HiSubmit.Client.Infrastructure.Extensions
                     });
                 return responseObject;
             }
+            var errorBody = await response.Content.ReadAsStringAsync();
             return new PaginatedResult<T>(new List<T>())
             {
                 Succeeded = false,
-                Messages = new List<string>() { "Http Response Error" + response.RequestMessage?.RequestUri +response.Content }
+                Messages = new List<string>
+                {
+                    $"HTTP {(int)response.StatusCode} {response.ReasonPhrase}: " +
+                    $"{response.RequestMessage?.RequestUri} {errorBody}".Trim()
+                }
             };
         }
     }

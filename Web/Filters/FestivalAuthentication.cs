@@ -20,9 +20,9 @@ public class FestivalAuthentication : Attribute, IAuthorizationFilter
             var claims = context.HttpContext.User.Claims;
             var pathArray = context.HttpContext.Request.Path.Value?.Split('/');
 
-            if (pathArray != null)
+            if (pathArray != null && pathArray.Length > 4 &&
+                int.TryParse(pathArray[4], out var festivalId))
             {
-                int? festivalId = int.Parse(pathArray[4]);
                 var userFestivalId = context.HttpContext.User.Claims
                     .FirstOrDefault(p => p.Type == ApplicationClaimTypes.FestivalId);
 
@@ -34,9 +34,9 @@ public class FestivalAuthentication : Attribute, IAuthorizationFilter
                 if (festivalClaims != null)
                 {
                     var permissions = JsonSerializer.Deserialize<Dictionary<int, string[]>>(festivalClaims.Value);
-                    if (permissions.ContainsKey(festivalId.Value))
+                    if (permissions != null && permissions.ContainsKey(festivalId))
                     {
-                        if (permissions[festivalId.Value].Any(p => p == Policy)) 
+                        if (permissions[festivalId].Any(p => p == Policy))
                             return;
                     }
                 }

@@ -18,7 +18,8 @@ public class ProductFilterSpecification : HeroSpecification<Product>
         }
         else
         {
-            Criteria = p=> festivalId==null || p.FestivalId==festivalId  ;
+            Criteria = p => (festivalId == null || p.FestivalId == festivalId) &&
+                            (isEnable == null || p.IsEnable == isEnable.Value);
         }
     }
 }

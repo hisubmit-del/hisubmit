@@ -55,6 +55,9 @@ public class AddEditProjectJudgingResultCommandHandler
             .Entities.Include(p => p.JudgingFiledAnswereds)
             .Include(p=>p.Submit)
             .FirstOrDefaultAsync(p => p.Id == request.Id, cancellationToken);
+        if (dbProjectJudging == null)
+            return await Result<int>.FailAsync(_localize["Judging assignment not found"]);
+
         if (dbProjectJudging.RefereeStatus != RefereeStatus.Default)
         {
             return await Result<int>
@@ -87,6 +90,7 @@ public class AddEditProjectJudgingResultCommandHandler
         var dbJudgingFields = await _unitOfWork.Repository<JudgingFiledAnswered>()
             .Entities.Where(p => p.ProjectJudgingId == judgingId).ToListAsync(cancellationToken);
 
+        answers ??= new List<JudgingFieldAnswerDto>();
         var deletedAnswers = dbJudgingFields
             .Where(dbAnswer => answers.All(p => p.Id != dbAnswer.Id)).ToList();
             
