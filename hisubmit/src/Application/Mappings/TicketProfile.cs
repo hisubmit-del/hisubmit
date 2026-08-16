@@ -20,7 +20,7 @@ public class TicketProfile:Profile
 
         CreateMap<Ticket, GetAllTicketResponse>()
             .ForMember(des => des.VenueName, 
-                map => map.MapFrom(src => src.Venue.Name))
+                map => map.MapFrom(src => src.Venue == null ? null : src.Venue.Name))
             .ReverseMap();
 
         CreateMap<Ticket, GetTicketByIdResponse>()

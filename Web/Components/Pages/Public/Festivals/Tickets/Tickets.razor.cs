@@ -62,7 +62,7 @@ public partial class Tickets
         });
         if (response.Succeeded)
         {
-            tickets = response.Data;
+            tickets = response.Data ?? new List<GetAllTicketResponse>();
         }
         else
         {

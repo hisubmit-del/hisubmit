@@ -18,23 +18,37 @@
 
 <SeoMetaTags PageId="0" PageType="@PageType.HomePage" OgImageUrl="https://hisubmit.com/media/logo/1.JPG" />
 
-<div class="festival-header festival-hero d-flex flex-row-center">
-    @if (HttpContextAccessor.IsPrerendering())
-    {
-        <h1 class="mud-typography mud-typography-h1 align-self-center  flex-1">
-            HiSubmit online submission platform
-        </h1>
-    }
-    else
-    {
-        <h1 class="mud-typography mud-typography-h1 align-self-center
-    flex-1 animate__animated  animate__backInDown">
-            HiSubmit online submission platform
-        </h1>
-    }
+<div class="festival-header festival-hero home-hero">
+    <div class="home-hero__content">
+        <span class="festival-eyebrow">A calmer way to enter, judge and discover</span>
+        @if (HttpContextAccessor.IsPrerendering())
+        {
+            <h1 class="mud-typography mud-typography-h1">
+                HiSubmit online submission platform
+            </h1>
+        }
+        else
+        {
+            <h1 class="mud-typography mud-typography-h1 animate__animated animate__backInDown">
+                HiSubmit online submission platform
+            </h1>
+        }
+        <p class="home-hero__copy">
+            Find the right festival for your work, follow every deadline and keep your creative journey in one organised place.
+        </p>
+        <div class="home-hero__actions">
+            <a class="home-hero__primary" href="#festival-browser">Explore festivals</a>
+            <a class="home-hero__secondary" href="/register">Join HiSubmit</a>
+        </div>
+    </div>
+    <div class="home-hero__visual" aria-hidden="true">
+        <span class="home-hero__orb home-hero__orb--large"></span>
+        <span class="home-hero__orb home-hero__orb--small"></span>
+        <MudIcon Icon="@Icons.Material.Outlined.AutoAwesome" />
+    </div>
 </div>
 
-<MudContainer Class="festival-browser-page">
+<MudContainer Class="festival-browser-page" id="festival-browser">
     <div class="mud-grid mud-grid-spacing-xs-6 justify-center festival-key-search-box text-center justify-center px-lg-14 px-2">
         <div class="mud-grid-item mud-grid-item-xs-12 mud-grid-item-md-6 mud-grid-item-xl-5">
 

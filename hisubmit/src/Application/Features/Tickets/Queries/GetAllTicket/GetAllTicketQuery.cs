@@ -48,17 +48,26 @@ public class GetAllTicketQueryHandler(
             .ProjectTo<GetAllTicketResponse>(mapper.ConfigurationProvider)
             .ToPaginatedListAsync(request);
 
-        var venueId = result.Data.Select(p => p.VenueId);
+        var venueId = (result.Data ?? Enumerable.Empty<GetAllTicketResponse>())
+            .Where(p => p.VenueId.HasValue)
+            .Select(p => p.VenueId.Value)
+            .ToList();
         var addresses = unitOfWork.Repository<Address>()
-            .Entities.Where(p => venueId.Any(k => k == p.VenueId))
+            .Entities.Where(p => p.VenueId.HasValue && venueId.Contains(p.VenueId.Value))
             .Include(p => p.Country);
 
-        foreach (var ticket in result.Data)
+        foreach (var ticket in result.Data ?? Enumerable.Empty<GetAllTicketResponse>())
         {
             var address = addresses.FirstOrDefault(p => p.VenueId == ticket.VenueId);
             if (address != null)
             {
-                ticket.VenueAddress = $"{address.Country.Name}-{address.State}-{address.City}-{address.Text}";
+                ticket.VenueAddress = string.Join("-", new[]
+                {
+                    address.Country?.Name,
+                    address.State,
+                    address.City,
+                    address.Text
+                }.Where(value => !string.IsNullOrWhiteSpace(value)));
             }
         }
 

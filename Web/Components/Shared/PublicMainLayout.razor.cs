@@ -151,7 +151,16 @@ public partial class PublicMainLayout
         //        }
         //    }
         //});
-        await _jsRuntime.InvokeVoidAsync("mainInter");
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await _jsRuntime.InvokeVoidAsync("mainInter");
+        }
+
+        await base.OnAfterRenderAsync(firstRender);
     }
 
 

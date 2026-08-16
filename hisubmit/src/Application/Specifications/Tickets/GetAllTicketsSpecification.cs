@@ -22,7 +22,7 @@ public sealed class GetAllTicketFilterSpecification : HeroSpecification<Ticket>
 
         Criteria = ticket =>
                 (isEnable==null || ticket.IsEnable==isEnable.Value)&&
-                (festivalId==null || festivalId.Value==0 ||   ticket.Venue.FestivalId==festivalId.Value )&&
+                (festivalId==null || festivalId.Value==0 || (ticket.Venue != null && ticket.Venue.FestivalId==festivalId.Value))&&
                 (getActiveTicket == null
                  || (getActiveTicket.Value && DateTime.Now > ticket.OpenDate && DateTime.Now < ticket.CloseDate)
                  || (!getActiveTicket.Value && ! (DateTime.Now > ticket.OpenDate && DateTime.Now < ticket.CloseDate)))

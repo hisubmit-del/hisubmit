@@ -2,7 +2,19 @@
 @using HiSubmit.Client.Infrastructure.Managers.PublicFestival
 @using Hisubmit.Client.SharedModels.Features.AdminFestival.Queries.GetAllFestival
 @using HiSubmit.Client.SharedModels.Wrapper
-<div class="footer">
+<div class="footer public-footer">
+    <MudContainer MaxWidth="MaxWidth.Large" Class="public-footer__intro">
+        <div>
+            <MudText Typo="Typo.h5">Make room for better creative work.</MudText>
+            <MudText Typo="Typo.body2">HiSubmit brings entries, festivals, judging and experiences into one thoughtful workspace.</MudText>
+        </div>
+        <div class="public-footer__links">
+            <a href="/news">News</a>
+            <a href="/store">Store</a>
+            <a href="/tickets">Tickets</a>
+            <a href="/advertise">Advertise</a>
+        </div>
+    </MudContainer>
     <MudGrid Class="py-lg-20  px-5 d-flex justify-center flex-grow-1 gap-4 festivals-footer-box">
         @foreach (var festival in _festivalResponse.Data)
         {
