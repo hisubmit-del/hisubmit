@@ -147,16 +147,20 @@
 						 <div class="festival-detail-content">
 							<MudTabs MinimumTabWidth="40px" PanelClass="mt-3" Elevation="0" Ripple="true"
 								 Class="background-transparent festival-detail-text">
-							<MudTabPanel Text="festival Detail" Class="text-transform-none ">
-								<p>
-									@((MarkupString)Festival.Description)
-								</p>
+							<MudTabPanel Text="Festival details" Class="text-transform-none ">
+								<ReadMore Text="@Festival.Description" MarkUpString="true" />
 							</MudTabPanel>
 							<MudTabPanel Text="Rules & Awards" Class="text-transform-none">
-								<p>    @((MarkupString)Festival.Rewards)        </p>
+								<div class="rich-content-section">
+									<MudText Typo="Typo.h6" Class="mb-2">Awards</MudText>
+									<ReadMore Text="@Festival.Rewards" MarkUpString="true" />
+								</div>
 							</MudTabPanel>
-							<MudTabPanel Text="Sections & Fees" Class="text-transform-none">
-								<p>      @((MarkupString)Festival.Rules) </p>
+							<MudTabPanel Text="Rules & fees" Class="text-transform-none">
+								<div class="rich-content-section">
+									<MudText Typo="Typo.h6" Class="mb-2">Rules and sections</MudText>
+									<ReadMore Text="@Festival.Rules" MarkUpString="true" />
+								</div>
 							</MudTabPanel>
 							@if (_tickets.Any())
                             {

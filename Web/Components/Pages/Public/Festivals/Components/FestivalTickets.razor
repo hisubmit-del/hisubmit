@@ -3,7 +3,7 @@
 @using HiSubmit.Client.SharedModels.Extensions
 @using global::Hisubmit.Client.SharedModels.Features.SoldTickets.Commands
 
-@* <MudGrid> *@
+<MudGrid Class="ticket-list">
     @foreach (var ticket in Tickets)
     {
         <MudItem xs="12"  Class="my-2">
@@ -52,17 +52,19 @@
                             </MudStack>
 
                         </MudItem>
-                    <MudButton 
-                                   OnClick="()=>AddToCart(ticket.Id,ticket.AvailableCapacity,ticket.TicketType,ticket.VenueId)"                                   
-                                   Style="position: absolute; bottom: 4px;right: 4px"                                   
-                                   Color="Color.Primary" Size="Size.Small" Variant="Variant.Filled">Take a Ticket</MudButton>
                     </MudGrid>
                 </MudCardContent>
-
+                <MudCardActions Class="ticket-card__actions">
+                    <MudButton FullWidth="true"
+                               OnClick="()=>AddToCart(ticket.Id,ticket.AvailableCapacity,ticket.TicketType,ticket.VenueId)"
+                               Color="Color.Primary"
+                               Size="Size.Small"
+                               Variant="Variant.Filled">Take a Ticket</MudButton>
+                </MudCardActions>
             </MudCard>
         </MudItem>
     }
-@* </MudGrid> *@
+</MudGrid>
 
 
 @code {

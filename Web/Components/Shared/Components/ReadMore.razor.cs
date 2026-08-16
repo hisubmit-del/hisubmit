@@ -1,40 +1,31 @@
-﻿using System.Threading.Tasks;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 
 namespace Web.Components.Shared.Components;
 
-public  partial class ReadMore
+public partial class ReadMore
 {
+    private const int CollapseThreshold = 420;
+
     [Parameter]
-    public string Text { get; set; }
-    
+    public string Text { get; set; } = string.Empty;
+
     [Parameter]
     public bool MarkUpString { get; set; }
 
     private bool _showMore;
+    private string _text = string.Empty;
 
-    private string _displayText;
+    private bool IsExpandable => _text.Length > CollapseThreshold;
 
-    protected override Task OnInitializedAsync()
+    protected override Task OnParametersSetAsync()
     {
-        if (Text.Length > 400)
-            _displayText = _showMore ? Text : Text[..400];       
-        else
-            _displayText = Text;
-        return base.OnInitializedAsync();
+        _text = Text ?? string.Empty;
+        return Task.CompletedTask;
     }
 
     private void ToggleShow()
     {
-        _showMore =! _showMore;
-        ToggleText();
-    }
-
-    private void ToggleText()
-    {
-        if (Text.Length > 250)
-            _displayText = _showMore ? Text : Text[..250];       
-        else
-            _displayText = Text;
+        _showMore = !_showMore;
     }
 }

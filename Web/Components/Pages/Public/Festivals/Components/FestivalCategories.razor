@@ -2,7 +2,7 @@
 @using global::Hisubmit.Client.SharedModels.Features.Festivals.Queries.GetAllDeadLineEventCategory
 @if (_loaded)
 {
-    <MudCard Class="mt-2 pb-3 pt-2 border-radius-20">
+    <MudCard Class="mt-2 pb-3 pt-2 border-radius-20 festival-side-card festival-categories-card">
         <div class="side-box categories-fees">
             <div Class="mt-3 mb-6">
                 <MudText Typo="Typo.h5" Align="Align.Center" Class="mb-2">Categories & Fees</MudText>
@@ -12,13 +12,13 @@
                 @foreach (var dc in DeadlineCategoriesGrouping)
                 {
                     var cat = dc.First();
-                    <MudExpansionPanel Text="@(cat.CategoryName +"-" + dc.Count())">
+                    <MudExpansionPanel Text="@(cat.CategoryName + " · " + dc.Count() + " deadlines")">
                       @*   <div id="@($"flush-collapse{i}")" class="accordion-collapse collapse "
                              aria-labelledby="@($"flush-heading{i}")" data-bs-parent="#accordion-categories-fees">
                             <div class="accordion-body"> *@
                                 @{
                                     GetAllDeadLineEventCategoryResponse nearestDeadLineCat = null;
-                                    <ul class="festival-categories">
+                                    <ul class="festival-categories festival-categories-list">
                                         @foreach (var d in 
                                                   dc.OrderBy(p => p.DeadLineDate))
                                         {

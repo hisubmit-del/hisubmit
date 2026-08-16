@@ -2,11 +2,11 @@
 @inject IStringLocalizer<FestivalTimeLine> Localize
 @if (_loaded)
 {
-    <MudCard Class="text-center time-line-box pt-2 border-radius-20">
+    <MudCard Class="text-center time-line-box pt-2 border-radius-20 festival-side-card">
         <div Class="mt-2">
             <MudText Typo="Typo.h5" Align="Align.Center" Class="mb-2">Time Line</MudText>
         </div>
-        <MudTimeline Class="text-start" TimelineOrientation="TimelineOrientation.Vertical" TimelinePosition="TimelinePosition.Start">
+        <MudTimeline Class="text-start festival-timeline" TimelineOrientation="TimelineOrientation.Vertical" TimelinePosition="TimelinePosition.Start">
             @foreach (var time in TimeLines)
             {
                 if (time.Nearest)

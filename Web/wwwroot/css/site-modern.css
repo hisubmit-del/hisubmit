@@ -1829,3 +1829,237 @@ a:hover {
         width: calc(100% - 1.5rem);
     }
 }
+
+/* Content resilience: long editorial text, dense deadlines and commerce cards */
+.festival-detail-content .mud-tabs-tabbar {
+    max-width: 100%;
+    overflow-x: auto;
+    scrollbar-width: thin;
+}
+
+.festival-detail-content .mud-tabs-tabbar-content {
+    min-width: max-content;
+}
+
+.festival-detail-content .mud-tab {
+    flex: 0 0 auto;
+    white-space: nowrap;
+}
+
+.festival-detail-text,
+.festival-detail-text .mud-tab-panel,
+.rich-content-section,
+.read-more-shell {
+    min-width: 0;
+    max-width: 100%;
+}
+
+.festival-detail-text .mud-tab-panel {
+    overflow-wrap: anywhere;
+    word-break: normal;
+}
+
+.festival-detail-text p,
+.rich-content-section p,
+.rich-content-section li,
+.read-more-content {
+    line-height: 1.8;
+    overflow-wrap: anywhere;
+    word-break: normal;
+}
+
+.festival-detail-text img,
+.rich-content-section img,
+.read-more-content img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    border-radius: var(--radius-sm);
+}
+
+.festival-detail-text table,
+.rich-content-section table,
+.read-more-content table {
+    display: block;
+    max-width: 100%;
+    overflow-x: auto;
+    border-collapse: collapse;
+}
+
+.read-more-shell {
+    position: relative;
+}
+
+.read-more-content {
+    max-height: none;
+    transition: max-height var(--motion-normal) ease;
+}
+
+.read-more-content.is-collapsed {
+    max-height: 15rem;
+    overflow: hidden;
+    mask-image: linear-gradient(to bottom, #000 78%, transparent 100%);
+}
+
+.read-more-content.is-expanded {
+    max-height: none;
+}
+
+.read-more-toggle {
+    min-height: 2.2rem;
+    margin-top: .35rem;
+    padding-inline: .35rem;
+    font-weight: 800;
+}
+
+.festival-side-card {
+    min-width: 0;
+    overflow: hidden;
+}
+
+.festival-categories-list {
+    margin: 0;
+    padding-inline-start: 1.3rem;
+}
+
+.festival-categories-list li {
+    min-width: 0;
+    gap: .25rem;
+    overflow-wrap: anywhere;
+}
+
+.festival-categories-list li p {
+    line-height: 1.45;
+}
+
+.festival-categories-list .fees {
+    max-width: 100%;
+    align-items: flex-end;
+}
+
+.festival-categories-list .fees span {
+    display: block;
+    max-width: 100%;
+    overflow-wrap: anywhere;
+    text-align: end;
+}
+
+.festival-timeline {
+    max-width: 100%;
+    overflow: hidden;
+}
+
+.festival-timeline .mud-timeline-item-content {
+    min-width: 0;
+    overflow-wrap: anywhere;
+}
+
+.festival-timeline .mud-typography {
+    line-height: 1.45;
+    overflow-wrap: anywhere;
+}
+
+.marketplace-product-card__title {
+    min-height: 3.3rem;
+    overflow-wrap: anywhere;
+}
+
+.marketplace-product-card__title a {
+    display: -webkit-box;
+    overflow: hidden;
+    color: inherit;
+    line-height: 1.4;
+    text-decoration: none;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+}
+
+.marketplace-product-card__actions {
+    display: flex;
+    align-items: stretch;
+    gap: .35rem;
+    min-height: 3.4rem;
+    margin-top: auto;
+}
+
+.marketplace-product-card__actions .mud-button-root {
+    min-width: 0;
+    flex: 1 1 0;
+    white-space: normal;
+}
+
+.ticket-list {
+    margin: 0;
+}
+
+.ticket-list > .mud-grid-item {
+    min-width: 0;
+}
+
+.ticket-market-grid .ticket {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.ticket-market-grid .ticket .mud-card-content {
+    flex: 1 1 auto;
+}
+
+.ticket-market-grid .ticket .mud-grid-item {
+    min-width: 0;
+}
+
+.ticket-market-grid .ticket .mud-typography {
+    overflow-wrap: anywhere;
+    word-break: normal;
+}
+
+.ticket-market-grid .ticket-card__actions {
+    margin-top: auto;
+    padding: .5rem .75rem .75rem;
+}
+
+.ticket-market-grid .ticket-card__actions .mud-button-root {
+    min-height: 2.6rem;
+}
+
+@media (max-width: 767.98px) {
+    .festival-detail-content > .mud-tabs {
+        padding: .25rem;
+    }
+
+    .festival-detail-content .mud-tabs-tabbar {
+        margin-inline: -.25rem;
+        padding-inline: .25rem;
+    }
+
+    .festival-detail-content .mud-tab {
+        min-width: max-content;
+        padding-inline: .7rem;
+    }
+
+    .festival-categories-list {
+        padding-inline-start: 1rem;
+    }
+
+    .festival-categories-list li {
+        align-items: flex-start;
+    }
+
+    .festival-categories-list .fees,
+    .festival-categories-list .fees span {
+        width: 100%;
+        align-items: flex-start;
+        text-align: start;
+    }
+
+    .marketplace-product-card__actions {
+        flex-wrap: wrap;
+    }
+
+    .marketplace-product-card__actions .mud-button-root {
+        flex-basis: 100%;
+    }
+}

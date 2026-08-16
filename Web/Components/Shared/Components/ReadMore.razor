@@ -1,41 +1,25 @@
-﻿@if (MarkUpString)
-{
-    <p>
+<section class="read-more-shell @(_showMore ? "is-expanded" : "is-collapsed")">
+    <div class="read-more-content @(_showMore ? "is-expanded" : "is-collapsed")"
+         aria-expanded="@_showMore">
         @if (MarkUpString)
         {
-            @((MarkupString)_displayText)
+            @((MarkupString)(_text ?? string.Empty))
         }
         else
         {
-            @(_displayText)
+            @_text
         }
-        @if (_showMore)
-        {
-            <MudText Color="Color.Primary"></MudText>
-            <MudButton DisableElevation="true"
-                       Variant="Variant.Text"
-                       OnClick="ToggleShow"
-                       EndIcon="@Icons.Material.Filled.KeyboardDoubleArrowUp"
-                       Color="Color.Primary">
-                hide
-            </MudButton>
-        }
-        else
-        {
-            <MudButton DisableElevation="true"
-                       Variant="Variant.Text"
-                       class=""
-                       OnClick="ToggleShow"
-                       EndIcon="@Icons.Material.Filled.KeyboardDoubleArrowDown"
-                       Color="Color.Primary">
-                show more
-            </MudButton>
-        }
-    </p>
-}
-else
-{
-    <p>
-        @_displayText
-    </p>
-}
+    </div>
+
+    @if (IsExpandable)
+    {
+        <MudButton DisableElevation="true"
+                   Variant="Variant.Text"
+                   Class="read-more-toggle"
+                   OnClick="ToggleShow"
+                   EndIcon="@(_showMore ? Icons.Material.Filled.KeyboardDoubleArrowUp : Icons.Material.Filled.KeyboardDoubleArrowDown)"
+                   Color="Color.Primary">
+            @(_showMore ? "Show less" : "Show more")
+        </MudButton>
+    }
+</section>

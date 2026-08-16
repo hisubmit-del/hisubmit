@@ -11,7 +11,7 @@
         {
             <MudChip T="string" Color="Color.Info" Variant="Variant.Text" Size="Size.Small">@Product.FestivalName</MudChip>
         }
-        <MudText Typo="Typo.h6" Class="Product-title">
+        <MudText Typo="Typo.h6" Class="Product-title marketplace-product-card__title">
             <a href="@($"/product/{Product.Id}/{Product.Name}")">
                 @Product.Name
             </a>
@@ -24,7 +24,7 @@
         </MudText>
     </MudCardContent>
 
-    <MudCardActions>
+    <MudCardActions Class="marketplace-product-card__actions">
         <MudButton Variant="Variant.Text"
                    OnClick="AddToCart"
                    StartIcon="@Icons.Material.Filled.ShoppingCart"
