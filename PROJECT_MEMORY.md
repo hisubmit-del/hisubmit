@@ -322,3 +322,19 @@ migration اصلی فعلی در `hisubmit/src/Infrastructure/Migrations/2025070
   published copy. The project remains ready for a host-side secure setting;
   explicit owner approval is required before any plaintext credential is
   written to a tracked file.
+
+## Git and deployment policy (2026-08-16)
+
+- Every code or configuration change must be committed with a clear message
+  before the next change is started, so the project can be reverted safely.
+- The current tested branch is `recovery-clean-20260816`; its latest published
+  commit is `3a9c107`.
+- The Plesk Git repository is connected to
+  `https://github.com/hisubmit-del/hisubmit.git`, currently tracking
+  `recovery-clean-20260816`, with automatic deployment to `\httpdocs`.
+- Plesk currently deploys repository files directly. It must not be treated as
+  a replacement for `dotnet publish` until a Windows deployment action is
+  configured and verified.
+- `Web/appsettings.Production.json` is intentionally ignored by Git and must
+  remain host-local. `Web/appsettings.Production.template.json` is the safe
+  source-controlled template.
