@@ -378,3 +378,11 @@ migration اصلی فعلی در `hisubmit/src/Infrastructure/Migrations/2025070
 - The rebuilt local app also returned HTTP 200 for demo festival products,
   tickets, and deadline categories. The source build completed with zero
   errors; existing package and compiler warnings remain tracked separately.
+- The static-page route bug was traced to inconsistent database links: the
+  Terms record stores `terms` while the route previously queried `/terms`.
+  The page now normalizes route slashes and both `/terms` and `/term` return
+  HTTP 200 locally.
+- The `/Account/Login` form previously passed the email directly as the
+  Identity username. It now resolves the user by email first and signs in
+  with the stored username. The demo credentials were verified through the
+  local login API.

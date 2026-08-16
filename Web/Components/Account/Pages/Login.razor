@@ -9,6 +9,7 @@
 
 
 @inject SignInManager<BlazorHeroUser> SignInManager
+@inject UserManager<BlazorHeroUser> UserManager
 @inject ILogger<Login> Logger
 @inject NavigationManager NavigationManager
 @inject IdentityRedirectManager RedirectManager
@@ -180,9 +181,14 @@
 
     public async Task LoginUser()
     {
-        var result = await SignInManager
-            .PasswordSignInAsync(Input.Email, Input.Password, 
-                Input.RememberMe, lockoutOnFailure: false);
+        var user = await UserManager.FindByEmailAsync(Input.Email);
+        var result = user is null
+            ? SignInResult.Failed
+            : await SignInManager.PasswordSignInAsync(
+                user.UserName!,
+                Input.Password,
+                Input.RememberMe,
+                lockoutOnFailure: false);
 
         var festivalClaims = HttpContext.User.FindFirst(ApplicationClaimTypes.FestivalId);
 

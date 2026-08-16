@@ -42,7 +42,10 @@
     {
         var response = await ContentManager.GetStaticPage(new GetDetailStaticPageQuery
             {
-                Link = $"/{URL}"
+                // Static-page links are stored inconsistently (some with a
+                // leading slash, some without). Normalize the route before
+                // querying so /terms and /PrivacyPolicy both resolve.
+                Link = URL?.Trim().Trim('/')
             });
         if (response.Succeeded)
         {
