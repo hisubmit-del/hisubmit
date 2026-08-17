@@ -507,3 +507,27 @@ migration اصلی فعلی در `hisubmit/src/Infrastructure/Migrations/2025070
   vulnerability warnings. The previously observed run/build interruption was
   caused by a live `Web.exe` locking assemblies; stopping that exact process
   before rebuilding resolved it.
+
+## Cart, festival rating, and festival browser stability checkpoint (2026-08-17)
+
+- Root cause of the observed cart HTTP 500 was confirmed in
+  `Web/Logs/log20260817.txt`: SQL `float` values in
+  `SubmitDeadLineCategories.Price` were being materialized into a CLR
+  `int?`, causing `System.Double` to `System.Int32` cast failures.
+- The domain property, submit-category DTOs, deadline fee DTOs, and submit
+  creation path now use `double`; the anonymous cart endpoint was re-tested
+  and returns a controlled `User not Found` result instead of HTTP 500.
+- Public festival ratings now accept one rating per festival per user or IP.
+  Rating comments remain subject to the existing accepted-participant and
+  two-week-after-event rule. A summary endpoint returns average, total votes,
+  and whether the current visitor has rated.
+- Local rating verification for festival ID 15 succeeded: first rating was
+  stored, the second request from the same IP was rejected, and the summary
+  returned `averageRate=4`, `totalVotes=1`, `hasRated=true`.
+- Festival featured tiles and result cards are now clickable, the duplicate
+  filter count was removed, filter controls have overflow-safe styling, and
+  long festival names/content wrap without escaping their containers.
+- The public festival heading rating is live instead of hardcoded, and empty
+  rating records are excluded from the visible review list.
+- Final local build completed with zero errors. Existing legacy/compiler and
+  package vulnerability warnings remain outside this focused checkpoint.

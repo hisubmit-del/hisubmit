@@ -29,7 +29,7 @@
         }
         else
         {
-            <h1 class="mud-typography mud-typography-h1 animate__animated animate__backInDown">
+            <h1 class="mud-typography mud-typography-h1">
                 HiSubmit online submission platform
             </h1>
         }
@@ -81,7 +81,9 @@
             for (int i = 0; i < max; i++)
             {
                 var festival = _pagedData.ToArray()[i];
-                <div class="mud-grid-item mud-grid-item-xs-6 mud-grid-item-lg-3 festival-featured-tile img-box text-center">
+                <a class="mud-grid-item mud-grid-item-xs-6 mud-grid-item-lg-3 festival-featured-tile img-box text-center"
+                   href="@($"/festival/{festival.URL}")"
+                   aria-label="View @festival.Name">
                     <div class="festival-featured-tile__media">
                         <span class="festival-featured-tile__fallback">@festival.Name</span>
                         <img alt="@festival.Name"
@@ -90,15 +92,11 @@
                              onerror="this.style.display='none';" />
                     </div>
 
-                    <a type="button" href="@($"/festivalPage/{festival.URL}")"
-                       class="mud-button-root mud-button mud-button-outlined mud-button-outlined-tertiary mud-button-outlined-size-medium mud-ripple btn-view-festival">
-                        <span class="mud-button-label">
-                            <!--!-->
-                            View festival
-                        </span>
-                    </a>
+                    <span class="mud-button-root mud-button mud-button-outlined mud-button-outlined-tertiary mud-button-outlined-size-medium mud-ripple btn-view-festival">
+                        <span class="mud-button-label">View festival</span>
+                    </span>
 
-                </div>
+                </a>
             }
         }
     </div>
@@ -250,9 +248,6 @@
                 </MudPaper>
                 @if (_loaded)
                 {
-                    <p class="mud-typography mud-typography-subtitle1 ">
-                        @_festivalResponse.TotalCount festivals
-                    </p>
                 }
             </div>
 
@@ -298,7 +293,11 @@
                 foreach (var item in _pagedData)
                 {
                     <div class="mud-grid-item mud-grid-item-xs-12  mud-grid-item-lg-4">
-                        <MudCard class="@(item.FeeStatus == FeeStatus.Special ? "festival-card bg-Gold" : "festival-card")">
+                        <MudCard class="@(item.FeeStatus == FeeStatus.Special ? "festival-card bg-Gold" : "festival-card")"
+                                 @onclick="@(() => GoToFestivalDetail(item.URL))"
+                                 Style="cursor:pointer"
+                                 role="link"
+                                 tabindex="0">
                             <MudCardContent>
                                 <div style="height: 220px" class="d-flex  flex-grow-1 gap-4 justify-center d-relative ">
                                     <img src="@item.LogoURL" alt="@item.Name" loading="lazy" class="align-self-center" style="max-width: 100%;max-height: 100%" />
@@ -360,11 +359,13 @@
                                 @switch (item.FestivalDateStatus)
                                 {
                                     case FestivalDateStatus.Submit:
-                                        <MudButton Variant="Variant.Filled"
-                                                   OnClick="@(() => Submit(item.Id))"
-                                                   Color="Color.Tertiary">
-                                            Submit now
-                                        </MudButton>
+                                        <div @onclick:stopPropagation="true">
+                                            <MudButton Variant="Variant.Filled"
+                                                       OnClick="@(() => Submit(item.Id))"
+                                                       Color="Color.Tertiary">
+                                                Submit now
+                                            </MudButton>
+                                        </div>
                                         break;
                                     case FestivalDateStatus.Closed:
                                         <MudButton Variant="Variant.Outlined"
@@ -379,11 +380,13 @@
                                         </MudButton>
                                         break;
                                 }
-                                <MudButton Variant="Variant.Outlined"
-                                           OnClick="@(() => GoToFestivalDetail(item.URL))"
-                                           Color="Color.Dark">
-                                    View festival
-                                </MudButton>
+                                <div @onclick:stopPropagation="true">
+                                    <MudButton Variant="Variant.Outlined"
+                                               OnClick="@(() => GoToFestivalDetail(item.URL))"
+                                               Color="Color.Dark">
+                                        View festival
+                                    </MudButton>
+                                </div>
                             </MudCardActions>
                         </MudCard>
                     </div>

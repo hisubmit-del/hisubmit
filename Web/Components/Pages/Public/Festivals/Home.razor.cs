@@ -254,6 +254,8 @@ public partial class Home : IDisposable
 
     private async Task ReloadFestivals()
     {
+        if (_timer is null)
+            return;
         _timer.Stop();
         _timer.Start();
     }

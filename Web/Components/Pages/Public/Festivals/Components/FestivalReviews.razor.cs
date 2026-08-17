@@ -20,6 +20,7 @@ public partial class FestivalReviews
     #region Parameters
 
     [Parameter] public int FestivalId { get; set; }
+    [Parameter] public int RefreshToken { get; set; }
 
     #endregion
 
@@ -55,6 +56,20 @@ public partial class FestivalReviews
 
         await base.OnInitializedAsync();
         _loaded = true;
+    }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (_loaded && FestivalId > 0)
+        {
+            await LoadReview(new GetAllReviewQuery
+            {
+                FestivalId = FestivalId,
+                PageNumber = _pageNumber,
+                PageSize = 4,
+                Type = Hisubmit.Client.SharedModels.Enums.CommentType.Review
+            });
+        }
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -93,7 +108,8 @@ public partial class FestivalReviews
         {
             FestivalId = FestivalId,
             PageNumber = pageNumber,
-            PageSize = 4
+            PageSize = 4,
+            Type = Hisubmit.Client.SharedModels.Enums.CommentType.Review
         };
         await LoadReview(query);
     }

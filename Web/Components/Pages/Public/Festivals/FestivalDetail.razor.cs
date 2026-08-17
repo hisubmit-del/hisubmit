@@ -27,6 +27,7 @@ using Hisubmit.Hisubmit.Client.SharedModels.Features;
 using Microsoft.JSInterop;
 using Hisubmit.Client.SharedModels.Features.Festivals.Queries.GetAllFestivalFile;
 using Web.Components.Shared.Dialogs;
+using Hisubmit.Client.SharedModels.Features.Reviews.Queries;
 
 namespace Web.Components.Pages.Public.Festivals;
 
@@ -71,6 +72,11 @@ public partial class FestivalDetail
     //like
     private bool _liked;
     private int _likedCount;
+    private double _festivalAverageRating;
+    private int _festivalRatingCount;
+    private int _selectedFestivalRating;
+    private bool _hasRatedFestival;
+    private int _ratingRefreshToken;
     
     #endregion
 
@@ -103,6 +109,7 @@ public partial class FestivalDetail
             await LoadProducts();
             await LoadQualifiers();
             await LoadLikes();
+            await LoadRatingSummary();
         }
 
         await base.OnParametersSetAsync();
@@ -293,6 +300,45 @@ private async Task LoadFiles(){
     {
         var user = await AuthenticationManager.CurrentUser();
         UserIsAuthenticated = user.Identity is { IsAuthenticated: true };
+    }
+
+    private async Task LoadRatingSummary()
+    {
+        var response = await FestivalManager.GetFestivalRatingSummary(
+            new GetFestivalRatingSummaryQuery { FestivalId = FestivalId });
+        if (response.Succeeded && response.Data is not null)
+        {
+            _festivalAverageRating = response.Data.AverageRate;
+            _festivalRatingCount = response.Data.TotalVotes;
+            _hasRatedFestival = response.Data.HasRated;
+        }
+    }
+
+    private async Task RateFestival()
+    {
+        if (_selectedFestivalRating is < 1 or > 5 || _hasRatedFestival)
+            return;
+
+        var response = await FestivalManager.AddReview(new AddReviewCommand
+        {
+            FestivalId = FestivalId,
+            Rate = _selectedFestivalRating,
+            Type = CommentType.Review,
+            Text = string.Empty
+        });
+
+        if (response.Succeeded)
+        {
+            _selectedFestivalRating = 0;
+            await LoadRatingSummary();
+            _ratingRefreshToken++;
+            _snackBar.Add("Thank you for rating this festival.", Severity.Success);
+        }
+        else
+        {
+            foreach (var message in response.Messages)
+                _snackBar.Add(message, Severity.Warning);
+        }
     }
 
     private async Task LoadUserSubmit()

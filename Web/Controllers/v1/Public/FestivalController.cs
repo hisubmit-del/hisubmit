@@ -153,6 +153,12 @@ public class FestivalController : BasePublicController<FestivalController>
         return Ok(await Mediator.Send(query));
     }
 
+    [HttpGet("RatingSummary")]
+    public async Task<IActionResult> RatingSummary([FromQuery] GetFestivalRatingSummaryQuery query)
+    {
+        return Ok(await Mediator.Send(query));
+    }
+
     /// <summary>
     /// get all new 
     /// </summary>
@@ -213,7 +219,7 @@ public class FestivalController : BasePublicController<FestivalController>
     /// <param name="command"></param>
     /// <returns></returns>
     [HttpPost("Review")]
-    [Authorize]
+    [AllowAnonymous]
     public async Task<IActionResult> Review(AddReviewCommand command)
     {
         return Ok(await Mediator.Send(command));

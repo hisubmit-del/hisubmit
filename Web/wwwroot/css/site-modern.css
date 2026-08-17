@@ -161,6 +161,146 @@
     }
 }
 
+/* Festival browser stability: cards, filters and long content must remain usable
+   when names, categories or deadlines are much longer than the demo data. */
+.festival-featured-tile {
+    color: inherit;
+    text-decoration: none;
+}
+
+.festival-featured-tile:hover,
+.festival-featured-tile:focus-visible {
+    color: inherit;
+    text-decoration: none;
+}
+
+.festival-featured-tile .btn-view-festival {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    overflow-wrap: anywhere;
+    text-align: center;
+}
+
+.festival-filter-heading,
+.festival-results-heading {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    min-width: 0;
+}
+
+.festival-filter-heading > *,
+.festival-results-heading > * {
+    min-width: 0;
+}
+
+.festival-filter-form {
+    align-items: stretch;
+}
+
+.festival-filter-form .mud-input-control,
+.festival-filter-form .mud-picker .mud-input-control,
+.festival-filter-form .mud-select,
+.festival-filter-form .mud-switch {
+    max-width: 100%;
+}
+
+.festival-filter-form .mud-input-slot,
+.festival-filter-form .mud-select-input,
+.festival-filter-form .mud-input {
+    min-width: 0;
+    overflow-wrap: anywhere;
+}
+
+.festival-filter-form .competition-selector .mud-input-control,
+.festival-filter-form .competition-selector .mud-input,
+.festival-filter-form .competition-selector .mud-input-slot {
+    background: var(--surface-card) !important;
+    color: var(--text-strong) !important;
+}
+
+.festival-filter-form p,
+.festival-filter-form .mud-typography {
+    margin: 0;
+    overflow-wrap: anywhere;
+    line-height: 1.35;
+}
+
+.festival-card h5,
+.festival-card p {
+    max-width: 100%;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+}
+
+.festival-card .mud-card-content {
+    min-width: 0;
+}
+
+.festival-card .mud-card-actions {
+    flex-wrap: wrap;
+}
+
+.festival-rating-panel {
+    display: grid;
+    gap: 0.45rem;
+    justify-items: center;
+    max-width: 100%;
+    padding: 0.5rem 0.75rem;
+}
+
+.festival-rating-summary,
+.festival-rating-action {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.festival-rating-average {
+    color: var(--text-strong);
+    font-weight: 800;
+}
+
+.festival-rating-average small,
+.festival-rating-votes,
+.festival-rating-voted {
+    color: var(--text-muted);
+    font-size: 0.8rem;
+}
+
+.rich-content-section,
+.festival-detail-text,
+.news-desc {
+    overflow-wrap: anywhere;
+    word-break: break-word;
+}
+
+.home-hero {
+    min-height: clamp(34rem, 72vh, 48rem);
+    padding-block: clamp(3rem, 7vw, 6rem);
+}
+
+.home-hero h1 {
+    overflow: visible;
+    line-height: 1.02;
+    overflow-wrap: anywhere;
+}
+
+@media (max-width: 991.98px) {
+    .festival-filter-heading,
+    .festival-results-heading {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .home-hero {
+        min-height: auto;
+    }
+}
+
 /* Public festival tiles and hero safety rules apply at every breakpoint. */
 .public-layout .festival-sponsored-box .festival-featured-tile {
     position: relative;
