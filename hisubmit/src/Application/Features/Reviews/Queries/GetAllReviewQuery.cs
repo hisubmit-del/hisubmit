@@ -52,11 +52,18 @@ public class GetAllReviewQueryHandler : IRequestHandler<GetAllReviewQuery, Pagin
             .Entities
             .Specify(userSpecify)
             .Specify(festivalSpecify)
-            .Where(p=>p.Type==request.Type)
+            .Where(p => p.Type == request.Type &&
+                        (request.Type != CommentType.Review ||
+                         !string.IsNullOrWhiteSpace(p.Text)))
             .ProjectTo<GetAllReviewResponse>(_mapper.ConfigurationProvider)
             .ToPaginatedListAsync(request);
 
-        var users = await _userService.GetAllAsync(response.Data.Select(p => p.UserId).ToList());
+        var userIds = response.Data
+            .Select(p => p.UserId)
+            .Where(p => !string.IsNullOrWhiteSpace(p))
+            .Distinct()
+            .ToList();
+        var users = await _userService.GetAllAsync(userIds);
         foreach (var review in response.Data)
         {
             var user = users.Data.FirstOrDefault(p => p.Id == review.UserId);

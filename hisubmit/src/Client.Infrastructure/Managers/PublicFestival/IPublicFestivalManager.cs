@@ -22,6 +22,7 @@ using Hisubmit.Client.SharedModels.Features.Festivals.Queries.GetAllImages;
 using Hisubmit.Client.SharedModels.Features.News.Queries;
 using Hisubmit.Client.SharedModels.Features.Products.Queries.GetAllPaged;
 using Hisubmit.Client.SharedModels.Features.Reviews.Queries;
+using Hisubmit.Client.SharedModels.Features.Reviews.Commands;
 using HiSubmit.Client.Infrastructure.Routes.Festivals;
 using Hisubmit.Client.SharedModels.Features.FestivalQualifyers.Queries.GetAll;
 using Hisubmit.Client.SharedModels.Features.Products.Commands.AddEdit;
@@ -43,6 +44,8 @@ public interface IPublicFestivalManager:ITransientManager
     Task<PaginatedResult<GetAllFestivalImageResponse>> GetAllImages(GetAllFestivalImageQuery query);
     Task<IResult<List<GetAllDeadLineEventCategoryResponse>>> GetAllGetDeadLineCategory(GetAllDeadLineEventCategoryQuery query);
     Task<PaginatedResult<GetAllReviewResponse>> GetAllReviews(GetAllReviewQuery query);
+    Task<IResult<GetFestivalRatingSummaryResponse>> GetFestivalRatingSummary(GetFestivalRatingSummaryQuery query);
+    Task<IResult> AddReview(AddReviewCommand command);
     Task<PaginatedResult<GetAllNewResponse>> GetAllNewsAsync(GetAllNewRequest request);
     Task<PaginatedResult<GetAllPagedProductsResponse>> GetAllProducts(GetAllProductsRequest request);
     Task<IResult<AddEditProductRequest>> GetProductById(GetProductByIdRequest request); 
@@ -77,6 +80,19 @@ public class PublicFestivalManager(HttpClient httpClient) : IPublicFestivalManag
     {
         var response = await httpClient.GetAsync(_endPoint.GenerateUrl("AllReviews", query));
         return await response.ToPaginatedResult<GetAllReviewResponse>();
+    }
+
+    public async Task<IResult<GetFestivalRatingSummaryResponse>> GetFestivalRatingSummary(
+        GetFestivalRatingSummaryQuery query)
+    {
+        var response = await httpClient.GetAsync(_endPoint.GenerateUrl("RatingSummary", query));
+        return await response.ToResult<GetFestivalRatingSummaryResponse>();
+    }
+
+    public async Task<IResult> AddReview(AddReviewCommand command)
+    {
+        var response = await httpClient.PostAsJsonAsync(_endPoint.GenerateUrl("Review"), command);
+        return await response.ToResult();
     }
 
     public async Task<IResult<List<GetAllEventOrganizerResponse>>> GetAllOrganizerAsync(GetAllOrganizerQuery query)

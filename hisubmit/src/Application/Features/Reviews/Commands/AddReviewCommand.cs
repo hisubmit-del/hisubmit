@@ -13,7 +13,6 @@ using HiSubmit.Application.Interfaces.Services;
 using HiSubmit.Domain.Enums;
 using HiSubmit.Domain.Entities.Submitter;
 using Microsoft.EntityFrameworkCore;
-using HiSubmit.Client.SharedModels.Constants.Role;
 
 namespace HiSubmit.Application.Features.Reviews.Commands;
 
@@ -52,9 +51,6 @@ public class AddReviewCommandHandler : IRequestHandler<AddReviewCommand, IResult
 
     public async Task<IResult> Handle(AddReviewCommand request, CancellationToken cancellationToken)
     {
-        if (!_currentUserService.IsAuthenticated)
-            return await Result.FailAsync(_localize["You must be logged in"]);
-
         if (request.FestivalId <= 0)
             return await Result.FailAsync(_localize["Festival not found"]);
 
@@ -63,54 +59,84 @@ public class AddReviewCommandHandler : IRequestHandler<AddReviewCommand, IResult
             if (request.Rate is < 1 or > 5)
                 return await Result.FailAsync(_localize["Please select a rating between 1 and 5"]);
 
-            var festival = await _unitOfWork.Repository<Festival>()
+            var festivalExists = await _unitOfWork.Repository<Festival>()
                 .Entities
-                .Where(p => p.Id == request.FestivalId)
-                .Select(p => new { p.Id, p.EventEndDate })
-                .FirstOrDefaultAsync(cancellationToken);
-
-            if (festival == null)
+                .AnyAsync(p => p.Id == request.FestivalId, cancellationToken);
+            if (!festivalExists)
                 return await Result.FailAsync(_localize["Festival not found"]);
 
-            if (!festival.EventEndDate.HasValue ||
-                DateTime.Now < festival.EventEndDate.Value.AddDays(14))
-                return await Result.FailAsync(
-                    _localize["Reviews become available two weeks after the festival ends"]);
-
-            var acceptedStatuses = new[]
+            if (string.IsNullOrWhiteSpace(request.Text))
             {
-                JudgingStatus.Selected,
-                JudgingStatus.AwardWinner,
-                JudgingStatus.Finalist,
-                JudgingStatus.SemiFinalist,
-                JudgingStatus.QuarterFinalist,
-                JudgingStatus.Nominee,
-                JudgingStatus.HonorableMention
-            };
+                var alreadyRated = await _unitOfWork.Repository<Review>()
+                    .Entities
+                    .AnyAsync(p =>
+                        p.FestivalId == request.FestivalId &&
+                        p.Type == CommentType.Review &&
+                        ((!string.IsNullOrWhiteSpace(_currentUserService.UserId) &&
+                          p.UserId == _currentUserService.UserId) ||
+                         (!string.IsNullOrWhiteSpace(_currentUserService.UserIP) &&
+                          p.ClientIp == _currentUserService.UserIP)),
+                        cancellationToken);
+                if (alreadyRated)
+                    return await Result.FailAsync(_localize["You have already rated this festival"]);
+            }
+            else
+            {
+                if (!_currentUserService.IsAuthenticated)
+                    return await Result.FailAsync(_localize["You must be logged in"]);
 
-            var hasAcceptedSubmission = await _unitOfWork.Repository<Submit>()
-                .Entities
-                .AnyAsync(p =>
-                    p.FestivalId == request.FestivalId &&
-                    p.Project.UserId == _currentUserService.UserId &&
-                    p.SubmitStatus != SubmitStatus.DontPaid &&
-                    p.SubmitStatus != SubmitStatus.Disqualified &&
-                    p.SubmitStatus != SubmitStatus.Withdrawn &&
-                    acceptedStatuses.Contains(p.JudgingStatus),
-                    cancellationToken);
+                var festival = await _unitOfWork.Repository<Festival>()
+                    .Entities
+                    .Where(p => p.Id == request.FestivalId)
+                    .Select(p => new { p.EventEndDate })
+                    .FirstAsync(cancellationToken);
 
-            if (!hasAcceptedSubmission)
-                return await Result.FailAsync(
-                    _localize["Only participants with an accepted submission can review this festival"]);
+                if (!festival.EventEndDate.HasValue ||
+                    DateTime.Now < festival.EventEndDate.Value.AddDays(14))
+                    return await Result.FailAsync(
+                        _localize["Reviews become available two weeks after the festival ends"]);
 
-            var alreadyReviewed = await _unitOfWork.Repository<Review>()
-                .Entities
-                .AnyAsync(p => p.FestivalId == request.FestivalId &&
-                               p.UserId == _currentUserService.UserId &&
-                               p.Type == CommentType.Review,
-                    cancellationToken);
-            if (alreadyReviewed)
-                return await Result.FailAsync(_localize["You have already registered your comment"]);
+                var acceptedStatuses = new[]
+                {
+                    JudgingStatus.Selected,
+                    JudgingStatus.AwardWinner,
+                    JudgingStatus.Finalist,
+                    JudgingStatus.SemiFinalist,
+                    JudgingStatus.QuarterFinalist,
+                    JudgingStatus.Nominee,
+                    JudgingStatus.HonorableMention
+                };
+
+                var hasAcceptedSubmission = await _unitOfWork.Repository<Submit>()
+                    .Entities
+                    .AnyAsync(p =>
+                        p.FestivalId == request.FestivalId &&
+                        p.Project.UserId == _currentUserService.UserId &&
+                        p.SubmitStatus != SubmitStatus.DontPaid &&
+                        p.SubmitStatus != SubmitStatus.Disqualified &&
+                        p.SubmitStatus != SubmitStatus.Withdrawn &&
+                        acceptedStatuses.Contains(p.JudgingStatus),
+                        cancellationToken);
+
+                if (!hasAcceptedSubmission)
+                    return await Result.FailAsync(
+                        _localize["Only participants with an accepted submission can review this festival"]);
+
+                var alreadyCommented = await _unitOfWork.Repository<Review>()
+                    .Entities
+                    .AnyAsync(p =>
+                        p.FestivalId == request.FestivalId &&
+                        p.UserId == _currentUserService.UserId &&
+                        p.Type == CommentType.Review &&
+                        !string.IsNullOrWhiteSpace(p.Text),
+                        cancellationToken);
+                if (alreadyCommented)
+                    return await Result.FailAsync(_localize["You have already registered your comment"]);
+            }
+        }
+        else if (!_currentUserService.IsAuthenticated)
+        {
+            return await Result.FailAsync(_localize["You must be logged in"]);
         }
 
         var model = _mapper.Map<Review>(request);

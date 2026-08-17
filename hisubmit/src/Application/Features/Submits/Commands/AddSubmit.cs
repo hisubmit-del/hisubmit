@@ -89,7 +89,7 @@ public class AddSubmitCommandHandler : IRequestHandler<AddSubmitCommand, Result<
 
                 deadLineCategories.Add(new SubmitDeadLineCategories()
                 {
-                    Price = Convert.ToInt32(minPrice.Value.Value),
+                    Price = minPrice.Value.Value,
                     FeeType = minPrice.Key,
                     DeadlineEventCategoryId = deadlineId
                 });

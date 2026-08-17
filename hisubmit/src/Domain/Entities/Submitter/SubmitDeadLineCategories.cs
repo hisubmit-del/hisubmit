@@ -7,7 +7,7 @@ namespace HiSubmit.Domain.Entities.Submitter
     public class SubmitDeadLineCategories:AuditableEntity<int>
     {
         public FeeType FeeType { get; set; }
-        public int? Price { get; set; }
+        public double? Price { get; set; }
 
         public int SubmitId { get; set; }
         public Submit Submit { get; set; }
