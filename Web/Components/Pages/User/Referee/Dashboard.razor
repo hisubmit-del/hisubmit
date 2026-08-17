@@ -4,7 +4,7 @@
 
 @if (_refereeData.RatedProject == 0)
 {
-    <MudGrid>
+    <MudGrid Class="dashboard-page-shell referee-dashboard-shell">
         <MudAlert ContentAlignment=HorizontalAlignment.Center Variant="Variant.Text" Severity="Severity.Warning"
          Class="pa-3 ma-7 w-100">
             You haven't had any judges assigned yet.
@@ -14,7 +14,7 @@
 
 else
 {
-    <MudGrid>
+    <MudGrid Class="dashboard-page-shell referee-dashboard-shell">
         <MudItem >
             <MudPaper Elevation="25"
                       Class="d-flex flex-row pt-3 pb-2  mud-theme-white text-dark">

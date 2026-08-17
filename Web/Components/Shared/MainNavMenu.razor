@@ -9,6 +9,15 @@
     <MudNavLink Href="/">
         @Localize["Browse festival"]
     </MudNavLink>
+    <MudNavLink Href="/news">
+        News
+    </MudNavLink>
+    <MudNavLink Href="/store">
+        Store
+    </MudNavLink>
+    <MudNavLink Href="/tickets">
+        Tickets
+    </MudNavLink>
 
     @foreach (var item in MenuItems.Where
                   (p => p.Position == MenuItemPosition.Header))

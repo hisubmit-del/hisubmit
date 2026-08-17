@@ -6,6 +6,7 @@ using Hisubmit.Client.SharedModels.Features.Seo.GetPAgeSeoTags;
 using HiSubmit.Client.Infrastructure.Managers.Seo;
 
 using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.Logging;
 
 namespace Web.Components.Shared.SeoTags;
 
@@ -25,6 +26,9 @@ public partial class SeoMetaTags
 
     [Inject]
     private ISeoManager SeoManager { get; set; }
+
+    [Inject]
+    private ILogger<SeoMetaTags> Logger { get; set; }
 
     #endregion
 
@@ -54,16 +58,28 @@ public partial class SeoMetaTags
         }
         else
         {
-            var res = await SeoManager.GetPageSeoTag(new GetPageSeoTagsQuery()
+            try
             {
-                PageType = PageType,
-                PageId = PageId
-            });
-            if (res.Succeeded && res.Data!=null)
-                _seoTags = res.Data; 
+                var res = await SeoManager.GetPageSeoTag(new GetPageSeoTagsQuery()
+                {
+                    PageType = PageType,
+                    PageId = PageId
+                });
+                if (res.Succeeded && res.Data != null)
+                    _seoTags = res.Data;
+            }
+            catch (Exception exception)
+            {
+                // SEO is optional metadata. A temporary database/API failure
+                // must not prevent the requested page from rendering.
+                Logger.LogWarning(exception, "Could not load SEO metadata for page type {PageType} and page id {PageId}.", PageType, PageId);
+            }
         }
 
-      
+        _seoTags ??= new GetPageSeoTagResult();
+        _seoTags.Title ??= "HiSubmit";
+        _seoTags.Description ??= "HiSubmit online submission platform";
+        _seoTags.MetaKeywords ??= "festivals, artists, submissions";
 
         _index = _seoTags.Index ? "index" : "noindex";
         _follow = _seoTags.Follow ? "follow" : "nofollow";

@@ -6,7 +6,7 @@
 @inject IStringLocalizer<Ticket> Localize
 <MudContainer MaxWidth="MaxWidth.Medium">
     <HeroTitle Title="@Localize["Ticket"]"/>
-    <MudCard Class="pa-4" Elevation="25">
+    <MudCard Class="pa-4 workspace-form-card" Elevation="0">
       @if (_loaded)
         {
               <EditForm Model="_ticket" OnSubmit="SaveAsync">
@@ -165,7 +165,7 @@
 
 
                 @* </MudGrid> *@
-                <MudItem xs="12" Class="d-flex">
+                <MudItem xs="12" Class="workspace-action-bar d-flex">
                     <MudSpacer/>
                     <MudButtonGroup OverrideStyles="false">
                             <MudButton Href="@(AdminFestivalId!=null ? $"/admin/festival/tickets/{AdminFestivalId}" : "/festival/tickets")"></MudButton>

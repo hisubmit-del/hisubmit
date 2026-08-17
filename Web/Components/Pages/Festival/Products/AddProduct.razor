@@ -7,7 +7,7 @@
 @inherits BaseFestival
 
 <MudContainer MaxWidth="MaxWidth.Medium">
-    <MudCard Elevation="25" Class="pa-lg-8">
+    <MudCard Elevation="0" Class="pa-lg-8 workspace-form-card">
         <EditForm OnSubmit="SaveAsync" Model="Model">
             <MudGrid>
                 <FluentValidationValidator @ref="_fluentValidationValidator"/>
@@ -67,7 +67,7 @@
                 <MudItem xs="12">
                     <AddEditSeoTagForm Model="@Model.SeoTag"/>
                 </MudItem>
-                <MudItem xs="12" Class="d-flex">
+                <MudItem xs="12" Class="workspace-action-bar d-flex">
                     <MudSpacer/>
                     <MudButtonGroup OverrideStyles="false">
                         <LoadingButton Class="my-2"

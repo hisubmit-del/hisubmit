@@ -5,14 +5,14 @@
 @* @inherits BaseUserPages *@
 @inherits BaseAdminPages
 
-<MudContainer MaxWidth="MaxWidth.ExtraLarge">
+<MudContainer MaxWidth="MaxWidth.ExtraLarge" Class="dashboard-page-shell user-dashboard-shell">
     @if (_userLoaded)
     {
         <MudGrid class="mt-3 text-start project-specification">
             <div class="container mx-auto" style="height:120px">
             </div>
         </MudGrid>
-        <MudGrid Class="user-card-data">
+        <MudGrid Class="user-card-data dashboard-profile-card">
             <MudItem xs="6" md="2" Class="text-end ">
                 <MudAvatar Rounded="true" Class="relative" Style="width:120px;height:120px" Square="true">
                     <MudImage Src="@ImageDataUrl"></MudImage>
@@ -64,7 +64,7 @@
             <MudItem xs="12" md="9" Class="ml-0 my-5 pl-0">
                 @if (_submitLoaded)
                 {
-                    <MudCard Elevation="1">
+                    <MudCard Elevation="0" Class="dashboard-section-card">
                         <MudCardHeader>
                             <CardHeaderContent>
                                 <TitleWithIcon Typo="Typo.h6" Icon="@Icons.Material.Filled.PersonalVideo">Last Submissions</TitleWithIcon>
@@ -117,7 +117,7 @@
         </MudGrid>
 
         <MudGrid Class="mt-5">
-            <MudCard Class="w-100">
+            <MudCard Class="w-100 dashboard-section-card" Elevation="0">
                 <MudCardHeader>
                     <CardHeaderContent>
                         <TitleWithIcon Typo="Typo.h6" Icon="@Icons.Material.Filled.HowToReg">Projects</TitleWithIcon>

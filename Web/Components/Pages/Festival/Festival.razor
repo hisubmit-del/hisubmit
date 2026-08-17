@@ -12,9 +12,10 @@
 else
 {
     <MudTabs @ref="MainTab" MinimumTabWidth="50" ActivePanelIndex="_activePanelIndex" ActivePanelIndexChanged="ChangeTabChecked"
-                Elevation="25"  Color="Color.Surface" Rounded="true" Centered="true" PanelClass="mt-6">
+                Elevation="0" Color="Color.Surface" Rounded="true" Centered="false"
+                Class="workspace-tabs" PanelClass="mt-6">
     <MudContainer MaxWidth="MaxWidth.Large">
-                <MudPaper Class="relative">
+                <MudPaper Class="relative workspace-form-shell">
                     @if (FestivalDetail.IsActive)
                     {
                         <MudItem Style="position: absolute;top:15px;right: 25px">

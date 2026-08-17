@@ -97,8 +97,8 @@
         <MudHidden Breakpoint="Breakpoint.LgAndUp">
             <MudDrawer @bind-Open="_drawerOpen"
                        Class="main-drawer"
-                       Variant="DrawerVariant.Responsive"
-                       ClipMode="DrawerClipMode.Docked"
+                       Variant="DrawerVariant.Temporary"
+                       Overlay="true"
                        Elevation="0">
                 <NavMenu AccountPages="_showDrawer"
                          ShowCreateFestivalButton="_showCreateFestivalButton"/>
@@ -116,10 +116,10 @@
         </MudHidden>
         <MudHidden Breakpoint="Breakpoint.LgAndUp">
 
-            <MudDrawer Open="@(_drawerOpen2)"
-                       Variant="DrawerVariant.Responsive"
+            <MudDrawer @bind-Open="_drawerOpen2"
+                       Variant="DrawerVariant.Temporary"
                        Class="main-drawer"
-                       ClipMode="DrawerClipMode.Docked"
+                       Overlay="true"
                        Elevation="0">
                 <MainNavMenu/>
             </MudDrawer>

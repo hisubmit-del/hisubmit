@@ -14,7 +14,7 @@
 
     <meta property="og:title" content="@_seoTags.Title" />
     <meta property="og:description" content="@_seoTags.Description" />
-   @if (string.IsNullOrWhiteSpace(OgImageUrl))
+   @if (!string.IsNullOrWhiteSpace(OgImageUrl))
     {
         <meta property="og:image" content="@OgImageUrl" />
     }

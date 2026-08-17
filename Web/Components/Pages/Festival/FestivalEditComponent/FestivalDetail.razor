@@ -1,6 +1,6 @@
 ﻿@inject IStringLocalizer<FestivalDetail> Localize
 
-<MudCard Elevation="25">
+<MudCard Elevation="0" Class="workspace-form-card">
 <MudCardHeader>
     <CardHeaderContent>
         <MudText Typo="Typo.h3">@Localize["Event Details"]</MudText>
@@ -256,8 +256,8 @@ else
         </MudGrid>
     @* </MudContainer> *@
     </MudCardContent>
-    <MudPaper Class="d-flex justify-end flex-grow-1 ">
-        <MudPaper Class="mr-2 mb-2">
+    <MudPaper Class="workspace-action-bar d-flex justify-end flex-grow-1 ">
+        <MudPaper Class="mr-2 mb-2" Elevation="0">
             <MudButtonGroup Variant="Variant.Filled" OverrideStyles="false">
                 @if (!IsAdmin)
                 {

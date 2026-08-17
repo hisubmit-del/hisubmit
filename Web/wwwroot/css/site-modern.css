@@ -1310,6 +1310,217 @@ a:hover {
     box-shadow: 0 8px 22px rgba(23,33,43,.05);
 }
 
+/* Shared workspace pattern for long forms and role dashboards */
+.workspace-form-shell {
+    overflow: hidden;
+    border: 1px solid var(--border-soft);
+    border-radius: var(--radius-lg);
+    background: rgba(255, 255, 255, .84);
+    box-shadow: var(--shadow-card);
+}
+
+.workspace-form-card {
+    min-width: 0;
+    overflow: visible;
+    border: 1px solid var(--border-soft);
+    border-radius: var(--radius-lg);
+    background: rgba(255, 255, 255, .92);
+    box-shadow: var(--shadow-card);
+}
+
+.workspace-form-card .mud-card-header {
+    padding: clamp(1rem, 3vw, 1.75rem);
+    border-bottom: 1px solid var(--border-soft);
+    background: linear-gradient(135deg, rgba(51, 92, 103, .06), rgba(255, 131, 77, .06));
+}
+
+.workspace-form-card .mud-card-content,
+.workspace-form-shell .mud-card-content {
+    min-width: 0;
+}
+
+.workspace-form-card .mud-input-control,
+.workspace-form-shell .mud-input-control {
+    min-width: 0;
+    max-width: 100%;
+}
+
+.workspace-form-card .mud-input-slot,
+.workspace-form-shell .mud-input-slot,
+.workspace-form-card .mud-select-input,
+.workspace-form-shell .mud-select-input {
+    overflow-wrap: anywhere;
+}
+
+.workspace-form-card .mud-input-outlined-border,
+.workspace-form-shell .mud-input-outlined-border {
+    border-radius: var(--radius-sm);
+}
+
+.workspace-form-card .mud-divider,
+.workspace-form-shell .mud-divider {
+    margin-block: 1.25rem;
+    opacity: .75;
+}
+
+.workspace-action-bar {
+    position: sticky;
+    bottom: 0;
+    z-index: 8;
+    gap: .5rem;
+    margin-top: 1.25rem;
+    padding: .75rem clamp(.75rem, 2vw, 1.5rem);
+    border-top: 1px solid var(--border-soft);
+    background: rgba(255, 255, 255, .94);
+    box-shadow: 0 -10px 24px rgba(23, 33, 43, .06);
+    backdrop-filter: blur(12px);
+}
+
+.workspace-action-bar .mud-button-group,
+.workspace-action-bar .mud-button-root {
+    min-width: 0;
+}
+
+.workspace-tabs {
+    max-width: 100%;
+}
+
+.workspace-tabs .mud-tabs-tabbar {
+    max-width: 100%;
+    overflow-x: auto;
+    scrollbar-width: thin;
+}
+
+.workspace-tabs .mud-tabs-tabbar-content {
+    min-width: max-content;
+}
+
+.workspace-tabs .mud-tab {
+    flex: 0 0 auto;
+    min-width: max-content;
+    white-space: nowrap;
+}
+
+.dashboard-profile-card {
+    align-items: center;
+    gap: 1rem;
+    margin-top: 1rem;
+    padding: clamp(1rem, 3vw, 1.75rem);
+    border: 1px solid var(--border-soft);
+    border-radius: var(--radius-lg);
+    background:
+        radial-gradient(circle at 90% 10%, rgba(255, 131, 77, .14), transparent 14rem),
+        linear-gradient(135deg, rgba(51, 92, 103, .08), rgba(255, 255, 255, .92));
+    box-shadow: var(--shadow-card);
+}
+
+.dashboard-profile-card .mud-typography {
+    max-width: 100%;
+    overflow-wrap: anywhere;
+}
+
+.dashboard-section-card {
+    overflow: hidden;
+}
+
+.dashboard-page-shell .mud-grid {
+    min-width: 0;
+}
+
+.dashboard-page-shell .mud-grid-item {
+    min-width: 0;
+}
+
+.dashboard-page-shell .mud-simple-table-container,
+.dashboard-page-shell .mud-table-container {
+    max-width: 100%;
+    overflow-x: auto;
+}
+
+.dashboard-page-shell table {
+    min-width: 38rem;
+}
+
+.referee-dashboard-shell > .mud-item > .mud-paper,
+.referee-dashboard-shell > .mud-item > .mud-card {
+    height: 100%;
+    border: 1px solid var(--border-soft);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-card);
+}
+
+.main-drawer {
+    z-index: 1100;
+}
+
+.main-drawer .mud-nav-menu {
+    min-height: 100%;
+    padding: .75rem;
+}
+
+.main-drawer .mud-nav-link,
+.main-drawer .mud-button-root {
+    min-height: 2.8rem;
+    margin-block: .18rem;
+    border-radius: var(--radius-sm);
+    overflow-wrap: anywhere;
+}
+
+.cart-page-shell {
+    min-width: 0;
+}
+
+.cart-summary-card,
+.cart-festival-group {
+    min-width: 0;
+    border: 1px solid var(--border-soft);
+    border-radius: var(--radius-md);
+    background: rgba(255, 255, 255, .9);
+    box-shadow: var(--shadow-card);
+}
+
+.cart-summary-card {
+    position: sticky;
+    top: 1rem;
+    overflow: hidden;
+}
+
+.cart-summary-card .mud-stack {
+    min-width: 0;
+}
+
+.cart-summary-card .mud-typography,
+.cart-festival-group .mud-typography {
+    max-width: 100%;
+    overflow-wrap: anywhere;
+}
+
+.cart-festival-group {
+    align-items: flex-start;
+    padding: clamp(.75rem, 2vw, 1.25rem);
+}
+
+.cart-festival-group > .mud-image {
+    flex: 0 0 auto;
+    border-radius: var(--radius-sm);
+    object-fit: cover;
+}
+
+.cart-festival-group > .mud-grid {
+    min-width: 0;
+    flex: 1 1 auto;
+}
+
+.cart-items-table {
+    min-width: 36rem;
+}
+
+.cart-items-table td,
+.cart-items-table th {
+    overflow-wrap: anywhere;
+    vertical-align: middle;
+}
+
 @media (max-width: 767.98px) {
     .public-page-hero {
         align-items: flex-start;
@@ -2094,5 +2305,60 @@ a:hover {
 
     .marketplace-product-card__actions .mud-button-root {
         flex-basis: 100%;
+    }
+
+    .workspace-form-card {
+        border-radius: var(--radius-md);
+    }
+
+    .workspace-action-bar {
+        align-items: stretch;
+        flex-direction: column;
+        padding-inline: .5rem;
+    }
+
+    .workspace-action-bar .mud-button-group {
+        display: flex;
+        width: 100%;
+        flex-direction: column;
+        gap: .35rem;
+    }
+
+    .workspace-action-bar .mud-button-root {
+        width: 100%;
+        min-height: 2.75rem;
+    }
+
+    .dashboard-profile-card {
+        align-items: stretch;
+    }
+
+    .dashboard-profile-card .mud-avatar {
+        margin-inline: auto;
+    }
+
+    .dashboard-page-shell table {
+        min-width: 32rem;
+    }
+
+    .cart-summary-card {
+        position: static;
+    }
+
+    .cart-festival-group {
+        flex-direction: column;
+    }
+
+    .cart-festival-group > .mud-image {
+        width: 100% !important;
+        height: 10rem !important;
+    }
+
+    .cart-festival-group > .mud-grid {
+        width: 100%;
+    }
+
+    .cart-items-table {
+        min-width: 30rem;
     }
 }
