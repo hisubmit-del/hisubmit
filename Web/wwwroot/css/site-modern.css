@@ -829,6 +829,21 @@ a:hover {
     position: absolute !important;
     top: 0.75rem;
     right: 0.75rem;
+    z-index: 2;
+}
+
+.side-menu-toggle {
+    position: relative;
+    z-index: 22;
+    flex: 0 0 auto;
+    border-radius: var(--radius-pill);
+    color: var(--brand-primary) !important;
+    background: rgba(51, 92, 103, 0.07);
+}
+
+.side-menu-toggle:hover,
+.side-menu-toggle:focus-visible {
+    background: rgba(255, 131, 77, 0.16);
 }
 
 .festival-header h1,
@@ -929,6 +944,8 @@ a:hover {
 
     .public-header-row {
         min-height: 3.75rem;
+        position: relative;
+        z-index: 21;
     }
 
     .public-brand span {
@@ -1001,6 +1018,22 @@ a:hover {
         width: 100%;
         justify-content: center;
         flex-wrap: wrap;
+    }
+}
+
+@media (max-width: 991.98px) {
+    .public-layout .side-menu-toggle {
+        display: inline-flex !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+    }
+
+    .public-layout .side-menu {
+        z-index: 1001;
+    }
+
+    .public-layout .side-menu-bac {
+        z-index: 1000;
     }
 }
 

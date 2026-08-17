@@ -35,13 +35,6 @@ namespace Web.Middlewares
                 var requestUrl = context.Request.GetDisplayUrl();
                 var serverAddress = addressFeature?.Addresses.FirstOrDefault();
 
-                var response = context.Response;
-                response.ContentType = "application/json";
-                var responseMessage = error is ApiException or KeyNotFoundException
-                    ? error.Message
-                    : "An unexpected error occurred while processing your request.";
-                var responseModel = await Result<string>.FailAsync(responseMessage);
-
                 _logger.LogError(
                     error,
                     "Unhandled request error. Method: {Method}, Path: {Path}, RequestUrl: {RequestUrl}, ServerAddress: {ServerAddress}",
@@ -50,6 +43,22 @@ namespace Web.Middlewares
                     requestUrl,
                     serverAddress ?? "unknown"
                 );
+
+                // A streaming Blazor response may already have started when a
+                // component fails during prerendering. Headers and status code
+                // cannot be changed after that point; logging is the only safe
+                // recovery action.
+                if (context.Response.HasStarted)
+                {
+                    return;
+                }
+
+                var response = context.Response;
+                response.ContentType = "application/json";
+                var responseMessage = error is ApiException or KeyNotFoundException
+                    ? error.Message
+                    : "An unexpected error occurred while processing your request.";
+                var responseModel = await Result<string>.FailAsync(responseMessage);
 
                 switch (error)
                 {
