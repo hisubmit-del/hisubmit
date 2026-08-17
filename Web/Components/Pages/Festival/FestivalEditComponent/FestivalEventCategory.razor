@@ -96,14 +96,14 @@
                                     }
                                     else
                                     {
-                                        <Animate Auto Anchor="#b-animate" Animation="Animations.FadeDown" DelayMilliseconds="300">
+                                        <div class="animate__animated animate__fadeInDown" style="animation-delay:300ms;">
                                             <MudCard>
                                                 <AddEditEventCategory IsAdmin="IsAdmin" IsSuccessDone="ResetTableAndForm" 
                                                                       FestivalId="FestivalId"
                                                                       CancelProccess="HideAndResetForm" @ref="AddEditCategoryForm" 
                                                                       Category="Category"/>
                                             </MudCard>
-                                        </Animate>
+                                        </div>
                                     }
                                 </MudItem>
                             </MudGrid>

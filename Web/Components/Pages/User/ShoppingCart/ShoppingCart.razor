@@ -147,7 +147,7 @@
                 </MudItem>
 
                 <MudItem xs="12" md="8" Class="max-vh-90 overflow-auto cart-items-panel">
-                    <Animate DelayMilliseconds="100" Auto Animation="Animations.FadeDown" DurationMilliseconds="1000">
+                    <div class="animate__animated animate__fadeInDown" style="animation-delay:100ms;animation-duration:1000ms;">
                         <MudStack Spacing="8">
                             @foreach (var cartGrouped in _shopCartItems.GroupBy(p => p.CartId))
                             {
@@ -258,7 +258,7 @@
                                 }
                             }
                         </MudStack>
-                    </Animate>
+                    </div>
                 </MudItem>
             </MudGrid>
         </MudTabPanel>

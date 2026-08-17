@@ -120,13 +120,18 @@ public partial class MusicProjectDetail
 
     private void PlaySelectMusic(GetAllProjectFileResponse file)
     {
-        sources.Clear();
-        sources.Add(new Source()
+        sources = new List<Source>
         {
-            Src = file.LocalFileURL,
-            Type = "mp3"
-        });
-        _player.Sources = sources;
+            new()
+            {
+                Src = file.LocalFileURL,
+                Type = "mp3"
+            }
+        };
+        // The player receives Sources through normal Blazor parameter binding.
+        // Updating the backing collection and rerendering avoids mutating a
+        // child component parameter directly.
+        _ = InvokeAsync(StateHasChanged);
     }
 
     private List<Source> sources = new();

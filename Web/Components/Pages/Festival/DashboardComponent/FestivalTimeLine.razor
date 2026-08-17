@@ -2,17 +2,24 @@
 @using HiSubmit.Client.SharedModels.Extensions
 @if (_loaded && TimeLines.Any())
 {
-    <MudPaper Class="px-4 py-4" Style="height:100%;overflow:scroll">
+    <MudPaper Class="px-4 py-4 festival-dashboard-timeline" Style="height:100%;overflow:auto">
         <HeroTitle Align="Align.Center" Title="Dates & DeadLines"></HeroTitle>
         <CustomDivider></CustomDivider>
-        <MudTimeline  TimelinePosition="TimelinePosition.Left">
+        <MudTimeline Class="festival-timeline" TimelinePosition="TimelinePosition.Left">
             @if (_loaded)
             {
                 foreach (var time in TimeLines)
                 {
-                    <MudTimelineItem Elevation="2" Size="Size.Small" Color="time.Nearest? Color.Primary : Color.Default">
-                        <MudText Align="Align.Start" Color="time.Nearest? Color.Primary : Color.Default" Typo="Typo.subtitle1">@time.Name</MudText>
-                        <MudText Align="Align.Start" Color="time.Nearest? Color.Primary : Color.Default" Typo="Typo.body2" Class="mud-text-secondary">@time.Date.ToString("yyyy MMMM dd")</MudText>
+                    <MudTimelineItem Class="@($"festival-timeline-item {(time.Nearest ? "festival-timeline-item--current" : string.Empty)}")" Elevation="2" Size="Size.Small"
+                                     Color="@(time.Nearest ? Color.Primary : Color.Default)">
+                        <div class="timeline-entry @(time.Nearest ? "timeline-entry--current" : string.Empty)">
+                            <MudText Align="Align.Start"
+                                     Color="@(time.Nearest ? Color.Primary : Color.Default)"
+                                     Typo="Typo.subtitle1">@time.Name</MudText>
+                            <MudText Align="Align.Start"
+                                     Color="@(time.Nearest ? Color.Primary : Color.Default)"
+                                     Typo="Typo.body2" Class="mud-text-secondary">@time.Date.ToString("yyyy MMMM dd")</MudText>
+                        </div>
                     </MudTimelineItem>
                 }
             }

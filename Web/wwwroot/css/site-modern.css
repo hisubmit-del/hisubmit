@@ -82,6 +82,138 @@ a:hover {
     transform: translateY(0);
 }
 
+/* Shared content spacing and wrapping rules */
+.mud-card,
+.mud-paper,
+.mud-alert,
+.mud-expansion-panel,
+.mud-dialog-content,
+.mud-table-container,
+.mud-simple-table-container {
+    min-width: 0;
+}
+
+.mud-card-content,
+.mud-card-actions,
+.mud-paper,
+.mud-alert,
+.mud-expansion-panel-content,
+.mud-dialog-content {
+    overflow-wrap: anywhere;
+}
+
+.mud-card-content > .mud-typography,
+.mud-paper > .mud-typography,
+.mud-alert .mud-alert-message,
+.mud-expansion-panel-content > .mud-typography,
+.mud-dialog-content > .mud-typography {
+    max-width: 100%;
+    margin-block: .35rem;
+    line-height: 1.65;
+}
+
+.mud-card-content > :first-child,
+.mud-paper > :first-child,
+.mud-dialog-content > :first-child {
+    margin-top: 0;
+}
+
+.mud-card-content > :last-child,
+.mud-paper > :last-child,
+.mud-dialog-content > :last-child {
+    margin-bottom: 0;
+}
+
+.mud-card-content p,
+.mud-paper p,
+.mud-alert p,
+.mud-dialog-content p,
+.faq-answer {
+    margin: .65rem 0;
+    line-height: 1.8;
+    overflow-wrap: anywhere;
+}
+
+.mud-card-content ul,
+.mud-card-content ol,
+.mud-paper ul,
+.mud-paper ol,
+.mud-dialog-content ul,
+.mud-dialog-content ol {
+    margin-block: .75rem;
+    padding-inline-start: 1.5rem;
+}
+
+.mud-card-content li,
+.mud-paper li,
+.mud-dialog-content li {
+    margin-block: .35rem;
+    line-height: 1.65;
+    overflow-wrap: anywhere;
+}
+
+.mud-card-content table,
+.mud-paper table,
+.mud-dialog-content table {
+    max-width: 100%;
+    min-width: 34rem;
+}
+
+.mud-chip,
+.mud-badge,
+.mud-button-root,
+.mud-nav-link,
+.mud-tab,
+.mud-input-slot,
+.mud-select-input {
+    max-width: 100%;
+    overflow-wrap: anywhere;
+}
+
+.mud-card-header,
+.mud-card-actions,
+.mud-dialog-title,
+.mud-dialog-actions,
+.mud-expansion-panel-header {
+    min-width: 0;
+    gap: .65rem;
+    padding-inline: clamp(.85rem, 2vw, 1.5rem);
+}
+
+.mud-card-header-content,
+.mud-card-header-actions,
+.mud-dialog-title .mud-typography,
+.mud-expansion-panel-header .mud-typography {
+    min-width: 0;
+    overflow-wrap: anywhere;
+}
+
+.dashboard-page-shell > .mud-grid,
+.dashboard-page-shell .mud-grid-item {
+    min-width: 0;
+}
+
+.dashboard-page-shell .mud-paper.mud-theme-white {
+    min-height: 100%;
+    align-items: center;
+    gap: .75rem;
+    padding: .85rem 1rem;
+}
+
+.dashboard-page-shell .mud-paper.mud-theme-white > .mud-icon-root {
+    flex: 0 0 auto;
+    margin-inline: 0 .25rem !important;
+}
+
+.dashboard-page-shell .mud-paper.mud-theme-white > div {
+    min-width: 0;
+}
+
+.dashboard-page-shell .mud-paper.mud-theme-white .mud-typography {
+    max-width: 100%;
+    overflow-wrap: anywhere;
+}
+
 .main-layout {
     min-height: 100vh;
     background:
@@ -2190,12 +2322,50 @@ a:hover {
 
 .festival-timeline {
     max-width: 100%;
+    margin: 0;
+    padding: .5rem .35rem 1rem;
     overflow: hidden;
+}
+
+.festival-timeline-card {
+    padding-inline: .5rem;
+}
+
+.festival-dashboard-timeline {
+    min-width: 0;
+}
+
+.timeline-heading {
+    padding: .25rem .75rem .75rem;
+}
+
+.festival-timeline-item {
+    min-width: 0;
 }
 
 .festival-timeline .mud-timeline-item-content {
     min-width: 0;
+    padding: .65rem .85rem .65rem 1rem;
+    border: 1px solid var(--border-soft);
+    border-radius: var(--radius-sm);
+    background: rgba(255, 255, 255, .82);
     overflow-wrap: anywhere;
+}
+
+.festival-timeline-item--current .mud-timeline-item-content {
+    border-color: rgba(255, 131, 77, .38);
+    background: linear-gradient(135deg, rgba(255, 131, 77, .1), rgba(255, 255, 255, .92));
+}
+
+.timeline-entry {
+    display: grid;
+    gap: .22rem;
+    min-width: 0;
+    padding-inline-start: .2rem;
+}
+
+.timeline-entry .mud-typography {
+    margin: 0;
 }
 
 .festival-timeline .mud-typography {
@@ -2360,5 +2530,35 @@ a:hover {
 
     .cart-items-table {
         min-width: 30rem;
+    }
+
+    .mud-card-content,
+    .mud-paper,
+    .mud-alert,
+    .mud-dialog-content {
+        padding-inline: clamp(.75rem, 3vw, 1.25rem);
+    }
+
+    .mud-card-header,
+    .mud-card-actions,
+    .mud-dialog-title,
+    .mud-dialog-actions,
+    .mud-expansion-panel-header {
+        padding-inline: .75rem;
+    }
+
+    .mud-card-content table,
+    .mud-paper table,
+    .mud-dialog-content table {
+        min-width: 30rem;
+    }
+
+    .dashboard-page-shell .mud-paper.mud-theme-white {
+        align-items: flex-start;
+        padding: .8rem;
+    }
+
+    .festival-timeline .mud-timeline-item-content {
+        padding: .65rem .7rem .65rem .85rem;
     }
 }

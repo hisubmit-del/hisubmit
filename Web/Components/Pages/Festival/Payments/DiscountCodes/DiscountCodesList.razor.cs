@@ -165,7 +165,8 @@ public partial class DiscountCodesList
 
     private async Task ChangeStatus(GetAllDiscountCodeResponse context, bool status)
     {
-        _table.Loading = true;
+        _loaded = false;
+        await InvokeAsync(StateHasChanged);
         var req = new ChangeDiscountCodeStatusRequest()
         {
             FestivalId = context.FestivalId,
@@ -174,7 +175,9 @@ public partial class DiscountCodesList
         };
         var response = await DiscountCodeManager.ChangeStatus(req);
         _snackBar.Add(response.Messages[0], response.Succeeded ? Severity.Success : Severity.Error);
-        context.Enable=status;
-        _table.Loading = true;
+        if (response.Succeeded)
+            context.Enable = status;
+        _loaded = true;
+        await InvokeAsync(StateHasChanged);
     }
 }

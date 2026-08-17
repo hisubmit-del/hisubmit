@@ -2,8 +2,8 @@
 @inject IStringLocalizer<FestivalTimeLine> Localize
 @if (_loaded)
 {
-    <MudCard Class="text-center time-line-box pt-2 border-radius-20 festival-side-card">
-        <div Class="mt-2">
+    <MudCard Class="text-center time-line-box pt-2 border-radius-20 festival-side-card festival-timeline-card">
+        <div Class="mt-2 timeline-heading">
             <MudText Typo="Typo.h5" Align="Align.Center" Class="mb-2">Time Line</MudText>
         </div>
         <MudTimeline Class="text-start festival-timeline" TimelineOrientation="TimelineOrientation.Vertical" TimelinePosition="TimelinePosition.Start">
@@ -11,16 +11,20 @@
             {
                 if (time.Nearest)
                 {
-                    <MudTimelineItem Variant="Variant.Filled" DotStyle="background:red;border:2px solid red;">
-                        <MudText Color="Color.Tertiary" Typo="Typo.body2">  @time.Name</MudText>
-                        <MudText Color="Color.Tertiary" Typo="Typo.body2">@time.Date.ToLongDate()</MudText>
+                    <MudTimelineItem Class="festival-timeline-item festival-timeline-item--current" Variant="Variant.Filled" DotStyle="background:red;border:2px solid red;">
+                        <div class="timeline-entry timeline-entry--current">
+                            <MudText Color="Color.Tertiary" Typo="Typo.body2">@time.Name</MudText>
+                            <MudText Color="Color.Tertiary" Typo="Typo.body2">@time.Date.ToLongDate()</MudText>
+                        </div>
                     </MudTimelineItem>
                 }
                 else
                 {
-                    <MudTimelineItem Variant="Variant.Filled" DotStyle="background:white;border:2px solid red;">
-                        <MudText Class="fg-grey" Typo="Typo.button">  @time.Name</MudText>
-                        <MudText Class="fg-grey" Typo="Typo.body2">@time.Date.ToLongDate()</MudText>
+                    <MudTimelineItem Class="festival-timeline-item" Variant="Variant.Filled" DotStyle="background:white;border:2px solid red;">
+                        <div class="timeline-entry">
+                            <MudText Class="fg-grey" Typo="Typo.button">@time.Name</MudText>
+                            <MudText Class="fg-grey" Typo="Typo.body2">@time.Date.ToLongDate()</MudText>
+                        </div>
                     </MudTimelineItem>
                 }
             }
