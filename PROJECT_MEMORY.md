@@ -650,3 +650,13 @@ migration اصلی فعلی در `hisubmit/src/Infrastructure/Migrations/2025070
   `POST /api/identity/token/login` returned `succeeded=true` for the local QA
   artist account. No production account or database was changed.
 - Build completed with 0 errors; the existing warning backlog remains.
+
+## Festival dashboard KPI checkpoint (2026-08-17)
+
+- Fixed `Web/Components/Pages/Festival/Dashboard.razor.cs` so the sold-ticket
+  count is assigned to `_ticketsSoldCount` instead of overwriting
+  `_categoryCount`.
+- This corrects the dashboard cards for Categories and Tickets without
+  changing the API, database, payment logic, or festival authorization scope.
+- Build verification completed with 0 errors. The existing MudBlazor analyzer,
+  nullable, compiler, and package warnings remain technical debt.

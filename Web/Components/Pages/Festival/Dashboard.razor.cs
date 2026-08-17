@@ -133,7 +133,7 @@ public partial class Dashboard
             FestivalId = SelectedFestivalId
         });
         if (response.Succeeded)
-            _categoryCount = response.Data.Count;
+            _ticketsSoldCount = response.Data?.Count ?? 0;
     }
 
     private async Task LoadCategories()
