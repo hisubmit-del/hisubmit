@@ -31,7 +31,7 @@ namespace Web.Components.Pages.Authentication
 
         protected override async Task OnInitializedAsync()
         {
-            if (HttpMethods.IsGet(HttpContext.Request.Method))
+            if (HttpContext is not null && HttpMethods.IsGet(HttpContext.Request.Method))
             {
                 await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
             }

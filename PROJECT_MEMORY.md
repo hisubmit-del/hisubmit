@@ -632,3 +632,21 @@ migration اصلی فعلی در `hisubmit/src/Infrastructure/Migrations/2025070
   --disable-build-servers --nologo` completed with 0 errors. Local runtime
   started on `http://localhost:5120`; `/` returned HTTP 200 and
   `POST /api/v1/public/festival/GetAll` returned HTTP 200.
+
+## Local QA login checkpoint (2026-08-17)
+
+- The QA accounts were verified in the local `HiSubmitDB50` database:
+  `qa.artist@hisubmit.test`, `qa.festival@hisubmit.test`, and
+  `qa.referee@hisubmit.test` exist, are active, email-confirmed, and have
+  password hashes.
+- The failed browser login was caused by the legacy `/login` component
+  dereferencing a null `HttpContext` during Interactive Server initialization.
+  This produced a circuit `NullReferenceException` before credentials were
+  checked.
+- Added null-safe `HttpContext` handling to both login components:
+  `Web/Components/Pages/Authentication/Login.razor.cs` and
+  `Web/Components/Account/Pages/Login.razor`.
+- Verification: `/login` returned HTTP 200 and
+  `POST /api/identity/token/login` returned `succeeded=true` for the local QA
+  artist account. No production account or database was changed.
+- Build completed with 0 errors; the existing warning backlog remains.
