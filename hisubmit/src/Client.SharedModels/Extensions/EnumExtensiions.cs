@@ -55,7 +55,7 @@ public static class EnumExtensions
             switch (format)
             {
                 case FileFormat.Doc:
-                    return ".txt";
+                    return ".doc,.docx,.txt,.rtf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/plain,application/rtf";
                 case FileFormat.PDF:
                     return "application/pdf";
                 case FileFormat.Image:
