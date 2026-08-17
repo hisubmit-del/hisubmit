@@ -12,36 +12,34 @@
 <MudContainer MaxWidth="MaxWidth.Large">
     @if (_loadedProjectDetail)
     {
+        @if (_projectNotFound)
+        {
+            <MudCard Class="project-not-found-card" Elevation="0">
+                <MudCardContent>
+                    <MudIcon Icon="@Icons.Material.Outlined.SearchOff"
+                             Color="Color.Primary"
+                             Size="Size.Large" />
+                    <MudText Typo="Typo.h4">Project not found</MudText>
+                    <MudText Typo="Typo.body1">
+                        This project may have been removed, unpublished, or the link may be incorrect.
+                    </MudText>
+                    <MudButton Href="/festivals"
+                               Variant="Variant.Filled"
+                               Color="Color.Primary"
+                               StartIcon="@Icons.Material.Filled.Explore">
+                        Browse festivals
+                    </MudButton>
+                </MudCardContent>
+            </MudCard>
+        }
+        else
+        {
         <div class="container mt-2 pa-2">
             <CascadingValue Value="_permissions">
                 <MudContainer MaxWidth="MaxWidth.Large">
-                    @if (_headerFiles.Any())
-                    {
-                        @switch (_headerFiles.First().FileFormat)
-                        {
-                            case FileFormat.Video:
-                                <FilmProjectDetail DetailLoaded="_loaded"
-                                                   Project="Project" Files="_headerFiles" />
-                                break;
-                            case FileFormat.Image:
-                                <PhotographyProjectDetail DetailLoaded="_loaded" Files="_headerFiles"
-                                                          Project="Project" ProjectId="Project.Id" />
-                                break;
-                            case FileFormat.Music:
-                                <MusicProjectDetail DetailLoaded="_loaded"
-                                                    Files="_headerFiles" Project="Project" />
-                                break;
-                            default:
-                                <ScriptProjectDetail DetailLoaded="_loaded"
-                                                     Files="_headerFiles" Project="Project" />
-                                break;
-                        }
-                    }
-                    else
-                    {                        
-                                <PhotographyProjectDetail DetailLoaded="_loaded" 
-                                                          Project="Project" ProjectId="Project.Id" /> 
-                    }
+                    <ProjectMediaViewer DetailLoaded="_loaded"
+                                        Project="Project"
+                                        Files="_headerFiles" />
 
                    
                         <ProjectTitle Project="@Project"
@@ -200,6 +198,7 @@
                 }
             </CascadingValue>
         </div>
+        }
 
 
 
@@ -213,6 +212,8 @@
 </MudContainer>
 @if (_loadedProjectDetail)
 {
+    @if (!_projectNotFound)
+    {
     <div class="mt-3 text-start project-specification">
         <div class="container mx-auto">
             <h4 class="sponsored-festival-title light-title mt-2 mb-3">Specification</h4>
@@ -270,4 +271,5 @@
             </MudItem>
         </MudGrid>
     </MudContainer>
+    }
 }

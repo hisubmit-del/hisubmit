@@ -1,0 +1,294 @@
+@using global::Hisubmit.Client.SharedModels.Features.Projects.Queries.GetAllProjectFiles
+@using global::Hisubmit.Client.SharedModels.Features.Projects.Queries.GetDetail
+@using global::Hisubmit.Client.SharedModels.Enums
+
+@if (!DetailLoaded)
+{
+    <MudCard Class="project-media-viewer project-media-viewer--loading" Elevation="0">
+        <MudSkeleton SkeletonType="SkeletonType.Rectangle" Height="360px" />
+    </MudCard>
+}
+else if (!DisplayFiles.Any())
+{
+    <MudAlert Class="project-media-viewer__empty" Severity="Severity.Info" Variant="Variant.Outlined">
+        No preview files are available for this project yet.
+    </MudAlert>
+}
+else
+{
+    <MudCard Class="project-media-viewer" Elevation="0">
+        <MudCardHeader Class="project-media-viewer__header">
+            <CardHeaderAvatar>
+                <MudAvatar Color="Color.Primary" Variant="Variant.Filled">
+                    <MudIcon Icon="@Icons.Material.Outlined.AutoAwesome" />
+                </MudAvatar>
+            </CardHeaderAvatar>
+            <CardHeaderContent>
+                <MudText Typo="Typo.h5">Project preview</MudText>
+                <MudText Typo="Typo.body2" Class="mud-text-secondary">
+                    View the submitted work in the format provided by the artist.
+                </MudText>
+            </CardHeaderContent>
+        </MudCardHeader>
+
+        <MudCardContent Class="project-media-viewer__content">
+            @if (LocalImageFiles.Any())
+            {
+                <section class="project-media-block project-media-block--image" aria-label="Image preview">
+                    <div class="project-image-gallery">
+                        @foreach (var file in LocalImageFiles)
+                        {
+                            <a class="project-image-gallery__item"
+                               href="@file.LocalFileURL"
+                               target="_blank"
+                               rel="noopener noreferrer">
+                                <img src="@file.LocalFileURL"
+                                     alt="@GetAltText(file)"
+                                     loading="lazy" />
+                                @if (!string.IsNullOrWhiteSpace(file.Name))
+                                {
+                                    <span>@file.Name</span>
+                                }
+                            </a>
+                        }
+                    </div>
+                </section>
+            }
+
+            @foreach (var file in LocalVideoFiles)
+            {
+                <section class="project-media-block" aria-label="Video preview">
+                    <div class="project-media-block__heading">
+                        <MudIcon Icon="@Icons.Material.Outlined.Movie" Color="Color.Primary" />
+                        <MudText Typo="Typo.subtitle1">@GetDisplayName(file, "Video")</MudText>
+                    </div>
+                    <video class="project-media-video"
+                           controls
+                           preload="metadata"
+                           playsinline
+                           poster="@PosterUrl">
+                        <source src="@file.LocalFileURL" type="@GetMimeType(file)" />
+                        Your browser does not support video playback.
+                    </video>
+                    @if (!string.IsNullOrWhiteSpace(file.FileDescription))
+                    {
+                        <MudText Typo="Typo.body2" Class="project-media-block__description">
+                            @file.FileDescription
+                        </MudText>
+                    }
+                </section>
+            }
+
+            @foreach (var file in LocalAudioFiles)
+            {
+                <section class="project-media-block" aria-label="Audio preview">
+                    <div class="project-media-block__heading">
+                        <MudIcon Icon="@Icons.Material.Outlined.MusicNote" Color="Color.Primary" />
+                        <MudText Typo="Typo.subtitle1">@GetDisplayName(file, "Audio")</MudText>
+                    </div>
+                    <audio class="project-media-audio" controls preload="metadata">
+                        <source src="@file.LocalFileURL" type="@GetMimeType(file)" />
+                        Your browser does not support audio playback.
+                    </audio>
+                    @if (!string.IsNullOrWhiteSpace(file.FileDescription))
+                    {
+                        <MudText Typo="Typo.body2" Class="project-media-block__description">
+                            @file.FileDescription
+                        </MudText>
+                    }
+                </section>
+            }
+
+            @foreach (var file in LocalPdfFiles)
+            {
+                <section class="project-media-block" aria-label="PDF preview">
+                    <div class="project-media-block__heading">
+                        <MudIcon Icon="@Icons.Material.Outlined.PictureAsPdf" Color="Color.Primary" />
+                        <MudText Typo="Typo.subtitle1">@GetDisplayName(file, "PDF document")</MudText>
+                    </div>
+                    <object class="project-media-document"
+                            data="@file.LocalFileURL"
+                            type="application/pdf">
+                        <div class="project-media-fallback">
+                            <MudText Typo="Typo.body2">This browser cannot display the PDF inline.</MudText>
+                            <a href="@file.LocalFileURL" target="_blank" rel="noopener noreferrer">Open PDF</a>
+                        </div>
+                    </object>
+                </section>
+            }
+
+            @foreach (var file in LocalDocumentFiles)
+            {
+                <section class="project-media-block project-media-block--document" aria-label="Document file">
+                    <div class="project-media-block__heading">
+                        <MudIcon Icon="@Icons.Material.Outlined.Description" Color="Color.Primary" />
+                        <MudText Typo="Typo.subtitle1">@GetDisplayName(file, "Document")</MudText>
+                    </div>
+                    <MudText Typo="Typo.body2" Class="project-media-block__description">
+                        Word and text documents are available to open or download in their original format.
+                    </MudText>
+                    <a class="project-media-download"
+                       href="@file.LocalFileURL"
+                       target="_blank"
+                       rel="noopener noreferrer"
+                       download="@GetDownloadName(file)">
+                        <MudIcon Icon="@Icons.Material.Filled.Download" />
+                        <span>Open or download document</span>
+                    </a>
+                </section>
+            }
+
+            @foreach (var file in LocalOtherFiles)
+            {
+                <section class="project-media-block project-media-block--document" aria-label="Attached file">
+                    <div class="project-media-block__heading">
+                        <MudIcon Icon="@Icons.Material.Outlined.AttachFile" Color="Color.Primary" />
+                        <MudText Typo="Typo.subtitle1">@GetDisplayName(file, "Attached file")</MudText>
+                    </div>
+                    <a class="project-media-download"
+                       href="@file.LocalFileURL"
+                       target="_blank"
+                       rel="noopener noreferrer"
+                       download="@GetDownloadName(file)">
+                        <MudIcon Icon="@Icons.Material.Filled.Download" />
+                        <span>Open attached file</span>
+                    </a>
+                </section>
+            }
+
+            @if (ExternalFiles.Any())
+            {
+                <section class="project-media-block project-media-block--external" aria-label="External project files">
+                    <div class="project-media-block__heading">
+                        <MudIcon Icon="@Icons.Material.Outlined.OpenInNew" Color="Color.Primary" />
+                        <MudText Typo="Typo.subtitle1">External project links</MudText>
+                    </div>
+                    <div class="project-external-files">
+                        @foreach (var file in ExternalFiles)
+                        {
+                            <a class="project-external-file"
+                               href="@file.FileURL"
+                               target="_blank"
+                               rel="noopener noreferrer">
+                                <span class="project-external-file__icon">
+                                    <MudIcon Icon="@Icons.Material.Outlined.Link" />
+                                </span>
+                                <span class="project-external-file__body">
+                                    <strong>@GetDisplayName(file, "External file")</strong>
+                                    @if (!string.IsNullOrWhiteSpace(file.FileDescription))
+                                    {
+                                        <small>@file.FileDescription</small>
+                                    }
+                                </span>
+                                <MudIcon Icon="@Icons.Material.Outlined.ArrowOutward" />
+                            </a>
+                        }
+                    </div>
+                </section>
+            }
+        </MudCardContent>
+    </MudCard>
+}
+
+@code {
+    [Parameter] public List<GetAllProjectFileResponse> Files { get; set; } = new();
+    [Parameter] public GetProjectDetailResponse? Project { get; set; }
+    [Parameter] public bool DetailLoaded { get; set; }
+
+    private IEnumerable<GetAllProjectFileResponse> DisplayFiles =>
+        Files.Where(file => file is not null &&
+                            ((!file.IsLocalFile && !string.IsNullOrWhiteSpace(file.FileURL)) ||
+                             (file.IsLocalFile && !string.IsNullOrWhiteSpace(file.LocalFileURL))));
+
+    private IEnumerable<GetAllProjectFileResponse> LocalFiles =>
+        DisplayFiles.Where(file => file.IsLocalFile);
+
+    private IEnumerable<GetAllProjectFileResponse> LocalImageFiles =>
+        LocalFiles.Where(file => GetFileFormat(file) == FileFormat.Image);
+
+    private IEnumerable<GetAllProjectFileResponse> LocalVideoFiles =>
+        LocalFiles.Where(file => GetFileFormat(file) == FileFormat.Video);
+
+    private IEnumerable<GetAllProjectFileResponse> LocalAudioFiles =>
+        LocalFiles.Where(file => GetFileFormat(file) == FileFormat.Music);
+
+    private IEnumerable<GetAllProjectFileResponse> LocalPdfFiles =>
+        LocalFiles.Where(file => GetFileFormat(file) == FileFormat.PDF);
+
+    private IEnumerable<GetAllProjectFileResponse> LocalDocumentFiles =>
+        LocalFiles.Where(file => GetFileFormat(file) == FileFormat.Doc);
+
+    private IEnumerable<GetAllProjectFileResponse> LocalOtherFiles =>
+        LocalFiles.Where(file => GetFileFormat(file) is FileFormat.ZipRar or FileFormat.Other);
+
+    private IEnumerable<GetAllProjectFileResponse> ExternalFiles =>
+        DisplayFiles.Where(file => !file.IsLocalFile);
+
+    private string? PosterUrl =>
+        !string.IsNullOrWhiteSpace(Project?.FileURl)
+            ? Project.FileURl
+            : LocalImageFiles.Select(file => file.LocalFileURL).FirstOrDefault();
+
+    private static FileFormat GetFileFormat(GetAllProjectFileResponse file)
+    {
+        if (file.FileFormat.HasValue)
+            return file.FileFormat.Value;
+
+        var extension = Path.GetExtension(file.LocalFileURL ?? file.FileURL ?? string.Empty)
+            .ToLowerInvariant();
+
+        return extension switch
+        {
+            ".jpg" or ".jpeg" or ".png" or ".gif" or ".webp" or ".bmp" or ".svg" => FileFormat.Image,
+            ".mp4" or ".m4v" or ".webm" or ".mov" or ".mkv" or ".avi" => FileFormat.Video,
+            ".mp3" or ".wav" or ".ogg" or ".m4a" or ".aac" or ".flac" => FileFormat.Music,
+            ".pdf" => FileFormat.PDF,
+            ".doc" or ".docx" or ".txt" or ".rtf" => FileFormat.Doc,
+            ".zip" or ".rar" or ".7z" or ".gz" => FileFormat.ZipRar,
+            _ => FileFormat.Other
+        };
+    }
+
+    private static string GetMimeType(GetAllProjectFileResponse file)
+    {
+        var extension = Path.GetExtension(file.LocalFileURL ?? file.FileURL ?? string.Empty)
+            .ToLowerInvariant();
+
+        return extension switch
+        {
+            ".mp4" => "video/mp4",
+            ".m4v" => "video/x-m4v",
+            ".webm" => "video/webm",
+            ".mov" => "video/quicktime",
+            ".mkv" => "video/x-matroska",
+            ".mp3" => "audio/mpeg",
+            ".wav" => "audio/wav",
+            ".ogg" => "audio/ogg",
+            ".m4a" => "audio/mp4",
+            ".aac" => "audio/aac",
+            ".flac" => "audio/flac",
+            _ => "application/octet-stream"
+        };
+    }
+
+    private static string GetDisplayName(GetAllProjectFileResponse file, string fallback)
+    {
+        return string.IsNullOrWhiteSpace(file.Name) ? fallback : file.Name;
+    }
+
+    private static string GetAltText(GetAllProjectFileResponse file)
+    {
+        return string.IsNullOrWhiteSpace(file.FileDescription)
+            ? GetDisplayName(file, "Project image")
+            : file.FileDescription;
+    }
+
+    private static string GetDownloadName(GetAllProjectFileResponse file)
+    {
+        if (!string.IsNullOrWhiteSpace(file.Name))
+            return file.Name;
+
+        return Path.GetFileName(new Uri(file.LocalFileURL ?? file.FileURL ?? string.Empty,
+                                        UriKind.RelativeOrAbsolute).LocalPath);
+    }
+}

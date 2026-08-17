@@ -47,6 +47,7 @@ public partial class ProjectDetail
     private bool _loaded;
     private ProjectPermissionResponse _permissions = ProjectPermissionResponse.Read;
     private bool _loadedProjectDetail;
+    private bool _projectNotFound;
     private List<GetAllProjectFileResponse> _headerFiles = new();
     #endregion
 
@@ -66,6 +67,14 @@ public partial class ProjectDetail
     protected override async Task OnInitializedAsync()
     {
         await LoadProjectDetail();
+        if (Project is null)
+        {
+            _projectNotFound = true;
+            _loadedProjectDetail = true;
+            await base.OnInitializedAsync();
+            return;
+        }
+
         await GetAllScreenAward();
         await GetAllAwards();
         _loadedProjectDetail = true;
@@ -101,6 +110,7 @@ public partial class ProjectDetail
             {
                 _snackBar.Add(message, Severity.Error);
             }
+            _projectNotFound = true;
         }
     }
 
