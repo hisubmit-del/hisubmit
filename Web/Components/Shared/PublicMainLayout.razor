@@ -19,6 +19,7 @@
     <PublicHeader Items="@(_menuItemDto.Where(p => p.Position == MenuItemPosition.Header).ToList())"
         LogoutClicked="Logout" FirstLetterOfName="@FirstLetterOfName" ImageDataUrl="@ImageDataUrl"/>
     <CascadingValue Value="hubConnection">
+        <PageUsageGuide />
         @Body
     </CascadingValue>
     <PublicFooter Items="@(_menuItemDto.Where(p => p.Position == MenuItemPosition.Footer).ToList())"/>

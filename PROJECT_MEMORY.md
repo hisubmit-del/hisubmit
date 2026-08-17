@@ -555,3 +555,25 @@ migration اصلی فعلی در `hisubmit/src/Infrastructure/Migrations/2025070
   `/` and `/advertise` returned HTTP 200. No new cart cast exception appeared
   after the fresh 16:13 start; older cast entries in `Web/Logs/log20260817.txt`
   are from before the cart type fix.
+
+## Contextual page guidance and required-field visual language checkpoint (2026-08-17)
+
+- Added the shared route-aware `PageUsageGuide` component under
+  `Web/Components/Shared/Components/`. It gives users a concise explanation of
+  the current page and its main actions, without requiring every page to copy
+  the same markup.
+- The guide is mounted in `MainLayout`, `PublicMainLayout`, and
+  `FestivalMainLayout`, covering artist, festival, referee, administrator,
+  account, shopping, tickets, news, FAQ, advertising, product and project
+  workflows.
+- Added a consistent responsive visual pattern in
+  `Web/wwwroot/css/site-modern.css`. It wraps safely on mobile and uses the
+  existing brand palette.
+- Required MudBlazor input markers are now consistently red and bold. The
+  existing MudBlazor required pseudo-element is styled directly, so required
+  fields throughout existing forms show a red `*` without manually editing
+  dozens of forms.
+- Local build completed successfully with zero errors. HTTP checks returned
+  200 for `/`, `/news`, `/store`, `/tickets`, `/advertise`, `/faq`,
+  `/festival/demo-aurora-arts-film-2026`, and a product route. The guide was
+  present on all non-home operational/public routes checked.

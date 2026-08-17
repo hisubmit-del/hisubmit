@@ -1,0 +1,20 @@
+@namespace Web.Components.Shared.Components
+
+@if (_guide is not null)
+{
+    <MudPaper Class="page-usage-guide" Elevation="0">
+        <div class="page-usage-guide__icon" aria-hidden="true">
+            <MudIcon Icon="@_guide.Icon" />
+        </div>
+        <div class="page-usage-guide__content">
+            <div class="page-usage-guide__title">@_guide.Title</div>
+            <div class="page-usage-guide__description">@_guide.Description</div>
+        </div>
+        @if (_guide.ShowRequiredLegend)
+        {
+            <div class="page-usage-guide__legend">
+                <span aria-hidden="true">*</span> Required
+            </div>
+        }
+    </MudPaper>
+}
