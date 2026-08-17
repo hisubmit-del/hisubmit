@@ -1,5 +1,25 @@
 # HiSubmit Project Memory
 
+> Technical reference: read [TECHNICAL_DOCUMENTATION.md](TECHNICAL_DOCUMENTATION.md)
+> before making changes. This file is the chronological checkpoint and
+> investigation memory; the technical document is the stable architecture and
+> operating guide.
+
+## Technical documentation checkpoint (2026-08-17)
+
+- Created `TECHNICAL_DOCUMENTATION.md` as the stable technical reference for
+  the active HiSubmit solution.
+- Documented the real project structure, startup pipeline, configuration,
+  database context and migrations, seeders, roles and festival-scoped
+  permissions, layouts and route families, API conventions, core workflows,
+  diagnostics, local execution, testing, publishing, Plesk deployment, Git
+  rules, and documentation maintenance.
+- This file remains the chronological memory of investigations and fixes.
+  Update both documents together when architecture, deployment, security, or
+  development workflow changes.
+- Documentation-only change; no application code or database data was
+  changed and no build was required for this checkpoint.
+
 > این فایل حافظهٔ کاری پروژه است. قبل از هر بررسی یا تغییر، ابتدا این فایل خوانده شود.
 > این سند با بررسی سورس در 2026-08-16 ایجاد شده و باید فقط با تغییرات واقعی همین پروژه به‌روزرسانی شود.
 
