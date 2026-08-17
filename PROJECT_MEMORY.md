@@ -467,3 +467,43 @@ migration اصلی فعلی در `hisubmit/src/Infrastructure/Migrations/2025070
 - Local build completed with 0 errors. Local HTTP checks returned 200 for `/`,
   `/festivals`, `/festival/demo-aurora-arts-film-2026`, `/terms`, and `/term`
   after starting the rebuilt application.
+
+## Complete local QA showcase checkpoint (2026-08-17)
+
+- The active work is now the comprehensive local data and end-to-end
+  validation phase. It follows the stability, bug-fix, responsive UI, and
+  adaptive project-media phases.
+- Added the idempotent local-only seed script
+  `tools/seed-qa-showcase-local.sql`. It targets `HiSubmitDB50` and is not
+  called during application startup. It creates:
+  - `qa.artist@hisubmit.test`, `qa.festival@hisubmit.test`, and
+    `qa.referee@hisubmit.test`;
+  - `[QA] Complete Creative Showcase 2026` with URL
+    `qa-complete-creative-showcase-2026`;
+  - complete festival metadata, address, venue, organizers, images, rules
+    PDF, six categories, questions, fees, qualifying awards, and a
+    festival-scoped referee role;
+  - one complete project for every supported type: Film, Photography, Music,
+    Script/ScreenWriting, VR/XR, and Art.
+- All six QA projects have complete base metadata, type-specific
+  specifications where supported, media files, images, credits, awards,
+  distribution information, project addresses, and accepted submissions.
+- The required near-term deadline is **August 19, 2026** (the current date is
+  August 17, 2026), followed by September 20 and October 5 deadlines.
+- Local media fixtures are under `Web/wwwroot/media/qa/`:
+  `qa-flower.mp4` for video/XR and `qa-script.pdf` for document preview.
+  Music uses the existing local `/media/notification.mp3`; image and art
+  samples use existing local images.
+- Seed execution was verified in `HiSubmitDB50`: festival ID 15, projects
+  IDs 14-19, six submissions with `SubmitStatus=Paid` and
+  `JudgingStatus=Selected`, and three deadlines with six fee rows each.
+- Local HTTP verification after rebuild returned 200 for the QA festival,
+  film project, and photography project pages. The MP4 returned
+  `video/mp4` and the PDF returned `application/pdf`.
+- Local credentials for this checkpoint are intentionally test-only:
+  password `123Pa$$word!` for all three QA accounts. They must not be used
+  or copied to production.
+- The build completed with zero errors and seven remaining dependency
+  vulnerability warnings. The previously observed run/build interruption was
+  caused by a live `Web.exe` locking assemblies; stopping that exact process
+  before rebuilding resolved it.
