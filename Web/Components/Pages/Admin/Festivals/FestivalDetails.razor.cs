@@ -162,6 +162,9 @@ public partial class FestivalDetails
         var dialog = _dialogService.Show<SaveAndNext>("Save or Next", parameters, option);
         var result = await dialog.Result;
 
+        if (result.Canceled || result.Data is null)
+            return;
+
         switch (result.Data.ToString())
         {
             case "SaveAndNext":

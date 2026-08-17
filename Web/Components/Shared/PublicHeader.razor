@@ -47,6 +47,26 @@
                 </li>
             }
             <AuthorizeView>
+                <Authorized>
+                    <li>
+                        <a class="public-nav-link" href="/user/shoppingCart" @onclick="CloseMobileMenu">
+                            <MudIcon Icon="@Icons.Material.Outlined.ShoppingCart" Size="Size.Small" />
+                            <span>Cart</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="public-nav-link" href="/account" @onclick="CloseMobileMenu">
+                            <MudIcon Icon="@Icons.Material.Outlined.AccountCircle" Size="Size.Small" />
+                            <span>Profile</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="public-nav-link public-nav-link--featured" href="/advertise" @onclick="CloseMobileMenu">
+                            <MudIcon Icon="@Icons.Material.Outlined.Campaign" Size="Size.Small" />
+                            <span>Advertise</span>
+                        </a>
+                    </li>
+                </Authorized>
                 <NotAuthorized>
                     <li>
                         <a class="public-nav-link public-nav-link--login" href="/login" @onclick="CloseMobileMenu">
@@ -70,7 +90,11 @@
 <div class="public-announcement">
     <div class="public-announcement__inner">
         <span><MudIcon Icon="@Icons.Material.Outlined.AutoAwesome" Size="Size.Small" /> Creative opportunities, clearly organised.</span>
-        <a href="/advertise">Promote your festival <MudIcon Icon="@Icons.Material.Filled.ArrowForward" Size="Size.Small" /></a>
+        <AuthorizeView>
+            <Authorized>
+                <a href="/advertise">Promote your festival <MudIcon Icon="@Icons.Material.Filled.ArrowForward" Size="Size.Small" /></a>
+            </Authorized>
+        </AuthorizeView>
     </div>
 </div>
 
@@ -118,6 +142,20 @@
                             </li>
                         }
                         <AuthorizeView>
+                            <Authorized>
+                                <li class="public-nav-auth">
+                                    <a class="public-nav-link" href="/user/shoppingCart">
+                                        <MudIcon Icon="@Icons.Material.Outlined.ShoppingCart" Size="Size.Small" />
+                                        <span>Cart</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="public-nav-link" href="/advertise">
+                                        <MudIcon Icon="@Icons.Material.Outlined.Campaign" Size="Size.Small" />
+                                        <span>Advertise</span>
+                                    </a>
+                                </li>
+                            </Authorized>
                             <NotAuthorized>
                                 <li class="public-nav-auth">
                                     <a class="public-nav-link public-nav-link--login" href="/login">

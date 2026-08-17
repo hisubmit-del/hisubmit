@@ -132,7 +132,8 @@
                             @foreach (var project in _projects)
                             {
                                 <MudItem xs="12" md="4" lg="3">
-                                    <MudCard class="festival-card" Elevation="0">
+                                    <MudCard class="festival-card project-dashboard-card" Elevation="0"
+                                             @onclick="() => EditProject(project.Id)">
                                         <MudCardContent>
                                             <div style="height: 220px" class="d-flex  flex-grow-1 gap-4 justify-center d-relative ">
                                                 <img src="@project.FileURl" alt="@project.Title"

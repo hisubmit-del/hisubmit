@@ -118,8 +118,9 @@ public partial class NavMenu
         //    await _localStorage.GetItemAsync<int>(StorageConstants.Local.FestivalId);
 
 
-        IsAdminRole =
-            (await AuthenticationManager.CurrentUser()).IsInRole(RoleConstants.AdministratorRole);
+        var currentUser = await AuthenticationManager.CurrentUser();
+        IsAdminRole = currentUser.IsInRole(RoleConstants.AdministratorRole);
+        IsFestivalRole = currentUser.IsInRole(RoleConstants.FestivalRole);
     }
 
     private async Task ReloadComponents(object sender, int festivalId)
@@ -144,6 +145,8 @@ public partial class NavMenu
                 //.GetItemAsync<int?>(StorageConstants.Local.SelectedFestivalId);
             IsAdminRole = (await AuthenticationManager.CurrentUser())
                 .IsInRole(RoleConstants.AdministratorRole);
+            IsFestivalRole = (await AuthenticationManager.CurrentUser())
+                .IsInRole(RoleConstants.FestivalRole);
 
         }
         _adminSelectedFestival = await AdminSelectFestival();
@@ -152,6 +155,7 @@ public partial class NavMenu
     }
 
     private bool IsAdminRole { get; set; }
+    private bool IsFestivalRole { get; set; }
 
     private void ToggleMenuItem()
     {

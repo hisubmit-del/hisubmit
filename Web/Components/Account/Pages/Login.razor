@@ -190,24 +190,29 @@
                 Input.RememberMe,
                 lockoutOnFailure: false);
 
-        var festivalClaims = HttpContext.User.FindFirst(ApplicationClaimTypes.FestivalId);
-
-        if (festivalClaims!=null)
-        {
-            HttpContext.Response.Cookies.Append(
-                ApplicationClaimTypes.SelectedFestival,
-                festivalClaims.Value!,
-                new CookieOptions
-                {
-                    Expires = DateTimeOffset.UtcNow.AddDays(3),
-                    HttpOnly = true,
-                    Secure = true,
-                    IsEssential = false
-                });
-        }
-
         if (result.Succeeded)
         {
+            // HttpContext.User is still the pre-login principal here. Build
+            // claims from the newly signed-in user so festival accounts get
+            // their festival context immediately after login.
+            var signedInPrincipal = await SignInManager.CreateUserPrincipalAsync(user);
+            var festivalClaims = signedInPrincipal.FindFirst(ApplicationClaimTypes.FestivalId);
+            if (festivalClaims != null)
+            {
+                HttpContext.Response.Cookies.Append(
+                    ApplicationClaimTypes.SelectedFestival,
+                    festivalClaims.Value,
+                    new CookieOptions
+                    {
+                        Expires = DateTimeOffset.UtcNow.AddDays(3),
+                        HttpOnly = true,
+                        Secure = HttpContext.Request.IsHttps,
+                        SameSite = SameSiteMode.Lax,
+                        IsEssential = true,
+                        Path = "/"
+                    });
+            }
+
             Logger.LogInformation("User logged in.");
             RedirectManager.RedirectTo("/");
         }

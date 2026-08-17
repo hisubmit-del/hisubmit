@@ -149,6 +149,70 @@
     }
 }
 
+/* Shared mobile navigation and dialog safety overrides. Keep these last so
+   legacy responsive rules cannot leave a desktop header in mobile mode. */
+.project-dashboard-card {
+    cursor: pointer;
+}
+
+.project-dashboard-card:focus-visible,
+.project-dashboard-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 14px 30px rgba(23, 33, 43, 0.14);
+}
+
+.mud-dialog-container .mud-dialog {
+    max-height: calc(100dvh - 1.5rem);
+}
+
+.mud-dialog-container .mud-dialog-content {
+    max-height: calc(100dvh - 10rem);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+}
+
+@media (min-width: 992px) {
+    .public-layout .public-mobile-menu-button,
+    .public-layout .public-brand--mobile {
+        display: none !important;
+    }
+
+    .public-layout .public-desktop-nav {
+        display: flex !important;
+    }
+}
+
+@media (max-width: 991.98px) {
+    .public-layout .public-brand--desktop,
+    .public-layout .public-desktop-nav {
+        display: none !important;
+    }
+
+    .public-layout .public-mobile-menu-button,
+    .public-layout .public-brand--mobile {
+        display: inline-flex !important;
+    }
+
+    .public-layout .public-header-row {
+        min-height: 4.5rem;
+        justify-content: space-between;
+    }
+
+    .public-layout .public-mobile-nav {
+        max-height: calc(100dvh - 5.5rem);
+        overflow-y: auto;
+        padding-bottom: 2rem;
+    }
+
+    .main-layout .mud-appbar .mud-icon-button {
+        flex: 0 0 auto;
+    }
+
+    .main-layout .main-drawer {
+        max-width: min(88vw, 24rem);
+    }
+}
+
 @media (max-width: 575.98px) {
     .public-layout .festival-sponsored-box .festival-featured-tile {
         min-height: 12rem;

@@ -28,6 +28,17 @@
     }
     
     <AuthorizeView>
+        <Authorized>
+            <MudNavLink Href="/user/shoppingCart" Icon="@Icons.Material.Outlined.ShoppingCart">
+                Cart
+            </MudNavLink>
+            <MudNavLink Href="/account" Icon="@Icons.Material.Outlined.AccountCircle">
+                Profile
+            </MudNavLink>
+            <MudNavLink Href="/advertise" Icon="@Icons.Material.Outlined.Campaign">
+                Advertise
+            </MudNavLink>
+        </Authorized>
         <NotAuthorized>
             <MudNavLink Href="/account/login" Icon="@Icons.Material.Outlined.Login">
                 @Localize["Login"]

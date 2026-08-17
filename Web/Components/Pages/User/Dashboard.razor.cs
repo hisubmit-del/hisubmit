@@ -157,5 +157,11 @@ public partial class Dashboard
             }
         }
     }
+
+    private void EditProject(int projectId)
+    {
+        if (projectId > 0)
+            _navigationManager.NavigateTo($"/user/project/{projectId}");
+    }
 }
 

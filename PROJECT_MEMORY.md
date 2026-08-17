@@ -531,3 +531,27 @@ migration اصلی فعلی در `hisubmit/src/Infrastructure/Migrations/2025070
   rating records are excluded from the visible review list.
 - Final local build completed with zero errors. Existing legacy/compiler and
   package vulnerability warnings remain outside this focused checkpoint.
+
+## Mobile navigation, festival roles, and form reliability checkpoint (2026-08-17)
+
+- Unified the public mobile navigation behavior with final responsive overrides.
+  Authenticated mobile navigation now exposes Cart, Profile, and Advertise;
+  the Advertise link is hidden from anonymous users in the public header/footer.
+- Artist dashboard project cards now navigate directly to
+  `/user/project/{id}` for editing.
+- Festival creation now submits `AddToCurrentUser=true`, reports empty-success
+  responses safely, and navigates to the festival dashboard after creation.
+- Login now derives the selected-festival cookie from the newly signed-in
+  principal instead of the pre-login anonymous principal, fixing festival
+  accounts opening as personal accounts when the festival claim exists.
+- Save/Next dialogs in both festival edit flows now safely handle Cancel/Close
+  results instead of dereferencing null dialog data. Organizer forms have a
+  unique `FormName`, use an explicit button action, and global dialog CSS keeps
+  content scrollable within the viewport.
+- Local build succeeded with zero errors on August 17, 2026. The 1,500+
+  legacy analyzer/compiler warnings remain categorized technical debt and were
+  not broadly changed in this focused commit.
+- Local application restarted successfully at `http://127.0.0.1:5120`;
+  `/` and `/advertise` returned HTTP 200. No new cart cast exception appeared
+  after the fresh 16:13 start; older cast entries in `Web/Logs/log20260817.txt`
+  are from before the cart type fix.

@@ -12,7 +12,11 @@
             <a href="/news">News</a>
             <a href="/store">Store</a>
             <a href="/tickets">Tickets</a>
-            <a href="/advertise">Advertise</a>
+            <AuthorizeView>
+                <Authorized>
+                    <a href="/advertise">Advertise</a>
+                </Authorized>
+            </AuthorizeView>
         </div>
     </MudContainer>
     <MudGrid Class="py-lg-20  px-5 d-flex justify-center flex-grow-1 gap-4 festivals-footer-box">

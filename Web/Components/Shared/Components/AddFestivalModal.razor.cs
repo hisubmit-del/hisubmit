@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using System.Linq;
 using Blazored.FluentValidation;
 using Hisubmit.Client.SharedModels.Features.Festivals.Commands.AddFestival;
 using HiSubmit.Client.Infrastructure.Managers.Festivals;
@@ -24,13 +25,14 @@ public partial class AddFestivalModal
         _validate = _fluentValidationValidator.Validate(param => param.IncludeAllRuleSets());
         if (_validate)
         {
+            _festival.AddToCurrentUser = true;
             var response = await FestivalManager.AddFestival(_festival);
             if (response.Succeeded)
             {
                 MudDialog.Close();
              //   await   AuthenticationManager.TryForceRefreshToken();
-                _navigationManager.NavigateTo(_navigationManager.Uri,true);
-                _snackBar.Add(response.Messages[0], Severity.Success);
+                _snackBar.Add(response.Messages.FirstOrDefault() ?? "Festival created", Severity.Success);
+                _navigationManager.NavigateTo("/festival/dashboard", true);
             }
             else
             {

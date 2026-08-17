@@ -82,10 +82,29 @@
                         </MudButton>
                     }
 
+                    <MudHidden Breakpoint="Breakpoint.MdAndUp">
+                        <MudNavLink Href="/user/shoppingCart" IconColor="Color.Tertiary"
+                                    Icon="@Icons.Material.Outlined.ShoppingCart">
+                            Cart
+                        </MudNavLink>
+                        <MudNavLink Href="/account" IconColor="Color.Tertiary"
+                                    Icon="@Icons.Material.Outlined.AccountCircle">
+                            Profile
+                        </MudNavLink>
+                        <MudNavLink Href="/advertise" IconColor="Color.Tertiary"
+                                    Icon="@Icons.Material.Outlined.Campaign">
+                            Advertise
+                        </MudNavLink>
+                    </MudHidden>
+
                     <AdminNavMenu></AdminNavMenu>
                     @if (!IsAdminRole)
                     {
-                        if (SelectedFestivalId == null)
+                        if (SelectedFestivalId == null && FestivalId > 0 && IsFestivalRole)
+                        {
+                            <FestivalNavMenu/>
+                        }
+                        else if (SelectedFestivalId == null)
                         {
                             <ArtistNavMenu/>
                             <RefreenavMenu/>

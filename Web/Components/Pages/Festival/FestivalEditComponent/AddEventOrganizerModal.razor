@@ -1,6 +1,6 @@
 ﻿@inject IStringLocalizer<AddEventOrganizerModal> Localize
 
-<EditForm Model="@Organizer">
+<EditForm Model="@Organizer" FormName="festival-organizer">
     <FluentValidationValidator @ref="_fluentValidationValidator"/>
     <MudDialog>
         <TitleContent>
@@ -41,7 +41,7 @@
         </DialogContent>
         <DialogActions>
             <MudButton DisableElevation Variant="Variant.Filled" OnClick="Cancel">@Localize["Cancel"]</MudButton>
-            <LoadingButton Processing="_processing" Variant="Variant.Filled" OnClick="SaveAsync" ButtonType="ButtonType.Submit" Color="Color.Success">@Localize["Save"]</LoadingButton>
+            <LoadingButton Processing="_processing" Variant="Variant.Filled" OnClick="SaveAsync" ButtonType="ButtonType.Button" Color="Color.Success">@Localize["Save"]</LoadingButton>
         </DialogActions>
     </MudDialog>
 </EditForm>
