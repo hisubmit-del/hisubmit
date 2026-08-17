@@ -2149,6 +2149,33 @@ a:hover {
     font-size: 2.8rem;
 }
 
+.dashboard-page-intro > div {
+    min-width: 0;
+}
+
+.dashboard-page-intro .mud-typography-body2,
+.dashboard-page-intro .mud-typography-h3 {
+    overflow-wrap: anywhere;
+}
+
+.festival-filter-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    gap: .5rem;
+    min-width: 0;
+}
+
+.festival-filter-toolbar .mud-chip,
+.festival-filter-toolbar .mud-button-root {
+    max-width: 100%;
+}
+
+.festival-filter-toolbar .mud-chip-content {
+    overflow-wrap: anywhere;
+}
+
 .dashboard-page-shell .mud-paper,
 .dashboard-page-shell .mud-card {
     border: 1px solid var(--border-soft);
@@ -2295,6 +2322,17 @@ a:hover {
     box-shadow: var(--shadow-card);
 }
 
+.user-dashboard-shell .dashboard-section-card,
+.referee-dashboard-shell .mud-card,
+.referee-dashboard-shell .mud-paper {
+    min-width: 0;
+}
+
+.user-dashboard-shell .mud-simple-table-container,
+.referee-dashboard-shell .mud-simple-table-container {
+    padding-inline: .25rem;
+}
+
 .main-drawer {
     z-index: 1100;
 }
@@ -2314,6 +2352,31 @@ a:hover {
 
 .cart-page-shell {
     min-width: 0;
+}
+
+@media (max-width: 767.98px) {
+    .dashboard-page-intro {
+        align-items: flex-start;
+        margin-top: .5rem;
+        padding: 1rem;
+    }
+
+    .dashboard-page-intro .mud-typography-h3 {
+        font-size: clamp(1.35rem, 6vw, 1.8rem);
+        line-height: 1.15;
+    }
+
+    .dashboard-page-intro .mud-icon-root {
+        flex: 0 0 auto;
+        font-size: 2.1rem;
+    }
+
+    .festival-filter-toolbar {
+        align-items: flex-start;
+        justify-content: flex-start;
+        width: 100%;
+        margin-top: .35rem;
+    }
 }
 
 .cart-summary-card,

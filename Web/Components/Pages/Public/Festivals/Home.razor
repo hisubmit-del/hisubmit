@@ -108,12 +108,27 @@
                     <span class="festival-eyebrow">Refine your search</span>
                     <h2>Find the right festival</h2>
                 </div>
-                <span class="festival-filter-count">
-                    @if (_loaded)
+                <div class="festival-filter-toolbar">
+                    <span class="festival-filter-count">
+                        @if (_loaded && _festivalResponse is not null)
+                        {
+                            @_festivalResponse.TotalCount <span>opportunities</span>
+                        }
+                    </span>
+                    @if (ActiveFilterCount > 0)
                     {
-                        @_festivalResponse.TotalCount <span>opportunities</span>
+                        <MudChip T="string" Color="Color.Tertiary" Variant="Variant.Outlined" Size="Size.Small">
+                            @ActiveFilterCount active filters
+                        </MudChip>
+                        <MudButton Variant="Variant.Text"
+                                   Color="Color.Dark"
+                                   Size="Size.Small"
+                                   StartIcon="@Icons.Material.Filled.RestartAlt"
+                                   OnClick="ResetFilters">
+                            Clear filters
+                        </MudButton>
                     }
-                </span>
+                </div>
             </div>
             <div class="mud-grid mud-grid-spacing-xs-6 justify-start festival-filter-form">
             <div class="mud-grid-item mud-grid-item-xs-12 mud-grid-item-md-6 mud-grid-item-lg-3 mud-grid-item-xxl-3">

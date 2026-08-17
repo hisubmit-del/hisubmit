@@ -36,12 +36,27 @@ public partial class Home : IDisposable
 
     private IEnumerable<GetAllFestivalResponse> _pagedData = new List<GetAllFestivalResponse>();
     private PaginatedResult<GetAllFestivalResponse> _festivalResponse;
-    private readonly GetAllFestivalRequest _advancedSearch = new();
+    private GetAllFestivalRequest _advancedSearch = new();
     private bool _loaded;
     private bool _prerender=true;
     private DateRange _dateRange = new DateRange(DateTime.Now.Date, DateTime.Now.AddDays(5).Date);
 
     private Timer _timer;
+
+    private int ActiveFilterCount =>
+        (_advancedSearch.SearchString is { Length: > 0 } ? 1 : 0)
+        + (_advancedSearch.FestivalType is not null ? 1 : 0)
+        + (_advancedSearch.EventDateTo is not null ? 1 : 0)
+        + (_advancedSearch.EntryDeadlineTo is not null ? 1 : 0)
+        + (_advancedSearch.Focus is not null ? 1 : 0)
+        + (_advancedSearch.Category is not null ? 1 : 0)
+        + (_advancedSearch.OpenOnly ? 1 : 0)
+        + (_advancedSearch.TicketOnly ? 1 : 0)
+        + (_advancedSearch.FeeMinVal is not null ? 1 : 0)
+        + (_advancedSearch.FeeMaxVal is not null ? 1 : 0)
+        + (_advancedSearch.YearsRunningMinVal is not null ? 1 : 0)
+        + (_advancedSearch.YearsRunningMaxVal is not null ? 1 : 0)
+        + (!string.IsNullOrWhiteSpace(_advancedSearch.Orderby.FirstOrDefault()) ? 1 : 0);
     #endregion
 
     #region Prerendering
@@ -104,6 +119,13 @@ public partial class Home : IDisposable
         // await _table.ReloadServerData();
         // IsAdvancedSearch = false;
         _advancedSearch.PageNumber = 1;
+        await LoadFestivals(_advancedSearch);
+    }
+
+    private async Task ResetFilters()
+    {
+        _advancedSearch = new GetAllFestivalRequest { PageNumber = 1 };
+        PageNumber = 1;
         await LoadFestivals(_advancedSearch);
     }
 

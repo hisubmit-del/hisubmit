@@ -2,9 +2,19 @@
 @page "/Judges/Dashboard/{UserId}"
 @inherits BaseUserPages
 
+<div class="dashboard-page-shell referee-dashboard-shell">
+    <div class="dashboard-page-intro">
+        <div>
+            <MudText Typo="Typo.overline">Judging workspace</MudText>
+            <MudText Typo="Typo.h3">Review with clarity and consistency</MudText>
+            <MudText Typo="Typo.body2">See the work assigned to you, complete scores in the correct festival context and keep your judging queue moving.</MudText>
+        </div>
+        <MudIcon Icon="@Icons.Material.Outlined.Score" Size="Size.Large" />
+    </div>
+
 @if (_refereeData.RatedProject == 0)
 {
-    <MudGrid Class="dashboard-page-shell referee-dashboard-shell">
+    <MudGrid>
         <MudAlert ContentAlignment=HorizontalAlignment.Center Variant="Variant.Text" Severity="Severity.Warning"
          Class="pa-3 ma-7 w-100">
             You haven't had any judges assigned yet.
@@ -14,7 +24,7 @@
 
 else
 {
-    <MudGrid Class="dashboard-page-shell referee-dashboard-shell">
+    <MudGrid>
         <MudItem >
             <MudPaper Elevation="25"
                       Class="d-flex flex-row pt-3 pb-2  mud-theme-white text-dark">
@@ -169,3 +179,4 @@ else
         </MudItem>
     </MudGrid>
 }
+</div>

@@ -20,6 +20,20 @@
 - Documentation-only change; no application code or database data was
   changed and no build was required for this checkpoint.
 
+## Product assessment checkpoint (2026-08-17)
+
+- Added `PRODUCT_ASSESSMENT.md` with a product evaluation and prioritized
+  roadmap covering trust/security, conversion, role dashboards, commerce,
+  judging, and the missing first-class residency/literary opportunity model.
+- The current implementation remains festival/competition-centric. Residency,
+  grant, literary-magazine, exhibition, and portfolio-review support must be
+  added through an additive taxonomy and reviewed migration; do not simulate
+  these workflows by adding arbitrary flags to `Festival`.
+- This checkpoint begins Phase 1 of the roadmap: shared dashboard context,
+  public discovery filter clarity, responsive spacing, and safe UI-only
+  improvements. No database schema, payment calculation, or authorization
+  rule is changed.
+
 > این فایل حافظهٔ کاری پروژه است. قبل از هر بررسی یا تغییر، ابتدا این فایل خوانده شود.
 > این سند با بررسی سورس در 2026-08-16 ایجاد شده و باید فقط با تغییرات واقعی همین پروژه به‌روزرسانی شود.
 
@@ -597,3 +611,24 @@ migration اصلی فعلی در `hisubmit/src/Infrastructure/Migrations/2025070
   200 for `/`, `/news`, `/store`, `/tickets`, `/advertise`, `/faq`,
   `/festival/demo-aurora-arts-film-2026`, and a product route. The guide was
   present on all non-home operational/public routes checked.
+
+## Product assessment and Phase 1 UI checkpoint (2026-08-17)
+
+- Added `PRODUCT_ASSESSMENT.md`, documenting product strengths, P0/P1/P2
+  risks, the missing first-class residency/literary opportunity taxonomy, and
+  the prioritized delivery roadmap.
+- Added a clearer artist dashboard header and responsive profile layout in
+  `Web/Components/Pages/User/Dashboard.razor`.
+- Added a role-specific judging workspace header and mobile-safe wrapper in
+  `Web/Components/Pages/User/Referee/Dashboard.razor`.
+- Added active-filter count and one-click reset to
+  `Web/Components/Pages/Public/Festivals/Home.razor` and its code-behind.
+- Added responsive overflow-safe styling for dashboard introductions, filter
+  actions, cards and tables in `Web/wwwroot/css/site-modern.css`.
+- No database, payment, API authorization, claim, or festival-scope rule was
+  changed. Existing unrelated source and local uploaded test files remain
+  unstaged.
+- Verification: `dotnet build .\Web\Web.csproj --no-restore
+  --disable-build-servers --nologo` completed with 0 errors. Local runtime
+  started on `http://localhost:5120`; `/` returned HTTP 200 and
+  `POST /api/v1/public/festival/GetAll` returned HTTP 200.

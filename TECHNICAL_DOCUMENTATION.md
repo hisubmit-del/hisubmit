@@ -4,6 +4,11 @@ This is the technical reference for the active HiSubmit codebase. Read this
 document before changing code, and read `PROJECT_MEMORY.md` afterwards for
 recent fixes, decisions, test results, and known issues.
 
+The product assessment and prioritized roadmap are maintained in
+`PRODUCT_ASSESSMENT.md`. It records the current product strengths, risks,
+opportunity gap for residencies/literary magazines, and the staged delivery
+plan. Read it before starting a cross-cutting UI or workflow change.
+
 ## 1. Project identity and source of truth
 
 HiSubmit is an English-language online platform for artistic festivals and
@@ -733,3 +738,10 @@ Keep secrets and user passwords out of both documents. If the two documents
 disagree, verify the source code and configuration first, then update both
 documents in the same commit.
 
+## 18. Product/UI checkpoint
+
+The current product assessment and roadmap are in
+`PRODUCT_ASSESSMENT.md`. The first Phase 1 implementation added dashboard
+context improvements, mobile-safe spacing, and active-filter/reset feedback to
+public festival discovery. It intentionally did not change database schema,
+payment calculations, or authorization behavior.
