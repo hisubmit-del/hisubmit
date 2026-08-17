@@ -3,7 +3,7 @@
 @using global::Hisubmit.Client.SharedModels.Features.Festivals.Commands.AddEditShowHall
 @inject IStringLocalizer<AddTicketToCartModal> Localizer
 
-<EditForm Context="editFormContext" Model="@SoldTicket" OnValidSubmit="SaveAsync">
+<EditForm Context="editFormContext" Model="@SoldTicket" FormName="ticket-add-to-cart" OnValidSubmit="SaveAsync">
     <FluentValidationValidator @ref="_fluentValidationValidator"/>
     <MudDialog>
         <TitleContent>

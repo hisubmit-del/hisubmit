@@ -1,7 +1,7 @@
 ﻿@inject IStringLocalizer<AddFestivalModal> _localizer
 
 
-<EditForm Model="@SoldBadge" OnValidSubmit="SaveAsync">
+<EditForm Model="@SoldBadge" FormName="badge-add-to-cart" OnValidSubmit="SaveAsync">
     <FluentValidationValidator @ref="_fluentValidationValidator"/>
     <MudDialog>
         <TitleContent>

@@ -3,7 +3,7 @@
 @attribute [AllowAnonymous]
 @inject IStringLocalizer<Reset> Localize
 
-<EditForm Model="@_resetPasswordModel" OnValidSubmit="SubmitAsync">
+<EditForm Model="@_resetPasswordModel" FormName="identity-reset-password" OnValidSubmit="SubmitAsync">
     <FluentValidationValidator @ref="_fluentValidationValidator" />
     <MudGrid>
         <MudItem xs="12">

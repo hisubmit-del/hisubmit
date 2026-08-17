@@ -7,7 +7,7 @@
     @* <Animate Animation="Animations.FadeDown" Auto DurationMilliseconds="1000" DelayMilliseconds="100"> *@
     <MudCard Elevation="1" Class="my-3 animate animate__fadeInDown animate__fadeOut">
         <MudCardContent>
-            <EditForm Model="Filter" OnValidSubmit="Search">
+            <EditForm Model="Filter" FormName="cart-filter" OnValidSubmit="Search">
                 <MudGrid>
                     <MudItem xs="12" md="6" lg="3">
                         <MudTextField T="string" @bind-Value="Filter.PaymentId"

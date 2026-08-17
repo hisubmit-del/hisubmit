@@ -1,6 +1,6 @@
 ﻿@inject IStringLocalizer<RoleModal> _localizer
 
-<EditForm Model="@RoleModel" OnValidSubmit="SaveAsync">
+<EditForm Model="@RoleModel" FormName="identity-role" OnValidSubmit="SaveAsync">
     <FluentValidationValidator @ref="_fluentValidationValidator" />
     <MudDialog>
         <TitleContent>

@@ -1,6 +1,6 @@
 ﻿@inject IStringLocalizer<RegisterUserModal> _localizer
 
-<EditForm Model="@_registerUserModel" OnValidSubmit="SubmitAsync">
+<EditForm Model="@_registerUserModel" FormName="identity-register-user" OnValidSubmit="SubmitAsync">
     <FluentValidationValidator @ref="_fluentValidationValidator"/>
     <MudDialog>
         <TitleContent>

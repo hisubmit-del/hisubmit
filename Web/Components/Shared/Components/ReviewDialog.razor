@@ -16,7 +16,7 @@
         </MudText>
     </TitleContent>
     <DialogContent>
-        <EditForm Model="_model">
+        <EditForm Model="_model" FormName="review-dialog">
             <FluentValidationValidator @ref="_fluentValidationValidator"/>
             <MudGrid>
                @if (Type == CommentType.Review)

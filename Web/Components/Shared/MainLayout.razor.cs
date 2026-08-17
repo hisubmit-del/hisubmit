@@ -72,7 +72,9 @@ namespace Web.Components.Shared
 
         [Obsolete]
         private readonly MudTheme _currentTheme = BlazorHeroTheme.DefaultTheme;
-        private bool _drawerOpen = true;
+        // Drawers must start closed. Starting open causes a temporary overlay on
+        // first render and can block the page until the user closes it.
+        private bool _drawerOpen = false;
         private bool _rightToLeft = false;
         private int _festivalId = 0;
 

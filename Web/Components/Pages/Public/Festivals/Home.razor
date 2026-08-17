@@ -81,8 +81,14 @@
             for (int i = 0; i < max; i++)
             {
                 var festival = _pagedData.ToArray()[i];
-                <div class="mud-grid-item mud-grid-item-xs-6 mud-grid-item-lg-3 d-relative img-box text-center">
-                    <img alt="@festival.Name" src="@festival.LogoURL" />
+                <div class="mud-grid-item mud-grid-item-xs-6 mud-grid-item-lg-3 festival-featured-tile img-box text-center">
+                    <div class="festival-featured-tile__media">
+                        <span class="festival-featured-tile__fallback">@festival.Name</span>
+                        <img alt="@festival.Name"
+                             src="@festival.LogoURL"
+                             loading="lazy"
+                             onerror="this.style.display='none';" />
+                    </div>
 
                     <a type="button" href="@($"/festivalPage/{festival.URL}")"
                        class="mud-button-root mud-button mud-button-outlined mud-button-outlined-tertiary mud-button-outlined-size-medium mud-ripple btn-view-festival">

@@ -1,7 +1,7 @@
 ﻿@inject IStringLocalizer<AddFestivalModal> _localizer
 
 
-<EditForm Model="@_festival" OnValidSubmit="SubmitFestival">
+<EditForm Model="@_festival" FormName="festival-create" OnValidSubmit="SubmitFestival">
     <FluentValidationValidator @ref="_fluentValidationValidator"/>
     <MudDialog>
         <TitleContent>

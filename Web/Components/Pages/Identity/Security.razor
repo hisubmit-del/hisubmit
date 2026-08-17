@@ -1,6 +1,7 @@
 ﻿@inject IStringLocalizer<Security> Localizer
 
 <EditForm Model="@_passwordModel"
+          FormName="identity-security"
           OnValidSubmit="ChangePasswordAsync">
     <FluentValidationValidator @ref="_fluentValidationValidator" />
     <MudCard Elevation="25">

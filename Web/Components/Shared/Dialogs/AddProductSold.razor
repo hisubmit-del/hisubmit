@@ -1,7 +1,7 @@
 ﻿
 @inject IStringLocalizer<AddProductSold> Localize;
 
-<EditForm Model="@Product" OnValidSubmit="SaveAsync">
+<EditForm Model="@Product" FormName="product-add-to-cart" OnValidSubmit="SaveAsync">
     <FluentValidationValidator @ref="_fluentValidationValidator"/>
     <MudDialog>
         <TitleContent>

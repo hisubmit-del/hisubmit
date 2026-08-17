@@ -6,7 +6,7 @@
 <MudGrid Class="mt-lg-8" Justify="Justify.Center">
 <MudItem xs="12" md="6" lg="5">
     <MudPaper Class="pa-5">
-        <EditForm Model="@_emailModel" OnValidSubmit="SubmitAsync">
+        <EditForm Model="@_emailModel" FormName="identity-forgot-password" OnValidSubmit="SubmitAsync">
             <FluentValidationValidator @ref="_fluentValidationValidator" />
             <MudGrid>
                 <MudItem xs="12">

@@ -26,7 +26,7 @@ else
         <MudCardContent Class="@_displaySearchFrom">
             <MudContainer>
 
-                <EditForm Model="@_advancedSearch">
+                <EditForm Model="@_advancedSearch" FormName="user-referee-filter">
                     <MudGrid>
                         <MudItem xs="12" md="4">
                             <MudTextField T="string" Margin="Margin.Dense" Label="@_localizer["Project title"]" Variant="Variant.Text" @bind-Value="@_advancedSearch.ProjectTitle"></MudTextField>

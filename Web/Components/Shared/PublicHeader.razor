@@ -1,22 +1,24 @@
 ﻿@using global::Hisubmit.Client.SharedModels.Features.FooterItems
 @inject IStringLocalizer<PublicHeader> Localize
 
-<div class="side-menu-bac @(_isMobileMenuOpen ? "show" : string.Empty)"
-     aria-hidden="@(!_isMobileMenuOpen)"
-     @onclick="CloseMobileMenu"></div>
-<div class="side-menu @(_isMobileMenuOpen ? "show" : string.Empty)"
-     aria-hidden="@(!_isMobileMenuOpen)">
-    <a href="/" class="public-brand public-brand--drawer" aria-label="HiSubmit home">
-        <img src="assets/img/logo.png" alt="HiSubmit">
-        <span>Creative entry, made simple.</span>
-    </a>
-    <MudIconButton Class="side-menu-close"
-                   Icon="@Icons.Material.Outlined.Close"
-                   Color="Color.Inherit"
-                   UserAttributes="@(new() { { "aria-label", "Close navigation menu" } })"
-                   OnClick="CloseMobileMenu" />
-    <nav class="menu public-mobile-nav" aria-label="Mobile navigation">
-        <ul>
+@if (_isMobileMenuOpen)
+{
+    <div class="side-menu-bac show"
+         aria-hidden="false"
+         @onclick="CloseMobileMenu"></div>
+    <div class="side-menu show"
+         aria-hidden="false">
+        <a href="/" class="public-brand public-brand--drawer" aria-label="HiSubmit home">
+            <img src="assets/img/logo.png" alt="HiSubmit">
+            <span>Creative entry, made simple.</span>
+        </a>
+        <MudIconButton Class="side-menu-close"
+                       Icon="@Icons.Material.Outlined.Close"
+                       Color="Color.Inherit"
+                       UserAttributes="@(new() { { "aria-label", "Close navigation menu" } })"
+                       OnClick="CloseMobileMenu" />
+        <nav class="menu public-mobile-nav" aria-label="Mobile navigation">
+            <ul>
             <li>
                 <a class="public-nav-link" href="/" @onclick="CloseMobileMenu">Browse festivals</a>
             </li>
@@ -60,9 +62,10 @@
                     </li>
                 </NotAuthorized>
             </AuthorizeView>
-        </ul>
-    </nav>
-</div>
+            </ul>
+        </nav>
+    </div>
+}
 
 <div class="public-announcement">
     <div class="public-announcement__inner">
@@ -75,17 +78,17 @@
     <div class="main-header">
         <div class="container public-header-container">
             <div class="row main-header-row mx-0 public-header-row">
-                <a href="/" class="public-brand pl-0 d-none d-sm-flex" aria-label="HiSubmit home">
+                <a href="/" class="public-brand public-brand--desktop pl-0" aria-label="HiSubmit home">
                     <img class="d-none d-sm-block" src="assets/img/logo.png" alt="HiSubmit">
                     <span>Creative entry, made simple.</span>
                 </a>
-                <MudIconButton Class="side-menu-toggle d-flex d-lg-none" 
+                <MudIconButton Class="side-menu-toggle public-mobile-menu-button"
                                Icon="@Icons.Material.Outlined.Menu" 
                                Color="Color.Inherit"
                                UserAttributes="@(new() { { "aria-label", "Open navigation menu" }, { "aria-expanded", _isMobileMenuOpen.ToString().ToLowerInvariant() } })"
                                OnClick="ToggleMobileMenu"></MudIconButton>
                 <MudSpacer/>
-                <nav class="menu public-nav d-none d-lg-block" aria-label="Primary navigation">
+                <nav class="menu public-nav public-desktop-nav" aria-label="Primary navigation">
                     <ul>
                         <li>
                             <a class="public-nav-link" href="/">Browse festivals</a>
@@ -153,8 +156,8 @@
                     </NotAuthorized>
                 </AuthorizeView>
 
-                <a href="/" class="public-brand public-brand--mobile pl-0 d-flex d-sm-none" aria-label="HiSubmit home">
-                    <img class="d-block d-sm-none" src="media/logo/logosmal.png" style="width: 57px;height: 57px;" alt="logo">
+                <a href="/" class="public-brand public-brand--mobile pl-0" aria-label="HiSubmit home">
+                    <img src="media/logo/logosmal.png" style="width: 57px;height: 57px;" alt="logo">
                 </a>
             </div>
         </div>

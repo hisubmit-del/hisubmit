@@ -52,7 +52,9 @@
         </MudCard>
     </MudItem>
     <MudItem xs="12" sm="8" md="9">
-        <EditForm Model="@_profileModel" OnValidSubmit="UpdateProfileAsync">
+        <EditForm Model="@_profileModel"
+                  FormName="identity-profile"
+                  OnValidSubmit="UpdateProfileAsync">
             <FluentValidationValidator @ref="_fluentValidationValidator" />
             <MudCard Elevation="25">
                 <MudCardHeader>

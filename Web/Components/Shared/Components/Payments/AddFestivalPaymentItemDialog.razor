@@ -2,7 +2,7 @@
 @using Hisubmit.Client.SharedModels.Enums.Festivals
 @inject IStringLocalizer<AddFestivalPaymentItemDialog> Localize
 
-<EditForm Model="@Item" OnValidSubmit="SaveAsync">
+<EditForm Model="@Item" FormName="festival-payment-item" OnValidSubmit="SaveAsync">
     <FluentValidationValidator @ref="_fluentValidationValidator"/>
     <MudDialog>
         <TitleContent>
