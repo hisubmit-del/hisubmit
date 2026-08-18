@@ -1610,6 +1610,19 @@ a:hover {
     z-index: 2;
 }
 
+.festival-detail-layout > [class*="col-"] {
+    min-width: 0;
+}
+
+.festival-detail-content,
+.festival-detail-content > *,
+.festival-detail-layout .side-box,
+.festival-detail-layout .mud-paper,
+.festival-detail-layout .mud-card {
+    min-width: 0;
+    max-width: 100%;
+}
+
 .festival-detail-heading {
     padding: 1.25rem 1.5rem;
     border: 1px solid var(--border-soft);
@@ -1623,6 +1636,8 @@ a:hover {
     font-size: clamp(1.75rem, 3.5vw, 3rem);
     font-weight: 800;
     letter-spacing: -0.04em;
+    line-height: 1.1;
+    overflow-wrap: anywhere;
 }
 
 .festival-detail-content > .mud-tabs,
@@ -1647,6 +1662,15 @@ a:hover {
 
 .festival-detail-content .mud-tab-slider {
     border-radius: var(--radius-pill);
+}
+
+.festival-detail-content .mud-tab-panel {
+    padding: clamp(.9rem, 2vw, 1.5rem);
+}
+
+.festival-detail-text .mud-tab-panel > *,
+.rich-content-section > * {
+    max-width: 100%;
 }
 
 .festival-product-section {
@@ -3336,16 +3360,28 @@ a:hover {
 }
 
 .festival-categories-list li {
+    display: grid;
+    min-height: 3.25rem;
+    align-content: center;
     min-width: 0;
     gap: .25rem;
+    margin-bottom: .7rem;
+    padding: .7rem .75rem;
+    border: 1px solid var(--border-soft);
+    border-radius: var(--radius-sm);
+    background: rgba(255, 255, 255, .7);
     overflow-wrap: anywhere;
 }
 
 .festival-categories-list li p {
+    margin: 0;
     line-height: 1.45;
+    overflow-wrap: anywhere;
 }
 
 .festival-categories-list .fees {
+    display: grid;
+    gap: .15rem;
     max-width: 100%;
     align-items: flex-end;
 }
@@ -3382,7 +3418,8 @@ a:hover {
 
 .festival-timeline .mud-timeline-item-content {
     min-width: 0;
-    padding: .65rem .85rem .65rem 1rem;
+    margin-inline-start: .35rem;
+    padding: .8rem .9rem .8rem 1.15rem;
     border: 1px solid var(--border-soft);
     border-radius: var(--radius-sm);
     background: rgba(255, 255, 255, .82);
@@ -3398,7 +3435,7 @@ a:hover {
     display: grid;
     gap: .22rem;
     min-width: 0;
-    padding-inline-start: .2rem;
+    padding-inline-start: .15rem;
 }
 
 .timeline-entry .mud-typography {
@@ -3408,6 +3445,23 @@ a:hover {
 .festival-timeline .mud-typography {
     line-height: 1.45;
     overflow-wrap: anywhere;
+}
+
+.festival-side-card .mud-expansion-panel-header {
+    min-width: 0;
+    align-items: flex-start;
+    gap: .5rem;
+}
+
+.festival-side-card .mud-expansion-panel-header .mud-typography,
+.festival-side-card .mud-expansion-panel-header .mud-expand-panel-icon {
+    min-width: 0;
+}
+
+.festival-side-card .mud-expansion-panel-header .mud-typography {
+    line-height: 1.35;
+    overflow-wrap: anywhere;
+    white-space: normal;
 }
 
 .marketplace-product-card__title {
@@ -3477,6 +3531,18 @@ a:hover {
 }
 
 @media (max-width: 767.98px) {
+    .festival-detail-page {
+        padding-inline: .75rem;
+    }
+
+    .festival-detail-layout {
+        margin-top: -.6rem;
+    }
+
+    .festival-detail-heading {
+        padding: 1rem;
+    }
+
     .festival-detail-content > .mud-tabs {
         padding: .25rem;
     }
@@ -3608,7 +3674,8 @@ a:hover {
     }
 
     .festival-timeline .mud-timeline-item-content {
-        padding: .65rem .7rem .65rem .85rem;
+        margin-inline-start: .15rem;
+        padding: .7rem .65rem .7rem .95rem;
     }
 
     /* Final responsive corrections */

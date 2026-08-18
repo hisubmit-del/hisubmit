@@ -714,3 +714,11 @@ migration اصلی فعلی در `hisubmit/src/Infrastructure/Migrations/2025070
 - Phase 2 build verification after stopping the local `Web` process:
   `dotnet build .\Web\Web.csproj --no-restore --disable-build-servers`
   succeeded with 0 errors and 7 existing package/security warnings.
+- Phase 3 improved the public festival detail layout for dense real-world
+  content: long titles and rich text remain inside their containers, tab
+  panels have usable internal spacing, category/deadline entries are
+  separated into readable cards, and timeline entries have safe spacing from
+  the red timeline line on desktop and mobile.
+- Phase 3 build verification on August 18, 2026 succeeded with 0 errors.
+  The full Web build reports 1965 existing legacy warnings; these are
+  tracked technical debt and were not blanket-suppressed.
