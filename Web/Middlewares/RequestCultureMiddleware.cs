@@ -17,10 +17,8 @@ namespace Web.Middlewares
         public async Task InvokeAsync(HttpContext context)
         {
             var cultureQuery = context.Request.Query["culture"];
-            if (!string.IsNullOrWhiteSpace(cultureQuery))
+            if (TryGetCulture(cultureQuery, out var culture))
             {
-                var culture = new CultureInfo(cultureQuery);
-            
                 CultureInfo.CurrentCulture = culture;
                 CultureInfo.CurrentUICulture = culture;
             }
@@ -29,14 +27,37 @@ namespace Web.Middlewares
                 var cultureHeader = context.Request.Headers["Accept-Language"];
                 if (cultureHeader.Any())
                 {
-                    var culture = new CultureInfo(cultureHeader.First().Split(',').First().Trim());
-            
-                    CultureInfo.CurrentCulture = culture;
-                    CultureInfo.CurrentUICulture = culture;
+                    var requestedCulture = cultureHeader.First()
+                        .Split(',')
+                        .Select(value => value.Split(';').First().Trim())
+                        .FirstOrDefault(value => TryGetCulture(value, out _));
+
+                    if (TryGetCulture(requestedCulture, out culture))
+                    {
+                        CultureInfo.CurrentCulture = culture;
+                        CultureInfo.CurrentUICulture = culture;
+                    }
                 }
             }
 
             await _next(context);
+        }
+
+        private static bool TryGetCulture(string? value, out CultureInfo culture)
+        {
+            culture = null!;
+            if (string.IsNullOrWhiteSpace(value) || value == "*")
+                return false;
+
+            try
+            {
+                culture = new CultureInfo(value);
+                return true;
+            }
+            catch (CultureNotFoundException)
+            {
+                return false;
+            }
         }
     }
 }

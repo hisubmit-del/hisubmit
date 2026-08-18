@@ -920,3 +920,92 @@ migration اصلی فعلی در `hisubmit/src/Infrastructure/Migrations/2025070
   - no new startup or request error was added to the latest runtime log after
     these tests.
 - No database schema or migration was changed.
+
+## Account selection and product opportunity checkpoint (2026-08-18)
+
+- Fixed the distinction between a personal account and a festival account:
+  - a personal selection is represented by the existing `SelectedFestivalId`
+    cookie with value `0`;
+  - an artist-only account defaults to the personal workspace when no
+    selection cookie exists;
+  - a festival owner defaults to the valid festival workspace unless the
+    personal account is explicitly selected;
+  - the selected account menu and festival navigation now use the same
+    state, reducing cases where a festival user was shown the artist
+    dashboard.
+- Hardened the account-selection endpoint:
+  - a non-administrator may select only the festival ID present in their main
+    festival claim or in their per-festival permission claim;
+  - an invalid or unauthorized festival selection returns `403`;
+  - no browser-supplied festival ID is trusted without server-side claim
+    validation.
+- This change is cookie/claim and UI state only. It does not change the
+  database schema, payment totals, judging rules, or festival ownership rule.
+
+### Proposed interaction and revenue features (not implemented yet)
+
+The following are product proposals for a later, explicitly approved phase.
+They must not be activated by simply adding a UI button; each needs an
+auditable server-side workflow, feature flag, privacy review, and pricing
+decision.
+
+1. Artist opportunity matching:
+   - extract structured signals already present in a project/submission:
+     medium, genre, runtime, language, country, premiere status, category,
+     eligibility answers, deadline, fee and required materials;
+   - match those signals against published festival, residency, grant and
+     literary-magazine opportunities;
+   - show explainable reasons ("matches photography category", "deadline in
+     18 days", "fee within your saved budget") and a confidence level;
+   - free tier: a small number of basic matches and deadline reminders;
+   - paid tier: an advisory report, submission checklist, eligibility
+     explanation and prioritised application plan;
+   - never submit an application, answer a festival question, or claim
+     eligibility automatically on behalf of an artist.
+
+2. Festival smart selection assistant:
+   - validate file presence, file type/size, required fields, date formats,
+     category consistency and unanswered mandatory questions;
+   - flag contradictions such as a runtime outside the selected category,
+     missing premiere information, or an answer that conflicts with a
+     published rule;
+   - create a human-review queue with reason codes, evidence, confidence and
+     an override/appeal trail;
+   - do not auto-reject a submission solely because of an AI result;
+   - possible monetization: a festival-plan add-on or metered review credits,
+     with transparent per-submission pricing.
+
+3. Interaction and revenue layer:
+   - saved festivals, deadline alerts, personalised onboarding and
+     "next best action" cards;
+   - sponsored placement with clear labeling and relevance controls;
+   - artist conversion analytics (views, saves, started submissions and
+     completed payments);
+   - festival analytics (source, category conversion, drop-off, review
+     workload and sales);
+   - paid advisory, promoted opportunities and festival workflow add-ons,
+     without selling private artist data or hiding eligibility limitations.
+
+4. Backend prerequisites before implementation:
+   - provider interface for deterministic rules and optional AI services;
+   - versioned recommendation/validation explanations and audit records;
+   - feature flags, usage ledger, product/SKU and refund handling;
+   - human override, appeal and notification states;
+   - explicit consent, data minimisation, retention policy and access control;
+   - tests proving festival-scoped isolation and no cross-festival leakage.
+
+The next safe implementation step is a read-only, deterministic
+"eligibility checklist" and explainable matching prototype over existing
+data. AI-generated advice and paid checkout should follow only after the
+data contract, privacy policy and pricing are approved.
+
+## Request culture resilience checkpoint (2026-08-18)
+
+- Runtime log review found that a client sending `Accept-Language: *` caused
+  `RequestCultureMiddleware` to throw `CultureNotFoundException` and return
+  HTTP 500.
+- `Web/Middlewares/RequestCultureMiddleware.cs` now ignores wildcard and
+  malformed culture values, supports quality parameters such as `en-US;q=0.8`,
+  and falls through to the configured default culture instead of crashing.
+- This is a middleware-only resilience fix; no localization resources,
+  authentication, database, payment, or authorization rule changed.

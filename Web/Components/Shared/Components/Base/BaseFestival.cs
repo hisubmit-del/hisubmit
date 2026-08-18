@@ -102,6 +102,10 @@ public class BaseFestival : ComponentBase
             SelectedFestivalId =
                await AuthenticationManager.GetAdminLoginToFestivalId() ?? 0;
         }
+        else if (await AuthenticationManager.IsPersonalAccountSelected())
+        {
+            SelectedFestivalId = 0;
+        }
         else
         {
             var sId = await AuthenticationManager.GetSelectedFestivalId();

@@ -45,6 +45,7 @@ public partial class NavMenu
     private int FestivalId { get; set; }
     private UserCard _userCardComponent;
     private bool _adminSelectedFestival;
+    private bool _personalAccountSelected;
 
     protected override async Task OnInitializedAsync()
     {
@@ -84,6 +85,7 @@ public partial class NavMenu
         //_authenticationStateProviderUser =
             //await _stateProvider.GetAuthenticationStateProviderUserAsync();
             SelectedFestivalId = await AuthenticationManager.GetSelectedFestivalId();
+            _personalAccountSelected = await AuthenticationManager.IsPersonalAccountSelected();
 
             //if (sId)
             //{
@@ -141,6 +143,7 @@ public partial class NavMenu
         else
         {
             SelectedFestivalId =await AuthenticationManager.GetSelectedFestivalId();
+            _personalAccountSelected = await AuthenticationManager.IsPersonalAccountSelected();
                 
                 //await _localStorage
                 //.GetItemAsync<int?>(StorageConstants.Local.SelectedFestivalId);

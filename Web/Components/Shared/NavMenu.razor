@@ -110,11 +110,11 @@
                     <AdminNavMenu></AdminNavMenu>
                     @if (!IsAdminRole)
                     {
-                        if (SelectedFestivalId == null && FestivalId > 0 && IsFestivalRole)
+                        if (!_personalAccountSelected && SelectedFestivalId == null && FestivalId > 0 && IsFestivalRole)
                         {
                             <FestivalNavMenu/>
                         }
-                        else if (SelectedFestivalId == null)
+                        else if (_personalAccountSelected || SelectedFestivalId == null)
                         {
                             <ArtistNavMenu/>
                             <RefreenavMenu/>

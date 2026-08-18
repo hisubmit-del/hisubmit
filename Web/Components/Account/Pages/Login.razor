@@ -31,7 +31,11 @@
                     <MudText>@errorMessage</MudText>
                 </MudAlert>
             }
-            <EditForm Model="Input" method="post" OnValidSubmit="LoginUser" FormName="login">
+            <EditForm Model="Input"
+                      method="post"
+                      OnValidSubmit="LoginUser"
+                      FormName="login"
+                      Enhance="false">
                 @* <FluentValidationValidator @ref="_fluentValidationValidator"/> *@
                 <ValidationSummary class="text-danger" role="alert" />
                 <MudGrid Class=" pa-lg-8 pa-2">

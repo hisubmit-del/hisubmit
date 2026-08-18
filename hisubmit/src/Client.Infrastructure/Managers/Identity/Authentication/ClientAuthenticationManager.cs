@@ -60,6 +60,11 @@ namespace HiSubmit.Client.Infrastructure.Managers.Identity.Authentication
             throw new NotImplementedException();
         }
 
+        public Task<bool> IsPersonalAccountSelected()
+        {
+            throw new NotImplementedException();
+        }
+
         public Task<int?> GetAdminLoginToFestivalId()
         {
             throw new NotImplementedException();

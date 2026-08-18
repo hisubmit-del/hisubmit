@@ -2,6 +2,7 @@
 using Hisubmit.Client.SharedModels.Requests.Identity;
 using HiSubmit.Client.Infrastructure.Managers.Identity.Authentication;
 using HiSubmit.Client.SharedModels.Wrapper;
+using HiSubmit.Client.SharedModels.Constants.Role;
 using System.Security.Claims;
 using System.Text.Json;
 using IResult = HiSubmit.Client.SharedModels.Wrapper.IResult;
@@ -82,10 +83,29 @@ public class ServerAuthenticationManager(HttpClient httpClient,IHttpContextAcces
             && httpContextAccessor.HttpContext.Request.Cookies.ContainsKey(ApplicationClaimTypes.SelectedFestival))
         {
             var festivalId =  httpContextAccessor.HttpContext.Request.Cookies[ApplicationClaimTypes.SelectedFestival];
-            return Task.FromResult<int?>(int.Parse(festivalId));
+            if (int.TryParse(festivalId, out var parsedFestivalId) && parsedFestivalId > 0)
+                return Task.FromResult<int?>(parsedFestivalId);
         }
 
         return Task.FromResult<int?>(null);
+    }
+
+    public Task<bool> IsPersonalAccountSelected()
+    {
+        if (httpContextAccessor.HttpContext != null
+            && httpContextAccessor.HttpContext.Request.Cookies.TryGetValue(
+                ApplicationClaimTypes.SelectedFestival, out var festivalId))
+        {
+            return Task.FromResult(string.Equals(festivalId, "0", StringComparison.Ordinal));
+        }
+
+        var user = httpContextAccessor.HttpContext?.User;
+        if (user?.IsInRole(RoleConstants.AdministratorRole) == true)
+            return Task.FromResult(false);
+
+        // Artist-only accounts start in the personal workspace when no
+        // explicit account-selection cookie exists.
+        return Task.FromResult(GetMainFestivalId() is null);
     }
 
     public Task<int?> GetAdminLoginToFestivalId()

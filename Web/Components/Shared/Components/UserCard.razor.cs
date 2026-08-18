@@ -90,6 +90,18 @@ public partial class UserCard
             }
 
             await LoadOtherFestival();
+            var personalAccountSelected = await AuthenticationManager.IsPersonalAccountSelected();
+            var currentUser = await AuthenticationManager.CurrentUser();
+            if (!personalAccountSelected &&
+                _selectedFestivalId == null &&
+                FestivalId != 0 &&
+                currentUser.IsInRole(RoleConstants.FestivalRole))
+            {
+                // Festival owners start in the festival workspace unless they
+                // explicitly choose the personal account (cookie value 0).
+                _selectedFestivalId = FestivalId;
+            }
+
             if (_selectedFestivalId != null)
             {
                 if (Festival != null && _selectedFestivalId == Festival.Id)

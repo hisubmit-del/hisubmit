@@ -322,6 +322,24 @@ route convention. When changing a festival workflow, verify:
 Role and permission changes can invalidate active sessions through SignalR.
 Do not bypass these checks by trusting a festival ID sent by the browser.
 
+Account context switching is implemented with the existing cookies:
+
+- `SelectedFestivalId=0` explicitly selects the personal/artist workspace.
+- A positive `SelectedFestivalId` selects a festival only after the
+  `/Account/Manage/select-account` endpoint validates it against the user's
+  main `FestivalId` claim or `FestivalPermission` claim.
+- An absent selection cookie means the user's normal default: the active
+  festival workspace for a festival owner, or the personal workspace for an
+  artist-only account.
+- Administrators use the separate
+  `/Account/Manage/admin-login-to-festival` flow, which is restricted to the
+  administrator role.
+
+When changing account switching, test both the visible dashboard/menu and the
+server-side authorization. A festival account must not become an artist
+dashboard merely because the user selected the personal context, and a
+browser-supplied festival ID outside the user's claims must return `403`.
+
 ## 8. UI and route organization
 
 The route host is:
@@ -655,6 +673,11 @@ At minimum, after a change:
 - test mobile navigation if layout or responsive CSS changed
 - test upload, form submit, modal close/cancel and navigation when relevant
 - verify no unrelated files are staged
+
+`RequestCultureMiddleware` treats query-string and `Accept-Language` values
+as untrusted input. Wildcards, quality suffixes, unsupported cultures, and
+malformed values must fall back to the configured application culture and must
+never produce a request-level HTTP 500.
 
 For database or payment changes, also test:
 

@@ -69,7 +69,10 @@
                 </Authorized>
                 <NotAuthorized>
                     <li>
-                        <a class="public-nav-link public-nav-link--login" href="/login" @onclick="CloseMobileMenu">
+                        <a class="public-nav-link public-nav-link--login"
+                           href="/login"
+                           data-enhance-nav="false"
+                           @onclick="CloseMobileMenu">
                             <MudIcon Icon="@Icons.Material.Outlined.Login" Size="Size.Small" />
                             <span>Login</span>
                         </a>
@@ -158,7 +161,9 @@
                             </Authorized>
                             <NotAuthorized>
                                 <li class="public-nav-auth">
-                                    <a class="public-nav-link public-nav-link--login" href="/login">
+                                    <a class="public-nav-link public-nav-link--login"
+                                       href="/login"
+                                       data-enhance-nav="false">
                                         <MudIcon Icon="@Icons.Material.Outlined.Login" Size="Size.Small" />
                                         <span>Login</span>
                                     </a>
@@ -182,7 +187,9 @@
                     </Authorized>
                     <NotAuthorized>
                         <div class="public-header-auth d-none d-md-flex">
-                            <a class="public-nav-link public-nav-link--login" href="/login">
+                            <a class="public-nav-link public-nav-link--login"
+                               href="/login"
+                               data-enhance-nav="false">
                                 <MudIcon Icon="@Icons.Material.Outlined.Login" Size="Size.Small" />
                                 <span>Login</span>
                             </a>

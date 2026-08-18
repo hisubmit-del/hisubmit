@@ -117,12 +117,28 @@ namespace Microsoft.AspNetCore.Routing
 
             manageGroup.MapPost("/select-account", async (
                 HttpContext context,
+               ClaimsPrincipal user,
                [FromForm] int? FestivalId,
-                [FromForm] string returnUrl) =>
+               [FromForm] string returnUrl) =>
             {
                 var cookieName = ApplicationClaimTypes.SelectedFestival;
 
-                if (FestivalId != null)
+                if (FestivalId is 0)
+                {
+                    context.Response.Cookies.Append(
+                        cookieName,
+                        "0",
+                        new CookieOptions
+                        {
+                            Expires = DateTimeOffset.UtcNow.AddDays(3),
+                            HttpOnly = true,
+                            Secure = context.Request.IsHttps,
+                            SameSite = SameSiteMode.Lax,
+                            Path = "/",
+                            IsEssential = false
+                        });
+                }
+                else if (FestivalId is > 0 && CanSelectFestival(user, FestivalId.Value))
                 {
                     context.Response.Cookies.Append(
                         cookieName,
@@ -137,9 +153,13 @@ namespace Microsoft.AspNetCore.Routing
                             IsEssential = false
                         });
                 }
-                else
+                else if (FestivalId is null)
                 {
                     context.Response.Cookies.Delete(cookieName);
+                }
+                else
+                {
+                    return Results.Forbid();
                 }
 
                 return TypedResults.LocalRedirect(NormalizeLocalRedirect(returnUrl));
@@ -200,6 +220,38 @@ namespace Microsoft.AspNetCore.Routing
             return returnUrl.StartsWith("/", StringComparison.Ordinal)
                 ? returnUrl
                 : $"/{returnUrl}";
+        }
+
+        private static bool CanSelectFestival(ClaimsPrincipal user, int festivalId)
+        {
+            if (festivalId <= 0)
+                return false;
+
+            if (user.IsInRole(RoleConstants.AdministratorRole))
+                return false;
+
+            var mainFestivalId = user.FindFirst(ApplicationClaimTypes.FestivalId)?.Value;
+            if (int.TryParse(mainFestivalId, out var parsedMainFestivalId) &&
+                parsedMainFestivalId == festivalId)
+            {
+                return true;
+            }
+
+            foreach (var claim in user.Claims.Where(p => p.Type == ApplicationClaimTypes.FestivalPermission))
+            {
+                try
+                {
+                    var permissions = JsonSerializer.Deserialize<Dictionary<int, string[]>>(claim.Value);
+                    if (permissions?.ContainsKey(festivalId) == true)
+                        return true;
+                }
+                catch (JsonException)
+                {
+                    // Invalid permission claims must never grant account access.
+                }
+            }
+
+            return false;
         }
     }
 }

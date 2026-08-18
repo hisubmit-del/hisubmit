@@ -26,6 +26,7 @@ namespace HiSubmit.Client.Infrastructure.Managers.Identity.Authentication
         int? GetMainFestivalId();
         IEnumerable<int> GetOtherFestivalId();
         Task<int?> GetSelectedFestivalId();
+        Task<bool> IsPersonalAccountSelected();
         Task<int?> GetAdminLoginToFestivalId();
     }
 }

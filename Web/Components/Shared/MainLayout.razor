@@ -87,8 +87,11 @@
                             </NavLink> *@
 
                              @* <a href="/login" class="btn-login" >Login6</a>  *@
-                             <MudButton Color="Color.Dark" Href="account/login"  
-                                       Class="btn-login" Variant="Variant.Text">Login</MudButton>  
+                             <MudButton Color="Color.Dark"
+                                       Href="/login"
+                                       UserAttributes="@(new() { { "data-enhance-nav", "false" } })"
+                                       Class="btn-login"
+                                       Variant="Variant.Text">Login</MudButton>
                         </NotAuthorized>
                     </AuthorizeView>
                 </div>

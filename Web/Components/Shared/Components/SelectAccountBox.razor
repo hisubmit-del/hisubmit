@@ -85,7 +85,11 @@ else
             <AntiforgeryToken />
             <input type="hidden" name="ReturnUrl" value="@ReturnUrl" />
 
-            @if (FestivalId != null)
+            @if (IsPersonalAccount)
+            {
+                <input type="hidden" name="FestivalId" value="0" />
+            }
+            else if (FestivalId != null)
             {
                 <input type="hidden" name="FestivalId" value="@FestivalId" />
             }
@@ -240,8 +244,19 @@ else
 
         if (FestivalId is > 0)
         {
-            return selectedFestivalId == FestivalId && adminLoginFestivalId == null;
+            var mainFestivalId = AuthenticationManager.GetMainFestivalId();
+            return (selectedFestivalId == FestivalId ||
+                    (selectedFestivalId == null &&
+                     !await AuthenticationManager.IsPersonalAccountSelected() &&
+                     mainFestivalId == FestivalId)) &&
+                   adminLoginFestivalId == null;
         }
+
+        if (await AuthenticationManager.IsPersonalAccountSelected())
+            return adminLoginFestivalId == null &&
+                   (!_isAdmin ||
+                    !_navigationManager.ToBaseRelativePath(_navigationManager.Uri)
+                        .StartsWith("admin", StringComparison.OrdinalIgnoreCase));
 
         return selectedFestivalId == null && adminLoginFestivalId == null &&
                (!_isAdmin ||
