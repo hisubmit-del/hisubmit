@@ -2,6 +2,7 @@
 using HiSubmit.Client.SharedModels.Wrapper;
 using System.Timers;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Web;
 using HiSubmit.Client.Infrastructure.Managers.PublicFestival;
 using Hisubmit.Client.SharedModels.Features.AdminFestival.Queries.GetAllFestival;
 using Hisubmit.Client.SharedModels.Features.Brands.Queries.GetAll;
@@ -238,6 +239,12 @@ public partial class Home : IDisposable
     private void GoToFestivalDetail(string url)
     {
         _navigationManager.NavigateTo($"/festivalPage/{url}");
+    }
+
+    private void HandleFestivalCardKeyDown(string url, KeyboardEventArgs args)
+    {
+        if (args.Key is "Enter" or " ")
+            GoToFestivalDetail(url);
     }
 
     #endregion
