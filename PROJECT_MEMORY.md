@@ -685,3 +685,27 @@ migration اصلی فعلی در `hisubmit/src/Infrastructure/Migrations/2025070
   `succeeded=false` response with the ownership message.
 - Build completed with 0 errors. The existing legacy warning backlog remains
   unchanged and is tracked separately.
+
+## Home discovery and sponsored placement checkpoint (2026-08-18)
+
+- Reworked the public Home/festival discovery page without changing the
+  existing public header/footer or authentication and authorization flows.
+- The sponsored area now queries festivals with the existing approved
+  `FeeStatus.Special` value, labels the placement as sponsored, and shows a
+  safe empty state linking to `/advertise`. The advertising page explains this
+  placement to festival organisers.
+- Added an optional `FeeStatus` filter to the existing public festival query
+  path. This is read-only filtering over the existing Festival field; no
+  database schema or payment calculation changed.
+- Added a latest-news block after festival results using the existing public
+  Content/News API and article routes.
+- Improved Home card text wrapping, metadata spacing, highlighted-card colors,
+  responsive action buttons, sponsored tiles, and news layout in
+  `Web/wwwroot/css/site-modern.css`.
+- Verified build with `dotnet build .\Web\Web.csproj --no-restore
+  --disable-build-servers --nologo` (no errors; existing warning backlog
+  remains).
+- Started the local app with the no-build/no-restore command and verified
+  `http://127.0.0.1:5120/`, `/festivals`, and `/news` all returned HTTP 200.
+- Existing unrelated local changes and uploaded test files were intentionally
+  not staged.

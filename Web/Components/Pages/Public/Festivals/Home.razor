@@ -5,6 +5,7 @@
 @using global::Hisubmit.Client.SharedModels.Features.AdminFestival.Queries.GetAllFestival
 @using HiSubmit.Client.SharedModels.Extensions
 @using Web.Components.Shared.Components.ICons
+@using Hisubmit.Client.SharedModels.Features.News.Queries
 @inject  IHttpContextAccessor HttpContextAccessor
 @inherits BasePublicPages
 @inject IStringLocalizer<Home> Localize
@@ -63,40 +64,53 @@
         </div>
     </div>
 
-    <div class="festival-section-intro">
+    <div class="festival-section-intro festival-section-intro--sponsored">
         <div>
-            <span class="festival-eyebrow">Discover your next opportunity</span>
-            <h2 class="sponsored-festival-title">Featured festivals</h2>
+            <span class="festival-eyebrow">Paid placement, clearly labelled</span>
+            <h2 class="sponsored-festival-title">Sponsored festivals</h2>
         </div>
-        <span class="festival-section-note">Curated competitions for ambitious artists</span>
+        <span class="festival-section-note">Festivals approved for premium visibility appear here before the search filters.</span>
     </div>
 
     <div class="mud-grid mud-grid-spacing-xs-3 justify-start festival-sponsored-box">
         @if (_loaded)
         {
-            var max = 4;
-            if (_pagedData.Count() < 4)
-                max = _pagedData.Count();
-
-            for (int i = 0; i < max; i++)
+            if (_sponsoredFestivals.Any())
             {
-                var festival = _pagedData.ToArray()[i];
-                <a class="mud-grid-item mud-grid-item-xs-6 mud-grid-item-lg-3 festival-featured-tile img-box text-center"
-                   href="@($"/festival/{festival.URL}")"
-                   aria-label="View @festival.Name">
-                    <div class="festival-featured-tile__media">
-                        <span class="festival-featured-tile__fallback">@festival.Name</span>
-                        <img alt="@festival.Name"
-                             src="@festival.LogoURL"
-                             loading="lazy"
-                             onerror="this.style.display='none';" />
+                @foreach (var festival in _sponsoredFestivals.Take(4))
+                {
+                    <a class="mud-grid-item mud-grid-item-xs-12 mud-grid-item-sm-6 mud-grid-item-lg-3 festival-featured-tile img-box text-center"
+                       href="@($"/festival/{festival.URL}")"
+                       aria-label="View sponsored festival @festival.Name">
+                        <div class="festival-featured-tile__media">
+                            <span class="festival-featured-tile__fallback">@festival.Name</span>
+                            <img alt="@festival.Name"
+                                 src="@festival.LogoURL"
+                                 loading="lazy"
+                                 onerror="this.style.display='none';" />
+                            <span class="festival-sponsored-badge">
+                                <MudIcon Icon="@Icons.Material.Filled.Star" Size="Size.Small" />
+                                Sponsored
+                            </span>
+                        </div>
+                        <span class="mud-button-root mud-button mud-button-outlined mud-button-outlined-tertiary mud-button-outlined-size-medium mud-ripple btn-view-festival">
+                            <span class="mud-button-label">View festival</span>
+                        </span>
+                    </a>
+                }
+            }
+            else
+            {
+                <div class="festival-sponsored-empty">
+                    <MudIcon Icon="@Icons.Material.Outlined.Campaign" />
+                    <div>
+                        <strong>Premium festival placements</strong>
+                        <span>Approved sponsored festivals will appear here. Festival organisers can request promotion from the advertising page.</span>
                     </div>
-
-                    <span class="mud-button-root mud-button mud-button-outlined mud-button-outlined-tertiary mud-button-outlined-size-medium mud-ripple btn-view-festival">
-                        <span class="mud-button-label">View festival</span>
-                    </span>
-
-                </a>
+                    <MudButton Href="/advertise" Variant="Variant.Outlined" Color="Color.Primary">
+                        Promote a festival
+                    </MudButton>
+                </div>
             }
         }
     </div>
@@ -337,7 +351,7 @@
                                     @* <MudText Inline="true" Typo="Typo.h5" Class="h-4em"> @item.Name</MudText> *@
                                     @* <MudChip T="string" Variant="Variant.Text" Color="Color.Dark" Label="true">@item.YearsRunning years</MudChip> *@
                                 </div>
-                                <p class="mud-typography mud-typography-subtitle2 h-2em mt-5 ">
+                                <p class="mud-typography mud-typography-subtitle2 festival-card__meta mt-5 ">
                                     <MudIcon Icon="@Icons.Material.Filled.LocationOn" Class="mr-1 .mb-m-6" />
                                     @if (item.Address != null)
                                     {
@@ -351,16 +365,16 @@
                     @item.Address.ToString()
                     }
                     </MudText> *@
-                                <p class="mud-typography mud-typography-subtitle2 h-2em mt-3 ">
+                                <p class="mud-typography mud-typography-subtitle2 festival-card__meta mt-3 ">
                                     <MudIcon Icon="@Icons.Material.Filled.DateRange" Class="mr-1 .mb-m-6" />
-                                    Next deadline: @item.NearDeadline.ToLongDate()
+                                    @item.DateTitle: @item.NearDeadline?.ToLongDate()
                                 </p>
 
                                 @*  <MudText Typo="Typo.subtitle2" Class="mt-3 h-2em">
                     <MudIcon Icon="@Icons.Material.Filled.DateRange" Class="mr-1 .mb-m-6" />
                     Next deadline: @item.NearDeadline.ToLongDate()
                     </MudText> *@
-                                <div class="d-flex justify-space-between h-3em">
+                                <div class="d-flex justify-space-between festival-card__fee">
                                     <MudText Typo="Typo.subtitle2" Class="mt-3 ">
                                         <MudIcon Icon="@Icons.Material.Filled.AttachMoney" Class="mr-1 .mb-m-6" />
                                         @if (item.MinFee != null)
@@ -429,5 +443,52 @@
             }
         }
     </div>
+
+    @if (_loaded && _news.Any())
+    {
+        <section class="home-news-section" aria-labelledby="home-news-title">
+            <div class="festival-section-intro">
+                <div>
+                    <span class="festival-eyebrow">From the HiSubmit editorial desk</span>
+                    <h2 id="home-news-title">Latest news</h2>
+                </div>
+                <a class="home-news-section__link" href="/news">
+                    View all news
+                    <MudIcon Icon="@Icons.Material.Filled.ArrowForward" Size="Size.Small" />
+                </a>
+            </div>
+
+            <div class="home-news-grid">
+                @if (_news.FirstOrDefault() is { } lead)
+                {
+                    <article class="home-news-lead">
+                        <a href="@($"/new/{lead.Id}/{Uri.EscapeDataString(lead.Title ?? "news")}")">
+                            <img src="@lead.BannerUrl" alt="@lead.Title" loading="lazy" />
+                            <span class="home-news-lead__overlay">
+                                <span class="home-news-kicker">@(string.IsNullOrWhiteSpace(lead.FestivalName) ? "HiSubmit" : lead.FestivalName)</span>
+                                <strong>@lead.Title</strong>
+                                <span class="home-news-read">Read story <MudIcon Icon="@Icons.Material.Filled.ArrowForward" Size="Size.Small" /></span>
+                            </span>
+                        </a>
+                    </article>
+                }
+                <div class="home-news-list">
+                    @foreach (var item in _news.Skip(1).Take(3))
+                    {
+                        <article class="home-news-item">
+                            <a href="@($"/new/{item.Id}/{Uri.EscapeDataString(item.Title ?? "news")}")">
+                                <img src="@item.BannerUrl" alt="@item.Title" loading="lazy" />
+                                <span>
+                                    <small>@(string.IsNullOrWhiteSpace(item.FestivalName) ? "HiSubmit" : item.FestivalName)</small>
+                                    <strong>@item.Title</strong>
+                                    <em>@item.CreatedOn.ToShortDateString()</em>
+                                </span>
+                            </a>
+                        </article>
+                    }
+                </div>
+            </div>
+        </section>
+    }
 
 </MudContainer>

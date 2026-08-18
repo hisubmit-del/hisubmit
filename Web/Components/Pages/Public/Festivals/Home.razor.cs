@@ -7,7 +7,10 @@ using Hisubmit.Client.SharedModels.Features.AdminFestival.Queries.GetAllFestival
 using Hisubmit.Client.SharedModels.Features.Brands.Queries.GetAll;
 using Hisubmit.Client.SharedModels.Features.FestivalFocs.Queries.GetAllFestivalFocus;
 using HiSubmit.Client.Infrastructure.Managers.FestivalQualifires;
+using HiSubmit.Client.Infrastructure.Managers.Contents;
 using Hisubmit.Client.SharedModels.Features.FestivalQualifyers.Queries.GetAll;
+using Hisubmit.Client.SharedModels.Features.News.Queries;
+using Hisubmit.Client.SharedModels.Enums;
 using Web.Components.Pages.Public.Festivals.Components;
 using Microsoft.JSInterop;
 using Web.Components.Shared.Dialogs;
@@ -23,6 +26,7 @@ public partial class Home : IDisposable
     [Inject] private IJSRuntime Js { get; set; }
     [Inject] private IPublicFestivalManager FestivalManager { get; set; }
     [Inject] private IFestivalQualifiersManager FestivalQualifiersManager { get; set; }
+    [Inject] private IContentManager ContentManager { get; set; }
     #endregion
 
     #region Parameters
@@ -35,6 +39,8 @@ public partial class Home : IDisposable
     #region Private Field
 
     private IEnumerable<GetAllFestivalResponse> _pagedData = new List<GetAllFestivalResponse>();
+    private IReadOnlyList<GetAllFestivalResponse> _sponsoredFestivals = Array.Empty<GetAllFestivalResponse>();
+    private IReadOnlyList<GetAllNewResponse> _news = Array.Empty<GetAllNewResponse>();
     private PaginatedResult<GetAllFestivalResponse> _festivalResponse;
     private GetAllFestivalRequest _advancedSearch = new();
     private bool _loaded;
@@ -102,6 +108,8 @@ public partial class Home : IDisposable
     protected override async Task OnParametersSetAsync()
     {
         await LoadFestivals(new GetAllFestivalRequest { PageNumber = PageNumber });
+        await LoadSponsoredFestivals();
+        await LoadNews();
         await LoadQualifiers();
         await LoadFocuses();
         await LoadArtCategories();
@@ -148,6 +156,42 @@ public partial class Home : IDisposable
         {
             foreach (var message in response.Messages)
                 _snackBar.Add(message, Severity.Error);
+        }
+    }
+
+    private async Task LoadNews()
+    {
+        var response = await ContentManager.GetAllNew(new GetAllNewRequest
+        {
+            PageNumber = 1,
+            PageSize = 4,
+            ReturnLastNews = false
+        });
+
+        if (response.Succeeded)
+        {
+            _news = response.Data
+                .Where(p => p is not null && !string.IsNullOrWhiteSpace(p.Title))
+                .OrderByDescending(p => p.CreatedOn)
+                .Take(4)
+                .ToList();
+        }
+    }
+
+    private async Task LoadSponsoredFestivals()
+    {
+        var response = await FestivalManager.GetAllFestival(new GetAllFestivalRequest
+        {
+            GetAllData = true,
+            PageNumber = 1,
+            FeeStatus = FeeStatus.Special
+        });
+
+        if (response.Succeeded)
+        {
+            _sponsoredFestivals = response.Data
+                .Where(p => p.FeeStatus == FeeStatus.Special)
+                .ToList();
         }
     }
 

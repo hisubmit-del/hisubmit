@@ -13,6 +13,7 @@ public class GetAllFestivalRequest : PagedRequest
     public bool OpenOnly { get; set; }
     public bool TicketOnly { get; set; }
     public bool? IsActive { get; set; }
+    public FeeStatus? FeeStatus { get; set; }
     public bool? FilmFestival { get; set; }
     public bool? ScreenWritingWriter { get; set; }
     public bool? MusicContest { get; set; }

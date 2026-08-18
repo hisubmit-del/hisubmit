@@ -6,6 +6,7 @@ using System.Linq;
 using Hisubmit.Client.SharedModels.Enums;
 using Hisubmit.Client.SharedModels.Features.AdminFestival.Queries.GetAllFestival;
 using FestivalStatus = HiSubmit.Domain.Enums.FestivalStatus;
+using FestivalFeeStatus = HiSubmit.Domain.Enums.FeeStatus;
 
 namespace HiSubmit.Application.Specifications.Festivals;
 
@@ -21,6 +22,7 @@ public class FestivalFilterSpecification : HeroSpecification<Festival>
                  festival.Description.Contains(query.SearchString))
                 && (!query.OpenOnly || (festival.OpeningDate <= DateTime.Now && festival.NotificationDate >= DateTime.Now))
                 && (query.IsActive == null || festival.IsActive == query.IsActive)
+                && (query.FeeStatus == null || festival.FeeStatus == (FestivalFeeStatus)query.FeeStatus)
                 && (query.OpeningDateFrom == null || query.OpeningDateFrom < festival.OpeningDate)
                 && (query.OpeningDateTo == null || query.OpeningDateTo > festival.OpeningDate)
                 && (string.IsNullOrWhiteSpace(query.Name) || festival.Name.Contains(query.Name))
