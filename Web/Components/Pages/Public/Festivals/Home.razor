@@ -310,19 +310,12 @@
                     <div class="mud-grid-item mud-grid-item-xs-12  mud-grid-item-lg-4">
                         <MudCard class="@(item.FeeStatus == FeeStatus.Special ? "festival-card bg-Gold" : "festival-card")"
                                  @onclick="@(() => GoToFestivalDetail(item.URL))"
-                                 @onkeydown="@((KeyboardEventArgs args) => HandleFestivalCardKeyDown(item.URL, args))"
                                  Style="cursor:pointer"
                                  role="link"
-                                 tabindex="0"
-                                 aria-label="@($"View festival {item.Name}")">
+                                 tabindex="0">
                             <MudCardContent>
-                                <div class="festival-card__media">
-                                    <span class="festival-card__fallback">@item.Name</span>
-                                    <img src="@item.LogoURL"
-                                         alt="@item.Name"
-                                         loading="lazy"
-                                         onerror="this.style.display='none';"
-                                         class="festival-card__image" />
+                                <div style="height: 220px" class="d-flex  flex-grow-1 gap-4 justify-center d-relative ">
+                                    <img src="@item.LogoURL" alt="@item.Name" loading="lazy" class="align-self-center" style="max-width: 100%;max-height: 100%" />
                                     @if (item.SelectedQualifiersId != null && item.SelectedQualifiersId.Any())
                                     {
                                         var qualify =
@@ -333,8 +326,8 @@
                                         }
                                     }
                                 </div>
-                                <div class="festival-card__title-row">
-                                    <h5 class="mud-typography mud-typography-h5 festival-card__title">
+                                <div class="d-flex justify-space-between flex-grow-1 gap-1 mt-2">
+                                    <h5 class="mud-typography mud-typography-h5 d-inline h-4em">
                                         @item.Name
                                         @if (item.FeeStatus == FeeStatus.Special)
                                         {
@@ -344,7 +337,7 @@
                                     @* <MudText Inline="true" Typo="Typo.h5" Class="h-4em"> @item.Name</MudText> *@
                                     @* <MudChip T="string" Variant="Variant.Text" Color="Color.Dark" Label="true">@item.YearsRunning years</MudChip> *@
                                 </div>
-                                <p class="mud-typography mud-typography-subtitle2 festival-card__meta">
+                                <p class="mud-typography mud-typography-subtitle2 h-2em mt-5 ">
                                     <MudIcon Icon="@Icons.Material.Filled.LocationOn" Class="mr-1 .mb-m-6" />
                                     @if (item.Address != null)
                                     {
@@ -358,7 +351,7 @@
                     @item.Address.ToString()
                     }
                     </MudText> *@
-                                <p class="mud-typography mud-typography-subtitle2 festival-card__meta">
+                                <p class="mud-typography mud-typography-subtitle2 h-2em mt-3 ">
                                     <MudIcon Icon="@Icons.Material.Filled.DateRange" Class="mr-1 .mb-m-6" />
                                     Next deadline: @item.NearDeadline.ToLongDate()
                                 </p>
@@ -367,7 +360,7 @@
                     <MudIcon Icon="@Icons.Material.Filled.DateRange" Class="mr-1 .mb-m-6" />
                     Next deadline: @item.NearDeadline.ToLongDate()
                     </MudText> *@
-                                <div class="festival-card__fee">
+                                <div class="d-flex justify-space-between h-3em">
                                     <MudText Typo="Typo.subtitle2" Class="mt-3 ">
                                         <MudIcon Icon="@Icons.Material.Filled.AttachMoney" Class="mr-1 .mb-m-6" />
                                         @if (item.MinFee != null)

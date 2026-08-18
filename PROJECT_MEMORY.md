@@ -707,10 +707,3 @@ migration اصلی فعلی در `hisubmit/src/Infrastructure/Migrations/2025070
   existing package/security warnings. HTTP smoke tests returned 200 for `/`,
   `/festivals`, `/news`, `/store`, `/tickets`, `/faq`, `/PrivacyPolicy` and
   `/festival/demo-aurora-arts-film-2026`.
-- Phase 2 improved the public festival browser: festival cards now have
-  resilient image fallbacks, bounded long titles/metadata, keyboard
-  activation with Enter/Space, safer mobile actions, and stable card media
-  layout. No API, database, payment, judging, or permission logic changed.
-- Phase 2 build verification after stopping the local `Web` process:
-  `dotnet build .\Web\Web.csproj --no-restore --disable-build-servers`
-  succeeded with 0 errors and 7 existing package/security warnings.
