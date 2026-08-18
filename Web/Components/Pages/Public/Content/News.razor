@@ -18,10 +18,8 @@
         </div>
 
         <div class="public-toolbar">
-            <div>
-                <MudText Typo="Typo.h5">Latest news</MudText>
-                <MudText Typo="Typo.body2" Class="text-muted">Follow every festival from one calm, searchable feed.</MudText>
-            </div>
+            <PublicSectionHeader Title="Latest news"
+                                 Description="Follow every festival from one calm, searchable feed." />
             <MudTextField Class="public-toolbar__search"
                           DebounceInterval="500"
                           @bind-Value="@SearchString"
@@ -59,7 +57,7 @@
                 </div>
             }
 
-            <MudGrid Class="news-grid">
+            <MudGrid Class="news-grid public-card-grid">
                 @foreach (var item in _news.Where(p => !p.IsPined))
                 {
                     <MudItem xs="12" sm="6" lg="4">

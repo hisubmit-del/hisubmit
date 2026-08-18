@@ -20,10 +20,8 @@
         </div>
 
         <div class="public-toolbar">
-            <div>
-                <MudText Typo="Typo.h5">All products</MudText>
-                <MudText Typo="Typo.body2" Class="text-muted">A single storefront for every participating festival.</MudText>
-            </div>
+            <PublicSectionHeader Title="All products"
+                                 Description="A single storefront for every participating festival." />
             <MudTextField @bind-Value="_searchString"
                           OnKeyUp="Search"
                           Variant="Variant.Outlined"
@@ -39,7 +37,7 @@
         }
         else if (_products.Any())
         {
-            <MudGrid Class="store-grid">
+            <MudGrid Class="store-grid public-card-grid">
                 @foreach (var product in _products)
                 {
                     <MudItem xs="12" sm="6" lg="4" xl="3">
@@ -59,4 +57,3 @@
         }
     </MudContainer>
 </section>
-
