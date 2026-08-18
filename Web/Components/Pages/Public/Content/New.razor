@@ -3,29 +3,30 @@
 @inherits BasePublicPages
 
 <SeoMetaTags PageId="@NewId.ToString()" PageType="@PageType.News" OgImageUrl=@($"https://hisubmit.com{_new.BannerUrl}") />
-<MudContainer MaxWidth="MaxWidth.Large" Class="mt-10">
+<section class="public-content-page news-article-page">
+<MudContainer MaxWidth="MaxWidth.Large">
     <MudGrid>
         <MudItem xs="12" md="9">
-            <MudCard Class="mr-md-2">
+            <MudCard Class="mr-md-2 news-article-card">
                 <MudCardContent Class="p-md-6">
-                    <MudText Typo="Typo.h1">
+                    <MudText Typo="Typo.h1" Class="news-article-title">
                         @_new.Title
                     </MudText>
                     @* <MudChip T="string" Icon="@Icons.Material.Filled.FestivalId" Variant="Variant.Text">@_new.</MudChip> *@
 
-                    <MudItem xs="12" Class="my-4 text-center">
-                        <MudImage Class="mx-100" Src="@_new.BannerUrl"/>
+                    <MudItem xs="12" Class="my-4 text-center news-article-cover">
+                        <MudImage Class="mx-100" Src="@_new.BannerUrl" Alt="@_new.Title"/>
                     </MudItem>
 
-                    <MudGrid Class="bg-light-grey  font-italic mt-3  pa-4">
+                    <MudGrid Class="bg-light-grey font-italic mt-3 pa-4 news-article-lede">
                         <MudText>
                             @_new.ShortDescription
                         </MudText>
                     </MudGrid>
-                    <MudGrid Class="mt-7 pa-5">
+                    <MudGrid Class="mt-7 pa-5 news-article-body">
                         @((MarkupString)_new.Description)
                     </MudGrid>
-                    <div class="d-flex icon-box  gap-2">
+                    <div class="d-flex icon-box gap-2 news-article-actions">
                         <MudSpacer/>
                         <MudAvatar Class="my-4" Color="Color.Surface" Variant="Variant.Outlined">
                             <MudIconButton Size="Size.Small" OnClick="@CopyLinkToClipboard"
@@ -79,7 +80,7 @@
         </MudItem>
 
         <MudItem xs="12">
-            <MudCard Elevation="1" Class="pa-md-3 mb-3">
+            <MudCard Elevation="1" Class="pa-md-3 mb-3 related-news-card">
                 <MudText Typo="Typo.h5" Class="mb-5" Align="Align.Center">News</MudText>
                 <MudGrid>
                     @foreach (var n in _newsResponse.Data)
@@ -94,3 +95,4 @@
     </MudGrid>
 
 </MudContainer>
+</section>

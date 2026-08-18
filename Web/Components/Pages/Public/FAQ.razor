@@ -4,6 +4,7 @@
 <SeoMetaTags PageId="0" PageType="@PageType.FAQ" />
 @if (_loaded)
 {
+    <section class="public-content-page faq-hub-page">
     <MudContainer MaxWidth="MaxWidth.Large">
         <div class="news-top ">
             <img src="/media/FAQ.png" alt="faq-page"/>
@@ -31,7 +32,7 @@
                 <MudItem xs="12" md="6" xl="5">
                     <MudTextField DebounceInterval="500"
                                   @bind-Value="@SearchString"
-                                  @onkeypress="Search"
+                                  OnKeyUp="SearchOnKeyUp"
                                   Variant="Variant.Outlined"                                 
                                   Adornment="Adornment.End"       
                                   OnAdornmentClick="Search"
@@ -40,7 +41,7 @@
                 </MudItem>
             </MudGrid>
 
-            <MudGrid>
+            <MudGrid Class="faq-page-intro">
                 <MudText Typo="Typo.h1"
                          Class="align-self-start  news-title  flex-1 my-3  my-md-8">
                   Get your answers and learned how hiSubmit works 
@@ -172,4 +173,5 @@
             </MudGrid>
         }
     </MudContainer>
+    </section>
 }

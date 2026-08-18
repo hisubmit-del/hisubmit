@@ -4,16 +4,17 @@
 <SeoMetaTags PageId="@Id.ToString()" PageType="@PageType.Product" 
              OgImageUrl=@($"https://hisubmit.com{_product.ImageDataURL}") />
 
-<MudContainer MaxWidth="MaxWidth.Large" Class="mt-10">
+<section class="public-content-page product-detail-page">
+<MudContainer MaxWidth="MaxWidth.Large">
     <MudGrid>
         @if (_loaded)
         {
             <MudItem xs="12" md="9">
-                <MudCard Class="mr-md-4">
+                <MudCard Class="mr-md-4 product-detail-card">
                     <MudCardContent Class="p-md-6">
                         <MudGrid>
-                            <MudItem xs="12" md="7" Class="text-center">
-                                <MudImage Class="max-w-100" Src="@_product.ImageDataURL" />
+                            <MudItem xs="12" md="7" Class="text-center product-detail-media">
+                                <MudImage Class="max-w-100 product-detail-image" Src="@_product.ImageDataURL" Alt="@_product.Name" />
 
                                 <div class="gallery-tab-slider mb-5 pb-4 mt-5">
                                     <div class="tab-content" id="gallery-tab-slider-tabContent">
@@ -31,9 +32,9 @@
                                     </div>
                                 </div>
                             </MudItem>
-                            <MudItem xs="12" md="5" Class="text-center ">
+                            <MudItem xs="12" md="5" Class="text-center product-detail-purchase">
                                 <div class="bg-gray product-fee-box pt-8 pb-4 px-2">
-                                    <MudText Typo="Typo.h1" Class="mb-8">
+                                    <MudText Typo="Typo.h1" Class="mb-8 product-detail-title">
                                         @_product.Name
                                     </MudText>
                                     <MudText Color="Color.Success" Class="mt-5" Typo="Typo.h6">@_product.Price.ToString("N0")</MudText>
@@ -47,11 +48,11 @@
                             </MudItem>
                         </MudGrid>
 
-                        <MudText Typo="Typo.h2" Class="mb-8">
+                        <MudText Typo="Typo.h2" Class="mb-8 product-description-title">
                             @_product.Name
                         </MudText>
                         @* <MudChip T="string" Icon="@Icons.Material.Filled.FestivalId" Variant="Variant.Text">FestivalId name</MudChip> *@
-                        <MudGrid Class="mt-7 pa-5">
+                        <MudGrid Class="mt-7 pa-5 product-description-body">
                             @((MarkupString)_product.Description)
                         </MudGrid>
                     </MudCardContent>
@@ -104,3 +105,4 @@
         }
     </MudGrid>
 </MudContainer>
+</section>
