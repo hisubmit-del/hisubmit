@@ -28,8 +28,12 @@
                     </MudTimelineItem>
                 }
             }
-
-
+            @if (TimeLines.Count == 0)
+            {
+                <MudText Typo="Typo.body2" Color="Color.Secondary" Class="pa-4">
+                    Festival dates will appear here when they are announced.
+                </MudText>
+            }
         </MudTimeline>
         @* <MudButton  *@
         @*            Variant="Variant.Filled"  *@

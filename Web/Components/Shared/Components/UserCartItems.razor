@@ -1,6 +1,6 @@
 ﻿@using HiSubmit.Client.SharedModels.Extensions
 
-@if (Items.Any())
+@if (Items?.Any() == true)
 {
     <MudMenu AnchorOrigin="Origin.BottomLeft"
              TransformOrigin="Origin.TopRight"

@@ -49,7 +49,7 @@ namespace Web.Components.Pages.Public.Festivals.Components
 
         private async Task LoadDeadLineCategories()
         {
-            if (ApplicationState.TryTakeFromJson<List<GetAllDeadLineEventCategoryResponse>>("deadLineCategories",
+            if (ApplicationState.TryTakeFromJson<List<GetAllDeadLineEventCategoryResponse>>(StateKey("deadLineCategories"),
                     out var stored))
             {
                 DeadLineCategories = stored;
@@ -125,9 +125,11 @@ namespace Web.Components.Pages.Public.Festivals.Components
 
         private Task PersistFestival()
         {
-            ApplicationState.PersistAsJson("deadLineCategories", DeadLineCategories);
+            ApplicationState.PersistAsJson(StateKey("deadLineCategories"), DeadLineCategories);
             return Task.CompletedTask;
         }
+
+        private string StateKey(string name) => $"festival-categories:{FestivalId}:{name}";
 
         #endregion
     }

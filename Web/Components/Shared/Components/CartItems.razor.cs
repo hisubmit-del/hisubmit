@@ -11,7 +11,7 @@ namespace Web.Components.Shared.Components
         [Inject]
         public ICartManager CartManager { get; set; }
 
-        public List<GetCartItemResponse> Items { get; set; }
+        public List<GetCartItemResponse> Items { get; set; } = new();
 
 
         protected override async Task OnInitializedAsync()

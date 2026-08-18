@@ -92,7 +92,7 @@ namespace Web.Components.Pages.Identity
                 ImageDataUrl = data.Data;
             }
 
-            if (_profileModel.FirstName.Length > 0)
+            if (!string.IsNullOrWhiteSpace(_profileModel.FirstName))
             {
                 _firstLetterOfName = _profileModel.FirstName[0];
             }

@@ -45,7 +45,7 @@ namespace Web.Components.Shared
             {
                 CurrentUserId = user.GetUserId();
                 FirstName = user.GetFirstName();
-                if (FirstName.Length > 0)
+                if (!string.IsNullOrWhiteSpace(FirstName))
                 {
                     FirstLetterOfName = FirstName[0];
                 }

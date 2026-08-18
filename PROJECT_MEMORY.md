@@ -744,3 +744,38 @@ migration اصلی فعلی در `hisubmit/src/Infrastructure/Migrations/2025070
   `git.autofetch=true` is enabled. This is independent of `dotnet build`;
   disable Git auto-fetch in VS Code User Settings to stop background fetch
   authentication prompts. No GitHub integration was added to the project.
+
+## Runtime, cart, authorization and UI resilience checkpoint (2026-08-18)
+
+- Commit `99adbf6` hardened cart access and prerender states:
+  - guest `GET /api/v1/cart/GetItems` now returns an empty successful cart
+    instead of a misleading error response;
+  - the open-cart query ignores any browser-supplied `UserId` and uses only
+    the authenticated current user;
+  - cart mutation/payment endpoints require authorization;
+  - festival dashboard detail cards render a loading state when data is not
+    available instead of dereferencing a null festival;
+  - the old duplicate `favoriteFestivals` persisted-state registration was
+    removed from the legacy `FavoriteFestival` component.
+- Commit `6ce7427` corrected festival-scoped permission evaluation:
+  - `BaseFestival` and `FestivalAuthorizeView` deserialize the per-festival
+    permission dictionary and check only the selected festival;
+  - malformed permission claims never grant access;
+  - missing identity roles or missing festival masters no longer cause claim
+    generation to throw;
+  - the newest valid active festival master is selected for a festival owner.
+- The current UI resilience phase is prepared for commit:
+  - cart/user widgets tolerate null or empty data;
+  - profile and layout name handling tolerates empty names;
+  - timeline and category persisted state is keyed by FestivalId to prevent
+    cross-festival state collisions;
+  - public reviews, categories and timeline render explicit empty states.
+- Verification:
+  - `dotnet build .\Web\Web.csproj --no-restore --disable-build-servers
+    --nologo -m:1 /p:BuildInParallel=false -v:quiet` completed with exit code 0;
+  - local `http://127.0.0.1:5120/`, the demo festival detail page,
+    `/api/v1/cart/GetItems?UserId=`, and the public deadline endpoint all
+    returned HTTP 200 during the controlled run;
+  - the old log entries for `favoriteFestivals` and the dashboard null
+    reference predate these fixes; port-binding errors are caused by multiple
+    local Web processes, so stop the existing `Web` process before rebuilding.

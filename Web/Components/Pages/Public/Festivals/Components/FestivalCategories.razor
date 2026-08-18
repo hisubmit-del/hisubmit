@@ -62,6 +62,12 @@
                     </MudExpansionPanel>
                 }
             </MudExpansionPanels>
+            @if (!DeadlineCategoriesGrouping.Any())
+            {
+                <MudText Typo="Typo.body2" Color="Color.Secondary" Class="pa-4 text-center">
+                    Categories and deadlines will appear here when they are published.
+                </MudText>
+            }
             @* <div class="accordion accordion-flush" id="accordion-categories-fees"> *@
             @*     @foreach (var dc in DeadlineCategoriesGrouping) *@
             @*     { *@

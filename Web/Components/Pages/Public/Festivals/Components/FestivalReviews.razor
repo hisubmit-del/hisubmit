@@ -1,5 +1,5 @@
 ﻿@using HiSubmit.Client.SharedModels.Extensions
-@if (_loaded && _reviews.Any())
+@if (_loaded && _reviews?.Any() == true)
 {
     <MudCard Elevation="1" Class="pa-3 text-center mb-3">
         <MudText Typo="Typo.h5" Class="mb-5" Align="Align.Center">Reviews</MudText>
@@ -35,5 +35,14 @@
             <MudDivider DividerType="DividerType.Inset" Style="height: 2px" Class="my-4"></MudDivider>
         }
 
+    </MudCard>
+}
+else if (_loaded)
+{
+    <MudCard Elevation="1" Class="pa-6 text-center mb-3">
+        <MudText Typo="Typo.h6">No reviews yet</MudText>
+        <MudText Typo="Typo.body2" Color="Color.Secondary">
+            Be the first to share your experience.
+        </MudText>
     </MudCard>
 }

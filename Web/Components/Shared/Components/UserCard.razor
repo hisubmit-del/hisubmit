@@ -11,7 +11,7 @@
                 @if (string.IsNullOrEmpty(SelectedImageUrl))
                 {
                     <MudAvatar Color="Color.Dark">
-                        @SelectedFullName[0]
+                        @(string.IsNullOrWhiteSpace(SelectedFullName) ? '?' : SelectedFullName[0])
                     </MudAvatar>
                 }
                 else
@@ -31,7 +31,7 @@
                                     if (string.IsNullOrEmpty(SelectedImageUrl))
                                     {
                                         <MudAvatar Size="Size.Large" Color="Color.Dark">
-                                            @SelectedFullName[0]
+                                            @(string.IsNullOrWhiteSpace(SelectedFullName) ? '?' : SelectedFullName[0])
                                         </MudAvatar>
                                     }
                                     else
@@ -104,7 +104,9 @@ else
                         {
                             if (string.IsNullOrEmpty(SelectedImageUrl))
                             {
-                                <MudAvatar Color="Color.Dark">@SelectedFullName[0]</MudAvatar>
+                                <MudAvatar Color="Color.Dark">
+                                    @(string.IsNullOrWhiteSpace(SelectedFullName) ? '?' : SelectedFullName[0])
+                                </MudAvatar>
                             }
                             else
                             {

@@ -146,7 +146,12 @@ public partial class UserCard
 
         if (response.Succeeded)
         {
-            _adminSelectFestival = response.Data.First();
+            _adminSelectFestival = response.Data?.FirstOrDefault();
+            if (_adminSelectFestival is null)
+            {
+                _snackBar.Add("The festival account could not be loaded.", Severity.Error);
+                return;
+            }
 
             FestivalNames.Add(new GetFestivalNamesResponse()
             {
@@ -180,7 +185,7 @@ public partial class UserCard
         Email = user.GetEmail().Replace(".com", string.Empty);
         FirstName = user.GetFirstName();
         SecondName = user.GetLastName();
-        if (FirstName.Length > 0)
+        if (!string.IsNullOrWhiteSpace(FirstName))
         {
             FirstLetterOfName = FirstName[0];
         }

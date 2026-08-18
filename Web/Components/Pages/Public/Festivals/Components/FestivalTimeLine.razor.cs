@@ -36,7 +36,7 @@ public partial class FestivalTimeLine
     private async Task LoadDeadLines()
     {
         if (ApplicationState.TryTakeFromJson<List<GetAllDeadLineResponse>>
-                ("deadLine", out var stored))
+                (StateKey("deadLine"), out var stored))
         {
             DeadLines = stored;
         }
@@ -56,13 +56,13 @@ public partial class FestivalTimeLine
 
     private async Task GenerateItems()
     {
-        if (ApplicationState.TryTakeFromJson<List<TimeLineItem>>("timeLine", out var stored))
+        if (ApplicationState.TryTakeFromJson<List<TimeLineItem>>(StateKey("timeLine"), out var stored))
         {
             TimeLines = stored;
         }
         else
         {
-            if (DeadLines.Any())
+            if (DeadLines.Any() && Festival is not null)
             {
                 await Task.Run(() =>
                 {
@@ -133,10 +133,12 @@ public partial class FestivalTimeLine
 
     private Task PersistFestival()
     {
-        ApplicationState.PersistAsJson("deadLine", DeadLines);
-        ApplicationState.PersistAsJson("timeLine", TimeLines);
+        ApplicationState.PersistAsJson(StateKey("deadLine"), DeadLines);
+        ApplicationState.PersistAsJson(StateKey("timeLine"), TimeLines);
         return Task.CompletedTask;
     }
+
+    private string StateKey(string name) => $"festival-timeline:{FestivalId}:{name}";
 
     #endregion
 }
