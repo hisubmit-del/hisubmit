@@ -830,6 +830,23 @@ migration اصلی فعلی در `hisubmit/src/Infrastructure/Migrations/2025070
   - No new error marker was added to the runtime log during this smoke test;
     older historical entries remain in the rolling log.
 - No database schema or migration was changed.
+
+## Public navigation consistency checkpoint (2026-08-18)
+
+- Added `Web/Components/Pages/Public/_Imports.razor` so all public pages
+  consistently use `PublicMainLayout`, not only `/tickets`.
+- This makes the public header, desktop navigation, mobile drawer, account
+  actions and footer consistent across home, festivals, festival details,
+  news, store, tickets, FAQ, advertise, products, projects and static pages.
+- Changed public header logo references to root-relative URLs so the logo does
+  not disappear on nested routes such as `/festival/{FestivalUrl}`.
+- Verification:
+  - build completed with 0 errors;
+  - `/`, `/festivals`, `/tickets`, `/news`, `/store`, `/faq`,
+    `/advertise` and the demo festival route returned HTTP 200;
+  - each checked response contained the shared public layout/header/navigation;
+  - no new runtime error marker was added to the latest application log.
+- No database schema or migration was changed.
 - Build verification after these changes completed with exit code 0. Remaining
   warnings are the existing package advisories, nullable/compiler debt and
   MudBlazor analyzer backlog.
