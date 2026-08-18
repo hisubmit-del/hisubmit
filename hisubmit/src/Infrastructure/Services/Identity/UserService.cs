@@ -353,13 +353,27 @@ public class UserService : IUserService
     public async Task<IResult> AddToRoleAsync(string userId, List<string> rolesName)
     {
         var user = await _userManager.FindByIdAsync(userId);
-        var result = await _userManager.AddToRolesAsync(user, rolesName);
+        if (user is null)
+            return await Result.FailAsync(_localizer["User not found"]);
+
+        var missingRoles = new List<string>();
+        foreach (var roleName in rolesName.Where(name => !string.IsNullOrWhiteSpace(name)))
+        {
+            if (!await _userManager.IsInRoleAsync(user, roleName))
+                missingRoles.Add(roleName);
+        }
+
+        if (missingRoles.Count == 0)
+            return await Result.SuccessAsync(_localizer["Roles are already assigned"]);
+
+        var result = await _userManager.AddToRolesAsync(user, missingRoles);
         if (result.Succeeded)
         {
             return await Result.SuccessAsync(_localizer["Roles Updated"]);
         }
 
-        return await Result.FailAsync("Error when roles Updated");
+        return await Result.FailAsync(
+            result.Errors.Select(error => error.Description).ToList());
     }
 
     public async Task<IResult> AddToRoleAsync(string userId, string roleId)

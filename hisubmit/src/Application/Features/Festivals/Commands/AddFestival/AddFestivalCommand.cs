@@ -46,17 +46,28 @@ public class AddFestivalCommandHandler(
 
         if (string.IsNullOrWhiteSpace(userId))
             return await Result<int>.FailAsync($"User Id not found-{request.AddToCurrentUser}-{request.UserId}");
-        await mediator.Publish(new FestivalUserRegisteredEvent 
-            { FestivalName = request.Name,UserId = userId}, cancellationToken);
 
-        await userService.AddToRoleAsync(userId, [RoleConstants.FestivalRole]);
-        
+        if (currentUserService.IsInRole(RoleConstants.FestivalRole))
+            return await Result<int>.FailAsync(
+                localizer["A festival account already exists for this user."]);
+
+        await mediator.Publish(new FestivalUserRegisteredEvent
+            { FestivalName = request.Name, UserId = userId }, cancellationToken);
+
+        var roleResult = await userService.AddToRoleAsync(userId, [RoleConstants.FestivalRole]);
+        if (!roleResult.Succeeded)
+            return await Result<int>.FailAsync(roleResult.Messages);
+
         await unitOfWork.SaveChangesAsync(cancellationToken);
 
-      var festival = unitOfWork.Repository<Festival>().Entities
-          .Where(p => p.UserId == userId && p.Name == request.Name)
-          .FirstOrDefaultAsync(cancellationToken);
-      
+        var festival = await unitOfWork.Repository<Festival>().Entities
+            .Where(p => p.UserId == userId && p.Name == request.Name)
+            .OrderByDescending(p => p.CreatedOn)
+            .FirstOrDefaultAsync(cancellationToken);
+
+        if (festival is null)
+            return await Result<int>.FailAsync(localizer["Festival could not be created"]);
+
         return await Result<int>.SuccessAsync(festival.Id, localizer["Festival created"]);
     }
 }

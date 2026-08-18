@@ -33,6 +33,7 @@ namespace Web.Components.Shared
         private char FirstLetterOfName { get; set; }
 
         private bool _showCreateFestivalButton;
+        private bool _hasFestivalRole;
 
         private async Task LoadDataAsync()
         {
@@ -109,8 +110,10 @@ namespace Web.Components.Shared
             var adminRole =
                 (await AuthenticationManager.CurrentUser())
                 .IsInRole(RoleConstants.AdministratorRole);
+            _hasFestivalRole = (await AuthenticationManager.CurrentUser())
+                .IsInRole(RoleConstants.FestivalRole);
 
-            if (_festivalId == 0 && !adminRole)
+            if (_festivalId == 0 && !adminRole && !_hasFestivalRole)
             {
                 _showCreateFestivalButton = true;
             }
@@ -209,8 +212,10 @@ namespace Web.Components.Shared
             var adminRole =
                 (await AuthenticationManager.CurrentUser())
                 .IsInRole(RoleConstants.AdministratorRole);
+            _hasFestivalRole = (await AuthenticationManager.CurrentUser())
+                .IsInRole(RoleConstants.FestivalRole);
 
-            _showCreateFestivalButton=_festivalId==0 && !adminRole;
+            _showCreateFestivalButton = _festivalId == 0 && !adminRole && !_hasFestivalRole;
         
             await InvokeAsync(StateHasChanged);
         }

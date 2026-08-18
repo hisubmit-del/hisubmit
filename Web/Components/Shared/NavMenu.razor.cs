@@ -24,6 +24,7 @@ public partial class NavMenu
     [Parameter] public bool AccountPages { get; set; } = true;
 
     [Parameter] public bool ShowCreateFestivalButton { get; set; }
+    [Parameter] public bool FestivalAccountExists { get; set; }
 
     #endregion
 

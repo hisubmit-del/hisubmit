@@ -116,23 +116,21 @@ BlazorHeroContext dbContext)
     }
     private async Task<int?> GetFestivalId(IList<string> roles, string userId)
     {
-        int? festivalId = null;
+        if (!roles.Any(role => role == RoleConstants.FestivalRole))
+            return null;
 
-        if (roles.Any(role => role == RoleConstants.FestivalRole))
-        {
+        // A festival manager may own multiple festival masters. Use the
+        // newest master with a valid active festival instead of relying on
+        // insertion order or creating a misleading claim with value 0.
+        var festival = await dbContext.FestivalMasters
+            .Where(master => master.UserId == userId && master.ActiveId != 0)
+            .OrderByDescending(master => master.CreatedOn)
+            .SelectMany(master => dbContext.Festivals
+                .Where(item => item.FestivalMasterId == master.Id &&
+                               item.Id == master.ActiveId)
+                .Select(item => new { item.Id }))
+            .FirstOrDefaultAsync();
 
-            var festivalMaster = await dbContext.FestivalMasters
-                .Where(p => p.UserId == userId)
-                .FirstOrDefaultAsync();
-
-
-            festivalId = await dbContext.Festivals
-                .Where(p => p.FestivalMasterId == festivalMaster.Id &&
-                            p.Id == festivalMaster.ActiveId)
-                .Select(p => p.Id)
-                .FirstOrDefaultAsync();
-        }
-
-        return festivalId;
+        return festival?.Id;
     }
 }

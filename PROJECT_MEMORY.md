@@ -660,3 +660,28 @@ migration اصلی فعلی در `hisubmit/src/Infrastructure/Migrations/2025070
   changing the API, database, payment logic, or festival authorization scope.
 - Build verification completed with 0 errors. The existing MudBlazor analyzer,
   nullable, compiler, and package warnings remain technical debt.
+
+## Festival account ownership and create-festival guard checkpoint (2026-08-17)
+
+- A festival account is now single-owner: a signed-in user with the global
+  `FestivalId` role cannot create a second festival.
+- The rule is enforced in `AddFestivalCommandHandler`, so it also applies to
+  direct API requests and cannot be bypassed by hiding the button in the UI.
+- The authenticated layout now hides `Create your festival` for an existing
+  festival account and shows a disabled `Festival account active` state in the
+  account menu.
+- `AddFestivalCommandHandler` now awaits the created-festival query, checks the
+  role-operation result, and returns a controlled failure if creation did not
+  produce a festival instead of dereferencing a pending task.
+- Adding the existing global festival role is idempotent in
+  `UserService.AddToRoleAsync`; an already assigned role is not treated as a
+  creation failure.
+- Festival claims now select the newest valid active festival master for the
+  user and never emit a false festival id of `0`. This prevents users with
+  multiple legacy masters from opening a blank or crashing festival dashboard.
+- Local verification on August 17, 2026: login for
+  `qa.festival@hisubmit.test` succeeded, `/festival/dashboard` returned HTTP
+  200, and a direct second-festival request returned a controlled
+  `succeeded=false` response with the ownership message.
+- Build completed with 0 errors. The existing legacy warning backlog remains
+  unchanged and is tracked separately.

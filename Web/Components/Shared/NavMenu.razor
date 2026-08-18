@@ -81,6 +81,16 @@
                             Create Your festival
                         </MudButton>
                     }
+                    else if (FestivalAccountExists)
+                    {
+                        <MudButton Class="my-1 w-100"
+                                   Variant="Variant.Outlined"
+                                   FullWidth="true"
+                                   Disabled="true"
+                                   StartIcon="@Icons.Material.Outlined.VerifiedUser">
+                            Festival account active
+                        </MudButton>
+                    }
 
                     <MudHidden Breakpoint="Breakpoint.MdAndUp">
                         <MudNavLink Href="/user/shoppingCart" IconColor="Color.Tertiary"
