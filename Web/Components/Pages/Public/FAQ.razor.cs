@@ -4,7 +4,6 @@ using Hisubmit.Client.SharedModels.Features.StaticPages.Queries;
 using HiSubmit.Client.Infrastructure.Managers.Contents;
 using HiSubmit.Client.SharedModels.Wrapper;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Web;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -92,14 +91,8 @@ namespace Web.Components.Pages.Public
             if (response.Succeeded)
                 _faqResponse = response;
             else
-                    foreach (var message in response.Messages)
-                        _snackBar.Add(message, MudBlazor.Severity.Error);
-        }
-
-        private async Task SearchOnKeyUp(KeyboardEventArgs args)
-        {
-            if (args.Key is "Enter")
-                await Search();
+                foreach (var message in response.Messages)
+                    _snackBar.Add(message, MudBlazor.Severity.Error);
         }
     }
 }

@@ -722,12 +722,3 @@ migration اصلی فعلی در `hisubmit/src/Infrastructure/Migrations/2025070
 - Phase 3 build verification on August 18, 2026 succeeded with 0 errors.
   The full Web build reports 1965 existing legacy warnings; these are
   tracked technical debt and were not blanket-suppressed.
-- Phase 4 improved the public FAQ, news article and product detail surfaces
-  without changing their API, like, cart or payment logic. FAQ search now
-  responds to Enter, public content uses the shared page rhythm, and long
-  answers, article bodies, product descriptions and images remain inside
-  responsive containers.
-- Phase 4 build verification on August 18, 2026 succeeded with 0 errors
-  and the existing warning backlog. After the application finished startup,
-  HTTP smoke tests returned 200 for `/`, `/faq`, `/news`, `/new/1`,
-  `/Product/1/demo-product`, `/tickets` and `/PrivacyPolicy`.
