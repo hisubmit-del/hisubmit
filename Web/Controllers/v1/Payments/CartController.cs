@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using HiSubmit.Application.Features.Payments.DiscountsCodes.Queries;
 using HiSubmit.Application.Features.Users.Commands.SpecialFee;
 using HiSubmit.Application.Interfaces.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Web.Controllers.v1.Payments;
 
@@ -19,6 +20,7 @@ public class CartController(ICurrentUserService currentUserService) : BaseApiCon
     /// </param>
     /// <returns></returns>
     [HttpGet("GetAll")]
+    [Authorize]
     public async Task<IActionResult> GetAllCarts([FromQuery] GetAllCartsQuery query)
     {
         query.TakeCurrentUserCarts = true;
@@ -42,6 +44,7 @@ public class CartController(ICurrentUserService currentUserService) : BaseApiCon
     /// <param name="command"></param>
     /// <returns></returns>
     [HttpPost("PaidCart")]
+    [Authorize]
     public async Task<IActionResult> PaidCart(PaidCartCommand command)
     {
         return Ok(await Mediator.Send(command));
@@ -49,6 +52,7 @@ public class CartController(ICurrentUserService currentUserService) : BaseApiCon
 
 
     [HttpPost("CheckPaidCart")]
+    [Authorize]
     public async Task<IActionResult> CheckPaidCart(PaidCartCommand command)
     {
         return Ok(await Mediator.Send(command));
@@ -61,6 +65,7 @@ public class CartController(ICurrentUserService currentUserService) : BaseApiCon
     /// <param name="command"></param>
     /// <returns></returns>
     [HttpPost("SpecialAccountAddToCard")]
+    [Authorize]
     public async Task<IActionResult> SpecialAccount(SpecialFeeCommand command)
     {
         return Ok(await Mediator.Send(command));
@@ -84,6 +89,7 @@ public class CartController(ICurrentUserService currentUserService) : BaseApiCon
     /// <param name="command"></param>
     /// <returns></returns>
     [HttpDelete("DeleteItem")]
+    [Authorize]
     public async Task<IActionResult> DeleteItem([FromQuery] DeleteCartItemCommand command)
     {
         return Ok(await Mediator.Send(command));
@@ -98,12 +104,14 @@ public class CartController(ICurrentUserService currentUserService) : BaseApiCon
 
 
     [HttpPost("DownloadCartFactor")]
+    [Authorize]
     public async Task<IActionResult> Download(DownloadCartFactorCommand command)
     {
         return Ok(await Mediator.Send(command));
     }
 
     [HttpGet("PaidZeroCart")]
+    [Authorize]
     public async Task<IActionResult> PaidZeroCommand([FromQuery]PaidZeroCartCommand command)
     {
         command.UserId = _currentUserService.UserId;
@@ -111,6 +119,7 @@ public class CartController(ICurrentUserService currentUserService) : BaseApiCon
     }
 
     [HttpPost("CalculateDiscountCode")]
+    [Authorize]
     public async Task<IActionResult> CalculateDiscountCode(CalculateDiscountCodeQuery query)
     {
         return Ok(await Mediator.Send(query));

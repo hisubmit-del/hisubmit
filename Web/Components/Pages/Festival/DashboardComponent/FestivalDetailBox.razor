@@ -7,84 +7,76 @@
 
 <MudCard Class="chart-box h-100">
     <MudCardContent Class="h-100">
-        <div class="d-flex justify-center mb-4">
-            @{
-                if (!string.IsNullOrEmpty(Festival.LogoURL))
+        @if (Festival is null)
+        {
+            <MudStack AlignItems="AlignItems.Center" Spacing="2" Class="pa-6">
+                <MudProgressCircular Indeterminate="true" Color="Color.Primary" />
+                <MudText Typo="Typo.body2" Color="Color.Secondary">
+                    Loading festival details…
+                </MudText>
+            </MudStack>
+        }
+        else
+        {
+            <div class="d-flex justify-center mb-4">
+                @if (!string.IsNullOrEmpty(Festival.LogoURL))
                 {
-                    <MudAvatar  Style="height:200px; width:200px;">
+                    <MudAvatar Style="height:200px; width:200px;">
                         <MudImage Src="@Festival.LogoURL" Alt="@Festival.Name"></MudImage>
                     </MudAvatar>
                 }
                 else
                 {
-                    <MudAvatar Color="Color.Secondary" Style="height:200px; width:200px;">@Festival.Name[0]</MudAvatar>
+                    <MudAvatar Color="Color.Secondary" Style="height:200px; width:200px;">
+                        @(!string.IsNullOrWhiteSpace(Festival.Name) ? Festival.Name[..1].ToUpperInvariant() : "?")
+                    </MudAvatar>
                 }
-            }
-        </div>
-        <MudText Typo="Typo.h4" Align="Align.Center">@Festival.Name</MudText>
-        @{
-            
-            if (Festival.IsActive)
+            </div>
+            <MudText Typo="Typo.h4" Align="Align.Center">@Festival.Name</MudText>
+            @if (Festival.IsActive)
             {
                 <MudText Align="Align.Center" Typo="Typo.subtitle1" Color="Color.Success">
                     Published
                 </MudText>
             }
+            else if (Festival.FestivalStatus == FestivalStatus.UnderInvestigation)
+            {
+                <MudText Align="Align.Center">
+                    <MudChip T="FestivalStatus" Color="Color.Info"
+                             Size="Size.Small">@Festival.FestivalStatus.ToDisplay()</MudChip>
+                </MudText>
+            }
             else
             {
-                @if (Festival.FestivalStatus == FestivalStatus.UnderInvestigation)
-                {
-                    <MudText Align="Align.Center">
-                        <MudChip T="FestivalStatus" Color="Color.Info" 
-                             
-                                 Size="Size.Small">@Festival.FestivalStatus.ToDisplay()</MudChip>
-                    </MudText>
-                    // <MudText Align="Align.Center" Class="mb-2" Typo="Typo.subtitle1">
-                    //     Not Published
-                    // </MudText>
-                }
-                else
-                {
-                    <MudText Align="Align.Center" Class="mb-2" Typo="Typo.subtitle1">
-                        Not Published
-                        <MudButton Color="Color.Primary" Class="d-inline" 
-                                   OnClick="ReleaseFestival"  Size="@Size.Small" Variant="@Variant.Outlined">
-                            Release Festival
-                        </MudButton>
-                   
-                    </MudText>
-                }
+                <MudText Align="Align.Center" Class="mb-2" Typo="Typo.subtitle1">
+                    Not Published
+                    <MudButton Color="Color.Primary" Class="d-inline"
+                               OnClick="ReleaseFestival" Size="@Size.Small" Variant="@Variant.Outlined">
+                        Release Festival
+                    </MudButton>
+                </MudText>
             }
 
-            switch (Festival.FeeStatus)
+            @switch (Festival.FeeStatus)
             {
                 case FeeStatus.Usual:
                     <MudText Align="@Align.Center" Typo="@Typo.subtitle1">
                         Normal
                         <MudButton Size="@Size.Small" Variant="@Variant.Outlined"
-                                   Color="@Color.Secondary" Class="d-inline" OnClick="() => SpecialRequest()">
-                         
-                          Special Request
+                                   Color="@Color.Secondary" Class="d-inline" OnClick="SpecialRequest">
+                            Special Request
                         </MudButton>
-
                     </MudText>
                     break;
                 case FeeStatus.SpecialRequest:
-                    <MudText Align="@Align.Center" Typo="@Typo.subtitle1">
-                        Under review
-                    </MudText>
+                    <MudText Align="@Align.Center" Typo="@Typo.subtitle1">Under review</MudText>
                     break;
                 case FeeStatus.Special:
                     <MudText Align="@Align.Center" Typo="@Typo.subtitle1">
                         Special
-                        <IGold  Height="25px" Width="25px"/>
+                        <IGold Height="25px" Width="25px" />
                     </MudText>
                     break;
-                case FeeStatus.Rejected:
-
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
             }
         }
 

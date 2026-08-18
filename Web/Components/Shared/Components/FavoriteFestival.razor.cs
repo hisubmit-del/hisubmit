@@ -14,16 +14,8 @@ public partial class FavoriteFestival
     [Parameter]
     public string Class { get; set; }
   
-    private PersistingComponentStateSubscription _subscription;
-
-    private Task PersistFestival()
-    {
-        ApplicationState.PersistAsJson("favoriteFestivals", _festivalResponse);
-        return Task.CompletedTask;
-    }
     protected override async Task OnInitializedAsync()
     {
-        ApplicationState.RegisterOnPersisting(PersistFestival);
         await LoadFestivals();
         
         await base.OnInitializedAsync();
@@ -31,29 +23,20 @@ public partial class FavoriteFestival
 
     private async Task LoadFestivals()
     {
-        if (ApplicationState.TryTakeFromJson
-                <PaginatedResult<GetAllFestivalResponse>>
-                ("favoriteFestivals", out var stored))
+        var response =
+            await FestivalManager.GetAllFestival(new GetAllFestivalRequest()
+            {
+                PageSize = 8
+            });
+        if (response.Succeeded)
         {
-            _festivalResponse = stored;
+            _festivalResponse = response;
         }
         else
         {
-            var response =
-                await FestivalManager.GetAllFestival(new GetAllFestivalRequest()
-                {
-                    PageSize = 8
-                });
-            if (response.Succeeded)
+            foreach (var message in response.Messages)
             {
-                _festivalResponse = response;
-            }
-            else
-            {
-                foreach (var message in response.Messages)
-                {
-                    _snackBar.Add(message, MudBlazor.Severity.Error);
-                }
+                _snackBar.Add(message, MudBlazor.Severity.Error);
             }
         }
     }

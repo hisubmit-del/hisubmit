@@ -38,10 +38,13 @@ public class GetUserOpenCartItemsQueryHandler : IRequestHandler<GetUserOpenCartI
 
     public async Task<Result<List<GetCartItemResponse>>> Handle(GetUserOpenCartItemQuery request, CancellationToken cancellationToken)
     {
-        var userId = string.IsNullOrWhiteSpace(request.UserId) ? _currentUserService.UserId : request.UserId;
+        // The cart belongs to the authenticated session. Never use a user id
+        // supplied by the browser because that would allow another user's cart
+        // to be read by changing the query string.
+        var userId = _currentUserService.UserId;
 
         if (string.IsNullOrWhiteSpace(userId))
-            return await Result<List<GetCartItemResponse>>.FailAsync("User not Found");
+            return await Result<List<GetCartItemResponse>>.SuccessAsync(new List<GetCartItemResponse>());
 
         var specification = new GetOpenCartUserSpecification(userId);
 
