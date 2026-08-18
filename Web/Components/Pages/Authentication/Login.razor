@@ -4,6 +4,7 @@
 @attribute [AllowAnonymous]
 @inject IStringLocalizer<Login> Localize
 @inherits Web.Components.Pages.Public.BasePublicPages
+@using MudBlazor.StaticInput
 
 <MudGrid Class="mt-lg-8 auth-page" Justify="Justify.Center">
 
@@ -40,39 +41,44 @@
                         </div>
                     </MudItem>
                     <MudItem xs="12">
-                        <MudTextField T="string" Label="@Localize["E-mail"]"
-                                      Required="true" Variant="Variant.Outlined"
-                                      InputType="InputType.Email"
-                                      Immediate="true"
-                                      UserAttributes="@(new() { { "autocomplete", "username" }, { "aria-required", "true" } })"
-                                      @bind-Value="Input.Email" For="@(() => Input.Email)" />
+                        <MudStaticTextField T="string"
+                                            Label="@Localize["E-mail"]"
+                                            Required="true"
+                                            Variant="Variant.Outlined"
+                                            InputType="InputType.Email"
+                                            @bind-Value="Input.Email"
+                                            For="@(() => Input.Email)"
+                                            UserAttributes="@(new() { { "autocomplete", "username" }, { "aria-required", "true" } })" />
                     </MudItem>
                     <MudItem xs="12">
-                        <MudTextField Label="@Localize["Password"]"
-                                      InputType="@_passwordInput"
-                                      Adornment="Adornment.End"
-                                      AdornmentIcon="@_passwordInputIcon"
-                                      OnAdornmentClick="TogglePasswordVisibility"
-                                      UserAttributes="@(new() { { "autocomplete", "current-password" }, { "aria-required", "true" } })"
-                                      @bind-Value="Input.Password" Variant="Variant.Outlined"
-                                      For="@(() => Input.Password)"
-                                      Required="true" />
+                        <MudStaticTextField T="string"
+                                            Label="@Localize["Password"]"
+                                            InputType="InputType.Password"
+                                            UserAttributes="@(new() { { "autocomplete", "current-password" }, { "aria-required", "true" } })"
+                                            @bind-Value="Input.Password"
+                                            Variant="Variant.Outlined"
+                                            For="@(() => Input.Password)"
+                                            Required="true" />
 
                     </MudItem>
                     <MudItem xs="12" Class="d-flex justify-space-between align-center">
-                        <MudCheckBox T="bool"
-                                     @bind-Value="_rememberMe"
-                                     Label="@Localize["Remember me?"]"
-                                     Color="Color.Primary"
-                                     Class="ml-n1"></MudCheckBox>
+                        <MudStaticCheckBox T="bool"
+                                           For="@(() => _rememberMe)"
+                                           @bind-Value="_rememberMe"
+                                           Color="Color.Primary"
+                                           Class="ml-n1">
+                            @Localize["Remember me?"]
+                        </MudStaticCheckBox>
 
                     </MudItem>
                     <MudItem xs="12" Class="d-flex justify-center">
-                        <LoadingButton ButtonType="ButtonType.Submit"
-                                       Processing="_processing"
-                                       Variant="Variant.Filled"
-                                       Color="Color.Dark" Size="Size.Large"
-                                       Style="width: 100%;">@Localize["Sign In"]</LoadingButton>
+                        <MudStaticButton FormAction="FormAction.Submit"
+                                         Variant="Variant.Filled"
+                                         Color="Color.Dark"
+                                         FullWidth="true"
+                                         Style="width: 100%;">
+                            @Localize["Sign In"]
+                        </MudStaticButton>
                     </MudItem>
                     <MudItem xs="12" Class="text-center">
                         <MudLink Typo="Typo.body1" Href="/account/forgot-password">@Localize["Forgot password?"]</MudLink>

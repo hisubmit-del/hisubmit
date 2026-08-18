@@ -15,15 +15,12 @@ namespace Web.Components.Pages.Authentication
         [Inject] private IdentityRedirectManager RedirectManager { get; set; }
 
         private string? errorMessage;
-        private bool _processing;
         private bool _rememberMe;
-        private bool _passwordVisibility;
-        private InputType _passwordInput = InputType.Password;
-        private string _passwordInputIcon = Icons.Material.Filled.VisibilityOff;
 
         [CascadingParameter]
         private HttpContext HttpContext { get; set; } = null!;
 
+        [SupplyParameterFromForm(FormName = "LoginForm")]
         public TokenRequest Input { get; set; } = new();
 
         [SupplyParameterFromQuery]
@@ -39,14 +36,12 @@ namespace Web.Components.Pages.Authentication
 
         public async Task LoginUser()
         {
-            _processing = true;
             errorMessage = null;
 
             var user = await UserManager.FindByEmailAsync(Input.Email);
             if (user is null)
             {
                 errorMessage = "Error: Invalid login attempt.";
-                _processing = false;
                 return;
             }
 
@@ -81,17 +76,6 @@ namespace Web.Components.Pages.Authentication
             {
                 errorMessage = "Error: Invalid login attempt.";
             }
-
-            _processing = false;
-        }
-
-        private void TogglePasswordVisibility()
-        {
-            _passwordVisibility = !_passwordVisibility;
-            _passwordInput = _passwordVisibility ? InputType.Text : InputType.Password;
-            _passwordInputIcon = _passwordVisibility
-                ? Icons.Material.Filled.Visibility
-                : Icons.Material.Filled.VisibilityOff;
         }
     }
 }

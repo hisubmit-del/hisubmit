@@ -847,6 +847,30 @@ migration اصلی فعلی در `hisubmit/src/Infrastructure/Migrations/2025070
   - each checked response contained the shared public layout/header/navigation;
   - no new runtime error marker was added to the latest application log.
 - No database schema or migration was changed.
+
+## Login stability checkpoint (2026-08-18)
+
+- Root cause of the `/login` button remaining in `Processing` was identified
+  in the runtime log:
+  `InvalidOperationException: Headers are read-only, response has already
+  started` while `PasswordSignInAsync` attempted to append the auth cookie
+  from an Interactive Server circuit.
+- `/login` now uses static SSR, like the `/Account` Identity pages, so the
+  authentication cookie is written during the HTTP POST response.
+- Login form controls now use MudBlazor static-input components and
+  `LoginUser` receives the posted model through
+  `[SupplyParameterFromForm(FormName = "LoginForm")]`.
+- Removed the obsolete interactive loading/password-visibility state from
+  this static form.
+- Verification:
+  - build completed with 0 errors;
+  - invalid credentials returned HTTP 200 with the visible
+    `Invalid login attempt` message;
+  - the local test account `amir@mohammadi.com` reached `/` with HTTP 200 and
+    no longer showed the sign-in button;
+  - no new `Headers are read-only` or unhandled error was added after the
+    fix; the two matching entries in the rolling log predate the fix.
+- No database schema or migration was changed.
 - Build verification after these changes completed with exit code 0. Remaining
   warnings are the existing package advisories, nullable/compiler debt and
   MudBlazor analyzer backlog.
