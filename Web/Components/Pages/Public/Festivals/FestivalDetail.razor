@@ -33,14 +33,22 @@
 				<div class="festival-cover festival-detail-hero">
 					@if (_covers.Any())
 					{
-						<img src="@(_covers.FirstOrDefault()!.Url)" alt="cover-image-@Festival.Name" />
+						<img src="@GetImageUrl(_covers.FirstOrDefault()?.Url)"
+						     onerror="this.onerror=null;this.src='/media/image.png';"
+						     alt="cover-image-@Festival.Name" />
+					}
+					else
+					{
+						<img src="@GetImageUrl(null)" alt="Default festival cover for @Festival.Name" />
 					}
 
 					<div class="festival-cover-description">
 						<MudHidden Breakpoint="Breakpoint.MdAndDown">
 							<div class="d-flex justify-space-between flex-grow-1 py-xl-8">
 								<div>
-									<img src="@Festival.LogoURL" alt="festival-logo-@Festival.Name" />
+									<img src="@GetImageUrl(Festival.LogoURL)"
+									     onerror="this.onerror=null;this.src='/media/image.png';"
+									     alt="festival-logo-@Festival.Name" />
 								</div>
 								<div class="d-flex icon-box flex-column gap-2">
 									<MudAvatar Color="Color.Surface" Variant="Variant.Filled">
@@ -66,7 +74,9 @@
 						<MudHidden Breakpoint="Breakpoint.LgAndUp">
 							<div class="d-flex justify-space-around flex-grow-1 py-xl-8">
 								<div>
-									<img src="@Festival.LogoURL" alt="fes-logo" />
+									<img src="@GetImageUrl(Festival.LogoURL)"
+									     onerror="this.onerror=null;this.src='/media/image.png';"
+									     alt="festival-logo-@Festival.Name" />
 								</div>
 								<div class="d-flex icon-box flex-grow-1 gap-x-4 justify-end mt-8">
 									@if (_likedCount > 0)
@@ -156,7 +166,9 @@
 					</div>
 					<div class="col-12 col-lg-3 mx-auto">
 						<div class="reward-box  ">
-							<img src="@Festival.RewardLogoURL" alt="@Festival.RewardsName" />
+							<img src="@GetImageUrl(Festival.RewardLogoURL)"
+							     onerror="this.onerror=null;this.src='/media/image.png';"
+							     alt="@Festival.RewardsName" />
 							<MudText Class="fg-grey"
 									 Align="Align.Center"
 									 Typo="Typo.subtitle1">
@@ -216,7 +228,8 @@
 												@foreach (var image in _images)
 												{
 													<a class="mx-3">
-														<img src="@image.Url"
+														<img src="@GetImageUrl(image.Url)"
+															 onerror="this.onerror=null;this.src='/media/image.png';"
 															 onclick="@(() => GalleryImagesOverallyService.ShowImageOverlay(_images.Select(p =>new ImageDto()
                                                                       {
                                                                           Title = p.Title,
@@ -250,10 +263,12 @@ Id=p.Id
 									{
 										<MudItem xs="12" md="6">
 											<MudCard Class="pa-1 pa-md-3">
-												<img src="@n.BannerUrl" height="200px" class="max-width-100" alt="@n.Title" />												
+												<img src="@GetImageUrl(n.BannerUrl)" height="200px" class="max-width-100"
+												     onerror="this.onerror=null;this.src='/media/image.png';"
+												     alt="@n.Title" />
 												<MudCardContent>													
 													<MudText Typo="Typo.h5">
-														<a href="@($"/new/{n.Id}/{n.Title}")">@n.Title</a>
+														<a href="@($"/new/{n.Id}/{Uri.EscapeDataString(n.Title ?? "news")}")">@n.Title</a>
 													</MudText>
 												</MudCardContent>
 												<MudCardActions>
@@ -279,7 +294,7 @@ Id=p.Id
 						@if (Organizers != null && Organizers.Any())
 						{
 							<MudPaper Elevation="1" Class="pa-3 text-center mb-3">
-								<MudText Typo="Typo.h5" Class="mb-5" Align="Align.Center">Organizer</MudText>
+								<MudText Typo="Typo.h5" Class="mb-5" Align="Align.Center">Organizers</MudText>
 								<div class="gallery-tab-slider mb-5 pb-4 mt-5">
 									<div class="tab-content" id="organizer-tab-slider-tabContent">
 										<div class="tab-pane fade show active" id="pills-about" role="tabpanel"
@@ -289,7 +304,9 @@ Id=p.Id
 												{
 													<MudCard Elevation="0" Class="text-center">
 														<MudAvatar Style="height:130px; width:130px;">
-															<MudImage Src="@organizer.ImageName" Alt="@organizer.Name" />
+															<MudImage Src="@GetImageUrl(organizer.ImageName)"
+															          Alt="@organizer.Name"
+															          onerror="this.onerror=null;this.src='/media/image.png';" />
 														</MudAvatar>
 														<MudText Typo="Typo.subtitle1">@organizer.Name</MudText>
 														<MudText Typo="Typo.subtitle2" Class="fg-grey">@organizer.Title</MudText>
@@ -359,7 +376,7 @@ Id=p.Id
 
 						<MudPaper Class="mt-2 pb-3 pt-2 border-radius-20 ">
 							<div Class="mt-2 text-center">
-								<MudText Typo="Typo.h5" Align="Align.Center" Class="mb-2">Key Enable</MudText>
+								<MudText Typo="Typo.h5" Align="Align.Center" Class="mb-2">Key stats</MudText>
 							</div>
 							<div class="side-box contact w-100">
 
@@ -387,7 +404,7 @@ Id=p.Id
 
 		<div class="w-100 festival-product festival-product-section">
 			<MudText Typo="Typo.h6" Class="my-4" Color="Color.Surface">
-				<MudIcon Color="Color.Surface" Icon="@Icons.Material.Filled.ShoppingCart"></MudIcon> FestivalId Product
+				<MudIcon Color="Color.Surface" Icon="@Icons.Material.Filled.ShoppingCart"></MudIcon> Festival products
 			</MudText>
 			<MudContainer MaxWidth="MaxWidth.Large">
 

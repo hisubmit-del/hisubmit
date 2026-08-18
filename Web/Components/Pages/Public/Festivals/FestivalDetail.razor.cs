@@ -28,6 +28,7 @@ using Microsoft.JSInterop;
 using Hisubmit.Client.SharedModels.Features.Festivals.Queries.GetAllFestivalFile;
 using Web.Components.Shared.Dialogs;
 using Hisubmit.Client.SharedModels.Features.Reviews.Queries;
+using HiSubmit.Client.Infrastructure.Constants;
 
 namespace Web.Components.Pages.Public.Festivals;
 
@@ -93,6 +94,7 @@ public partial class FestivalDetail
             await LoadFestivalImages();
             await LoadOrganizer();
             await LoadNews();
+            await LoadFiles();
         }
 
         _loaded = true;
@@ -128,7 +130,7 @@ public partial class FestivalDetail
     #endregion
 
 
-private async Task LoadFiles(){
+    private async Task LoadFiles(){
     var response = await FestivalManager.GetAllFestivalFiles(new GetAllFestivalFileQuery()
     {
         FestivalId = FestivalId
@@ -301,6 +303,9 @@ private async Task LoadFiles(){
         var user = await AuthenticationManager.CurrentUser();
         UserIsAuthenticated = user.Identity is { IsAuthenticated: true };
     }
+
+    private static string GetImageUrl(string? url)
+        => string.IsNullOrWhiteSpace(url) ? ClientAppConstants.NoImageUrl : url;
 
     private async Task LoadRatingSummary()
     {

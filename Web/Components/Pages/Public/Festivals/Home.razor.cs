@@ -326,6 +326,12 @@ public partial class Home : IDisposable
         _timer.Start();
     }
 
+    private async Task OnSearchChanged(string value)
+    {
+        _advancedSearch.SearchString = value;
+        await ReloadFestivals();
+    }
+
     private void OnSearchElapsed(object sender, ElapsedEventArgs e)
     {       
         InvokeAsync(async () =>

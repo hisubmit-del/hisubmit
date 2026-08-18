@@ -12,10 +12,10 @@ else
                 @foreach (var item in Venues)
                 {
                     <li>
-                        <a href="#" target="_blank">
+                        <span class="festival-venue-label">
                             <MudIcon Icon="@Icons.Material.Outlined.LocationOn"></MudIcon>
                             @item.Address.ToString()
-                        </a>
+                        </span>
                     </li>
                 }
             </ul>

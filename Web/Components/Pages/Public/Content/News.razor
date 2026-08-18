@@ -22,9 +22,10 @@
                 <MudText Typo="Typo.h5">Latest news</MudText>
                 <MudText Typo="Typo.body2" Class="text-muted">Follow every festival from one calm, searchable feed.</MudText>
             </div>
-            <MudTextField Class="public-toolbar__search"
+            <MudTextField T="string" Class="public-toolbar__search"
                           DebounceInterval="500"
-                          @bind-Value="@SearchString"
+                          Value="@SearchString"
+                          ValueChanged="@(value => OnSearchChanged(value))"
                           Variant="Variant.Outlined"
                           Placeholder="Search news..."
                           Adornment="Adornment.End"

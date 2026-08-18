@@ -709,3 +709,38 @@ migration اصلی فعلی در `hisubmit/src/Infrastructure/Migrations/2025070
   `http://127.0.0.1:5120/`, `/festivals`, and `/news` all returned HTTP 200.
 - Existing unrelated local changes and uploaded test files were intentionally
   not staged.
+
+## Public discovery and festival detail resilience checkpoint (2026-08-18)
+
+- Sponsored festival cards on the public Home page are now image/card links
+  without the misleading nested “View festival” button. Missing festival and
+  news images use the existing `/media/image.png` fallback and recover from
+  broken image URLs.
+- The public festival filter now sends nullable `FestivalType`, focus and
+  category values explicitly. Search input callbacks were made explicit for
+  Home, News and FAQ, so changing the text invokes the corresponding search
+  flow instead of relying on a form event that could be skipped.
+- Public footer placements now query approved `FeeStatus.Special` festivals
+  and use a separate persisted state key (`sponsoredFestivals`) so an older
+  cached regular-festival list is not shown as advertising.
+- Festival detail now has safe fallback images for cover, logo, reward,
+  gallery, news and organisers, loads festival files, escapes news URLs, and
+  corrects visible labels such as “Timeline”, “Organizers”, “Key stats” and
+  “Festival products”.
+- Removed non-functional public actions: venue entries no longer navigate to
+  `#`, festival email uses `mailto:`, and the inactive Reviews “Show more”
+  button is not rendered.
+- Corrected the festival runtime filter specification to honor nullable
+  minimum/maximum runtime bounds using AND semantics.
+- Added final scoped responsive CSS for Home hero sizing, long text wrapping,
+  filter controls, festival cards, detail layout, gallery and timeline
+  spacing. No database schema, payment, authentication, authorization or
+  festival-scope rule was changed.
+- Build verification: `dotnet build .\Web\Web.csproj --no-restore --nologo
+  -m:1 /p:BuildInParallel=false` completed with exit code 0. The remaining
+  warnings are legacy package advisories, nullable/compiler debt and the
+  existing MudBlazor `MUD0002` analyzer backlog.
+- GitHub prompt diagnosis: the local VS Code user setting
+  `git.autofetch=true` is enabled. This is independent of `dotnet build`;
+  disable Git auto-fetch in VS Code User Settings to stop background fetch
+  authentication prompts. No GitHub integration was added to the project.

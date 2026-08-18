@@ -304,6 +304,208 @@
     }
 }
 
+/* Final public festival polish: stable sizing, safe wrapping and calm spacing. */
+.public-layout .home-hero {
+    min-height: clamp(25rem, 62vh, 38rem);
+    max-height: 42rem;
+    padding: clamp(2rem, 5vw, 4.5rem);
+}
+
+.public-layout .home-hero h1 {
+    max-width: min(100%, 44rem);
+    font-size: clamp(2.7rem, 6vw, 5.6rem);
+    line-height: .98;
+    overflow-wrap: anywhere;
+}
+
+.public-layout .home-hero__content {
+    flex: 1 1 0;
+    min-width: 0;
+}
+
+.public-layout .home-hero__visual {
+    flex: 0 1 22rem;
+}
+
+.public-layout .festival-featured-tile {
+    min-width: 0;
+    overflow: hidden;
+    text-decoration: none;
+}
+
+.public-layout .festival-sponsored-box .festival-featured-tile__media {
+    min-height: 13rem;
+}
+
+.public-layout .festival-sponsored-box .festival-featured-tile__media img {
+    height: 13rem;
+    object-fit: cover;
+    transition: transform var(--motion-normal) ease;
+}
+
+.public-layout .festival-sponsored-box .festival-featured-tile:hover img,
+.public-layout .festival-sponsored-box .festival-featured-tile:focus-visible img {
+    transform: scale(1.04);
+}
+
+.public-layout .festival-filter-panel,
+.public-layout .festival-detail-heading,
+.public-layout .festival-detail-content,
+.public-layout .festival-detail-layout > [class*="col-"] {
+    min-width: 0;
+}
+
+.public-layout .festival-filter-form {
+    align-items: stretch;
+}
+
+.public-layout .festival-filter-form > .mud-grid-item {
+    min-width: 0;
+}
+
+.public-layout .festival-filter-form .mud-input-control,
+.public-layout .festival-filter-form .mud-picker,
+.public-layout .festival-filter-form .mud-select {
+    min-width: 0;
+    width: 100%;
+}
+
+.public-layout .festival-filter-form .mud-input-slot,
+.public-layout .festival-filter-form .mud-select-input {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.public-layout .festival-card {
+    min-width: 0;
+}
+
+.public-layout .festival-card .mud-card-content,
+.public-layout .festival-card .mud-card-actions {
+    min-width: 0;
+}
+
+.public-layout .festival-card h5,
+.public-layout .festival-card__meta {
+    min-width: 0;
+    overflow-wrap: anywhere;
+    word-break: normal;
+}
+
+.public-layout .festival-detail-hero {
+    position: relative;
+    min-height: clamp(16rem, 38vw, 28rem);
+    background: var(--surface-muted);
+}
+
+.public-layout .festival-detail-hero > img:first-child {
+    display: block;
+    width: 100%;
+    height: clamp(16rem, 38vw, 28rem);
+    object-fit: cover;
+}
+
+.public-layout .festival-detail-hero .festival-cover-description {
+    position: absolute;
+    inset: 0;
+    padding: clamp(.75rem, 3vw, 2rem);
+}
+
+.public-layout .festival-detail-heading {
+    overflow-wrap: anywhere;
+}
+
+.public-layout .festival-detail-heading .mud-typography-h1 {
+    max-width: 100%;
+    overflow-wrap: anywhere;
+    word-break: normal;
+}
+
+.public-layout .festival-detail-layout {
+    margin-inline: 0;
+}
+
+.public-layout .festival-detail-content .mud-tab-panel,
+.public-layout .festival-detail-content .rich-content-section,
+.public-layout .festival-detail-content .read-more-shell {
+    padding: clamp(.75rem, 2vw, 1.25rem);
+}
+
+.public-layout .festival-detail-content .gallery-slider,
+.public-layout .festival-detail-content .mud-grid {
+    min-width: 0;
+}
+
+.public-layout .festival-detail-content .gallery-slider img {
+    width: 100%;
+    max-width: 100%;
+    height: 10rem;
+    object-fit: cover;
+}
+
+.public-layout .festival-detail-layout .festival-side-card,
+.public-layout .festival-detail-layout .mud-paper,
+.public-layout .festival-detail-layout .mud-card {
+    min-width: 0;
+    overflow: hidden;
+}
+
+.public-layout .festival-timeline .mud-timeline-item-content {
+    margin-inline-start: .25rem;
+    padding: .8rem 1rem .8rem 1.2rem;
+}
+
+.public-layout .festival-timeline .mud-timeline-item-opposite {
+    min-width: 0;
+}
+
+.public-layout .festival-timeline .timeline-entry {
+    padding-inline-start: .35rem;
+}
+
+.public-layout .festival-detail-layout .contact-list,
+.public-layout .festival-detail-layout .festival-categories-list {
+    padding-inline: 1rem;
+}
+
+@media (max-width: 991.98px) {
+    .public-layout .home-hero {
+        max-height: none;
+        min-height: auto;
+    }
+
+    .public-layout .home-hero__visual {
+        flex-basis: 12rem;
+        width: 12rem;
+        align-self: center;
+    }
+
+    .public-layout .festival-detail-layout {
+        margin-top: 1rem;
+    }
+
+    .public-layout .festival-detail-hero .festival-cover-description {
+        padding: .75rem;
+    }
+}
+
+@media (max-width: 575.98px) {
+    .public-layout .home-hero h1 {
+        font-size: clamp(2.25rem, 13vw, 3.6rem);
+    }
+
+    .public-layout .festival-detail-heading {
+        padding: 1rem;
+    }
+
+    .public-layout .festival-detail-content .mud-tab {
+        padding-inline: .7rem;
+        font-size: .78rem;
+    }
+}
+
 /* Home discovery refinement: sponsored placements, resilient cards and editorial feed */
 .home-hero {
     color: var(--surface-card);

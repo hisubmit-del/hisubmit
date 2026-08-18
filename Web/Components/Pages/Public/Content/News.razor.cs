@@ -55,6 +55,13 @@ public partial class News
 
 
     public string SearchString { get; set; }
+
+    private async Task OnSearchChanged(string value)
+    {
+        SearchString = value;
+        await Search();
+    }
+
     private async Task LoadNews(GetAllNewRequest request)
     {
         _request = request;

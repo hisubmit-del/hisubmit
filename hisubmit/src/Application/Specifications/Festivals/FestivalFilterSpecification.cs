@@ -47,9 +47,9 @@ public class FestivalFilterSpecification : HeroSpecification<Festival>
                     (query.YearsRunningRangeType == RangeType.Between && query.YearsRunningFirst <= festival.YearsRunning &&
                      query.YearsRunningSecond >= festival.YearsRunning)
                 )
-                && (query.Runtime == 0 || (festival.MinimomLenght != null || (festival.MinimomLenght <= query.Runtime) ||
-                                           (festival.MaximomLenght != null || (festival.MaximomLenght >= query.Runtime)))
-                )
+                && (query.Runtime == 0 ||
+                    ((festival.MinimomLenght == null || festival.MinimomLenght <= query.Runtime) &&
+                     (festival.MaximomLenght == null || festival.MaximomLenght >= query.Runtime)))
                 && (query.CountryId == 0 || festival.Address.CountryId == query.CountryId)
                 && (!query.Categories.Any() || festival.FestivalArtCategories
                     .Any(l => query.Categories.Contains(l.ArtCategoryId)))

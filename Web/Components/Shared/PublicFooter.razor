@@ -2,6 +2,7 @@
 @using HiSubmit.Client.Infrastructure.Managers.PublicFestival
 @using Hisubmit.Client.SharedModels.Features.AdminFestival.Queries.GetAllFestival
 @using HiSubmit.Client.SharedModels.Wrapper
+@using HiSubmit.Client.Infrastructure.Constants
 <div class="footer public-footer">
     <MudContainer MaxWidth="MaxWidth.Large" Class="public-footer__intro">
         <div>
@@ -20,10 +21,12 @@
         </div>
     </MudContainer>
     <MudGrid Class="py-lg-20  px-5 d-flex justify-center flex-grow-1 gap-4 festivals-footer-box">
-        @foreach (var festival in _festivalResponse.Data)
+        @foreach (var festival in _festivalResponse.Data?.Take(6) ?? Enumerable.Empty<GetAllFestivalResponse>())
         {
             <NavLink Href="@($"/festivalpage/{festival.URL}")">
-                <img src="@festival.LogoURL" alt="@festival.Name" loading="lazy"/>
+                <img src="@(!string.IsNullOrWhiteSpace(festival.LogoURL) ? festival.LogoURL : ClientAppConstants.NoImageUrl)"
+                     onerror="this.onerror=null;this.src='/media/image.png';"
+                     alt="@festival.Name" loading="lazy"/>
             </NavLink>
         }
     </MudGrid>
@@ -73,7 +76,7 @@
 
     private Task PersistFestival()
     {
-        ApplicationState.PersistAsJson("favoriteFestivals", _festivalResponse);
+            ApplicationState.PersistAsJson("sponsoredFestivals", _festivalResponse);
         return Task.CompletedTask;
     }
 
@@ -81,7 +84,7 @@
     {
         if (ApplicationState.TryTakeFromJson
                 <PaginatedResult<GetAllFestivalResponse>>
-                ("favoriteFestivals", out var stored))
+                ("sponsoredFestivals", out var stored))
         {
             _festivalResponse = stored;
         }
@@ -90,7 +93,9 @@
             var response =
                 await FestivalManager.GetAllFestival(new GetAllFestivalRequest()
                 {
-                    PageSize = 4
+                    PageSize = 6,
+                    GetAllData = true,
+                    FeeStatus = FeeStatus.Special
                 });
             if (response.Succeeded)
             {

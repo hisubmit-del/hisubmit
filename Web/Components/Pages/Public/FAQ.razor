@@ -29,8 +29,9 @@
             <MudGrid Justify="Justify.Center"
                      class="festival-key-search-box text-center justify-center px-lg-14 px-2 my-10">
                 <MudItem xs="12" md="6" xl="5">
-                    <MudTextField DebounceInterval="500"
-                                  @bind-Value="@SearchString"
+                    <MudTextField T="string" DebounceInterval="500"
+                                  Value="@SearchString"
+                                  ValueChanged="@(value => OnSearchChanged(value))"
                                   @onkeypress="Search"
                                   Variant="Variant.Outlined"                                 
                                   Adornment="Adornment.End"       

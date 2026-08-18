@@ -79,6 +79,12 @@ namespace Web.Components.Pages.Public
 
         public string SearchString { get; set; }
 
+        private async Task OnSearchChanged(string value)
+        {
+            SearchString = value;
+            await Search();
+        }
+
         private async Task Search()
         {
             var response = await ContentManager.GetAllFAQ(new GetAllStaticPageRequest()

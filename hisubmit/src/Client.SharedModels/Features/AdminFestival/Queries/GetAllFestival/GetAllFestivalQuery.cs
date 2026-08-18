@@ -75,14 +75,14 @@ public enum RangeType
 
 public enum FestivalType
 {
-    [Display(Name = "Film FestivalId")]
+    [Display(Name = "Film Festival")]
     FilmFestival,
     [Display(Name = "Screen Writing Writer")]
     ScreenWritingWriter,
     [Display(Name = "Music Contest")]
     MusicContest,
-    [Display(Name = "Photographic  Contest")]
+    [Display(Name = "Photographic Contest")]
     PhotographicContest,
-    [Display(Name = "Online FestivalId")]
+    [Display(Name = "Online Festival")]
     OnlineFestival
 }
