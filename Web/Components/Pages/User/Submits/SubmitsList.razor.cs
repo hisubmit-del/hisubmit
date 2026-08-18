@@ -156,10 +156,11 @@ public partial class SubmitsList
         }
     }
 
-    private void OnSearch(string text)
+    private async Task OnSearch(string text)
     {
-        _searchString = text;
-        _table.ReloadServerData();
+        _searchString = text?.Trim() ?? string.Empty;
+        if (_table is not null)
+            await _table.ReloadServerData();
     }
 
     private async Task WithDraw(int id)

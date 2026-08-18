@@ -808,6 +808,28 @@ migration اصلی فعلی در `hisubmit/src/Infrastructure/Migrations/2025070
 - Fixed the festival dashboard timeline to check `EventEndDate` before reading
   its nullable value.
 - No database schema or migration was changed.
+
+## Search interaction checkpoint (2026-08-18)
+
+- Replaced the fire-and-forget `ReloadServerData()` calls in the operational
+  search handlers with awaited asynchronous reloads.
+- Normalized search input with trimming and null-safe handling before reload.
+- Updated the shopping-cart search to forward its text through
+  `GetAllCartsFilterDto.SearchString`, so the server-side cart filter actually
+  receives the user's query.
+- Updated 34 runtime search handlers across admin, festival, artist, referee,
+  project, ticket, payment and public ticket areas.
+- The only remaining synchronous example is commented legacy code in
+  `Web/Components/Pages/Misc/DocumentStore.razor.cs`; it is not compiled or
+  used at runtime.
+- Verification:
+  - `dotnet build .\Web\Web.csproj --no-restore --disable-build-servers
+    --nologo -m:1 /p:BuildInParallel=false` completed with 0 errors.
+  - `/`, `/festivals`, `/news`, `/faq`, `/tickets` and guest cart retrieval
+    returned HTTP 200 on the local server.
+  - No new error marker was added to the runtime log during this smoke test;
+    older historical entries remain in the rolling log.
+- No database schema or migration was changed.
 - Build verification after these changes completed with exit code 0. Remaining
   warnings are the existing package advisories, nullable/compiler debt and
   MudBlazor analyzer backlog.
