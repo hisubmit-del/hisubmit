@@ -32,6 +32,17 @@ public class DeleteTicketCommandHandler : IRequestHandler<DeleteTicketCommand, I
         var ticket = await _unitOfWork.Repository<Ticket>()
             .GetByIdAsync(request.Id);
 
+        if (ticket == null)
+            return await Result.FailAsync(_localizer["The ticket was not found"]);
+
+        if (!ticket.VenueId.HasValue)
+            return await Result.FailAsync(_localizer["The ticket has no festival assigned"]);
+
+        var venue = await _unitOfWork.Repository<HiSubmit.Domain.Entities.Festivals.Venue>()
+            .GetByIdAsync(ticket.VenueId.Value);
+        if (venue == null || venue.FestivalId != request.FestivalId)
+            return await Result.FailAsync(_localizer["The ticket does not belong to this festival"]);
+
         if (ticket.OpenDate < DateTime.Now)
         {
             return await Result.FailAsync(_localizer["The time for ticket sales has started"]);

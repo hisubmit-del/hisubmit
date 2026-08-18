@@ -28,9 +28,13 @@ public class GetProductByIdQueryHandler(IMapper mapper,IUnitOfWork<int> unitOfWo
         var result = await unitOfWork.Repository<Product>()
             .Entities
             .Include(p=>p.ProductImages)
-            .Where(p => p.Id == request.Id)
+            .Where(p => p.Id == request.Id &&
+                        (request.FestivalId == null || p.FestivalId == request.FestivalId))
             .ProjectTo<AddEditProductRequest>(mapper.ConfigurationProvider)
             .FirstOrDefaultAsync(cancellationToken);
+
+        if (result is null)
+            return await Result<AddEditProductRequest>.FailAsync("Product not found");
 
         var seoTag = await unitOfWork.Repository<MetaTag>()
             .Entities

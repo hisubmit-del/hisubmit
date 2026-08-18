@@ -37,9 +37,9 @@ public class ProductsController : BaseFestivalController<ProductsController>
     /// <returns>Enable 200 OK</returns>
     [HttpGet("image/{id}")]
     [FestivalAuthentication(Policy = Permissions.FestivalProducts.View)]
-    public async Task<IActionResult> GetProductImageAsync(int id)
+    public async Task<IActionResult> GetProductImageAsync(int id, int festivalId)
     {
-        var result = await Mediator.Send(new GetProductImageQuery(id));
+        var result = await Mediator.Send(new GetProductImageQuery(id, festivalId));
         return Ok(result);
     }
 
@@ -64,9 +64,13 @@ public class ProductsController : BaseFestivalController<ProductsController>
     /// <returns>Enable 200 OK response</returns>
     [HttpDelete("Delete/{id}")]
     [FestivalAuthentication(Policy = Permissions.FestivalProducts.Edit)]
-    public async Task<IActionResult> Delete(int id)
+    public async Task<IActionResult> Delete(int id, int festivalId)
     {
-        return Ok(await Mediator.Send(new DeleteProductCommand { Id = id }));
+        return Ok(await Mediator.Send(new DeleteProductCommand
+        {
+            Id = id,
+            FestivalId = festivalId
+        }));
     }
 
     /// <summary>
@@ -76,16 +80,20 @@ public class ProductsController : BaseFestivalController<ProductsController>
     /// <returns>Enable 200 OK</returns>
     [HttpGet("export")]
     [FestivalAuthentication(Policy = Permissions.FestivalProducts.View)]
-    public async Task<IActionResult> Export(string searchString = "")
+    public async Task<IActionResult> Export(string searchString = "", int festivalId = 0)
     {
-        return Ok(await Mediator.Send(new ExportProductsQuery(searchString)));
+        return Ok(await Mediator.Send(new ExportProductsQuery(searchString)
+        {
+            FestivalId = festivalId
+        }));
     }
     
     
     [HttpGet("Get")]
     [FestivalAuthentication(Policy = Permissions.FestivalProducts.View)]
-    public async Task<IActionResult> Get([FromQuery] GetProductByIdQuery query)
+    public async Task<IActionResult> Get([FromQuery] GetProductByIdQuery query, int festivalId)
     {
+        query.FestivalId = festivalId;
         return Ok(await Mediator.Send(query));
     }
 }

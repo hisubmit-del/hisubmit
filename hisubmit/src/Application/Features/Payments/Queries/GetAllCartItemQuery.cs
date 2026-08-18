@@ -15,6 +15,8 @@ using Hisubmit.Hisubmit.Client.SharedModels.Features.Payments;
 using HiSubmit.Application.Specifications.Base;
 using Hisubmit.Client.SharedModels.Features.Payments.Queries;
 
+using System.Collections.Generic;
+
 namespace HiSubmit.Application.Features.Payments.Queries;
 
 public class GetAllCartItemQuery :PaymentFilterDto,
@@ -49,11 +51,9 @@ internal class GetAllCartItemQueryHandler(IMapper mapper, IUnitOfWork<int> unitO
         switch (request.Type)
         {
             case GetCartItemQueryType.Festival:
-                if (request.FestivalId == null)
-                {
-                    throw new NullReferenceException();
-                }
-                else
+                if (request.FestivalId == null || request.FestivalId <= 0)
+                    return PaginatedResult<GetCartItemResponse>.Failure(
+                        new List<string> { "Festival is required" });
                 {
                     var specify = new GetAllFestivalCartItemsSpecification(request.FestivalId,request.MasterFestivalId);
                     var specify2 = new CartItemFilterSpecification(request);
@@ -79,7 +79,9 @@ internal class GetAllCartItemQueryHandler(IMapper mapper, IUnitOfWork<int> unitO
                         .ToPaginatedListAsync(request);
                 return adminCartItems;
 
-            default: throw new NotImplementedException();
+            default:
+                return PaginatedResult<GetCartItemResponse>.Failure(
+                    new List<string> { "Cart item query type is not supported" });
         }
     }
 }

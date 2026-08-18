@@ -85,7 +85,7 @@ public partial class FestivalTimeLine
                 });
 
 
-            if (Festival.EventStartDate != null)
+            if (Festival.EventEndDate != null)
                 deadLines.Add(new TimeLineItem()
                 {
                     Name = localizer["Event Start Date"],

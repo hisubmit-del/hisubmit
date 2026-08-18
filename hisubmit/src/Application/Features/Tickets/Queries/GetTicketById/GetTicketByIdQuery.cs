@@ -39,7 +39,10 @@ public  class GetTicketByIdQueryHandler:IRequestHandler<GetTicketByIdQuery,Resul
     public async Task<Result<GetTicketByIdResponse>> Handle(GetTicketByIdQuery request, CancellationToken cancellationToken)
     {
         var ticket = await _unitOfWork.Repository<Ticket>()
-            .Entities.Where(p => p.Id == request.Id)
+            .Entities
+            .Where(p => p.Id == request.Id &&
+                        p.Venue != null &&
+                        p.Venue.FestivalId == request.FestivalId)
             .Include(p => p.ShowTimeTickets)
             .ProjectTo<GetTicketByIdResponse>(_mapper.ConfigurationProvider)
             .FirstOrDefaultAsync(cancellationToken);

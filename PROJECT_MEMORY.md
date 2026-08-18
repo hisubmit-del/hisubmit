@@ -779,3 +779,41 @@ migration اصلی فعلی در `hisubmit/src/Infrastructure/Migrations/2025070
   - the old log entries for `favoriteFestivals` and the dashboard null
     reference predate these fixes; port-binding errors are caused by multiple
     local Web processes, so stop the existing `Web` process before rebuilding.
+
+## Submission, product, ticket and payment-scope checkpoint (2026-08-18)
+
+- Hardened submission creation in `AddSubmitCommand`:
+  - rejects missing project, festival or deadline input without throwing;
+  - requires an authenticated user and verifies the selected project belongs
+    to that user;
+  - verifies every selected deadline category belongs to the requested
+    festival before calculating fees;
+  - removed the synchronous `.Result` call from the account-type lookup.
+- Hardened festival product access:
+  - product read, image, export and delete operations now receive and enforce
+    the route festival ID;
+  - cross-festival product IDs return a controlled not-found result;
+  - product deletion cannot target a product from another festival.
+- Hardened ticket access and editing:
+  - venue and ticket festival ownership are checked against the route festival;
+  - ticket sale dates are validated for presence and order;
+  - ticket detail and delete operations enforce festival ownership;
+  - show-time synchronization compares `ShowTimeId` rather than the join-row
+    primary key.
+- Fixed festival payment cart queries:
+  - `FestivalPaymentsController` now explicitly sets the query type to
+    `Festival`;
+  - invalid or unsupported cart-item query types return a controlled failed
+    result instead of `NullReferenceException` or `NotImplementedException`.
+- Fixed the festival dashboard timeline to check `EventEndDate` before reading
+  its nullable value.
+- No database schema or migration was changed.
+- Build verification after these changes completed with exit code 0. Remaining
+  warnings are the existing package advisories, nullable/compiler debt and
+  MudBlazor analyzer backlog.
+- Local smoke checks during the controlled run:
+  - `/` and the demo festival page returned HTTP 200;
+  - `/api/v1/cart/GetItems?UserId=` returned HTTP 200 with a successful empty
+    result;
+  - the public deadline endpoint returned HTTP 200 with a successful result.
+- Unrelated working-tree edits and uploaded test assets were not staged.

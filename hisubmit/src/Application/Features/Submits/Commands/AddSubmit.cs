@@ -56,22 +56,43 @@ public class AddSubmitCommandHandler : IRequestHandler<AddSubmitCommand, Result<
     public async Task<Result<int>> Handle
         (AddSubmitCommand request, CancellationToken cancellationToken)
     {
+        if (request.ProjectId is null || request.ProjectId <= 0)
+            return await Result<int>.FailAsync(_localize["Project not selected"]);
+
+        if (request.FestivalId <= 0)
+            return await Result<int>.FailAsync(_localize["Festival not selected"]);
+
+        if (request.DeadlineEventCategoriesId is null || request.DeadlineEventCategoriesId.Count == 0)
+            return await Result<int>.FailAsync(_localize["At least one deadline must be selected"]);
+
         var project = await _unitOfWork
             .Repository<Project>()
             .GetByIdAsync(request.ProjectId.Value);
 
-        var userState = _mediator.Send(new GetUserAccountTypeQuery()
+        if (project is null)
+            return await Result<int>.FailAsync(_localize["Project not found"]);
+
+        if (!_currentUserService.IsAuthenticated ||
+            string.IsNullOrWhiteSpace(_currentUserService.UserId) ||
+            !string.Equals(project.UserId, _currentUserService.UserId, StringComparison.Ordinal))
+            return await Result<int>.FailAsync(_localize["You can only submit your own project"]);
+
+        var userStateResponse = await _mediator.Send(new GetUserAccountTypeQuery()
         {
             UserId = project.UserId
-        }, cancellationToken).Result.Data;
+        }, cancellationToken);
 
-        var feeStatus = userState.Id == 0 ? FeeStatus.Usual : FeeStatus.Special;
+        var feeStatus = userStateResponse.Data?.Id == 0
+            ? FeeStatus.Usual
+            : FeeStatus.Special;
 
         var festival = await _unitOfWork.Repository<Festival>()
             .Entities
             .Where(p => p.Id == request.FestivalId)
             .FirstOrDefaultAsync(cancellationToken);
 
+        if (festival is null)
+            return await Result<int>.FailAsync(_localize["Festival not found"]);
 
         var sumPrice = 0.0;
 
@@ -80,7 +101,13 @@ public class AddSubmitCommandHandler : IRequestHandler<AddSubmitCommand, Result<
         foreach (var deadlineId in request.DeadlineEventCategoriesId)
         {
             var deadLineCategory = await _unitOfWork.Repository<DeadlineEventCategory>()
-                .GetByIdAsync(deadlineId);
+                .Entities
+                .Include(p => p.DeadLine)
+                .FirstOrDefaultAsync(p => p.Id == deadlineId, cancellationToken);
+
+            if (deadLineCategory is null || deadLineCategory.DeadLine is null ||
+                deadLineCategory.DeadLine.FestivalId != festival.Id)
+                return await Result<int>.FailAsync(_localize["The selected deadline does not belong to this festival"]);
 
             var minPrice = GetMinPrice(deadLineCategory, project, feeStatus);
             if (minPrice.Value != null)

@@ -27,14 +27,17 @@ public class GetSubmitDetailQueryHandler(IUnitOfWork<int> unitOfWork, IMapper ma
     {
         var submit = await unitOfWork.Repository<Submit>()
             .Entities
-            .Where(p => p.Id == request.SubmitId)
+            .Where(p => p.Id == request.SubmitId && p.FestivalId == request.FestivalId)
             .Include(p => p.Project)
             .Include(p => p.Festival)
             .ProjectTo<GetAllSubmitsResponse>(mapper.ConfigurationProvider)
             .FirstOrDefaultAsync(cancellationToken);
 
+        if (submit is null)
+            return await Result<GetAllSubmitsResponse>.FailAsync("Submission not found");
+
         var user = await userService.GetAsync(submit.ProjectOwnerId);
-        submit.ProjectOwnerFullName = user.Data.FullName;
+        submit.ProjectOwnerFullName = user.Data?.FullName;
 
         return await Result<GetAllSubmitsResponse>.SuccessAsync(submit);
     }

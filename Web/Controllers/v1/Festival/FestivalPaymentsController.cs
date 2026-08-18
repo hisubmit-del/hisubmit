@@ -22,6 +22,7 @@ public class FestivalPaymentsController : BaseFestivalController<FestivalPayment
     public async Task<IActionResult> GetFestivalCartItem([FromQuery] GetAllCartItemQuery query, int festivalId)
     {
         query.FestivalId = festivalId;
+        query.Type = GetCartItemQueryType.Festival;
         return Ok(await Mediator.Send(query));
     }
 

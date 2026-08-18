@@ -74,9 +74,16 @@ public class AddEditTicketsCommandHandler(
             return await Result.FailAsync(localizer["Venue not found"]);
         }
 
-        var festival = await unitOfWork.Repository<Festival>().GetByIdAsync(venue.FestivalId);
+        if (request.FestivalId <= 0 || venue.FestivalId != request.FestivalId)
+            return await Result.FailAsync(localizer["The venue does not belong to this festival"]);
 
-        if (festival.EventEndDate < request.CloseDate)
+        var festival = await unitOfWork.Repository<Festival>().GetByIdAsync(venue.FestivalId);
+        if (festival == null)
+            return await Result.FailAsync(localizer["Festival not found"]);
+
+        if (request.OpenDate is null || request.CloseDate is null ||
+            request.CloseDate < request.OpenDate ||
+            (festival.EventEndDate.HasValue && festival.EventEndDate < request.CloseDate))
         {
             return await Result.FailAsync("The ticket sale dates must fall within the festival duration.");
         }
@@ -107,6 +114,9 @@ public class AddEditTicketsCommandHandler(
 
         var dbTicket = await unitOfWork.Repository<Ticket>().GetByIdAsync(request.Id);
         if (dbTicket == null) return await Result.FailAsync(localizer["Ticket not found"]);
+        if (!dbTicket.VenueId.HasValue || dbTicket.VenueId.Value != request.VenueId)
+            return await Result.FailAsync(localizer["The ticket does not belong to this venue"]);
+
         var updatedTicket = mapper.Map(request, dbTicket);
         updatedTicket.TicketType = venue.VenueType == VenueType.ShowLocation ? TicketType.Ticket : TicketType.Badge;
         updatedTicket.AvailableCapacity = request.Capacity;
@@ -122,9 +132,11 @@ public class AddEditTicketsCommandHandler(
         var dbShowTimes = await unitOfWork.Repository<ShowTimeTicket>()
             .Entities.Where(p => p.TicketId == ticketId)
             .ToListAsync();
-        var dbShowTimesId = dbShowTimes.Select(p => p.Id);
-        var addedIds = clientShowTimesId.Where(clId => dbShowTimesId.All(dbId => dbId != clId));
-        var deletedTicketShowTimes = dbShowTimes.Where(dbShoT => clientShowTimesId.All(clId => clId != dbShoT.Id));
+        var dbShowTimesId = dbShowTimes.Select(p => p.ShowTimeId).ToHashSet();
+        var addedIds = clientShowTimesId.Where(clId => !dbShowTimesId.Contains(clId));
+        var deletedTicketShowTimes = dbShowTimes
+            .Where(dbShowTime => !clientShowTimesId.Contains(dbShowTime.ShowTimeId))
+            .ToList();
         foreach (var id in addedIds)
         {
             await unitOfWork.Repository<ShowTimeTicket>()
