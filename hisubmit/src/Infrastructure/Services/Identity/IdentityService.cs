@@ -139,6 +139,8 @@ public class IdentityService : ITokenService
         foreach (var role in roles)
         {
             var thisRole = await _roleManager.FindByNameAsync(role);
+            if (thisRole is null)
+                continue;
 
             var rolePermissionClaims = await _roleManager.GetClaimsAsync(thisRole);
 
@@ -169,13 +171,18 @@ public class IdentityService : ITokenService
         {
             var festivalMaster = await _context.FestivalMasters
                 .Where(p => p.UserId == user.Id)
+                .Where(p => p.ActiveId != 0)
+                .OrderByDescending(p => p.CreatedOn)
                 .FirstOrDefaultAsync();
 
-            festivalId = await _context.Festivals
-                .Where(p => p.FestivalMasterId == festivalMaster.Id &&
-                            p.Id == festivalMaster.ActiveId)
-                .Select(p => p.Id)
-                .FirstOrDefaultAsync();
+            if (festivalMaster is not null)
+            {
+                festivalId = await _context.Festivals
+                    .Where(p => p.FestivalMasterId == festivalMaster.Id &&
+                                p.Id == festivalMaster.ActiveId)
+                    .Select(p => p.Id)
+                    .FirstOrDefaultAsync();
+            }
         }
 
 

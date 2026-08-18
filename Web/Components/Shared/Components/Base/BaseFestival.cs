@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Components;
 using System;
 using System.Linq;
 using System.Security.Claims;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace Web.Components.Shared.Components.Base;
@@ -53,15 +54,37 @@ public class BaseFestival : ComponentBase
 
         if (currentUser.IsInRole(RoleConstants.AdministratorRole)) return;
 
-        var festivalPermissions =
-            currentUser.Claims.Where(p => p.Type == ApplicationClaimTypes.FestivalPermission).ToList();
-
-        var neededPolicy = $"{SelectedFestivalId}-{permission}";
-
-        if (SelectedFestivalId == 0 || festivalPermissions.All(p => p.Value != neededPolicy))
+        if (!HasFestivalPermission(currentUser, SelectedFestivalId, permission))
             NavigationManager.NavigateTo("/forbidden");
 
         await Task.CompletedTask;
+    }
+
+    private static bool HasFestivalPermission(ClaimsPrincipal user, int festivalId, string permission)
+    {
+        if (festivalId <= 0 || string.IsNullOrWhiteSpace(permission))
+            return false;
+
+        foreach (var claim in user.Claims.Where(p => p.Type == ApplicationClaimTypes.FestivalPermission))
+        {
+            try
+            {
+                var permissions = JsonSerializer.Deserialize<Dictionary<int, string[]>>(claim.Value);
+                if (permissions != null &&
+                    permissions.TryGetValue(festivalId, out var festivalPolicies) &&
+                    festivalPolicies?.Any(policy =>
+                        string.Equals(policy, permission, StringComparison.OrdinalIgnoreCase)) == true)
+                {
+                    return true;
+                }
+            }
+            catch (JsonException)
+            {
+                // Invalid claims must never grant access.
+            }
+        }
+
+        return false;
     }
 
     protected async Task LoadSelectedFestivalId()

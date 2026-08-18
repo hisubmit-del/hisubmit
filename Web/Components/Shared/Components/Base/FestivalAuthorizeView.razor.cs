@@ -27,20 +27,31 @@ public partial class FestivalAuthorizeView
             await AuthenticationManager.GetSelectedFestivalId() ??
             _festivalId;
 
-        if (_selectedFestivalId != 0 && _festivalId == _selectedFestivalId)
+        var currentUser = await AuthenticationManager.CurrentUser();
+        if (currentUser.IsInRole(HiSubmit.Client.SharedModels.Constants.Role.RoleConstants.AdministratorRole))
         {
             _canView = true;
         }
-
-        var currentUser = await AuthenticationManager.CurrentUser();
-        var festivalClaims = currentUser.Claims.FirstOrDefault(p => p.Type == ApplicationClaimTypes.FestivalPermission);
-        if (festivalClaims != null)
+        else
         {
-            var permissions = JsonSerializer.Deserialize<Dictionary<int, string[]>>(festivalClaims.Value);
-            if (permissions != null && permissions.TryGetValue(_selectedFestivalId, out var permission))
+            foreach (var festivalClaims in currentUser.Claims
+                         .Where(p => p.Type == ApplicationClaimTypes.FestivalPermission))
             {
-                if (permission.Any(p => p == Policy))
-                    _canView=true;
+                try
+                {
+                    var permissions = JsonSerializer.Deserialize<Dictionary<int, string[]>>(festivalClaims.Value);
+                    if (permissions != null &&
+                        permissions.TryGetValue(_selectedFestivalId, out var permission) &&
+                        permission?.Any(p => string.Equals(p, Policy, StringComparison.OrdinalIgnoreCase)) == true)
+                    {
+                        _canView = true;
+                        break;
+                    }
+                }
+                catch (JsonException)
+                {
+                    // Invalid claims are treated as no access.
+                }
             }
         }
     }
