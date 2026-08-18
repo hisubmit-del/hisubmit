@@ -1,4 +1,5 @@
 ﻿@using HiSubmit.Client.SharedModels.Constants.Role
+@using Hisubmit.Client.SharedModels.Contracts.Permission
 @inject IStringLocalizer<RefreenavMenu> _localizer
 @if (IsRefereeRole)
 {
@@ -18,8 +19,16 @@
 
     protected override async Task OnParametersSetAsync()
     {
-        //IsRefereeRole = (await AuthenticationManager.CurrentUser()).IsInRole(RoleConstants.Referee);
-        IsRefereeRole = true;
+        var currentUser = await AuthenticationManager.CurrentUser();
+
+        // Festival-scoped referee roles are represented as FestivalRole
+        // claims by the server cookie factory and as "festivalId-Referee"
+        // claims by the legacy JWT flow. The menu is only a convenience;
+        // the API still enforces assignment ownership and status.
+        IsRefereeRole = currentUser.Claims
+            .Where(claim => claim.Type == ApplicationClaimTypes.FestivalRole)
+            .Select(claim => claim.Value?.Split('-', StringSplitOptions.RemoveEmptyEntries).LastOrDefault())
+            .Any(role => string.Equals(role, RoleConstants.Referee, StringComparison.OrdinalIgnoreCase));
     }
 
 }

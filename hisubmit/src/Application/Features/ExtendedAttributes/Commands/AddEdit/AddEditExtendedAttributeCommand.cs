@@ -27,11 +27,11 @@ namespace HiSubmit.Application.Features.ExtendedAttributes.Commands.AddEdit
             where TExtendedAttribute : AuditableEntityExtendedAttribute<TId, TEntityId, TEntity>, IEntity<TId>
             where TId : IEquatable<TId>
     {
-        public TId Id { get; set; }
-        public TEntityId EntityId { get; set; }
+        public TId Id { get; set; } = default!;
+        public TEntityId EntityId { get; set; } = default!;
         public EntityExtendedAttributeType Type { get; set; }
         [Required(AllowEmptyStrings = false)]
-        public string Key { get; set; }
+        public string Key { get; set; } = string.Empty;
         public string? Text { get; set; }
         public decimal? Decimal { get; set; }
         public DateTime? DateTime { get; set; }
@@ -79,7 +79,7 @@ namespace HiSubmit.Application.Features.ExtendedAttributes.Commands.AddEdit
                 // delete all caches related with added entity
                 var cacheKeys = await _unitOfWork.Repository<TExtendedAttribute>().Entities.Select(x =>
                     ApplicationConstants.Cache.GetAllEntityExtendedAttributesByEntityIdCacheKey(
-                        typeof(TEntity).Name, x.Entity.Id)).Distinct().ToArrayAsync(cancellationToken);
+                        typeof(TEntity).Name, x.Entity!.Id)).Distinct().ToArrayAsync(cancellationToken);
                 await _unitOfWork.CommitAndRemoveCache(cancellationToken, cacheKeys);
 
                 return await Result<TId>.SuccessAsync(extendedAttribute.Id, _localizer["Extended Attribute Saved"]);
@@ -106,7 +106,7 @@ namespace HiSubmit.Application.Features.ExtendedAttributes.Commands.AddEdit
                     // delete all caches related with updated entity
                     var cacheKeys = await _unitOfWork.Repository<TExtendedAttribute>().Entities.Select(x =>
                         ApplicationConstants.Cache.GetAllEntityExtendedAttributesByEntityIdCacheKey(
-                            typeof(TEntity).Name, x.Entity.Id)).Distinct().ToArrayAsync(cancellationToken);
+                        typeof(TEntity).Name, x.Entity!.Id)).Distinct().ToArrayAsync(cancellationToken);
                     await _unitOfWork.CommitAndRemoveCache(cancellationToken, cacheKeys);
 
                     return await Result<TId>.SuccessAsync(extendedAttribute.Id, _localizer["Extended Attribute Updated"]);

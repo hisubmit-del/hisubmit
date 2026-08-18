@@ -16,7 +16,7 @@ namespace Web.Middlewares
 
         public async Task InvokeAsync(HttpContext context)
         {
-            var cultureQuery = context.Request.Query["culture"];
+            var cultureQuery = context.Request.Query["culture"].ToString();
             if (TryGetCulture(cultureQuery, out var culture))
             {
                 CultureInfo.CurrentCulture = culture;
@@ -24,10 +24,10 @@ namespace Web.Middlewares
             }
             else if (context.Request.Headers.ContainsKey("Accept-Language"))
             {
-                var cultureHeader = context.Request.Headers["Accept-Language"];
-                if (cultureHeader.Any())
+                var cultureHeader = context.Request.Headers["Accept-Language"].ToString();
+                if (!string.IsNullOrWhiteSpace(cultureHeader))
                 {
-                    var requestedCulture = cultureHeader.First()
+                    var requestedCulture = cultureHeader
                         .Split(',')
                         .Select(value => value.Split(';').First().Trim())
                         .FirstOrDefault(value => TryGetCulture(value, out _));
@@ -46,7 +46,7 @@ namespace Web.Middlewares
         private static bool TryGetCulture(string? value, out CultureInfo culture)
         {
             culture = null!;
-            if (string.IsNullOrWhiteSpace(value) || value == "*")
+            if (string.IsNullOrWhiteSpace(value) || value.Trim() == "*")
                 return false;
 
             try

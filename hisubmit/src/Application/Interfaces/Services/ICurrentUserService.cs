@@ -1,5 +1,7 @@
 ﻿using HiSubmit.Application.Interfaces.Common;
 
+#nullable enable
+
 namespace HiSubmit.Application.Interfaces.Services
 {
     public interface ICurrentUserService : IService

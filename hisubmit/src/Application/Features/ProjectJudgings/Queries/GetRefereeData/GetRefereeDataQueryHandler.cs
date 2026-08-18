@@ -25,21 +25,28 @@ public class GetRefereeDataQueryHandler(IUnitOfWork<int> unitOfWork, ICurrentUse
 
         var ratedReferee = await unitOfWork.Repository<ProjectJudging>()
             .Entities
-            .Where(p => p.UserId == userId && p.JudgingFiledAnswereds.Any())
+            .Where(p => p.UserId == userId &&
+                        p.RefereeStatus == Domain.Enums.RefereeStatus.Default &&
+                        p.JudgingFiledAnswereds.Any())
             .CountAsync(cancellationToken);
 
         var notRatedReferee = await unitOfWork.Repository<ProjectJudging>()
             .Entities
-            .Where(p => p.UserId == userId && !p.JudgingFiledAnswereds.Any())
+            .Where(p => p.UserId == userId &&
+                        p.RefereeStatus == Domain.Enums.RefereeStatus.Default &&
+                        !p.JudgingFiledAnswereds.Any())
             .CountAsync(cancellationToken);
         double averageRated = 0;
         if (await unitOfWork.Repository<JudgingFiledAnswered>()
                 .Entities
-                .AnyAsync(p => p.ProjectJudging.UserId == userId, cancellationToken: cancellationToken))
+                .AnyAsync(p => p.ProjectJudging.UserId == userId &&
+                               p.ProjectJudging.RefereeStatus == Domain.Enums.RefereeStatus.Default,
+                    cancellationToken: cancellationToken))
         {
          averageRated = await unitOfWork.Repository<JudgingFiledAnswered>()
             .Entities
-            .Where(p => p.ProjectJudging.UserId == userId)
+            .Where(p => p.ProjectJudging.UserId == userId &&
+                        p.ProjectJudging.RefereeStatus == Domain.Enums.RefereeStatus.Default)
             .AverageAsync(p => p.Rate,cancellationToken);
         }
 

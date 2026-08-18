@@ -12,7 +12,6 @@ namespace HiSubmit.Application.Events.Submits.Handler;
 
 public class AddServiceFeeToCartItem(
     IUnitOfWork<int> unitOfWork,
-    IUserService userService,
     ICartService cartService)
     : INotificationHandler<ProjectSubmitedEvent>
 {

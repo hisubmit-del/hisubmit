@@ -12,7 +12,10 @@ namespace Web.Extensions
     {
         internal static IMvcBuilder AddValidators(this IMvcBuilder builder)
         {
-            builder.AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<AppConfiguration>());
+            builder.Services
+                .AddFluentValidationAutoValidation()
+                .AddFluentValidationClientsideAdapters()
+                .AddValidatorsFromAssemblyContaining<AppConfiguration>();
             return builder;
         }
 

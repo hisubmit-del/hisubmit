@@ -7,10 +7,10 @@ namespace HiSubmit.Application.Features.ExtendedAttributes.Queries.GetById
 {
     public class GetExtendedAttributeByIdResponse<TId, TEntityId> : IEntityAuditableExtendedAttribute
     {
-        public TId Id { get; set; }
-        public TEntityId EntityId { get; set; }
+        public TId Id { get; set; } = default!;
+        public TEntityId EntityId { get; set; } = default!;
         public EntityExtendedAttributeType Type { get; set; }
-        public string Key { get; set; }
+        public string Key { get; set; } = string.Empty;
         public string? Text { get; set; }
         public decimal? Decimal { get; set; }
         public DateTime? DateTime { get; set; }
@@ -19,9 +19,9 @@ namespace HiSubmit.Application.Features.ExtendedAttributes.Queries.GetById
         public string? Group { get; set; }
         public string? Description { get; set; }
         public bool IsActive { get; set; } = true;
-        public string CreatedBy { get; set; }
+        public string CreatedBy { get; set; } = string.Empty;
         public DateTime CreatedOn { get; set; }
-        public string LastModifiedBy { get; set; }
+        public string LastModifiedBy { get; set; } = string.Empty;
         public DateTime? LastModifiedOn { get; set; }
     }
 }

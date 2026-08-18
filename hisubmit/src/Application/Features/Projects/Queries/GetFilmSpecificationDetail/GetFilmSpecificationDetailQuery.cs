@@ -19,8 +19,7 @@ public class GetFilmSpecificationDetailQuery
 
 public class GetFilmSpecificationDetailQueryHandler(
     IUnitOfWork<int> unitOfWork,
-    IMapper mapper,
-    IStringLocalizer<GetFilmSpecificationDetailQueryHandler> localizer)
+    IMapper mapper)
     : IRequestHandler<GetFilmSpecificationDetailQuery, Result<GetFilmSpecificationDetailResponse>>
 {
     public async Task<Result<GetFilmSpecificationDetailResponse>> Handle(GetFilmSpecificationDetailQuery request, CancellationToken cancellationToken)

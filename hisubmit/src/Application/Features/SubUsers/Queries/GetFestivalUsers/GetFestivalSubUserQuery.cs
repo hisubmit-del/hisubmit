@@ -43,8 +43,10 @@ namespace HiSubmit.Application.Features.SubUsers.Queries.GetFestivalUsers
         public async Task<Result<List<UserResponse>>> Handle(GetFestivalSubUserQuery request, CancellationToken cancellationToken)
         {
             var usersId = await _unitOfWork.Repository<FestivalSubUser>()
-                .Entities.Where(p => p.FestivalId == request.FestivalId)
+                .Entities
+                .Where(p => p.FestivalId == request.FestivalId && !p.IsRemoved)
                 .Select(p => p.UserId)
+                .Distinct()
                 .ToListAsync(cancellationToken);
 
             var users =await _userService.GetAllAsync( usersId);

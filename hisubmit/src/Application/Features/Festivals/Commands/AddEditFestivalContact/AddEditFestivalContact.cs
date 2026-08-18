@@ -57,8 +57,6 @@ namespace HiSubmit.Application.Features.Festivals.Commands.AddEditFestivalContac
         IUnitOfWork<int> unitOfWork)
         : IRequestHandler<AddEditFestivalContactCommand, Result<int>>
     {
-        private readonly IMediator _mediator = mediator;
-
         public async Task<Result<int>> Handle(AddEditFestivalContactCommand request, CancellationToken cancellationToken)
         {
             var festival = await unitOfWork.Repository<Festival>().GetByIdAsync(request.Id);

@@ -13,19 +13,19 @@ public class ServerLocalStorageService : ILocalStorageService
          return ValueTask.CompletedTask;
     }
 
-    public async ValueTask<T> GetItemAsync<T>(string key, CancellationToken cancellationToken = default)
+    public ValueTask<T?> GetItemAsync<T>(string key, CancellationToken cancellationToken = default)
     {              
-        return default(T);
+        return ValueTask.FromResult<T?>(default);
     }
 
-    public async ValueTask<string> GetItemAsStringAsync(string key, CancellationToken cancellationToken = default)
+    public ValueTask<string?> GetItemAsStringAsync(string key, CancellationToken cancellationToken = default)
     {
-        return string.Empty;
+        return ValueTask.FromResult<string?>(null);
     }
 
-    public async ValueTask<string> KeyAsync(int index, CancellationToken cancellationToken = default)
+    public ValueTask<string?> KeyAsync(int index, CancellationToken cancellationToken = default)
     {
-        return string.Empty;
+        return ValueTask.FromResult<string?>(null);
     }
 
     public async ValueTask<IEnumerable<string>> KeysAsync(CancellationToken cancellationToken = default)
@@ -63,6 +63,6 @@ public class ServerLocalStorageService : ILocalStorageService
         return ValueTask.CompletedTask;
     }
 
-    public event EventHandler<ChangingEventArgs> Changing;
-    public event EventHandler<ChangedEventArgs> Changed;
+    public event EventHandler<ChangingEventArgs>? Changing;
+    public event EventHandler<ChangedEventArgs>? Changed;
 }

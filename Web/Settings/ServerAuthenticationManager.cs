@@ -67,8 +67,8 @@ public class ServerAuthenticationManager(HttpClient httpClient,IHttpContextAcces
     public int? GetMainFestivalId()
     {
         var f =  httpContextAccessor.HttpContext?.User?.FindFirst(ApplicationClaimTypes.FestivalId);
-        if(f!=null)
-            return int.Parse(f.Value);
+        if (f != null && int.TryParse(f.Value, out var festivalId) && festivalId > 0)
+            return festivalId;
         return null;
     }
 
@@ -114,13 +114,14 @@ public class ServerAuthenticationManager(HttpClient httpClient,IHttpContextAcces
             && httpContextAccessor.HttpContext.Request.Cookies.ContainsKey(ApplicationClaimTypes.AdminLoginFestival))
         {
             var festivalId = httpContextAccessor.HttpContext.Request.Cookies[ApplicationClaimTypes.AdminLoginFestival];
-            return Task.FromResult<int?>(int.Parse(festivalId));
+            if (int.TryParse(festivalId, out var parsedFestivalId) && parsedFestivalId > 0)
+                return Task.FromResult<int?>(parsedFestivalId);
         }
 
         return Task.FromResult<int?>(null);
     }
 
-    private  Dictionary<int, string[]>? LoadOtherFestivalPermissions()
+    private Dictionary<int, string[]> LoadOtherFestivalPermissions()
     {
         if (httpContextAccessor.HttpContext != null)
         {
@@ -131,8 +132,15 @@ public class ServerAuthenticationManager(HttpClient httpClient,IHttpContextAcces
 
             if (!string.IsNullOrEmpty(permissionsClaims))
             {
-                var permissions = JsonSerializer.Deserialize<Dictionary<int, string[]>>(permissionsClaims);
-                return permissions; 
+                try
+                {
+                    return JsonSerializer.Deserialize<Dictionary<int, string[]>>(permissionsClaims)
+                        ?? new Dictionary<int, string[]>();
+                }
+                catch (JsonException)
+                {
+                    return new Dictionary<int, string[]>();
+                }
             }
         }
 

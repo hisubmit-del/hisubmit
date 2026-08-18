@@ -7,6 +7,7 @@ using HiSubmit.Domain.Entities.Festivals;
 using HiSubmit.Application.Interfaces.Services;
 using HiSubmit.Application.Interfaces.Repositories;
 using HiSubmit.Application.Interfaces.Services.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace HiSubmit.Application.Features.SubUsers.Commands.AddExistingUserToFestival;
 
@@ -39,14 +40,32 @@ public class AddExistingUserToFestivalCommandHandler : IRequestHandler<AddExisti
         var userid = await _userService.GetUserByEmailAddress(request.Email);
         if (string.IsNullOrWhiteSpace(userid))
             return await Result.FailAsync(_localizer["User not registered to the site "]);
-        
-        await _unitOfWork.Repository<FestivalSubUser>().AddAsync(new FestivalSubUser()
+
+        var existingMembership = await _unitOfWork.Repository<FestivalSubUser>()
+            .Entities
+            .FirstOrDefaultAsync(
+                membership => membership.FestivalId == request.FestivalId &&
+                              membership.UserId == userid,
+                cancellationToken);
+
+        if (existingMembership is not null)
+        {
+            if (!existingMembership.IsRemoved)
+                return await Result.FailAsync(_localizer["User is already a member of this festival"]);
+
+            existingMembership.IsRemoved = false;
+            await _unitOfWork.Repository<FestivalSubUser>().UpdateAsync(existingMembership);
+        }
+        else
+        {
+            await _unitOfWork.Repository<FestivalSubUser>().AddAsync(new FestivalSubUser
             {
                 UserId = userid,
                 FestivalId = request.FestivalId
             });
+        }
 
-            await _unitOfWork.SaveChangesAsync(cancellationToken);
-       return await Result.SuccessAsync(_localizer["Successfully added to festival"]);
+        await _unitOfWork.SaveChangesAsync(cancellationToken);
+        return await Result.SuccessAsync(_localizer["Successfully added to festival"]);
     }
 }

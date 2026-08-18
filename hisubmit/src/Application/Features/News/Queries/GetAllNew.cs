@@ -18,7 +18,6 @@ public class GetAllNewQuery : GetAllNewRequest, IRequest<PaginatedResult<GetAllN
 
 public class GetAllNewQueryHandler(
     IUnitOfWork<int> unitOfWork,
-    IStringLocalizer<GetAllNewQueryHandler> localizer,
     IMapper mapper)
     : IRequestHandler<GetAllNewQuery, PaginatedResult<GetAllNewResponse>>
 {

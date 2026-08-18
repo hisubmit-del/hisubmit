@@ -27,7 +27,6 @@ public class PaidCartCommand : PaidCartRequest, IRequest<Result<CheckPaymentResp
 public class PaidCartCommandHandler(
     IUnitOfWork<int> unitOfWork,
     IMediator mediator,
-    IPayPalService payPalService,
     ICurrentUserService currentUserService,
     IUserService userService)
     : IRequestHandler<PaidCartCommand, Result<CheckPaymentResponse>>

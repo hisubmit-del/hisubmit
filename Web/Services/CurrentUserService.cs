@@ -13,8 +13,8 @@ public class CurrentUserService : ICurrentUserService
 
     private ClaimsPrincipal? User => _httpContextAccessor.HttpContext?.User;
 
-    public string? UserId =>
-        User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+    public string UserId =>
+        User?.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? string.Empty;
 
     public int? FestivalId
     {
@@ -42,6 +42,6 @@ public class BaseUrlService(IConfiguration configuration):IBaseUrlService
 {
     public string GetBaseUrl()
     {
-        return configuration["SiteURLConfiguration:BaseUrl"];
+        return configuration["SiteURLConfiguration:BaseUrl"] ?? string.Empty;
     }
 }

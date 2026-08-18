@@ -1009,3 +1009,50 @@ data contract, privacy policy and pricing are approved.
   and falls through to the configured default culture instead of crashing.
 - This is a middleware-only resilience fix; no localization resources,
   authentication, database, payment, or authorization rule changed.
+
+## Account scope, referee audit, and warning reduction checkpoint (2026-08-18)
+
+- Account context clarification:
+  - `SelectedFestivalId=0` in the existing cookie means the personal
+    workspace only; it is not an authorization grant.
+  - A positive selected festival ID is accepted only when it matches the
+    authenticated user's main festival claim or a server-issued
+    per-festival permission claim.
+  - Sensitive operations must still authorize against the current user and
+    festival data. The cookie is a small browser context selector, not a
+    permission database, so the model scales to many users without putting
+    all memberships in the cookie.
+- Referee and festival sub-user audit:
+  - `FestivalSubUser` is the festival membership record and `ProjectJudging`
+    is the per-project referee assignment.
+  - Referee list, permission-check, detail, and result paths now require an
+    authenticated current user and exclude non-active referee assignments.
+  - Removed festival members are excluded from the sub-user list; adding a
+    previously removed member reactivates the membership instead of creating
+    a duplicate.
+  - Removing a festival member marks their project assignments as removed.
+  - The audit identified follow-up work: every command that accepts a route
+    festival ID must perform an Application-layer ownership/permission check,
+    and claims should be refreshed or revalidated after membership removal.
+- Runtime log findings:
+  - A wildcard `Accept-Language: *` caused a culture exception; the request
+    culture middleware now ignores wildcard and malformed values.
+  - A login circuit attempted to append an authentication cookie after the
+    response had started. Login is intended to use the non-interactive
+    Account/login path; this remains a runtime verification item after the
+    next local restart.
+- Safe warning cleanup completed:
+  - removed unused constructor dependencies;
+  - initialized generic extended-attribute DTO values;
+  - fixed the missing project-file localizer injection;
+  - corrected nullable return contracts for local storage/policy services;
+  - hardened integer cookie/claim parsing and malformed permission JSON.
+- Verification:
+  - `dotnet build .\Web\Web.csproj --no-restore --disable-build-servers
+    --nologo` completed successfully;
+  - final recorded result: 0 errors, 1819 warnings;
+  - warning backlog is now categorized rather than hidden. The largest
+    groups are legacy Razor `CS8618`, MudBlazor `MUD0002`, obsolete API
+    `CS0618`, and fire-and-forget `CS4014`.
+- No database schema, migration, payment total, or production data was
+  changed by this checkpoint.

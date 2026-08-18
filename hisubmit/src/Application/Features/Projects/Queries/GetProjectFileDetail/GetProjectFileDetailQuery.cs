@@ -29,10 +29,14 @@ namespace HiSubmit.Application.Features.Projects.Queries.GetProjectFileDetail
         private readonly IMapper _mapper;
         private readonly IUnitOfWork<int> _unitofWork;
         private readonly IStringLocalizer<GetProjectFileDetailQueryHandler> _localizer;
-        public GetProjectFileDetailQueryHandler(IMapper mapper, IUnitOfWork<int> unitofWork)
+        public GetProjectFileDetailQueryHandler(
+            IMapper mapper,
+            IUnitOfWork<int> unitofWork,
+            IStringLocalizer<GetProjectFileDetailQueryHandler> localizer)
         {
             _mapper = mapper;
             _unitofWork = unitofWork;
+            _localizer = localizer;
         }
 
         public async Task<Result<GetProjectFileDetailResponse>> Handle(GetProjectFileDetailQuery request, CancellationToken cancellationToken)

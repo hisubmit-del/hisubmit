@@ -37,11 +37,20 @@ namespace HiSubmit.Application.Features.ProjectJudgings.Queries.CheckPermissionF
 
         public async Task<Result<CheckPermissionResponse>> Handle(CheckPermissionForJudgingQuery request, CancellationToken cancellationToken)
         {
+            if (!_currentUserService.IsAuthenticated ||
+                string.IsNullOrWhiteSpace(_currentUserService.UserId))
+            {
+                return await Result<CheckPermissionResponse>.SuccessAsync(
+                    new CheckPermissionResponse { Judgings = new List<ProjectJudgingDto>() });
+            }
+
             var currentUserId = _currentUserService.UserId;
             var judgings =await  _unitOfWork.Repository<ProjectJudging>()
                    .Entities
                    .Include(p=>p.Submit).ThenInclude(p=>p.Project)
-                   .Where(p => p.Submit.Project.URL == request.projectURL && p.UserId == currentUserId)
+                   .Where(p => p.Submit.Project.URL == request.projectURL &&
+                               p.UserId == currentUserId &&
+                               p.RefereeStatus == Domain.Enums.RefereeStatus.Default)
                    .ProjectTo<ProjectJudgingDto>(_mapper.ConfigurationProvider)
                    .ToListAsync();
 

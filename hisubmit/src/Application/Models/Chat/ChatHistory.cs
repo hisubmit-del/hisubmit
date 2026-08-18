@@ -1,17 +1,19 @@
 ﻿using HiSubmit.Application.Interfaces.Chat;
 using System;
 
+#nullable enable
+
 namespace HiSubmit.Application.Models.Chat;
 
 public partial class ChatHistory<TUser> : IChatHistory<TUser> where TUser : IChatUser
 {
     public long Id { get; set; }
-    public string FromUserId { get; set; }
+    public string FromUserId { get; set; } = string.Empty;
     public string? ToUserId { get; set; }
-    public string Message { get; set; }
+    public string Message { get; set; } = string.Empty;
     public DateTime CreatedDate { get; set; }
-    public virtual TUser FromUser { get; set; }
-    public virtual TUser ToUser { get; set; }
+    public virtual TUser FromUser { get; set; } = default!;
+    public virtual TUser ToUser { get; set; } = default!;
     public int? FromFestivalId { get; set; }
     public int? ToFestivalId { get; set; }
     public bool AdminSender { get; set; }

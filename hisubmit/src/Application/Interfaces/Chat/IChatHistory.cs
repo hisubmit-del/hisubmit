@@ -1,5 +1,7 @@
 ﻿using System;
 
+#nullable enable
+
 namespace HiSubmit.Application.Interfaces.Chat;
 
 public interface IChatHistory<TUser> where TUser : IChatUser

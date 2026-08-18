@@ -768,3 +768,86 @@ The current product assessment and roadmap are in
 context improvements, mobile-safe spacing, and active-filter/reset feedback to
 public festival discovery. It intentionally did not change database schema,
 payment calculations, or authorization behavior.
+
+## 19. Account context and festival-scoped authorization
+
+The selected-account cookie is only a workspace selector:
+
+- `SelectedFestivalId=0` means the personal workspace.
+- A positive value means a selected festival workspace.
+- The server accepts a positive value only when it is present in the
+  authenticated user's server-issued festival claims.
+- The cookie must never be used as proof that a user owns or can manage a
+  festival.
+
+For production-scale use, keep the cookie small and non-sensitive. Claims may
+help render navigation quickly, but commands and sensitive queries must
+recheck the current user, the festival membership/owner record, and the
+required scoped permission in the Application layer. Membership removal,
+role changes, and security-stamp refresh must invalidate stale access.
+
+The festival sub-user model is:
+
+```text
+Festival
+  └── FestivalSubUser (festival membership, role/referee marker, removed flag)
+        └── ProjectJudging (specific submission assignment for a referee)
+```
+
+Referee access is assignment-scoped: a referee may see and score only active
+assignments belonging to that referee, and only while the assignment is in the
+active status. Festival sub-user screens must exclude removed memberships and
+must reactivate an existing removed membership rather than insert duplicates.
+
+Remaining security audit items:
+
+- add a shared Application-layer festival-access service for all commands and
+  queries that accept a festival ID from a route or request;
+- validate removal of a project referee assignment against its festival and
+  current festival manager;
+- refresh/revalidate scoped claims after a membership is removed;
+- verify that admin “login to festival” is always distinguished from a normal
+  festival account.
+
+## 20. Build-warning policy and current baseline
+
+Warnings are tracked by category and are not suppressed globally:
+
+| Category | Meaning | Policy |
+|---|---|---|
+| `CS8618` / nullable warnings | legacy DTOs and Razor-generated state | fix by component/feature group with tests |
+| `MUD0002` | old MudBlazor attributes/components | migrate in small UI batches |
+| `CS0618` | obsolete MudBlazor/API calls | migrate dialog/form call sites incrementally |
+| `CS4014` | background email, notification, PDF, or job work | do not blindly await; preserve intended delivery semantics |
+| `NU1902` / `NU1903` | vulnerable package versions | upgrade one package family at a time and test payment/email/mapping |
+| `CA1416` | Windows-only QR implementation | document hosting requirement or replace with a cross-platform encoder |
+
+The latest full build baseline on 2026-08-18 is:
+
+```text
+dotnet build .\Web\Web.csproj --no-restore --disable-build-servers --nologo
+Build succeeded
+0 errors
+1819 warnings
+```
+
+The warning count must be measured from a full build, not an incremental build
+that may omit unchanged projects. Each warning-reduction commit must record
+the before/after count and the affected category.
+
+## 21. Runtime log workflow
+
+The application writes runtime errors under `Web/Logs`. For every reported
+HTTP 500 or frozen action:
+
+1. stop the current local `Web` process before rebuilding;
+2. reproduce the exact route/action once;
+3. inspect the newest log file by timestamp;
+4. identify the exception, endpoint, user scope, and festival scope;
+5. trace the endpoint through controller → Application handler → repository;
+6. retest anonymous, artist, festival manager, referee, sub-user, and admin
+   paths as applicable;
+7. record the result in `PROJECT_MEMORY.md`.
+
+Never commit local logs, uploaded QA files, profile pictures, credentials, or
+production database settings.

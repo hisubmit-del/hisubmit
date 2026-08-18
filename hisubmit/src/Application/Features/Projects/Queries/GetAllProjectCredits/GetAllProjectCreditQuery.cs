@@ -24,8 +24,7 @@ namespace HiSubmit.Application.Features.Projects.Queries.GetAllProjectCredits
 
     public class GetAllProjectCreditQueryHandler(
         IMapper mapper,
-        IUnitOfWork<int> unitOfWork,
-        IStringLocalizer<GetAllProjectCreditQueryHandler> localizer)
+        IUnitOfWork<int> unitOfWork)
         : IRequestHandler<GetAllProjectCreditQuery, Result<List<GetAllProjectCreditResponse>>>
     {
         public async Task<Result<List<GetAllProjectCreditResponse>>> 

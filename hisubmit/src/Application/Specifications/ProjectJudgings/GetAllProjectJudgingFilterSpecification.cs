@@ -12,6 +12,7 @@ public sealed class GetAllProjectJudgingFilterSpecification : HeroSpecification<
         Criteria = projectJudging =>
             (query.SubmitId == null || query.SubmitId == projectJudging.SubmitId) &&
             (string.IsNullOrWhiteSpace(query.UserId) || projectJudging.UserId == query.UserId) &&
-            (query.FestivalId == null || query.FestivalId == projectJudging.Submit.FestivalId);
+            (query.FestivalId == null || query.FestivalId == projectJudging.Submit.FestivalId) &&
+            (!query.GetCurrentUser || projectJudging.RefereeStatus == Domain.Enums.RefereeStatus.Default);
     }
 }
