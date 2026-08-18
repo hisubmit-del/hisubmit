@@ -685,25 +685,3 @@ migration اصلی فعلی در `hisubmit/src/Infrastructure/Migrations/2025070
   `succeeded=false` response with the ownership message.
 - Build completed with 0 errors. The existing legacy warning backlog remains
   unchanged and is tracked separately.
-
-## Figma design audit and Phase 1 implementation start (2026-08-18)
-
-- Reviewed the accessible `HISUBMIT (Copy)` Figma file in Edge. It contains
-  one visible page (`Page 1`) with top-level frames for Home, festival,
-  merchant store, Project page show, news, single news, Faq page, sign in,
-  Header, festival Dashboard Screen, billing and user profile dashboard.
-- Added `FIGMA_PAGE_MAP.md` with title-to-route mapping, product-area
-  grouping, reusable architecture, missing backend data, risks and staged
-  implementation plan.
-- The first implementation phase is intentionally UI-first and API-preserving:
-  shared public design tokens/components and public Home/News/Store
-  improvements before touching payment, judging, permissions or database
-  schema.
-- Added the reusable `PublicSectionHeader` component and applied it to the
-  public News and Store pages. Shared public CSS now protects long text,
-  card content, product actions and responsive mobile layouts.
-- Local validation on August 18, 2026: `dotnet build .\Web\Web.csproj
-  --no-restore --disable-build-servers` succeeded with 0 errors and 7
-  existing package/security warnings. HTTP smoke tests returned 200 for `/`,
-  `/festivals`, `/news`, `/store`, `/tickets`, `/faq`, `/PrivacyPolicy` and
-  `/festival/demo-aurora-arts-film-2026`.
