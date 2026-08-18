@@ -58,6 +58,7 @@
                           Class="@(!HttpContextAccessor.IsPrerendering()?"animate__animated animate__backInDown":"")"
                           Value="@_advancedSearch.SearchString"
                           ValueChanged="@(value => OnSearchChanged(value))"
+                          Immediate="true"
                           Variant="Variant.Outlined"
                           Placeholder="Search among the best content in the world"
                           Adornment="Adornment.End"

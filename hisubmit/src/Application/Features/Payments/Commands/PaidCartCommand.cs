@@ -35,11 +35,15 @@ public class PaidCartCommandHandler(
     public async Task<Result<CheckPaymentResponse>> Handle(PaidCartCommand request, CancellationToken cancellationToken)
     {
 
-        var cartItemResponse =await mediator.Send(new CalculateDiscountCodeQuery()
+        var cartItemResponse = await mediator.Send(new CalculateDiscountCodeQuery()
         {
             DiscountCodes = request.DiscountCodes,
             CartId = request.CartId
         });
+
+        if (!cartItemResponse.Succeeded || cartItemResponse.Data is null)
+            return await Result<CheckPaymentResponse>.FailAsync(
+                cartItemResponse.Messages?.ToList() ?? ["Unable to calculate the cart total."]);
 
         var realPrice = cartItemResponse.Data.Sum(p => p.GetRealPrice());
 
@@ -51,20 +55,23 @@ public class PaidCartCommandHandler(
 
         //var verified = await payPalService.VerifyOrderAsync(request.OrderId, realPrice);
 
-        var specify = new GetOpenCartUserSpecification(currentUserService.UserId);
-
         var cart = await unitOfWork.Repository<Cart>()
             .Entities
             .Include(p => p.CartItems)
-            .Where(p=>p.Id==request.CartId)
+            .Where(p => p.Id == request.CartId &&
+                        p.UserId == currentUserService.UserId &&
+                        !p.Paid)
             .FirstOrDefaultAsync(cancellationToken);
+
+        if (cart is null)
+            return await Result<CheckPaymentResponse>.FailAsync("Your open cart was not found.");
         
         cart.CartDate=DateTime.Now;
         cart.Email = request.Email;
         cart.OrderId = request.OrderId;
         cart.PayerId = request.PayerId;
         cart.PaymentId = request.PaymentId;
-        cart.Price = request.Price;
+        cart.Price = realPrice;
         cart.Paid = true;
 
         /////////////////Start Paid Submit Item

@@ -35,7 +35,7 @@ public partial class DiscountCodesList
     protected override async Task OnInitializedAsync()
 
     {
-        await base.CheckPermission(Permissions.FestivalNews.View);
+        await base.CheckPermission(Permissions.DiscountCode.View);
         await base.OnInitializedAsync();
     }
 
@@ -49,7 +49,8 @@ public partial class DiscountCodesList
 
         var query = new DiscountCodeFilter
         {
-            FestivalId = SelectedFestivalId
+            FestivalId = SelectedFestivalId,
+            SearchString = _searchString
         };
 
 
@@ -71,17 +72,7 @@ public partial class DiscountCodesList
         {
             _totalItems = response.TotalCount;
             var data = response.Data;
-            var loadedData = data.Where(element =>
-            {
-                if (string.IsNullOrWhiteSpace(request.SearchString))
-                    return true;
-                if (element.Code != null &&
-                    element.Code.Contains(request.SearchString, StringComparison.OrdinalIgnoreCase))
-                    return true;
-                // if (element.Name != null &&
-                //     element.Name.Contains(request.SearchString, StringComparison.OrdinalIgnoreCase))
-                return true;
-            });
+            var loadedData = data.AsEnumerable();
             switch (state.SortLabel)
             {
                 case "Title":
@@ -104,10 +95,11 @@ public partial class DiscountCodesList
         }
     }
 
-    private void OnSearch(string text)
+    private async Task OnSearch(string text)
     {
-        _searchString = text;
-        _table.ReloadServerData();
+        _searchString = text?.Trim() ?? string.Empty;
+        if (_table is not null)
+            await _table.ReloadServerData();
     }
 
     private async Task AddEdit(GetAllDiscountCodeResponse discountCode=null)

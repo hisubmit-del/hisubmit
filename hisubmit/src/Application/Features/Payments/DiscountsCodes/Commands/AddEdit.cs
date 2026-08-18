@@ -21,7 +21,23 @@ internal class AddEditDiscountCommandHandler(IUnitOfWork<int> unitOfWork, IMappe
 {
     public async Task<IResult> Handle(AddEditDiscountCodeCommand request, CancellationToken cancellationToken)
     {
-        request.Code = request.Code.Trim();
+        request.Code = request.Code?.Trim();
+        request.CartItemTypes = request.CartItemTypes?.Trim();
+
+        if (string.IsNullOrWhiteSpace(request.Code))
+            return await Result.FailAsync("Discount code is required.");
+
+        if (string.IsNullOrWhiteSpace(request.CartItemTypes))
+            return await Result.FailAsync("Select at least one sale type for this discount code.");
+
+        if (request.DiscountValue < 0 ||
+            request.DiscountValueType == Hisubmit.Client.SharedModels.Enums.DiscountValueType.Percentage &&
+            request.DiscountValue > 100)
+            return await Result.FailAsync("The discount value is invalid.");
+
+        if (request.Count is <= 0)
+            return await Result.FailAsync("The discount code limit must be greater than zero.");
+
         if (await checkDuplicateCode(request.Code, request.FestivalId,request.Id))
             return await Result.FailAsync("The discount code entered is duplicate.");
 
@@ -38,6 +54,9 @@ internal class AddEditDiscountCommandHandler(IUnitOfWork<int> unitOfWork, IMappe
             .GetByIdAsync(request.Id);
         if (dbCode == null)
             return await Result.FailAsync("Operation Failed");
+
+        if (dbCode.FestivalId != request.FestivalId)
+            return await Result.FailAsync("You don't have permissions to edit this discount code.");
 
         var updatedCode = mapper.Map(request, dbCode);
         await unitOfWork.Repository<DiscountCode>().UpdateAsync(updatedCode);

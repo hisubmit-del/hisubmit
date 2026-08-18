@@ -817,3 +817,43 @@ migration اصلی فعلی در `hisubmit/src/Infrastructure/Migrations/2025070
     result;
   - the public deadline endpoint returned HTTP 200 with a successful result.
 - Unrelated working-tree edits and uploaded test assets were not staged.
+
+## Search and discount-code checkpoint (2026-08-18)
+
+- Discount-code flow reviewed end to end:
+  - festival users manage codes at `/festival/discount-codes`;
+  - each code can target submissions, products, tickets/badges, or a
+    combination;
+  - cart calculation validates enablement, expiry, usage limit, festival
+    scope and item type;
+  - the selected lowest price is stored on the cart item as
+    `PriceAfterDiscount` with `DiscountCodeId`;
+  - final payment recalculates the total on the server.
+- Fixed discount-code management search:
+  - the search string is now sent to the API filter;
+  - code and description are searched server-side;
+  - the previous client predicate that always returned `true` was removed;
+  - the page now uses the DiscountCode permission for loading and actions.
+- Hardened discount-code administration:
+  - null/empty code and sale-type input is rejected;
+  - percentage values above 100 and invalid negative values are rejected;
+  - edit, status change and delete operations require the route festival to
+    match the stored code festival;
+  - status responses are parsed as normal results.
+- Hardened cart discount and payment:
+  - discount calculation requires the current authenticated user;
+  - the requested cart must belong to that user and remain unpaid;
+  - duplicate/blank discount inputs are normalized;
+  - usage limits count only paid cart items;
+  - payment uses the server-calculated total, not a browser-provided price;
+  - payment rechecks cart ownership and unpaid status before processing.
+- Public festival search input now updates immediately before its debounce
+  timer, reducing cases where the search box appeared unresponsive.
+- Verification:
+  - build completed with exit code 0 using the locked-file-safe command;
+  - `/` and `/festivals` returned HTTP 200;
+  - guest `/api/v1/cart/GetItems?UserId=` returned a successful empty result;
+  - application startup completed on `http://localhost:5120`;
+  - no new startup or request error was added to the latest runtime log after
+    these tests.
+- No database schema or migration was changed.

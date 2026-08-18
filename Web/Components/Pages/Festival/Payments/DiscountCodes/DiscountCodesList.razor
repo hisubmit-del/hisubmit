@@ -45,7 +45,7 @@
             <MudTh>@Localize["Description"]</MudTh>
             <MudTh>@Localize["Enable"]</MudTh>
             <MudTh>@Localize["Amount"]</MudTh>
-            <FestivalAuthorizeView Policy="@Permissions.FestivalNews.Edit">
+            <FestivalAuthorizeView Policy="@Permissions.DiscountCode.Edit">
                 <MudTh Style="text-align:center">@Localize["Actions"]</MudTh>
             </FestivalAuthorizeView>
         </HeaderContent>
@@ -74,7 +74,7 @@
                 }
                 
             </MudTd>
-            <FestivalAuthorizeView Policy="@Permissions.FestivalNews.Edit">
+            <FestivalAuthorizeView Policy="@Permissions.DiscountCode.Edit">
                 <MudHidden Breakpoint="Breakpoint.LgAndUp">
                     <MudTd DataLabel="Actions">
                         <MudMenu Label="@Localize["Actions"]" Variant="Variant.Filled"

@@ -18,7 +18,10 @@ public class DeleteDiscountCodeCommandHandler(IUnitOfWork<int> unitOfWork):IRequ
     {
         var delete = await unitOfWork.Repository<DiscountCode>()
             .GetByIdAsync(request.Id);
-        if(delete.FestivalId!=null && delete.FestivalId!=request.FestivalId )
+        if (delete == null)
+            return await Result.FailAsync("Discount code not found.");
+
+        if (delete.FestivalId != request.FestivalId)
             return await Result.FailAsync("You don't have permissions to this function ");
         await unitOfWork.Repository<DiscountCode>().DeleteAsync(delete);
         await unitOfWork.SaveChangesAsync(cancellationToken);

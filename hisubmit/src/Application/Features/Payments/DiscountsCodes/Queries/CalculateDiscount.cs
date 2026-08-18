@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using HiSubmit.Application.Interfaces.Repositories;
+using HiSubmit.Application.Interfaces.Services;
 using Hisubmit.Client.SharedModels.Enums;
 using Hisubmit.Client.SharedModels.Features.Payments.Queries;
 using HiSubmit.Client.SharedModels.Wrapper;
@@ -17,18 +18,32 @@ namespace HiSubmit.Application.Features.Payments.DiscountsCodes.Queries;
 
 public class CalculateDiscountCodeQuery : CalculateDiscountCodesRequest, IRequest<PaginatedResult<GetCartItemResponse>>;
 
-public class CalculateDiscountCodeQueryHandler(IUnitOfWork<int> unitOfWork, IMapper mapper)
+public class CalculateDiscountCodeQueryHandler(
+    IUnitOfWork<int> unitOfWork,
+    IMapper mapper,
+    ICurrentUserService currentUserService)
     : IRequestHandler<CalculateDiscountCodeQuery, PaginatedResult<GetCartItemResponse>>
 {
     private List<DiscountCode> _validDiscountCodes = [];
     public async Task<PaginatedResult<GetCartItemResponse>> Handle(CalculateDiscountCodeQuery request, CancellationToken cancellationToken)
     {
+        if (!currentUserService.IsAuthenticated || string.IsNullOrWhiteSpace(currentUserService.UserId))
+            return PaginatedResult<GetCartItemResponse>.Failure(["You must be signed in to calculate a discount."]);
+
+        var discountCodes = request.DiscountCodes?
+            .Where(code => !string.IsNullOrWhiteSpace(code))
+            .Select(code => code.Trim())
+            .Distinct(StringComparer.OrdinalIgnoreCase)
+            .ToList() ?? [];
+
         var cart = await unitOfWork.Repository<Cart>()
             .Entities
             .Include(p => p.CartItems).ThenInclude(p=>p.ProductSold).ThenInclude(p=>p.Product).ThenInclude(p=>p.Festival)
             .Include(p => p.CartItems).ThenInclude(p=>p.SoldTicket).ThenInclude(p=>p.Ticket).ThenInclude(p=>p.Venue).ThenInclude(p=>p.Festival)
             .Include(p => p.CartItems).ThenInclude(p=>p.Submit).ThenInclude(p => p.Festival)
-            .Where(p => p.Id == request.CartId)
+            .Where(p => p.Id == request.CartId &&
+                        p.UserId == currentUserService.UserId &&
+                        !p.Paid)
             .FirstOrDefaultAsync(cancellationToken);
 
         if (cart == null || cart.Paid)
@@ -38,14 +53,14 @@ public class CalculateDiscountCodeQueryHandler(IUnitOfWork<int> unitOfWork, IMap
                 Messages = ["Your cart not found or paid"]
             };
 
-        if (!request.DiscountCodes.Any())
+        if (discountCodes.Count == 0)
             return new PaginatedResult<GetCartItemResponse>(mapper.Map<List<GetCartItemResponse>>(cart.CartItems))
             {
                 Succeeded = true,
             };
 
         
-        await GetEnableDiscountCode(request.DiscountCodes);
+        await GetEnableDiscountCode(discountCodes, cancellationToken);
 
         foreach (var cc in cart.CartItems.Where(p=>p.CartItemType!=CartItemType.ServiceFee))
         {
@@ -78,12 +93,12 @@ public class CalculateDiscountCodeQueryHandler(IUnitOfWork<int> unitOfWork, IMap
         };
     }
 
-    private async Task GetEnableDiscountCode(List<string> codes)
+    private async Task GetEnableDiscountCode(List<string> codes, CancellationToken cancellationToken)
     {
         var discountCodes = await unitOfWork.Repository<DiscountCode>()
             .Entities
-            .Where(p => codes.Any(code => code == p.Code))
-            .ToListAsync();
+            .Where(p => p.Code != null && codes.Contains(p.Code))
+            .ToListAsync(cancellationToken);
 
         //check Enables
         var validCodes = discountCodes.Where(p => p.Enable).ToList();
@@ -96,7 +111,7 @@ public class CalculateDiscountCodeQueryHandler(IUnitOfWork<int> unitOfWork, IMap
         {
             var countOfUsed = await unitOfWork.Repository<CarTItem>()
                 .Entities
-                .Where(p => p.DiscountCodeId == vc.Id)
+                .Where(p => p.DiscountCodeId == vc.Id && p.Cart.Paid)
                 .CountAsync();
             if (countOfUsed >= vc.Count)
                 validCodes.Remove(vc);
@@ -110,13 +125,13 @@ public class CalculateDiscountCodeQueryHandler(IUnitOfWork<int> unitOfWork, IMap
         switch (item.CartItemType)
         {
             case CartItemType.Submit:
-                return _validDiscountCodes.Where(p => p.FestivalId == item.Submit.FestivalId
+                return _validDiscountCodes.Where(p => (p.FestivalId == null || p.FestivalId == item.Submit.FestivalId)
                                                      && HasType(p, CartItemType.Submit)).ToList();
             case CartItemType.Badge or  CartItemType.Ticket:
-                return _validDiscountCodes.Where(p => p.FestivalId == item.SoldTicket.Ticket.Venue.FestivalId
+                return _validDiscountCodes.Where(p => (p.FestivalId == null || p.FestivalId == item.SoldTicket.Ticket.Venue.FestivalId)
                                                      && HasType(p, CartItemType.Ticket)).ToList();
             case CartItemType.Product:
-                return _validDiscountCodes.Where(p => p.FestivalId == item.ProductSold.Product.FestivalId
+                return _validDiscountCodes.Where(p => (p.FestivalId == null || p.FestivalId == item.ProductSold.Product.FestivalId)
                                                      && HasType(p, CartItemType.Product)).ToList();
         }
         return [];

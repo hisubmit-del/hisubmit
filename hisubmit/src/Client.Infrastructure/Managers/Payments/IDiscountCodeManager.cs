@@ -46,6 +46,6 @@ public class DiscountCodeManager (HttpClient httpClient)
     {
         var res = await httpClient.PostAsJsonAsync
             (_endPoint.GenerateUrl($"{request.FestivalId}/changeStatus"), request);
-        return await res.ToPaginatedResult<GetAllDiscountCodeResponse>();
+        return await res.ToResult();
     }
 }

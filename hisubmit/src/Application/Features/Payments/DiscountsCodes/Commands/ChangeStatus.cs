@@ -27,7 +27,7 @@ internal class ChangeDiscountCodeStatusQueryHandler(IUnitOfWork<int> unitOfWork)
         if (discountCode == null)
             return await Result.FailAsync("Operation Failed");
 
-        if (discountCode.FestivalId != null && request.FestivalId != discountCode.FestivalId)
+        if (discountCode.FestivalId != request.FestivalId)
             return await Result.FailAsync("You don't have permissions to this function ");
 
         discountCode.Enable = request.Enable;
