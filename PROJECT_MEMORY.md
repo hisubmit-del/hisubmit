@@ -1129,3 +1129,27 @@ data contract, privacy policy and pricing are approved.
   200 on `/`, and the categories endpoint returned HTTP 200 with a controlled
   empty result for FestivalId=9. No new startup/API errors were written to
   the active log during this smoke test.
+
+## Responsive CSS cleanup and festival-layout access checkpoint (2026-08-19)
+
+- Removed duplicated responsive header and sponsored-festival CSS blocks from
+  `Web/wwwroot/css/site-modern.css`. The shared header contract now appears
+  once at the actual end of the stylesheet, so later legacy rules cannot
+  override desktop/mobile visibility.
+- `FestivalMainLayout` now has the same compact mobile-header pattern as the
+  other layouts and opens a real temporary navigation drawer. The drawer
+  starts closed; the desktop toolbar remains available at desktop breakpoints.
+- `ICheckPermission.CheckReadProjectPermission` no longer treats the selected
+  festival cookie/claim as authority. Festival access is resolved from
+  database ownership or an active festival sub-user membership. Referee
+  access is limited to active `ProjectJudging` assignments. Owner and
+  administrator access remains supported.
+- This checkpoint did not implement artist-selected public visibility modes;
+  those still require an explicit domain/API design and controlled migration.
+- Verification:
+  - `dotnet build .\Web\Web.csproj --no-restore --disable-build-servers
+    -p:UseSharedCompilation=false --nologo -v:q`
+    - Build succeeded, 0 errors, 7 package-security warnings.
+  - `git diff --check` passed for the changed files.
+- Existing unrelated `Web/Permission/PermissionPolicyProvider.cs` changes and
+  local uploaded test images remain unstaged and were not modified.

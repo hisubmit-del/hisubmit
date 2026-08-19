@@ -8,6 +8,7 @@ using HiSubmit.Application.Interfaces.Services;
 using HiSubmit.Domain.Entities.Projects;
 using HiSubmit.Domain.Entities.Submitter;
 using HiSubmit.Domain.Entities.Festivals;
+using HiSubmit.Domain.Enums;
 using HiSubmit.Client.SharedModels.Constants.Role;
 using Microsoft.EntityFrameworkCore;
 
@@ -50,22 +51,22 @@ public class CheckPermission : ICheckPermission
             .Select(p => new
             {
                 FestivalId = p.FestivalId,
-                JudgmentIds = p.ProjectJudgings.Select(p => p.UserId)
+                JudgmentIds = p.ProjectJudgings
+                    .Where(judging => judging.RefereeStatus == RefereeStatus.Default)
+                    .Select(judging => judging.UserId)
             })
             .ToListAsync();
 
-        //check project submit to current user festival
-        if (projectSubmits.Any(p => p.FestivalId == _currentUserService.FestivalId))
-            return true;
-
-        var activeFestivalIds = await _unitOfWork.Repository<FestivalSubUser>()
+        var allowedFestivalIds = await _unitOfWork.Repository<Festival>()
             .Entities
-            .Where(member => member.UserId == _currentUserService.UserId &&
-                             !member.IsRemoved)
-            .Select(member => member.FestivalId)
+            .Where(festival => festival.UserId == _currentUserService.UserId ||
+                               festival.FestivalSubUsers.Any(member =>
+                                   member.UserId == _currentUserService.UserId &&
+                                   !member.IsRemoved))
+            .Select(festival => festival.Id)
             .ToListAsync();
 
-        if (projectSubmits.Any(p => activeFestivalIds.Contains(p.FestivalId)))
+        if (projectSubmits.Any(p => allowedFestivalIds.Contains(p.FestivalId)))
             return true;
 
         

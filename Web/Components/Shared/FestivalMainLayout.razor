@@ -28,7 +28,22 @@
     <Authorized>
         @(LoadDataAsync())
         <MudLayout RightToLeft="@_rightToLeft">
-            <MudAppBar Elevation="25">
+            <MudAppBar Elevation="25" Class="festival-main-appbar">
+                <div class="festival-mobile-header-row">
+                    <MudIconButton Icon="@Icons.Material.Filled.Menu"
+                                   Color="Color.Inherit"
+                                   Edge="Edge.Start"
+                                   OnClick="@DrawerToggle"
+                                   UserAttributes="@(new() { { "aria-label", "Open festival navigation" } })" />
+                    <MudIcon Icon="@CustomIcons.HiSubmitIcon" Size="Size.Medium" ViewBox="0 0 500 500" />
+                    <MudText Typo="Typo.subtitle1" Class="ml-2">HiSubmit</MudText>
+                    <MudSpacer />
+                    <MudIconButton Icon="@Icons.Material.Filled.AccountCircle"
+                                   Color="Color.Inherit"
+                                   OnClick="@DrawerToggle"
+                                   UserAttributes="@(new() { { "aria-label", "Open festival account menu" } })" />
+                </div>
+                <div class="festival-desktop-header-row">
 
                 <MudIcon Icon="@CustomIcons.HiSubmitIcon" Size="Size.Large" ViewBox="0 0 500 500" />
                 <MudText Typo="Typo.h5"  Class="ml-4">Hi Submit</MudText>
@@ -82,11 +97,17 @@
                         <MudListItem T="string" Text="@localizer["Logout"]" Icon="@Icons.Material.Filled.Logout" OnClick="Logout" />
                     </ChildContent>
                 </MudMenu>
+                </div>
 
             </MudAppBar>
-            @* <MudDrawer @bind-Open="_drawerOpen" Elevation="25" ClipMode="DrawerClipMode.Always">*@
-            @*    <NavMenu />
-            </MudDrawer>*@
+            <MudDrawer @bind-Open="_drawerOpen"
+                       Variant="DrawerVariant.Temporary"
+                       Overlay="true"
+                       Elevation="12"
+                       Class="festival-mobile-drawer">
+                <NavMenu AccountPages="true"
+                         FestivalAccountExists="true" />
+            </MudDrawer>
             <MudMainContent>
                 <MudContainer MaxWidth="MaxWidth.Medium" Class="mt-4 mb-5">
                     <CascadingValue Value="hubConnection">

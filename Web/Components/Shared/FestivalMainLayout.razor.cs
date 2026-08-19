@@ -57,7 +57,7 @@ namespace Web.Components.Shared
         }
 
         private MudTheme _currentTheme;
-        private bool _drawerOpen = true;
+        private bool _drawerOpen;
         private bool _rightToLeft = false;
         private async Task RightToLeftToggle()
         {

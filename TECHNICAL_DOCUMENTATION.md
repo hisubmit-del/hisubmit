@@ -963,3 +963,57 @@ errors, `/` returned HTTP 200, and
 `/api/v1/public/festival/AllDeadlineEventCategory?FestivalId=9...` returned
 HTTP 200 with an empty result rather than an unhandled exception. The active
 log had no new startup/API exception during this test.
+
+## 25. Responsive CSS and festival-layout checkpoint (2026-08-19)
+
+`Web/wwwroot/css/site-modern.css` contains one final responsive header
+contract at the end of the file. Earlier duplicate rules for public header
+visibility, sponsored festival tiles, and mobile breakpoints were removed.
+When adding responsive rules, extend that contract or place a clearly scoped
+component rule before it; do not append another competing global override.
+
+`FestivalMainLayout.razor` uses:
+
+```text
+festival-main-appbar
+  -> festival-mobile-header-row
+  -> festival-desktop-header-row
+  -> festival-mobile-drawer (temporary, overlay)
+```
+
+The mobile row is visible below the 992px breakpoint and the desktop row is
+visible at or above it. `_drawerOpen` is initialized closed. The drawer
+reuses `NavMenu` and therefore keeps the existing festival-account navigation
+instead of introducing a second permission model.
+
+Project-detail authorization is enforced in the Application layer by
+`ICheckPermission` and `GetProjectDetailQueryHandler`:
+
+- the project owner and administrator can read the project;
+- festival owners and non-removed festival sub-users can read submissions
+  belonging to festivals they manage;
+- referees can read only submissions with an active `ProjectJudging`
+  assignment for their user;
+- the selected festival cookie/claim and a browser-supplied FestivalId are
+  selectors only, never authority;
+- the project-file query repeats the permission check so a direct file API
+  call cannot bypass the project page.
+
+The artist-controlled public visibility modes requested in the product
+roadmap are intentionally not implemented yet. They need an explicit
+domain/API field and migration; `Project.Password` must not be repurposed.
+
+Verification on 2026-08-19:
+
+```text
+dotnet build .\Web\Web.csproj --no-restore --disable-build-servers
+  -p:UseSharedCompilation=false --nologo -v:q
+Build succeeded
+0 errors
+7 warnings (package vulnerability advisories)
+```
+
+The remaining warnings are package-security advisories for AutoMapper,
+System.Linq.Dynamic.Core, MailKit, and MimeKit. They are tracked separately
+from the functional/layout checkpoint and should be upgraded with compatibility
+testing rather than hidden or mass-suppressed.

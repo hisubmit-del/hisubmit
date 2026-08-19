@@ -25,22 +25,6 @@
     --motion-slow: 420ms;
 }
 
-/* Final responsive corrections
-   Keep visibility rules explicit because the legacy stylesheet and Bootstrap
-   utility classes both define header display states. */
-.public-layout .public-brand--desktop {
-    display: inline-flex !important;
-}
-
-.public-layout .public-brand--mobile,
-.public-layout .public-mobile-menu-button {
-    display: none !important;
-}
-
-.public-layout .public-desktop-nav {
-    display: block !important;
-}
-
 .public-layout .festival-sponsored-box .festival-featured-tile {
     position: relative;
     display: flex;
@@ -120,33 +104,6 @@
 .public-layout .home-hero h1 {
     min-width: 0;
     overflow-wrap: anywhere;
-}
-
-@media (min-width: 992px) {
-    .public-layout .public-mobile-menu-button {
-        display: none !important;
-    }
-
-    .public-layout .public-desktop-nav {
-        display: block !important;
-    }
-}
-
-@media (max-width: 991.98px) {
-    .public-layout .public-brand--desktop,
-    .public-layout .public-desktop-nav {
-        display: none !important;
-    }
-
-    .public-layout .public-brand--mobile,
-    .public-layout .public-mobile-menu-button {
-        display: inline-flex !important;
-    }
-
-    .public-layout .home-hero {
-        width: min(100% - 1.25rem, var(--content-width));
-        padding: clamp(1.5rem, 5vw, 3rem);
-    }
 }
 
 /* Shared mobile navigation and dialog safety overrides. Keep these last so
@@ -304,9 +261,9 @@
     }
 }
 
-/* Authoritative header layout.
-   Keep this block last: legacy Bootstrap/MudBlazor display utilities used by
-   older pages otherwise make the mobile header wrap into a vertical stack. */
+/* Final responsive header contract.
+   This is intentionally the last block in the stylesheet. It is the single
+   source of truth for shared desktop/mobile header visibility and wrapping. */
 .main-mobile-header-row,
 .main-desktop-header-row,
 .public-header-row {
@@ -321,7 +278,8 @@
 }
 
 .main-mobile-header-row > .mud-spacer,
-.public-header-row > .mud-spacer {
+.public-header-row > .mud-spacer,
+.festival-mobile-header-row > .mud-spacer {
     flex: 1 1 auto;
     min-width: 0;
 }
@@ -338,19 +296,35 @@
 .main-mobile-header-row > .mud-icon-button,
 .main-mobile-header-actions .mud-icon-button,
 .public-header-actions .mud-icon-button,
-.public-header-actions .mud-menu {
+.public-header-actions .mud-menu,
+.festival-mobile-header-row > .mud-icon-button {
     flex: 0 0 auto;
 }
 
 @media (min-width: 992px) {
-    .public-layout .public-brand--desktop,
-    .public-layout .public-desktop-nav {
+    .public-layout .public-brand--desktop {
         display: inline-flex !important;
+    }
+
+    .public-layout .public-desktop-nav {
+        display: block !important;
     }
 
     .public-layout .public-mobile-menu-button,
     .public-layout .public-brand--mobile {
         display: none !important;
+    }
+
+    .public-layout .home-hero {
+        width: min(100% - 2rem, var(--content-width));
+    }
+
+    .festival-main-appbar .festival-mobile-header-row {
+        display: none;
+    }
+
+    .festival-main-appbar .festival-desktop-header-row {
+        display: flex;
     }
 }
 
@@ -383,6 +357,43 @@
     .public-layout .public-brand--mobile {
         margin-inline-start: .15rem;
     }
+
+    .public-layout .home-hero {
+        width: min(100% - 1.25rem, var(--content-width));
+        padding: clamp(1.5rem, 5vw, 3rem);
+    }
+
+    .festival-main-appbar .festival-mobile-header-row {
+        display: flex;
+        width: 100%;
+        min-height: 4.25rem;
+        flex-wrap: nowrap;
+        gap: .25rem;
+    }
+
+    .festival-main-appbar .festival-desktop-header-row {
+        display: none;
+    }
+
+    .festival-mobile-drawer {
+        width: min(22rem, 88vw);
+    }
+}
+
+.festival-mobile-header-row,
+.festival-desktop-header-row {
+    min-width: 0;
+    align-items: center;
+}
+
+.festival-mobile-header-row {
+    display: none;
+}
+
+.festival-desktop-header-row {
+    display: flex;
+    width: 100%;
+    flex-wrap: nowrap;
 }
 
 /* Project detail workflow surfaces. The server controls whether the
@@ -4103,127 +4114,6 @@ a:hover {
         padding: .65rem .7rem .65rem .85rem;
     }
 
-    /* Final responsive corrections */
-    .public-layout .public-brand--desktop {
-        display: inline-flex !important;
-    }
-
-    .public-layout .public-brand--mobile,
-    .public-layout .public-mobile-menu-button {
-        display: none !important;
-    }
-
-    .public-layout .public-desktop-nav {
-        display: block !important;
-    }
-
-    .public-layout .festival-sponsored-box .festival-featured-tile {
-        position: relative;
-        display: flex;
-        min-height: 14rem;
-        align-items: stretch;
-        justify-content: stretch;
-        padding: 0.7rem;
-    }
-
-    .public-layout .festival-featured-tile__media {
-        position: relative;
-        display: grid;
-        width: 100%;
-        min-width: 0;
-        min-height: 12rem;
-        place-items: center;
-        overflow: hidden;
-        border-radius: var(--radius-md);
-        background:
-            linear-gradient(145deg, rgba(51, 92, 103, 0.16), rgba(255, 131, 77, 0.14)),
-            var(--surface-muted);
-    }
-
-    .public-layout .festival-featured-tile__media::after {
-        position: absolute;
-        inset: auto 0 0;
-        height: 46%;
-        background: linear-gradient(transparent, rgba(23, 33, 43, 0.58));
-        content: "";
-        pointer-events: none;
-    }
-
-    .public-layout .festival-featured-tile__media img {
-        position: relative;
-        z-index: 1;
-        display: block;
-        width: 100%;
-        height: 12rem;
-        object-fit: cover;
-        border-radius: var(--radius-md);
-    }
-
-    .public-layout .festival-featured-tile__fallback {
-        position: absolute;
-        z-index: 0;
-        max-width: calc(100% - 1.5rem);
-        color: var(--brand-primary);
-        font-weight: 800;
-        line-height: 1.35;
-        overflow-wrap: anywhere;
-        text-align: center;
-    }
-
-    .public-layout .festival-sponsored-box .btn-view-festival {
-        top: auto;
-        right: 1.1rem;
-        bottom: 1.1rem;
-        left: 1.1rem;
-        width: calc(100% - 2.2rem);
-        min-height: 2.75rem;
-        margin: 0;
-        transform: none !important;
-    }
-
-    .public-layout .festival-sponsored-box .btn-view-festival:hover,
-    .public-layout .festival-sponsored-box .btn-view-festival:focus-visible {
-        transform: translateY(-2px) !important;
-    }
-
-    .public-layout .home-hero.festival-header {
-        height: auto;
-        min-width: 0;
-    }
-
-    .public-layout .home-hero__content,
-    .public-layout .home-hero__copy,
-    .public-layout .home-hero h1 {
-        min-width: 0;
-        overflow-wrap: anywhere;
-    }
-}
-
-@media (min-width: 992px) {
-    .public-layout .public-mobile-menu-button {
-        display: none !important;
-    }
-
-    .public-layout .public-desktop-nav {
-        display: block !important;
-    }
-}
-
-@media (max-width: 991.98px) {
-    .public-layout .public-brand--desktop,
-    .public-layout .public-desktop-nav {
-        display: none !important;
-    }
-
-    .public-layout .public-brand--mobile,
-    .public-layout .public-mobile-menu-button {
-        display: inline-flex !important;
-    }
-
-    .public-layout .home-hero {
-        width: min(100% - 1.25rem, var(--content-width));
-        padding: clamp(1.5rem, 5vw, 3rem);
-    }
 }
 
 @media (max-width: 575.98px) {
