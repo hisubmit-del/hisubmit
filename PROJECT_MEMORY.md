@@ -1153,3 +1153,32 @@ data contract, privacy policy and pricing are approved.
   - `git diff --check` passed for the changed files.
 - Existing unrelated `Web/Permission/PermissionPolicyProvider.cs` changes and
   local uploaded test images remain unstaged and were not modified.
+
+## Public header, project specification, and diagnostics checkpoint (2026-08-19)
+
+- Desktop header visibility was made explicit in the final responsive CSS
+  contract. Main workspace desktop rows are forced visible at the desktop
+  breakpoint, while mobile rows are forced hidden; public navigation follows
+  the same breakpoint contract.
+- The public announcement and Advertise navigation are now role-aware:
+  festival-role users see festival promotion, while artist-role users see a
+  discovery link for finding festivals. Artist users are not shown the
+  festival promotion CTA.
+- The global page guide is intentionally hidden on public project-detail and
+  public festival-detail pages because those pages already provide their own
+  context and visual hierarchy.
+- The public submission-category dialog now explains how to compare deadline
+  date, fee tier, eligibility, and the risk of incomplete or inaccurate
+  answers before adding a submission to the cart.
+- The project Specification section now uses responsive cards aligned with
+  the rest of the project-detail page instead of the legacy full-width red
+  panel. It remains data-driven for film, photography, music, script, and
+  VR/XR specifications.
+- Root-level diagnostic `.log` files were moved to
+  `diagnostics/logs-archive/`. Runtime Serilog output remains under
+  `Web/Logs/`; the two locations have different purposes.
+- Product direction for the next opportunity types is documented in
+  `PRODUCT_ASSESSMENT.md`: literary competitions, literary magazines,
+  residencies, grants, exhibitions, gallery open calls, and reusable event
+  passes/accreditation should build on the current Festival/Submission model
+  through an additive taxonomy after the current workflow is stable.

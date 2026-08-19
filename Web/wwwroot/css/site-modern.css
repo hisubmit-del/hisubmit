@@ -261,139 +261,117 @@
     }
 }
 
-/* Final responsive header contract.
-   This is intentionally the last block in the stylesheet. It is the single
-   source of truth for shared desktop/mobile header visibility and wrapping. */
-.main-mobile-header-row,
-.main-desktop-header-row,
-.public-header-row {
+/* Project specification card.
+   This replaces the legacy full-width tertiary/red panel with the same
+   restrained card language used by the rest of the project detail page. */
+.project-specification {
+    margin-top: 1.5rem;
+    padding: clamp(1.1rem, 3vw, 2rem);
+    border: 1px solid var(--border-soft);
+    border-radius: var(--radius-lg);
+    background:
+        radial-gradient(circle at 100% 0%, rgba(255, 131, 77, 0.14), transparent 18rem),
+        linear-gradient(145deg, #ffffff, var(--surface-muted));
+    color: var(--text-strong);
+    box-shadow: var(--shadow-card);
+    overflow: hidden;
+}
+
+.project-specification .container {
+    width: 100%;
+    max-width: var(--content-width);
+    padding-inline: 0;
+}
+
+.project-specification .light-title {
+    margin: 0 0 1.25rem;
+    padding-inline-start: .85rem;
+    color: var(--brand-primary);
+    border-inline-start: 4px solid var(--brand-accent);
+}
+
+.project-specification .project-detail {
+    display: grid !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1rem;
+    margin: 0;
+}
+
+.submission-choice-guidance {
+    border-color: rgba(53, 120, 229, 0.22);
+    background: rgba(53, 120, 229, 0.06);
+}
+
+.submission-choice-guidance .mud-alert-message {
     min-width: 0;
-    flex-wrap: nowrap !important;
-    align-items: center;
 }
 
-.main-mobile-header-row {
-    min-height: 4.25rem;
-    gap: .25rem;
+.submission-choice-guidance .mud-typography {
+    overflow-wrap: anywhere;
 }
 
-.main-mobile-header-row > .mud-spacer,
-.public-header-row > .mud-spacer,
-.festival-mobile-header-row > .mud-spacer {
-    flex: 1 1 auto;
+.project-specification .project-detail > .mud-grid-item {
     min-width: 0;
+    width: auto;
+    max-width: none;
+    padding: 1rem;
+    border: 1px solid rgba(51, 92, 103, 0.11);
+    border-radius: var(--radius-md);
+    background: rgba(255, 255, 255, 0.82);
 }
 
-.main-mobile-header-actions,
-.public-header-actions {
-    display: inline-flex;
-    flex: 0 0 auto;
-    align-items: center;
-    gap: .15rem;
-    min-width: 0;
+.project-specification .project-detail h6,
+.project-specification .project-detail .mud-typography-h6 {
+    margin: 0 0 .45rem;
+    color: var(--brand-primary);
+    font-size: .95rem;
+    font-weight: 800;
+    line-height: 1.35;
 }
 
-.main-mobile-header-row > .mud-icon-button,
-.main-mobile-header-actions .mud-icon-button,
-.public-header-actions .mud-icon-button,
-.public-header-actions .mud-menu,
-.festival-mobile-header-row > .mud-icon-button {
-    flex: 0 0 auto;
+.project-specification .project-detail .mud-list {
+    margin: 0 0 .9rem;
+    padding: 0;
+    background: transparent;
 }
 
-@media (min-width: 992px) {
-    .public-layout .public-brand--desktop {
-        display: inline-flex !important;
-    }
+.project-specification .project-detail .mud-list-item {
+    min-height: 1.9rem;
+    padding: .2rem 0;
+    color: var(--text-strong);
+    overflow-wrap: anywhere;
+}
 
-    .public-layout .public-desktop-nav {
-        display: block !important;
-    }
+.project-specification .project-detail .mud-list-item-icon {
+    min-width: 1.6rem;
+    color: var(--brand-accent);
+}
 
-    .public-layout .public-mobile-menu-button,
-    .public-layout .public-brand--mobile {
-        display: none !important;
-    }
-
-    .public-layout .home-hero {
-        width: min(100% - 2rem, var(--content-width));
-    }
-
-    .festival-main-appbar .festival-mobile-header-row {
-        display: none;
-    }
-
-    .festival-main-appbar .festival-desktop-header-row {
-        display: flex;
-    }
+.project-specification .project-detail svg {
+    color: var(--brand-accent);
 }
 
 @media (max-width: 991.98px) {
-    .public-layout .public-brand--desktop,
-    .public-layout .public-desktop-nav {
-        display: none !important;
-    }
-
-    .public-layout .public-mobile-menu-button,
-    .public-layout .public-brand--mobile {
-        display: inline-flex !important;
-    }
-
-    .public-layout .public-header-container,
-    .public-layout .public-header-row {
-        width: 100%;
-        max-width: 100%;
-    }
-
-    .public-layout .public-header-row {
-        min-height: 4.25rem;
-        padding-inline: .35rem;
-    }
-
-    .public-layout .public-header-actions {
-        margin-inline-start: auto;
-    }
-
-    .public-layout .public-brand--mobile {
-        margin-inline-start: .15rem;
-    }
-
-    .public-layout .home-hero {
-        width: min(100% - 1.25rem, var(--content-width));
-        padding: clamp(1.5rem, 5vw, 3rem);
-    }
-
-    .festival-main-appbar .festival-mobile-header-row {
-        display: flex;
-        width: 100%;
-        min-height: 4.25rem;
-        flex-wrap: nowrap;
-        gap: .25rem;
-    }
-
-    .festival-main-appbar .festival-desktop-header-row {
-        display: none;
-    }
-
-    .festival-mobile-drawer {
-        width: min(22rem, 88vw);
+    .project-specification .project-detail {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 }
 
-.festival-mobile-header-row,
-.festival-desktop-header-row {
-    min-width: 0;
-    align-items: center;
-}
+@media (max-width: 575.98px) {
+    .project-specification {
+        margin-inline: .5rem;
+        padding: .85rem;
+        border-radius: var(--radius-md);
+    }
 
-.festival-mobile-header-row {
-    display: none;
-}
+    .project-specification .project-detail {
+        grid-template-columns: minmax(0, 1fr);
+        gap: .7rem;
+    }
 
-.festival-desktop-header-row {
-    display: flex;
-    width: 100%;
-    flex-wrap: nowrap;
+    .project-specification .project-detail > .mud-grid-item {
+        padding: .85rem;
+    }
 }
 
 /* Project detail workflow surfaces. The server controls whether the
@@ -4125,5 +4103,95 @@ a:hover {
     .public-layout .festival-featured-tile__media img {
         height: 10rem;
         min-height: 10rem;
+    }
+}
+
+/* End-of-file responsive contract. */
+.main-mobile-header-row,
+.main-desktop-header-row,
+.public-header-row,
+.festival-mobile-header-row,
+.festival-desktop-header-row {
+    min-width: 0;
+    align-items: center;
+    flex-wrap: nowrap !important;
+}
+
+@media (min-width: 992px) {
+    .main-layout .main-mobile-header-row,
+    .public-layout .public-mobile-menu-button,
+    .public-layout .public-brand--mobile,
+    .festival-main-appbar .festival-mobile-header-row {
+        display: none !important;
+    }
+
+    .main-layout .main-desktop-header-row,
+    .public-layout .public-brand--desktop,
+    .public-layout .public-desktop-nav,
+    .festival-main-appbar .festival-desktop-header-row {
+        display: flex !important;
+    }
+
+    .main-layout .main-desktop-header-row,
+    .public-layout .public-desktop-nav,
+    .festival-main-appbar .festival-desktop-header-row {
+        width: 100%;
+    }
+}
+
+@media (max-width: 991.98px) {
+    .main-layout .main-mobile-header-row,
+    .public-layout .public-mobile-menu-button,
+    .public-layout .public-brand--mobile,
+    .festival-main-appbar .festival-mobile-header-row {
+        display: flex !important;
+    }
+
+    .main-layout .main-desktop-header-row,
+    .public-layout .public-brand--desktop,
+    .public-layout .public-desktop-nav,
+    .festival-main-appbar .festival-desktop-header-row {
+        display: none !important;
+    }
+}
+
+.project-specification .project-detail {
+    display: grid !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1rem;
+}
+
+.project-specification .project-detail > .mud-grid-item {
+    min-width: 0;
+    width: auto;
+    max-width: none;
+    padding: 1rem;
+    border: 1px solid rgba(51, 92, 103, .12);
+    border-radius: var(--radius-md);
+    background: rgba(255, 255, 255, .84);
+}
+
+.project-specification .project-detail h6,
+.project-specification .project-detail .mud-typography-h6,
+.project-specification .project-detail .mud-list-item {
+    min-width: 0;
+    overflow-wrap: anywhere;
+}
+
+@media (max-width: 991.98px) {
+    .project-specification .project-detail {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 575.98px) {
+    .project-specification {
+        margin-inline: .5rem;
+        padding: .85rem;
+        border-radius: var(--radius-md);
+    }
+
+    .project-specification .project-detail {
+        grid-template-columns: 1fr;
     }
 }

@@ -83,10 +83,8 @@ public partial class PageUsageGuide : IDisposable
             return New("Tickets", "Browse available festival tickets, compare event details and add the tickets you want to purchase.", Icons.Material.Outlined.LocalActivity, false);
         if (lower.StartsWith("/news"))
             return New("News", "Browse platform and festival news. Open an article to read the full story and available festival links.", Icons.Material.Outlined.Newspaper, false);
-        if (lower.StartsWith("/project/"))
-            return New("Work detail", "Review the work, its media and credits. If you own it or have permission, use Edit Project Information to update it.", Icons.Material.Outlined.Visibility, false);
-        if (lower.StartsWith("/festivalpage/") || IsPublicFestivalDetailPath(lower))
-            return New("Festival detail", "Review deadlines, rules, fees, awards and tickets for this festival. Choose a category or action below to continue.", Icons.Material.Outlined.Event, false);
+        if (lower.StartsWith("/project/") || lower.StartsWith("/festivalpage/") || IsPublicFestivalDetailPath(lower))
+            return null;
         if (lower.StartsWith("/new/"))
             return New("News article", "Read the full festival or platform update and use the available links to open related information.", Icons.Material.Outlined.Newspaper, false);
         if (lower.StartsWith("/product/"))

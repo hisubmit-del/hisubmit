@@ -15,6 +15,18 @@
                 {
                     @if (_selectCategory)
                     {
+                        <MudAlert Severity="Severity.Info"
+                                  Variant="Variant.Outlined"
+                                  Dense="true"
+                                  Class="submission-choice-guidance mb-4">
+                            <MudText Typo="Typo.subtitle2">Choose the best submission option</MudText>
+                            <MudText Typo="Typo.body2">
+                                Compare the deadline date, fee and eligibility rules before selecting a category.
+                                Earlier deadlines are often less expensive; choose a fee tier only when your project
+                                meets that tier's conditions. The festival may review eligibility and incomplete or
+                                inaccurate answers before accepting a submission.
+                            </MudText>
+                        </MudAlert>
                         <MudItem xs="12" md="4" Class="mb-4">
                             <MudSelect T="int?" Label="Chose your project" 
                                        SelectedValuesChanged="TakeProjectSpecification" Dense="true"

@@ -1,4 +1,5 @@
 ﻿@using global::Hisubmit.Client.SharedModels.Features.FooterItems
+@using HiSubmit.Client.SharedModels.Constants.Role
 @inject IStringLocalizer<PublicHeader> Localize
 
 @if (_isMobileMenuOpen)
@@ -47,7 +48,7 @@
                 </li>
             }
             <AuthorizeView>
-                <Authorized>
+                <Authorized Context="mobileAuthorized">
                     <li>
                         <a class="public-nav-link" href="/user/shoppingCart" @onclick="CloseMobileMenu">
                             <MudIcon Icon="@Icons.Material.Outlined.ShoppingCart" Size="Size.Small" />
@@ -60,12 +61,20 @@
                             <span>Profile</span>
                         </a>
                     </li>
-                    <li>
-                        <a class="public-nav-link public-nav-link--featured" href="/advertise" @onclick="CloseMobileMenu">
-                            <MudIcon Icon="@Icons.Material.Outlined.Campaign" Size="Size.Small" />
-                            <span>Advertise</span>
-                        </a>
-                    </li>
+                    <AuthorizeView Roles="@RoleConstants.ArtistRole">
+                        <NotAuthorized>
+                            <AuthorizeView Roles="@RoleConstants.FestivalRole">
+                                <Authorized Context="mobileFestivalAuthorized">
+                                    <li>
+                                        <a class="public-nav-link public-nav-link--featured" href="/advertise" @onclick="CloseMobileMenu">
+                                            <MudIcon Icon="@Icons.Material.Outlined.Campaign" Size="Size.Small" />
+                                            <span>Advertise</span>
+                                        </a>
+                                    </li>
+                                </Authorized>
+                            </AuthorizeView>
+                        </NotAuthorized>
+                    </AuthorizeView>
                 </Authorized>
                 <NotAuthorized>
                     <li>
@@ -93,10 +102,17 @@
 <div class="public-announcement">
     <div class="public-announcement__inner">
         <span><MudIcon Icon="@Icons.Material.Outlined.AutoAwesome" Size="Size.Small" /> Creative opportunities, clearly organised.</span>
-        <AuthorizeView>
-            <Authorized>
-                <a href="/advertise">Promote your festival <MudIcon Icon="@Icons.Material.Filled.ArrowForward" Size="Size.Small" /></a>
+        <AuthorizeView Roles="@RoleConstants.ArtistRole">
+            <Authorized Context="announcementArtistAuthorized">
+                <a href="/festivals">Find festivals for your work <MudIcon Icon="@Icons.Material.Filled.ArrowForward" Size="Size.Small" /></a>
             </Authorized>
+            <NotAuthorized>
+                <AuthorizeView Roles="@RoleConstants.FestivalRole">
+                    <Authorized Context="announcementFestivalAuthorized">
+                        <a href="/advertise">Promote your festival <MudIcon Icon="@Icons.Material.Filled.ArrowForward" Size="Size.Small" /></a>
+                    </Authorized>
+                </AuthorizeView>
+            </NotAuthorized>
         </AuthorizeView>
     </div>
 </div>
@@ -145,19 +161,27 @@
                             </li>
                         }
                         <AuthorizeView>
-                            <Authorized>
+                            <Authorized Context="desktopAuthorized">
                                 <li class="public-nav-auth">
                                     <a class="public-nav-link" href="/user/shoppingCart">
                                         <MudIcon Icon="@Icons.Material.Outlined.ShoppingCart" Size="Size.Small" />
                                         <span>Cart</span>
                                     </a>
                                 </li>
-                                <li>
-                                    <a class="public-nav-link" href="/advertise">
-                                        <MudIcon Icon="@Icons.Material.Outlined.Campaign" Size="Size.Small" />
-                                        <span>Advertise</span>
-                                    </a>
-                                </li>
+                                <AuthorizeView Roles="@RoleConstants.ArtistRole">
+                                    <NotAuthorized>
+                                        <AuthorizeView Roles="@RoleConstants.FestivalRole">
+                                            <Authorized Context="desktopFestivalAuthorized">
+                                                <li>
+                                                    <a class="public-nav-link" href="/advertise">
+                                                        <MudIcon Icon="@Icons.Material.Outlined.Campaign" Size="Size.Small" />
+                                                        <span>Advertise</span>
+                                                    </a>
+                                                </li>
+                                            </Authorized>
+                                        </AuthorizeView>
+                                    </NotAuthorized>
+                                </AuthorizeView>
                             </Authorized>
                             <NotAuthorized>
                                 <li class="public-nav-auth">

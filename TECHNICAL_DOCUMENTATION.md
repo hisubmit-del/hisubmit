@@ -1017,3 +1017,62 @@ The remaining warnings are package-security advisories for AutoMapper,
 System.Linq.Dynamic.Core, MailKit, and MimeKit. They are tracked separately
 from the functional/layout checkpoint and should be upgraded with compatibility
 testing rather than hidden or mass-suppressed.
+
+## 26. Public header, project specification, and diagnostics (2026-08-19)
+
+The last CSS block in `Web/wwwroot/css/site-modern.css` is the responsive
+header contract. It explicitly controls all three header families:
+
+- `MainLayout`: `main-mobile-header-row` versus
+  `main-desktop-header-row`;
+- `PublicHeader`: public desktop navigation versus the mobile menu button;
+- `FestivalMainLayout`: festival mobile row versus desktop toolbar.
+
+If a desktop header disappears, inspect this contract and the CSS viewport
+breakpoint before changing Razor markup. Do not add another competing global
+override earlier in the stylesheet.
+
+The public header uses role-aware calls to action. `FestivalRole` receives the
+festival advertising CTA; `ArtistRole` receives a festival-discovery CTA.
+This is a presentation rule only. The `/advertise` endpoint must continue to
+enforce authorization server-side.
+
+`PageUsageGuide` intentionally returns no guide for `/project/{ProjectUrl}`
+and public festival-detail routes. The detail pages have their own headings,
+tabs, deadlines, and action surfaces, so a second global guide would add
+visual noise.
+
+The submission-category dialog (`FestivalCategorySelected.razor`) explains
+how to compare deadline, fee, eligibility, and form-answer accuracy. It does
+not promise that an earlier deadline is always cheaper; the actual fee
+returned by the festival remains authoritative.
+
+The project Specification surface is styled by `site-modern.css` as a
+responsive card grid. The underlying type-specific components remain the
+source of displayed fields, so this change does not alter the project
+response contract or database schema.
+
+Diagnostics policy:
+
+- Application runtime logs: `Web/Logs/`, configured by Serilog.
+- Local build and investigation logs: `diagnostics/logs-archive/`.
+- Root-level generated logs should not be recreated; use the diagnostics
+  folder for redirected build/test output.
+- Neither location may contain secrets, connection strings, production
+  database backups, or user-uploaded files.
+
+Opportunity-type roadmap:
+
+The current domain is Festival-centric. The next model should add an
+`OpportunityType` taxonomy rather than duplicating Festival entities:
+
+| Opportunity | Required first-class data |
+|---|---|
+| Literary competition | manuscript/poetry categories, word/page limits, language, rights, blind-review option |
+| Literary magazine | issue/volume, reading period, simultaneous-submission policy, contributor payment, publication rights |
+| Residency | duration, dates, location/remote mode, accommodation, stipend, discipline, portfolio/statement questions |
+| Grant | funding amount, budget, eligibility, milestones, reporting requirements |
+| Exhibition/gallery open call | medium, dimensions, installation, insurance, sale commission, delivery/collection |
+| Event pass/accreditation | access scope, validity window, venue/program permissions, quotas, identity verification |
+
+This remains a planning checkpoint. No schema migration is introduced here.

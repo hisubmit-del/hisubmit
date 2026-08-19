@@ -131,6 +131,32 @@ adding unrelated booleans to `Festival`.
 3. Add type-specific forms, public cards, SEO previews, and dashboards.
 4. Add tests for backward compatibility with existing festival records.
 
+### Opportunity requirements checkpoint
+
+The next opportunity model should cover more than film festivals while
+reusing the existing submission, payment, venue, ticket, judging, and content
+primitives:
+
+| Opportunity family | Essential fields and workflow |
+|---|---|
+| Literary competition | manuscript/poetry categories, word/page limits, language, rights, blind-review option, judging rubric |
+| Literary magazine | issue/volume, reading period, genres, simultaneous-submission policy, contributor payment, publication rights, editor workflow |
+| Residency | duration, dates, location/remote mode, accommodation, stipend, discipline, portfolio, statement, references, selection stages |
+| Grant/fellowship | funding amount, budget, eligibility, milestones, reporting, contracts, payment schedule |
+| Exhibition/gallery open call | medium, dimensions, installation, insurance, sale commission, delivery/collection, exhibition schedule |
+| Event pass/accreditation | access scope, validity window, venue/program permissions, quota, identity verification, QR/pass issuance |
+
+For monetization and trust, each opportunity should support a clear public
+listing, structured eligibility, transparent deadlines/fees, applicant status,
+review/selection state, messages, receipts, and organizer verification. Event
+passes should be treated as a reusable access product rather than a cinema-only
+ticket: a festival can sell screening tickets, market passes, industry
+badges, press accreditation, staff credentials, or multi-venue access under
+the same controlled inventory model.
+
+This is a requirements checkpoint only. It does not add a database table or
+change existing Festival behavior.
+
 ## Changes implemented in this checkpoint
 
 - Added this product assessment and roadmap.
