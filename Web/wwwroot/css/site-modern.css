@@ -4117,6 +4117,22 @@ a:hover {
     flex-wrap: nowrap !important;
 }
 
+.public-layout .public-header-row > * {
+    width: auto;
+    max-width: none;
+    flex-shrink: 0;
+}
+
+.public-layout .public-header-row > .public-nav {
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+.public-layout .public-header-row > .mud-spacer {
+    flex: 1 1 auto;
+    min-width: 1rem;
+}
+
 @media (min-width: 992px) {
     .main-layout .main-mobile-header-row,
     .public-layout .public-mobile-menu-button,
