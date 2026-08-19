@@ -10,4 +10,6 @@ public class GetFestivalPaymentStateResponse
     public  decimal FestivalDebt { get; set; }
     public  decimal LastMonthIncome { get; set; }
     public  decimal Income { get; set; }
+    public decimal SiteCharges { get; set; }
+    public decimal NetSettlementDue { get; set; }
 }

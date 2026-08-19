@@ -1359,3 +1359,26 @@ automatically verified by this checkpoint.
 - No migration was added. External payment-provider verification remains a
   known pre-existing TODO; financial reports should not be described as
   provider-settled until that integration is implemented.
+
+## Phase 3 settlement and user-finance checkpoint (2026-08-19)
+
+- `GetFestivalPaymentStateQuery` now reports `Income`,
+  `AdminPayment`, `SiteCharges`, and `NetSettlementDue`. `SiteCharges`
+  currently means paid `CartItemType.ServiceFee` rows linked to submissions
+  in the exact festival period. It does not include advertising because the
+  existing `AdvertiseRequest` has no festival or billing reference.
+- The existing `FestivalPaymentItem` remains a manually recorded payment
+  record (`Amount`, `PaidDate`, `TrackNumber`, `Type`). It is visible in the
+  existing festival payment-item list, but it is not yet an immutable
+  settlement ledger or monthly close.
+- The artist dashboard reads the authenticated user's paid carts through the
+  existing owner-scoped cart query and presents total paid amount, discount
+  savings, checkout count, and spend by item type. No new endpoint or schema
+  was required.
+- The platform should not introduce Hi Coin as a direct price mutation yet.
+  A safe design requires a coin ledger, earn-event idempotency, expiry,
+  refund/reversal, per-product eligibility, and audit history before it can
+  reduce a service fee or festival charge.
+- Recommended settlement sequence: introduce an immutable ledger, link every
+  charge/payment/adjustment to exact `FestivalId` and period, add monthly
+  statement approval, then add exports and payout/reconciliation states.

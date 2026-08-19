@@ -7,7 +7,10 @@ using Web.Extensions;
 using HiSubmit.Client.Infrastructure.Managers.Notifications;
 using HiSubmit.Client.Infrastructure.Managers.Projects;
 using HiSubmit.Client.Infrastructure.Managers.Submits;
+using HiSubmit.Client.Infrastructure.Managers.Payments;
 using HiSubmit.Client.SharedModels.Constants.Role;
+using Hisubmit.Client.SharedModels.Enums;
+using Hisubmit.Client.SharedModels.Features.Payments.Queries;
 using Hisubmit.Client.SharedModels.Features.Notifications.Queries;
 using Hisubmit.Client.SharedModels.Features.Projects.Queries.GetAll;
 using Hisubmit.Client.SharedModels.Features.Submits.Queries.GetAllSubmitsQueries;
@@ -24,6 +27,7 @@ public partial class Dashboard
 
     [Inject] private ISubmitManager SubmitManager { get; set; }
     [Inject] private INotificationManager UserNotificationManager { get; set; }
+    [Inject] private ICartManager CartManager { get; set; }
 
     private GetUserAccountTypeResponse _accountType = new();
 
@@ -40,9 +44,16 @@ public partial class Dashboard
     private bool _submitLoaded;
     private bool _notificationLoaded;
     private bool isAdmin=true;
+    private bool _isArtist;
+    private decimal _artistPaidTotal;
+    private decimal _artistDiscountTotal;
+    private int _artistPaidCartCount;
+    private double[] _artistSpendChart = [0, 0, 0, 0];
     protected override async Task OnInitializedAsync()
     {
-        isAdmin = (await AuthenticationManager.CurrentUser()).IsInRole(RoleConstants.AdministratorRole);
+        var currentUser = await AuthenticationManager.CurrentUser();
+        isAdmin = currentUser.IsInRole(RoleConstants.AdministratorRole);
+        _isArtist = currentUser.IsInRole(RoleConstants.ArtistRole);
 
         await LoadDataAsync();
         await LoadAccountStatus();
@@ -54,7 +65,42 @@ public partial class Dashboard
         _submitLoaded = true;
         await LoadNotification();
         _notificationLoaded=true;
+        if (_isArtist)
+            await LoadArtistFinancialSummary();
         await base.OnInitializedAsync();
+    }
+
+    private async Task LoadArtistFinancialSummary()
+    {
+        var response = await CartManager.GetAll(new GetAllCartsFilterDto
+        {
+            TakeCurrentUserCarts = true,
+            Paid = true,
+            GetAllData = true
+        });
+
+        if (!response.Succeeded)
+        {
+            foreach (var message in response.Messages)
+                _snackBar.Add(message, Severity.Error);
+            return;
+        }
+
+        var paidCarts = response.Data.Where(p => p.Paid).ToList();
+        var items = paidCarts.SelectMany(p => p.CartItems ?? new List<GetCartItemResponse>())
+            .Where(p => p.Paid)
+            .ToList();
+
+        _artistPaidCartCount = paidCarts.Count;
+        _artistPaidTotal = items.Sum(p => p.GetRealPrice());
+        _artistDiscountTotal = items.Sum(p => Math.Max(0, p.Price - p.GetRealPrice()));
+        _artistSpendChart =
+        [
+            (double)items.Where(p => p.CartItemType == CartItemType.Submit).Sum(p => p.GetRealPrice()),
+            (double)items.Where(p => p.CartItemType == CartItemType.Product).Sum(p => p.GetRealPrice()),
+            (double)items.Where(p => p.CartItemType is CartItemType.Ticket or CartItemType.Badge).Sum(p => p.GetRealPrice()),
+            (double)items.Where(p => p.CartItemType == CartItemType.ServiceFee).Sum(p => p.GetRealPrice())
+        ];
     }
 
 

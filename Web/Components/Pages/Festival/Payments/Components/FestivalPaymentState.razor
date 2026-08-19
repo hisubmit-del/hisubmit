@@ -28,12 +28,16 @@
                                       Value="@_state.LastMonthIncome.ToString("C2")"/>
                     <DividerNameValue Class="pa-3"  
                                       Icon="@Icons.Material.Filled.Paid"
-                                      Name="@Localize["Paid"]"
+                                      Name="@Localize["Paid to festival"]"
                                       Value="@_state.AdminPayment.ToString("C2")"/>
+                    <DividerNameValue Class="pa-3"
+                                      Icon="@Icons.Material.Filled.RemoveCircleOutline"
+                                      Name="@Localize["Site charges"]"
+                                      Value="@_state.SiteCharges.ToString("C2")"/>
                     <DividerNameValue Class="pa-3" 
-                                      Icon="@Icons.Material.Filled.CreditCardOff"
-                                      Name="@Localize["Unpaid"]" 
-                                      Value="@_state.FestivalDebt.ToString("C2")"/>
+                                      Icon="@Icons.Material.Filled.AccountBalance"
+                                      Name="@Localize["Net settlement due"]"
+                                      Value="@_state.NetSettlementDue.ToString("C2")"/>
                 </MudStack>
             </MudPaper>
         </MudItem>

@@ -1393,3 +1393,24 @@ data contract, privacy policy and pricing are approved.
 - No schema or production data was changed. Provider-side payment
   verification and immutable transaction/payout reconciliation remain
   explicitly unfinished and must not be inferred from these reports.
+
+## Phase 3 settlement and user-finance checkpoint (2026-08-19)
+
+- Festival finance now exposes gross income, recorded payments to the
+  festival, paid Service Fee charges, and `NetSettlementDue` for the exact
+  festival period. Existing `FestivalPaymentItem` records remain the source
+  for manually recorded payments.
+- Advertising is not yet part of settlement math: `AdvertiseRequest` has no
+  festival link, price/cart item, invoice, or settlement reference. Do not
+  subtract an advertising request from festival income until a documented
+  financial ledger is added.
+- Artist dashboard finance is based on owner-scoped paid carts and shows paid
+  total, checkout count, discount savings, and spend by submission/product/
+  ticket-badge/service-fee categories.
+- Hi Coin remains a design proposal, not an implemented currency. Before
+  enabling it, define an auditable earn/spend ledger, expiry, fraud limits,
+  refund reversal, eligibility rules, and whether coins can reduce cash
+  service fees.
+- Future settlement work must add exact-period statements, immutable
+  adjustments, monthly close/approval, payout status, reconciliation, and
+  downloadable reports without combining adjacent festival periods.

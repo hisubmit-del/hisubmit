@@ -207,3 +207,23 @@ logic, or authorization rule was changed in this checkpoint.
 - No database schema or payment-provider contract was changed. Provider
   verification, immutable transaction references, payout reconciliation, and
   exportable period reports remain follow-up work.
+
+### Phase 3 settlement and user-finance checkpoint (2026-08-19)
+
+- Festival payment state now separates gross festival income, recorded
+  payments to the festival, paid Service Fee charges, and the resulting net
+  settlement due. The calculation remains scoped to the exact festival
+  period.
+- Artist dashboard now shows paid checkout total, total discount savings,
+  paid checkout count, and a category breakdown chart based on the user's
+  paid carts.
+- The current advertising request model has no `FestivalId`, payable cart
+  item, invoice, or settlement reference. Advertising charges therefore are
+  not silently deducted from festival settlement; a future ledger change is
+  required.
+- Recommended next financial capabilities are an immutable settlement ledger,
+  monthly statement close/approval, downloadable statements, charge
+  adjustments with reason and evidence, and a reconciliation status.
+- Hi Coin is a product proposal only. It needs an earn/spend ledger, expiry,
+  anti-abuse rules, refund handling, and a clear separation from cash
+  discounts before it can affect payment totals.

@@ -48,6 +48,13 @@ public  class GetFestivalPaymentStateQueryHandler:IRequestHandler<GetFestivalPay
                         && p.Submit.FestivalId == request.FestivalId)
             .SumAsync(p => p.PriceAfterDiscount ?? p.Price, cancellationToken);
 
+        var siteCharges = await _unitOfWork.Repository<CarTItem>()
+            .Entities
+            .Where(p => p.Cart.Paid &&
+                        p.CartItemType == CartItemType.ServiceFee &&
+                        p.Submit.FestivalId == request.FestivalId)
+            .SumAsync(p => p.PriceAfterDiscount ?? p.Price, cancellationToken);
+
         var lastMonth = DateTime.Now.AddMonths(-1);
         var lastMonthProduct = await _unitOfWork.Repository<CarTItem>()
             .Entities
@@ -91,7 +98,9 @@ public  class GetFestivalPaymentStateQueryHandler:IRequestHandler<GetFestivalPay
             Submit = submit,
             AdminPayment = (decimal) items,
             Income = product + ticket + submit,
-            LastMonthIncome = lastMonthProduct + lastMonthTicket + lastMonthSubmit
+            LastMonthIncome = lastMonthProduct + lastMonthTicket + lastMonthSubmit,
+            SiteCharges = siteCharges,
+            NetSettlementDue = product + ticket + submit - (decimal)items - siteCharges
         };
 
         return await Result<GetFestivalPaymentStateResponse>.SuccessAsync(result);

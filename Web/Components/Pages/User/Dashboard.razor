@@ -58,6 +58,56 @@
             </MudItem>
         </MudGrid>
     }
+    @if (_isArtist)
+    {
+        <MudGrid Class="mt-5">
+            <MudItem xs="12">
+                <MudPaper Class="dashboard-section-card pa-5" Elevation="0">
+                    <div class="d-flex flex-wrap justify-space-between align-center gap-3">
+                        <div>
+                            <MudText Typo="Typo.overline">Artist financial overview</MudText>
+                            <MudText Typo="Typo.h6">Your HiSubmit spending and savings</MudText>
+                            <MudText Typo="Typo.body2" Color="Color.Secondary">
+                                Paid purchases and the value retained through discounts.
+                            </MudText>
+                        </div>
+                        <MudButton Href="/user/carts" Variant="Variant.Outlined"
+                                   StartIcon="@Icons.Material.Filled.ReceiptLong">
+                            View receipts
+                        </MudButton>
+                    </div>
+                    <MudGrid Class="mt-3">
+                        <MudItem xs="12" sm="4">
+                            <DividerNameValue Class="pa-3"
+                                              Icon="@Icons.Material.Filled.Payments"
+                                              Name="Paid through HiSubmit"
+                                              Value="@_artistPaidTotal.ToString("C2")" />
+                        </MudItem>
+                        <MudItem xs="12" sm="4">
+                            <DividerNameValue Class="pa-3"
+                                              Icon="@Icons.Material.Filled.Savings"
+                                              Name="Discount savings"
+                                              Value="@_artistDiscountTotal.ToString("C2")" />
+                        </MudItem>
+                        <MudItem xs="12" sm="4">
+                            <DividerNameValue Class="pa-3"
+                                              Icon="@Icons.Material.Filled.ReceiptLong"
+                                              Name="Paid checkouts"
+                                              Value="@_artistPaidCartCount.ToString()" />
+                        </MudItem>
+                    </MudGrid>
+                    @if (_artistPaidTotal > 0)
+                    {
+                        <MudChart Class="mt-4" ChartType="ChartType.Donut"
+                                  InputData="@_artistSpendChart"
+                                  InputLabels="@(new[] { "Submissions", "Products", "Tickets & badges", "Service fees" })"
+                                  ChartOptions="new ChartOptions() { ShowLegend = true, ShowLabels = true }"
+                                  Width="320px" Height="240px" />
+                    }
+                </MudPaper>
+            </MudItem>
+        </MudGrid>
+    }
   @if (!isAdmin)
     {
         <MudGrid>
