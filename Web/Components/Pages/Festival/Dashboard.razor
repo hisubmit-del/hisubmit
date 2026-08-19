@@ -211,6 +211,70 @@ else
                               FestivalId="SelectedFestivalId" />
         </MudItem>
     </MudGrid>
+    <MudPaper Class="pa-4 mt-4 dashboard-task-queue" Elevation="1">
+        <MudStack Row="true" AlignItems="AlignItems.Center"
+                  Justify="Justify.SpaceBetween" Class="mb-3">
+            <MudStack Spacing="0">
+                <MudText Typo="Typo.h6">@Localize["Next steps"]</MudText>
+                <MudText Typo="Typo.body2" Color="Color.Secondary">
+                    @Localize["Actionable items for the selected festival."]
+                </MudText>
+            </MudStack>
+            <MudIcon Icon="@Icons.Material.Outlined.TaskAlt" Color="Color.Primary" />
+        </MudStack>
+
+        @if (!HasOpenTasks)
+        {
+            <MudAlert Severity="Severity.Success" Variant="Variant.Outlined">
+                @Localize["No immediate actions. Your festival workspace is up to date."]
+            </MudAlert>
+        }
+        else
+        {
+            <MudList T="string" Dense="true" Class="pa-0">
+                @if (!_festival.IsActive)
+                {
+                    <MudListItem Icon="@Icons.Material.Outlined.EventAvailable"
+                                 Href="/festival/edit">
+                        <MudText Typo="Typo.body1">@Localize["Complete and release the festival"]</MudText>
+                        <MudText Typo="Typo.caption" Color="Color.Secondary">
+                            @Localize["Review the setup wizard and release it when all required sections are ready."]
+                        </MudText>
+                    </MudListItem>
+                }
+                @if (_categoryCount == 0)
+                {
+                    <MudListItem Icon="@Icons.Material.Outlined.Category"
+                                 Href="/festival/edit">
+                        <MudText Typo="Typo.body1">@Localize["Add the first category"]</MudText>
+                        <MudText Typo="Typo.caption" Color="Color.Secondary">
+                            @Localize["Categories and deadlines tell artists how to submit."]
+                        </MudText>
+                    </MudListItem>
+                }
+                @if (_submitCount > 0 && _reviewCount == 0)
+                {
+                    <MudListItem Icon="@Icons.Material.Outlined.Score"
+                                 Href="/festival/judging">
+                        <MudText Typo="Typo.body1">@Localize["Prepare judging"]</MudText>
+                        <MudText Typo="Typo.caption" Color="Color.Secondary">
+                            @Localize["Review judging fields and assignments for submitted works."]
+                        </MudText>
+                    </MudListItem>
+                }
+                @if (_newsCount == 0)
+                {
+                    <MudListItem Icon="@Icons.Material.Outlined.Newspaper"
+                                 Href="/festival/news">
+                        <MudText Typo="Typo.body1">@Localize["Publish a festival update"]</MudText>
+                        <MudText Typo="Typo.caption" Color="Color.Secondary">
+                            @Localize["Keep applicants and your audience informed with the first news item."]
+                        </MudText>
+                    </MudListItem>
+                }
+            </MudList>
+        }
+    </MudPaper>
     <MudGrid Class="mt-4">
         @if (_submits.Any())
         {

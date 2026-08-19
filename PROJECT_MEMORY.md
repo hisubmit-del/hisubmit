@@ -1313,3 +1313,15 @@ data contract, privacy policy and pricing are approved.
 - Build verification completed with 0 errors.
 - Payment-provider success/failure, receipt download, and end-to-end checkout
   remain interactive test items; Phase 2 is not complete.
+
+## Phase 2 festival task queue checkpoint (2026-08-19)
+
+- Added a data-driven "Next steps" panel to the festival dashboard.
+- The panel uses existing dashboard data to point to incomplete setup,
+  missing categories, judging preparation, or missing festival news.
+- Each task links to an existing authorized route; no API or database change
+  was introduced.
+- When no task is detected, the dashboard shows a clear-state message.
+- Build verification completed with 0 errors.
+- The task queue is a UI checkpoint; permission-denial and interactive
+  completion checks remain pending.

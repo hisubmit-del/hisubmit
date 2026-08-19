@@ -45,6 +45,12 @@ public partial class Dashboard
     private int _newsCount;
     private int _categoryCount;
 
+    private bool HasOpenTasks =>
+        !_festival.IsActive ||
+        _categoryCount == 0 ||
+        (_submitCount > 0 && _reviewCount == 0) ||
+        _newsCount == 0;
+
     #endregion
 
     protected override async Task OnInitializedAsync()

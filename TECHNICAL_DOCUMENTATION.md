@@ -1259,6 +1259,15 @@ labelled as the checkout total. No payment or receipt API contract was
 changed. Build verification completed with 0 errors; provider success/failure,
 receipt download, and full interactive checkout remain unverified.
 
+### Phase 2 festival task queue checkpoint
+
+The festival dashboard now includes a "Next steps" panel derived from its
+existing festival, category, submission, review, and news counts. It links to
+the existing edit, judging, and news routes and displays a clear state when no
+immediate task is detected. No API, database, or permission contract was
+changed. Build verification completed with 0 errors; interactive completion
+and denial checks remain pending.
+
 ### Commerce audit checkpoint
 
 Products are festival-owned and tickets are linked through festival-owned
