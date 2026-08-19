@@ -147,7 +147,7 @@ public partial class ProjectJudgingForm
         if (response.Succeeded)
         {
             _snackBar.Add(Localize["Judgment submitted"], Severity.Success);
-            MudDialog.Close();
+            MudDialog.Close(DialogResult.Ok(true));
         }
         else
             foreach (var message in response.Messages)

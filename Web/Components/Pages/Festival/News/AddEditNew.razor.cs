@@ -39,6 +39,12 @@ public partial class AddEditNew : BaseFestival
     private AddEditNewCommand _new = new();
     private CustomeRichTextEditor _richTextEditor;
     private FluentValidationValidator _fluentValidationValidator;
+    private bool _showPreview;
+
+    private bool CanPreview =>
+        !string.IsNullOrWhiteSpace(_new.Title) ||
+        !string.IsNullOrWhiteSpace(_new.ShortDescription) ||
+        !string.IsNullOrWhiteSpace(_new.Description);
 
     #endregion
 
@@ -86,6 +92,11 @@ public partial class AddEditNew : BaseFestival
                     _snackBar.Add(message, Severity.Error);
         }
         _processing = false;
+    }
+
+    private void TogglePreview()
+    {
+        _showPreview = !_showPreview;
     }
 
 

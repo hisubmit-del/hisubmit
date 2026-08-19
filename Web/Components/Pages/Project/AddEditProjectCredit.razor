@@ -21,6 +21,7 @@
                     <MudItem xs="12" sm="12" md="12">
                         <EditForm FormName="project-credits" OnValidSubmit="SaveAsync" EditContext="_editContext">
                             <FluentValidationValidator @ref="_fluentValidationValidator"></FluentValidationValidator>
+                            <ValidationSummary />
                             <MudGrid>
                                 @foreach (var credit in _model.Credits)
                                 {

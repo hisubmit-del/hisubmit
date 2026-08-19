@@ -16,8 +16,9 @@
     {
         <MudCardContent>
             @* <MudContainer MaxWidth="MaxWidth.Medium"> *@
-            <EditForm EditContext="_EditForm" OnValidSubmit="SaveAsync">
+            <EditForm FormName="festival-contact-venue" EditContext="_EditForm" OnValidSubmit="SaveAsync">
                 <FluentValidationValidator @ref="_fluentValidationValidator"/>
+                <ValidationSummary />
                 <MudGrid Class="px-0 px-md-20 px-lg-20">
                     <MudItem xs="12" md="2">
                         <MudText Typo="Typo.subtitle2">@Localize["Contact Information"]</MudText>

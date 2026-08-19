@@ -23,6 +23,7 @@
                     <MudItem xs="12">
                         <EditForm FormName="project-information" OnValidSubmit="SaveAsync" EditContext="EditForm">
                             <FluentValidationValidator @ref="_fluentValidationValidator"></FluentValidationValidator>
+                            <ValidationSummary />
                             <MudGrid>
                                 <MudItem xs="12" md="6">
                                     <MudTextField @bind-Value="Modal.Title"

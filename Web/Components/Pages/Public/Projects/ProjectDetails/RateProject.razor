@@ -2,6 +2,19 @@
 
 @if (_loaded && RefereePermission.Allowed)
 {
+    @if (RefereePermission.Judgings.Count > 1)
+    {
+        <MudSelect T="int" Dense="true" Variant="Variant.Outlined"
+                   Label="@Localize["Assigned festival"]"
+                   Value="@_selectedJudgingId"
+                   ValueChanged="SelectJudging"
+                   Class="mb-2">
+            @foreach (var assignment in RefereePermission.Judgings)
+            {
+                <MudSelectItem T="int" Value="@assignment.Id">@assignment.FestivalName</MudSelectItem>
+            }
+        </MudSelect>
+    }
     <MudChip T="string" Color="Color.Tertiary" Variant="Variant.Text">TN:@_judgingDetail.Submit.TrackingCode</MudChip>
     
     <MudButton Class="mx-1" Variant="Variant.Filled"

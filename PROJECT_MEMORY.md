@@ -1339,3 +1339,24 @@ data contract, privacy policy and pricing are approved.
 - Build verification completed with 0 errors.
 - Phase 2 remains open pending interactive referee save confirmation,
   festival-scope denial checks, autosave/recovery, and full checkout tests.
+
+## Phase 1 and Phase 2 implementation checkpoint (2026-08-19)
+
+- Completed the documented low-risk implementation items for the shared
+  experience and completion funnels: clean cart reloads, validation summaries,
+  stable form names, news preview, explicit referee save result, and
+  festival-scoped claims/authorization.
+- `FestivalAuthentication` now requires the requested festival and policy
+  pair; a browser-supplied matching festival claim alone is not authority.
+- `CustomClaimsPrincipalFactory` builds festival permission scopes from owned
+  festivals, festival-manager memberships, and active referee memberships.
+- Public route/API smoke checks and local migration startup checks passed.
+- `dotnet build .\Web\Web.csproj --no-restore --disable-build-servers` passed
+  with 0 errors and 7 package warnings. The remaining legacy warning families
+  belong to the documented Phase 6 warning cleanup.
+- `Web/Permission/PermissionPolicyProvider.cs` remains a pre-existing,
+  unrelated local modification and is intentionally not included in the
+  phase commit.
+- Manual provider-payment, receipt-download, browser-visual, and real
+  referee-assignment interaction remain test-session items; they are not
+  falsely marked as verified by source/build checks alone.

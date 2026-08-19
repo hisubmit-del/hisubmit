@@ -16,7 +16,7 @@
     {
         <MudCardContent>
           <div class="px-0 px-md-20 px-lg-20"> 
-            <EditForm EditContext="_editForm" style="margin-bottom:30px">
+            <EditForm FormName="festival-dates-deadlines" EditContext="_editForm" style="margin-bottom:30px">
                 @if (!IsAdmin)
                 {
                     <MudGrid>
@@ -29,6 +29,7 @@
                     </MudGrid>
                 }
                 <FluentValidationValidator @ref="_fluentValidationValidator"/>
+                <ValidationSummary />
                 <MudGrid Class="mb-3 ">
                     <MudItem xs="12" md="2" Class="d-flex align-content-center flex-wrap">
                         <MudText Typo="Typo.subtitle2"> @localizer["Opening Date"]:</MudText>

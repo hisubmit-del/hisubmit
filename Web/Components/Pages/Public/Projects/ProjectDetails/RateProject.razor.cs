@@ -31,6 +31,7 @@ public partial class RateProject
     private bool _loaded;
     private GetProjectJudgingDetailResponse _judgingDetail = new();
     private CheckPermissionResponse RefereePermission { get; set; } = new();
+    private int _selectedJudgingId;
 
     #endregion
 
@@ -52,6 +53,7 @@ public partial class RateProject
         if (response.Succeeded)
         {
             RefereePermission = response.Data;
+            _selectedJudgingId = RefereePermission.Judgings.FirstOrDefault()?.Id ?? 0;
         }
         else
         {
@@ -64,7 +66,11 @@ public partial class RateProject
 
     private async Task ShowRefereeModal()
     {
-        var selectedSubmit = RefereePermission.Judgings.First();
+        var selectedSubmit = RefereePermission.Judgings
+            .FirstOrDefault(p => p.Id == _selectedJudgingId)
+            ?? RefereePermission.Judgings.FirstOrDefault();
+        if (selectedSubmit is null)
+            return;
         var judgingResult = new AddEditProjectJudgingResultCommand
         {
             
@@ -92,13 +98,19 @@ public partial class RateProject
         };
       var dialog=  _dialogService.Show<ProjectJudgingForm>(Localize["Submit Judge"], parameter, options);
       var res =await dialog.Result;
+      if (!res.Canceled && res.Data is true)
+      {
+          _snackBar.Add(Localize["Judgment submitted"], Severity.Success);
+      }
       await LoadReferee();
       StateHasChanged();
     }
 
     private async Task LoadReferee()
     {
-        var selectedSubmit = RefereePermission.Judgings.FirstOrDefault();
+        var selectedSubmit = RefereePermission.Judgings
+            .FirstOrDefault(p => p.Id == _selectedJudgingId)
+            ?? RefereePermission.Judgings.FirstOrDefault();
         if (selectedSubmit != null)
         {
             var user = await AuthenticationManager.CurrentUser();
@@ -112,5 +124,11 @@ public partial class RateProject
                     _judgingDetail = response.Data;
             }   
         }
+    }
+
+    private async Task SelectJudging(int judgingId)
+    {
+        _selectedJudgingId = judgingId;
+        await LoadReferee();
     }
 }

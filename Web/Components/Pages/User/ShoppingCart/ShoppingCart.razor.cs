@@ -29,6 +29,12 @@ public partial class ShoppingCart
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
+        await ReloadCartItems();
+    }
+
+    private async Task ReloadCartItems()
+    {
+        _shopCartItems = new();
         await LoadCartItems();
         await LoadUserPaidItems();
     }
@@ -63,8 +69,7 @@ public partial class ShoppingCart
         });
         if (response.Succeeded)
         {
-            await LoadCartItems();
-            await LoadUserPaidItems();
+            await ReloadCartItems();
         }
         else
             foreach (var message in response.Messages)
@@ -96,7 +101,7 @@ public partial class ShoppingCart
         if (response.Succeeded)
         {
             _snackBar.Add("Successfully paid cart", Severity.Success);
-            await LoadCartItems();
+            await ReloadCartItems();
             StateHasChanged();
         }
         else
@@ -130,7 +135,7 @@ public partial class ShoppingCart
         if (response.Succeeded)
         {
             _snackBar.Add("Successfully paid cart", Severity.Success);
-            await LoadCartItems();
+            await ReloadCartItems();
             StateHasChanged();
         }
         else

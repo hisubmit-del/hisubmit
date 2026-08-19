@@ -65,8 +65,8 @@ BlazorHeroContext dbContext)
         IList<string> userRoles,
         string userId)
     {
-        var festivalAccess = new Dictionary<int, string[]>();
-        var festivalId =await  GetFestivalId(userRoles,userId);
+        var festivalAccess = new Dictionary<int, HashSet<string>>();
+        var ownedOrMemberFestivalIds = await GetFestivalIds(userId);
 
         foreach (var roleName in userRoles)
         {
@@ -76,16 +76,17 @@ BlazorHeroContext dbContext)
 
             var access = await RoleManager.GetClaimsAsync(role);
 
-            if (role is not { FestivalId: null } && role.Name != RoleConstants.FestivalRole)
+            if (role.FestivalId is int roleFestivalId)
             {
                 if (role.Name != null) claimsIdentity.AddClaim(new(ApplicationClaimTypes.FestivalRole, role.Name));
-                festivalAccess.Add(role.FestivalId.Value, access.Select(p => p.Value).ToArray());
+                AddFestivalAccess(festivalAccess, roleFestivalId, access.Select(p => p.Value));
             }
 
-            else if (roleName == RoleConstants.FestivalRole && festivalId!=null)
+            else if (roleName == RoleConstants.FestivalRole)
             {
                 if (role.Name != null) claimsIdentity.AddClaim(new(ClaimTypes.Role, role.Name));
-                    festivalAccess.Add(festivalId.Value, access.Select(p => p.Value).ToArray());
+                foreach (var festivalId in ownedOrMemberFestivalIds)
+                    AddFestivalAccess(festivalAccess, festivalId, access.Select(p => p.Value));
             }
 
             else
@@ -97,8 +98,24 @@ BlazorHeroContext dbContext)
             }
         }
 
-        var accessJson = JsonSerializer.Serialize(festivalAccess);
+        var accessJson = JsonSerializer.Serialize(
+            festivalAccess.ToDictionary(p => p.Key, p => p.Value.ToArray()));
         claimsIdentity.AddClaim(new Claim(ApplicationClaimTypes.FestivalPermission, accessJson));
+    }
+
+    private static void AddFestivalAccess(
+        IDictionary<int, HashSet<string>> festivalAccess,
+        int festivalId,
+        IEnumerable<string> permissions)
+    {
+        if (!festivalAccess.TryGetValue(festivalId, out var existing))
+        {
+            existing = new HashSet<string>(StringComparer.Ordinal);
+            festivalAccess[festivalId] = existing;
+        }
+
+        foreach (var permission in permissions)
+            existing.Add(permission);
     }
     private async Task AddFestivalIdToClaims(
         ClaimsIdentity claimsIdentity,
@@ -119,18 +136,28 @@ BlazorHeroContext dbContext)
         if (!roles.Any(role => role == RoleConstants.FestivalRole))
             return null;
 
-        // A festival manager may own multiple festival masters. Use the
-        // newest master with a valid active festival instead of relying on
-        // insertion order or creating a misleading claim with value 0.
-        var festival = await dbContext.FestivalMasters
-            .Where(master => master.UserId == userId && master.ActiveId != 0)
-            .OrderByDescending(master => master.CreatedOn)
-            .SelectMany(master => dbContext.Festivals
-                .Where(item => item.FestivalMasterId == master.Id &&
-                               item.Id == master.ActiveId)
-                .Select(item => new { item.Id }))
-            .FirstOrDefaultAsync();
+        return (await GetFestivalIds(userId)).FirstOrDefault();
+    }
 
-        return festival?.Id;
+    private async Task<List<int>> GetFestivalIds(string userId)
+    {
+        var ownedFestivalIds = await dbContext.Festivals
+            .Where(festival => festival.UserId == userId ||
+                               (festival.FestivalMaster != null &&
+                                festival.FestivalMaster.UserId == userId))
+            .Select(festival => festival.Id)
+            .ToListAsync();
+
+        var memberFestivalIds = await dbContext.FestivalSubUser
+            .Where(member => member.UserId == userId && !member.IsRemoved)
+            .Select(member => member.FestivalId)
+            .ToListAsync();
+
+        return ownedFestivalIds
+            .Concat(memberFestivalIds)
+            .Where(id => id > 0)
+            .Distinct()
+            .OrderByDescending(id => id)
+            .ToList();
     }
 }

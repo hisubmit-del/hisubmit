@@ -1286,3 +1286,35 @@ venues. Public active tickets now exclude sold-out records
 management form and list; richer storefront, reservation/stock states,
 event-pass/accreditation metadata, receipt/checkout improvements, and income
 analytics are planned but not yet implemented.
+
+### Phase 1 and Phase 2 verification checkpoint (2026-08-19)
+
+- The shared cart now reloads open and paid items from a clean state after
+  initialization, deletion, payment, and zero-total completion; this prevents
+  paid rows from being duplicated in the client view.
+- Project and festival editor forms now expose validation summaries and stable
+  unique form names across the project specifications and festival setup
+  panels.
+- Festival news editing now includes a local preview state before publishing.
+- Referee assignment selection is festival-specific when an artist's project
+  has more than one active judging assignment. A successful judging result
+  returns an explicit dialog result and the parent refreshes the assignment
+  state.
+- Festival authorization no longer treats a matching `FestivalId` claim as
+  sufficient authority. The permission claim must match both the requested
+  festival and the required policy. Claims are built for owned, manager, and
+  active referee-member festival scopes.
+- Local smoke checks after the latest restart returned HTTP 200 for the public
+  pages, login page, privacy/terms pages, guest cart, and public deadline API.
+- A clean build of `Web.csproj` completed with 0 errors and 7 package warnings.
+  The remaining legacy nullable/MudBlazor analyzer warnings are tracked under
+  Phase 6 and were not mixed into this workflow checkpoint.
+- The latest application log contains successful startup/migration entries and
+  no new exception after the latest restart. Earlier invalid-column entries
+  are retained as historical evidence from before the local migration ran.
+
+Phase 1 and Phase 2 implementation checkpoints are complete for the changes
+listed above. Full interactive payment-provider, receipt-download, browser
+visual, and real referee-submit tests still require a manual local test
+session with valid transaction and assignment data; they are not claimed as
+automatically verified by this checkpoint.

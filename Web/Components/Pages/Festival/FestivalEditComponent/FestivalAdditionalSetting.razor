@@ -23,8 +23,9 @@
         }
         else
         {
-            <EditForm EditContext="_editForm" OnSubmit="SaveAsync">
+            <EditForm FormName="festival-additional-settings" EditContext="_editForm" OnSubmit="SaveAsync">
                 <FluentValidationValidator @ref="_fluentValidationValidator"/>
+                <ValidationSummary />
                 @* <MudContainer MaxWidth="MaxWidth.Medium"> *@
                 <MudGrid Class="py-0 py-md-5">
                     @if (!IsAdmin)

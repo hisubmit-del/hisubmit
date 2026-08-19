@@ -10,8 +10,9 @@
         <MudItem xs="12">
             <MudCard Elevation="25">
                 <MudContainer MaxWidth="MaxWidth.Medium">
-                    <EditForm Model="_new" OnSubmit="SaveAsync">
+                    <EditForm Model="_new" FormName="festival-news-editor" OnSubmit="SaveAsync">
                         <FluentValidationValidator @ref="_fluentValidationValidator" />
+                        <ValidationSummary />
                         <MudGrid>
                             <MudItem xs="12" md="6">
                                 <MudTextField @bind-Value="_new.Title" For="() => _new.Title"
@@ -46,6 +47,12 @@
                         <MudItem xs="12" Class="d-flex">
                             <MudSpacer/>
                             <MudButtonGroup OverrideStyles="false" Class="mb-2">
+                                <MudButton Variant="Variant.Outlined"
+                                            Color="Color.Secondary"
+                                            OnClick="TogglePreview"
+                                            Disabled="@(!CanPreview)">
+                                    @Localize["Preview"]
+                                </MudButton>
                                 <MudButton  Variant="Variant.Filled"
                                             Href="/festival/news">@Localize["Back to list"]</MudButton>
 
@@ -54,6 +61,17 @@
                                                ButtonType="ButtonType.Submit" Color="Color.Info">@Localize["Save"]</LoadingButton>
                             </MudButtonGroup>
                         </MudItem>
+                        @if (_showPreview)
+                        {
+                            <MudItem xs="12">
+                                <MudPaper Class="pa-4 mt-3" Outlined="true">
+                                    <MudText Typo="Typo.h5">@_new.Title</MudText>
+                                    <MudText Typo="Typo.subtitle1" Class="mt-2">@_new.ShortDescription</MudText>
+                                    <MudDivider Class="my-3"/>
+                                    <ReadMore Text="@_new.Description" MarkUpString="true" />
+                                </MudPaper>
+                            </MudItem>
+                        }
                     </EditForm>
                 </MudContainer>
             </MudCard>

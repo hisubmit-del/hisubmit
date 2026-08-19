@@ -12,6 +12,7 @@
                 <MudItem xs="12" sm="12" md="12">
                     <EditForm FormName="project-vrxr-specification" OnValidSubmit="SaveAsync" EditContext="@_editContext">
                         <FluentValidationValidator @ref="_fluentValidationValidator"/>
+                        <ValidationSummary />
                         <MudGrid>
                             <MudItem xs="12">
                                 <MudGrid>
