@@ -133,6 +133,9 @@ namespace HiSubmit.Application.Features.Festivals.Commands.AddEditEventCategory
         private async Task UpdateMinMaxFeeInFestival
             (List<UpdateDeadlineCategoryonFee> catFees,int festivalId)
         {
+            if (catFees is not { Count: > 0 })
+                return;
+
             var festival = await _unitOfWork.Repository<Festival>()
                 .GetByIdAsync(festivalId);
             var f = new List<double>();
@@ -146,6 +149,9 @@ namespace HiSubmit.Application.Features.Festivals.Commands.AddEditEventCategory
                 if (d.StandardFee != null)
                     f.Add(d.StandardFee.Value);
             }
+
+            if (f.Count == 0)
+                return;
 
             if (festival.MinFee != null)
             {

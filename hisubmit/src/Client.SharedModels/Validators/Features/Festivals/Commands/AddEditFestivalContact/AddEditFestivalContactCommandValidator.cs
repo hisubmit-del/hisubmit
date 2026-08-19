@@ -14,6 +14,8 @@ public class AddEditFestivalContactCommandValidator:AbstractValidator<AddEditFes
         )
     {
         RuleFor(festival => festival.WebSite)
+            .NotNull().NotEmpty()
+            .WithMessage(localize["Website Could not be null"])
             .SiteUrl();
         RuleFor(festival => festival.Youtube)
             .YoutubeChannelName();

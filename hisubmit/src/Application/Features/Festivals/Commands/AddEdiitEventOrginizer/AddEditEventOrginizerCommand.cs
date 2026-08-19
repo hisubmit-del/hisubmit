@@ -38,7 +38,7 @@ public class AddEditEventOrganizerCommandHandler(
         if(request.Id == 0)
         {
             var organizer = mapper.Map<EventOrginizer>(request);
-            if (request.Image.Data != null)
+            if (request.Image?.Data is { Length: > 0 })
             {
                 request.Image.UploadType = UploadType.Organizer;
                 organizer.ImageName = uploadService.UploadAsync(request.Image);

@@ -38,7 +38,7 @@
                             <MudItem xs="12" md="6" Style="margin-bottom:2px">
                                 <MudTextField @bind-Value="_festival.WebSite" For="@(() => _festival.WebSite)"
                                               HelperTextOnFocus="true" HelperText="Like: www.HiSubmit.com "
-                                              Label="@Localize["WebSite"]" Variant="Variant.Filled"
+                                              Required="true" Label="@Localize["WebSite"]" Variant="Variant.Filled"
                                               Margin="Margin.Dense"/>
                             </MudItem>
                             <MudItem xs="12" md="6" Style="margin-bottom:2px">
@@ -50,7 +50,7 @@
                             <MudItem xs="12" md="6" Style="margin-bottom:2px">
                                 <MudTextField @bind-Value="_festival.Email" For="@(() => _festival.Email)"
                                               HelperTextOnFocus="true" HelperText="Like: hisubmit@hisubmit.com "
-                                              Label="@Localize["Email"]" Variant="Variant.Filled"
+                                              Required="true" Label="@Localize["Email"]" Variant="Variant.Filled"
                                               Margin="Margin.Dense"/>
                             </MudItem>
                             <MudItem>
@@ -134,7 +134,7 @@
                     <MudGrid Class="px-0 px-md-20 px-lg-20">
                         <MudItem xs="12" md="2">
                             <MudText Typo="Typo.subtitle2">
-                                @Localize["Event venue"]
+                                @Localize["Event venue"] <span style="color:#d32f2f;font-weight:700" aria-hidden="true">*</span>
                             </MudText>
                         </MudItem>
                         <MudItem xs="12" md="10">

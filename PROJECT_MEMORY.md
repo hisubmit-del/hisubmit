@@ -1499,3 +1499,34 @@ data contract, privacy policy and pricing are approved.
     pasted content. This prevents one editor instance from re-enabling links
     in another instance.
   - No database schema or migration was required for this checkpoint.
+
+## Festival wizard and draft-owner verification checkpoint (2026-08-19)
+
+- `FestivalDetail` now uses `IPublicTicketManager` for the public festival
+  ticket list. The previous internal ticket manager caused HTTP 401 responses
+  on public festival pages.
+- Owned festival records are included in the cookie claims even while they
+  are draft/inactive. Active membership records remain restricted to active,
+  non-removed memberships. This lets a festival owner complete the wizard
+  before release without granting unrelated users access.
+- `ClientAuthenticationManager` now implements selected/main/other festival
+  account resolution from claims and local storage; the prior methods no
+  longer throw `NotImplementedException`.
+- Release prerequisites now explicitly load and validate deadlines and venues,
+  and require registration opening, event start/end dates, at least one
+  deadline, and a venue for offline festivals. Website and email are required
+  by the contact validator and editor markers.
+- Creating a category before defining deadlines is supported. Empty fee lists
+  no longer call `Min()`/`Max()` or fail the category command.
+- Festival organizers can be saved without an image; image upload remains
+  optional and is processed only when non-empty data is supplied.
+- Real local wizard verification used:
+  `qa.festival.wizard@hisubmit.test` /
+  `FestivalWizard#2026!`, festival `20`. Detail, contact, category, deadline,
+  organizer, venue, prefix, cover upload, and release were exercised. Release
+  returned success with the expected `UnderInvestigation` review state.
+- No production database was changed. The local database already contains the
+  test data created by the wizard verification.
+- Earlier notes saying all owned drafts are filtered out are superseded by
+  this checkpoint: only unrelated inactive memberships remain excluded; an
+  owned draft is intentionally claimable by its owner.

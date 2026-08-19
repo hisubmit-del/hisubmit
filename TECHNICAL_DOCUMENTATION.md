@@ -1479,3 +1479,29 @@ server logs.
 
   This is a presentation/validation hardening change only; it does not change
   the database model or migration history.
+
+## Festival wizard and draft-owner verification checkpoint (2026-08-19)
+
+The public festival detail page now loads tickets through
+`IPublicTicketManager` and the public ticket route. This removes the previous
+401 caused by calling the festival-owner ticket route from a public page.
+
+Cookie claims now include festivals owned by the current user even when those
+festivals are still drafts. Active festival memberships continue to require
+an active, non-removed membership. `ClientAuthenticationManager` also resolves
+main, selected, other, and personal account scopes from claims/local storage.
+Users must log out and sign in again after deployment to receive regenerated
+claims.
+
+Release validation now loads deadlines and venues and requires registration
+opening, event start/end, at least one submission deadline, and an offline
+venue. Contact validation and editor markers require a valid website and
+email. Categories may be created before deadline fee rows; an empty fee list
+is handled safely. Organizer creation accepts a missing optional image.
+
+The local end-to-end wizard test used festival owner
+`qa.festival.wizard@hisubmit.test` with festival `20`: detail, contact,
+category, deadline, organizer, venue, tracking prefix, cover upload, and
+release all completed. Release returned the expected successful
+`UnderInvestigation` review state. The test used only local `HiSubmitDB50`;
+no production data was changed.

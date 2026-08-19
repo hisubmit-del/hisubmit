@@ -14,7 +14,7 @@ using Hisubmit.Client.SharedModels.Features.Products.Queries.GetAllPaged;
 using Hisubmit.Client.SharedModels.Features.Submits.Queries.GetAllSubmitsQueries;
 using Hisubmit.Client.SharedModels.Features.Tickets.Queries.GetAllTicket;
 using HiSubmit.Client.Infrastructure.Managers.Submits;
-using HiSubmit.Client.Infrastructure.Managers.Tickets;
+using HiSubmit.Client.Infrastructure.Managers.PublicTicket;
 using Web.Components.Pages.Public.Festivals.Components;
 using Web.Components.Shared.Components;
 using ClientComponents.Shared.Dialogs;
@@ -37,7 +37,7 @@ public partial class FestivalDetail
     #region Inject
 
     [Inject] public IPublicFestivalManager FestivalManager { get; set; }
-    [Inject] public ITicketManager TicketManager { get; set; }
+    [Inject] public IPublicTicketManager TicketManager { get; set; }
     [Inject] private ISubmitManager SubmitManager { get; set; }
     [Inject]private ICommentManager CommentManager { get; set; }
 

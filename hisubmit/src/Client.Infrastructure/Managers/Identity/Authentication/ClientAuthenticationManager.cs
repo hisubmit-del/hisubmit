@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Net.Http.Headers;
 using HiSubmit.Client.SharedModels.Wrapper;
 using System.Collections.Generic;
+using System.Linq;
 using Blazored.LocalStorage;
 using Hisubmit.Client.SharedModels.Requests.Identity;
 using Hisubmit.Client.SharedModels.Responses.Identity;
@@ -17,6 +18,8 @@ using HiSubmit.Client.Infrastructure.Routes;
 using HiSubmit.Client.Infrastructure.Extensions;
 using HiSubmit.Client.Infrastructure.Authentication;
 using Microsoft.AspNetCore.Components.Authorization;
+using Hisubmit.Client.SharedModels.Contracts.Permission;
+using System.Text.Json;
 
 namespace HiSubmit.Client.Infrastructure.Managers.Identity.Authentication
 {
@@ -27,9 +30,12 @@ namespace HiSubmit.Client.Infrastructure.Managers.Identity.Authentication
         IStringLocalizer<ClientAuthenticationManager> localize)
         : IAuthenticationManager
     {
+        private ClaimsPrincipal _cachedUser = new(new ClaimsIdentity());
+
         public async Task<ClaimsPrincipal> CurrentUser()
         {
             var state = await authenticationStateProvider.GetAuthenticationStateAsync();
+            _cachedUser = state.User;
             return state.User;
         }
 
@@ -47,27 +53,53 @@ namespace HiSubmit.Client.Infrastructure.Managers.Identity.Authentication
 
         public int? GetMainFestivalId()
         {
-            throw new NotImplementedException();
+            var value = _cachedUser.FindFirst(ApplicationClaimTypes.FestivalId)?.Value;
+            return int.TryParse(value, out var festivalId) && festivalId > 0 ? festivalId : null;
         }
 
         public IEnumerable<int> GetOtherFestivalId()
         {
-            throw new NotImplementedException();
+            var claim = _cachedUser.FindFirst(ApplicationClaimTypes.FestivalPermission)?.Value;
+            if (string.IsNullOrWhiteSpace(claim))
+                return Enumerable.Empty<int>();
+
+            try
+            {
+                var permissions = JsonSerializer.Deserialize<Dictionary<int, string[]>>(claim);
+                return permissions?.Keys.Where(id => id > 0 && id != GetMainFestivalId()).ToArray()
+                    ?? Enumerable.Empty<int>();
+            }
+            catch (JsonException)
+            {
+                return Enumerable.Empty<int>();
+            }
         }
 
-        public Task<int?> GetSelectedFestivalId()
+        public async Task<int?> GetSelectedFestivalId()
         {
-            throw new NotImplementedException();
+            if (!await localStorage.ContainKeyAsync(StorageConstants.Local.SelectedFestivalId))
+                return GetMainFestivalId();
+
+            var selected = await localStorage.GetItemAsync<int?>(StorageConstants.Local.SelectedFestivalId);
+            return selected is > 0 ? selected : null;
         }
 
-        public Task<bool> IsPersonalAccountSelected()
+        public async Task<bool> IsPersonalAccountSelected()
         {
-            throw new NotImplementedException();
+            if (!await localStorage.ContainKeyAsync(StorageConstants.Local.SelectedFestivalId))
+                return false;
+
+            var selected = await localStorage.GetItemAsync<int?>(StorageConstants.Local.SelectedFestivalId);
+            return selected is null or 0;
         }
 
-        public Task<int?> GetAdminLoginToFestivalId()
+        public async Task<int?> GetAdminLoginToFestivalId()
         {
-            throw new NotImplementedException();
+            if (!await localStorage.ContainKeyAsync(StorageConstants.Local.AdminSelectedFestivalId))
+                return null;
+
+            var selected = await localStorage.GetItemAsync<int?>(StorageConstants.Local.AdminSelectedFestivalId);
+            return selected is > 0 ? selected : null;
         }
 
         public async Task<IResult<TokenResponse>> Login(TokenRequest model)

@@ -39,6 +39,8 @@ namespace HiSubmit.Application.Features.Festivals.Commands.ReleaseFestival
                 .Entities.Include(p => p.EventOrginizers)
                 .Include(p => p.EventCategories)
                 .Include(p => p.Images)
+                .Include(p => p.DeadLines)
+                .Include(p => p.Venues)
                 .FirstOrDefaultAsync(p => p.Id == request.FestivalId, cancellationToken);
 
             if (festival == null)
@@ -62,14 +64,22 @@ namespace HiSubmit.Application.Features.Festivals.Commands.ReleaseFestival
                 messages.Add(_localize["To publish the festival, you must enter a email"]);
             if (string.IsNullOrWhiteSpace(festival.WebSite))
                 messages.Add(_localize["To publish the festival, you must enter a website"]);
+            if (festival.OpeningDate == null)
+                messages.Add(_localize["To publish the festival, you must enter the registration opening date"]);
+            if (festival.EventStartDate == null || festival.EventEndDate == null)
+                messages.Add(_localize["To publish the festival, you must enter the event start and end dates"]);
             if (string.IsNullOrWhiteSpace(festival.Prefix))
                 messages.Add("To publish the festival, you must enter a prefix for submition code");
             if (festival.EventOrginizers == null || !festival.EventOrginizers.Any())
                 messages.Add(_localize[" Event Organizer  must have at least one member"]);            
             if (festival.NotificationDate == null)
                 messages.Add(_localize["The deadlines section has not been completed"]);            
+            if (festival.DeadLines == null || !festival.DeadLines.Any())
+                messages.Add(_localize["At least one submission deadline is required"]);
             if (festival.EventCategories == null || !festival.EventCategories.Any())
                 messages.Add(_localize["The Event Categories section has not been completed"]);            
+            if (!festival.OnlineEvent && (festival.Venues == null || !festival.Venues.Any()))
+                messages.Add(_localize["At least one event venue is required for an offline festival"]);
             if (festival.Images.All(p => p.ImageType != ImageType.Cover))
                 messages.Add(_localize["Your festival dont have a Cover"]);
             

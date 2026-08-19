@@ -3,7 +3,7 @@
 <MudGrid>
     <MudItem xs="12" md="2">
         <MudStack Row="true" Justify="Justify.SpaceBetween">
-            <MudText Typo="Typo.subtitle2"> @Localize["Entry Deadlines"]</MudText>
+            <MudText Typo="Typo.subtitle2"> @Localize["Entry Deadlines"] <span style="color:#d32f2f;font-weight:700" aria-hidden="true">*</span></MudText>
             @if (!IsAdmin)
             {
                 <MudHidden Breakpoint="Breakpoint.MdAndUp">
