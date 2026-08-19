@@ -1,0 +1,127 @@
+@page "/festival/settlements"
+@inherits Web.Components.Shared.Components.Base.BaseFestival
+@using Hisubmit.Client.SharedModels.Enums.Payments
+@using Hisubmit.Client.SharedModels.Features.Settlements.Commands
+@using Hisubmit.Client.SharedModels.Features.Settlements.Queries
+@using Hisubmit.Client.SharedModels.Contracts.Permission
+@using HiSubmit.Client.Infrastructure.Managers.FestivalPayments
+@inject IFestivalPaymentsManager PaymentsManager
+@inject NavigationManager Navigation
+@inject IStringLocalizer<Settlements> Localize
+
+<MudContainer MaxWidth="MaxWidth.Large" Class="py-6">
+    <MudPaper Class="pa-5 settlement-page" Elevation="1">
+        <MudStack Row="true" AlignItems="AlignItems.Center" Justify="Justify.SpaceBetween" Spacing="2">
+            <div>
+                <MudText Typo="Typo.h4">Settlement statements</MudText>
+                <MudText Typo="Typo.body2" Color="Color.Secondary">
+                    Period-based income, charges, adjustments and settlement status for this festival.
+                </MudText>
+            </div>
+            <MudButton Variant="Variant.Filled" Color="Color.Primary"
+                       StartIcon="@Icons.Material.Filled.Add"
+                       OnClick="CreateStatementAsync" Disabled="@(!_canCreate || _processing)">
+                Create statement
+            </MudButton>
+        </MudStack>
+
+        <MudDivider Class="my-5"/>
+
+        <MudGrid>
+            <MudItem xs="12" md="5">
+                <MudDateRangePicker @bind-DateRange="_period" Label="Statement period"/>
+            </MudItem>
+            <MudItem xs="12" md="7">
+                <MudAlert Severity="Severity.Info" Variant="Variant.Outlined">
+                    Each statement is isolated by festival and exact period. Confirmed or paid statements cannot
+                    receive new adjustments.
+                </MudAlert>
+            </MudItem>
+        </MudGrid>
+
+        @if (!string.IsNullOrWhiteSpace(_error))
+        {
+            <MudAlert Severity="Severity.Error" Class="my-4">@_error</MudAlert>
+        }
+
+        @if (_adjustmentStatementId.HasValue)
+        {
+            <MudPaper Class="pa-4 my-4" Outlined="true">
+                <MudText Typo="Typo.h6">Add settlement adjustment</MudText>
+                <MudGrid Class="mt-2">
+                    <MudItem xs="12" md="3">
+                        <MudNumericField T="decimal" Label="Amount (+ / -)" @bind-Value="_adjustmentAmount"/>
+                    </MudItem>
+                    <MudItem xs="12" md="5">
+                        <MudTextField Label="Reason" @bind-Value="_adjustmentReason" Required="true"/>
+                    </MudItem>
+                    <MudItem xs="12" md="4">
+                        <MudTextField Label="Evidence URL (optional)" @bind-Value="_adjustmentEvidence"/>
+                    </MudItem>
+                </MudGrid>
+                <MudStack Row="true" Class="mt-3">
+                    <MudButton Color="Color.Warning" Variant="Variant.Filled" OnClick="SaveAdjustmentAsync"
+                               Disabled="@_processing">Save adjustment</MudButton>
+                    <MudButton Variant="Variant.Text" OnClick="@(() => _adjustmentStatementId = null)">Cancel</MudButton>
+                </MudStack>
+            </MudPaper>
+        }
+
+        @if (_loading)
+        {
+            <MudProgressLinear Indeterminate="true" Color="Color.Primary" Class="my-5"/>
+        }
+        else if (_statements.Count == 0)
+        {
+            <MudAlert Severity="Severity.Normal" Class="my-5">
+                No statements have been created for this festival yet.
+            </MudAlert>
+        }
+        else
+        {
+            @foreach (var statement in _statements)
+            {
+                <MudPaper Class="pa-4 my-4 settlement-card" Elevation="0" Outlined="true">
+                    <MudStack Row="true" AlignItems="AlignItems.Center" Justify="Justify.SpaceBetween">
+                        <div>
+                            <MudText Typo="Typo.h6">
+                                @statement.PeriodStart.ToString("yyyy-MM-dd") – @statement.PeriodEnd.ToString("yyyy-MM-dd")
+                            </MudText>
+                            <MudText Typo="Typo.caption">Statement #@statement.Id</MudText>
+                        </div>
+                        <MudChip T="string" Color="@StatusColor(statement.Status)" Variant="Variant.Filled">
+                            @statement.Status
+                        </MudChip>
+                    </MudStack>
+                    <MudGrid Class="mt-3">
+                        <MudItem xs="6" md="3"><MudText Typo="Typo.caption">Gross income</MudText><MudText>@statement.GrossIncome.ToString("C2")</MudText></MudItem>
+                        <MudItem xs="6" md="3"><MudText Typo="Typo.caption">Site charges</MudText><MudText>@statement.SiteCharges.ToString("C2")</MudText></MudItem>
+                        <MudItem xs="6" md="3"><MudText Typo="Typo.caption">Advertising</MudText><MudText>@statement.AdvertisingCharges.ToString("C2")</MudText></MudItem>
+                        <MudItem xs="6" md="3"><MudText Typo="Typo.caption">Net amount</MudText><MudText Color="Color.Primary">@statement.NetAmount.ToString("C2")</MudText></MudItem>
+                    </MudGrid>
+                    @if (statement.Adjustments.Count > 0)
+                    {
+                        <MudText Typo="Typo.caption" Class="mt-3">
+                            Adjustments: @statement.Adjustments.Sum(x => x.Amount).ToString("C2")
+                        </MudText>
+                    }
+                    <MudStack Row="true" Spacing="1" Class="mt-4">
+                        <MudButton Size="Size.Small" Variant="Variant.Outlined" Href="@ExportUrl(statement.Id, "excel")">
+                            Excel
+                        </MudButton>
+                        <MudButton Size="Size.Small" Variant="Variant.Outlined" Href="@ExportUrl(statement.Id, "pdf")">
+                            PDF
+                        </MudButton>
+                        @if (statement.Status == SettlementStatus.Pending || statement.Status == SettlementStatus.Disputed)
+                        {
+                            <MudButton Size="Size.Small" Color="Color.Warning" Variant="Variant.Outlined"
+                                       OnClick="@(() => AddAdjustmentAsync(statement.Id))">
+                                Add adjustment
+                            </MudButton>
+                        }
+                    </MudStack>
+                </MudPaper>
+            }
+        }
+    </MudPaper>
+</MudContainer>

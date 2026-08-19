@@ -1451,6 +1451,9 @@ data contract, privacy policy and pricing are approved.
 - Migration `20260819190000_AddSettlementStatementsAndAdvertisingInvoices`
   was applied to the local `HiSubmitDB50` database. It creates only the three
   new tables and does not modify or delete existing rows.
-- The current export endpoint is API-ready; the next UI wiring must expose
-  period filters, status badges, approval controls, and download buttons in
-  the festival/admin finance pages without mixing periods.
+- Added `/festival/settlements` for festival users with period selection,
+  statement creation, status badges, adjustment entry, and Excel/PDF download
+  links. It is linked from the festival payment-information page.
+- Admin-side approval/reconciliation screens, invoice creation UI, and
+  year-over-year artist finance views remain to be wired without mixing
+  periods.

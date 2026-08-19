@@ -8,6 +8,13 @@
 @inject IStringLocalizer<PaymentInformation> Localizer
 
 <MudGrid class="mt-lg-2 pa-2">
+    <MudItem xs="12">
+        <MudButton Variant="Variant.Outlined" Color="Color.Primary"
+                   Href="/festival/settlements"
+                   StartIcon="@Icons.Material.Filled.AccountBalance">
+            Settlement statements
+        </MudButton>
+    </MudItem>
     <MudItem xs="4" lg="4">
       
         @if (_information != null)

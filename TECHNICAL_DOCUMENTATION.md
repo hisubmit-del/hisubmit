@@ -1418,5 +1418,8 @@ festival permissions.
 
 Migration `20260819190000_AddSettlementStatementsAndAdvertisingInvoices` was
 applied locally to `HiSubmitDB50`. It is additive and does not alter existing
-commerce, submission, ticket, or payment rows. UI wiring for period filters,
-approval actions, and download controls remains the next presentation step.
+commerce, submission, ticket, or payment rows. The festival UI route
+`/festival/settlements` now exposes period selection, statement creation,
+status badges, adjustment entry, and Excel/PDF download links. Admin approval
+and reconciliation UI, invoice creation UI, and year-over-year artist finance
+views remain separate follow-up work.
