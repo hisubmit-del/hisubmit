@@ -151,11 +151,12 @@
                     <MudItem xs="12" md="10" Class="mt-3">
                         <MudGrid>
                             <MudItem xs="6" md=4>
-                                <MudTextField @bind-Value="_model.URL" Label="@Localize["URL"]"
+                        <MudTextField @bind-Value="_model.URL" Label="@Localize["Listing URL"]"
                                               For="@(() => _model.URL)" 
                                               Variant="Variant.Filled"
                                               Margin="Margin.Dense"
-                                              Disabled="@(!(IsAdmin || string.IsNullOrWhiteSpace(_model.URL)))"
+                                              HelperText="@Localize["Generated from the festival name. You can edit it once before the first save."]"
+                                              Disabled="@(!(IsAdmin || !_listingUrlLocked))"
                                               TextChanged="@((string val) => HandleURLChange(val))" />
                             </MudItem>
                             <MudItem xs="6" md="4">

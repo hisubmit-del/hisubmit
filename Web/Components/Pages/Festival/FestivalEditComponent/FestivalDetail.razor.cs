@@ -127,6 +127,28 @@ public partial class FestivalDetail
     {
         if (_model.FestivalStatus == FestivalStatus.UnderInvestigation)
             return true;
+
+        if (!IsAdmin)
+        {
+            if (string.IsNullOrWhiteSpace(_model.LogoURL) &&
+                !(_model.UploadRequest?.Data is { Length: > 0 }))
+            {
+                _snackBar.Add("A festival logo is required.", Severity.Error);
+                return false;
+            }
+
+            if (!_model.FilmFestival &&
+                !_model.ScreenWritingWriter &&
+                !_model.MusicContest &&
+                !_model.PhotographicContest &&
+                !_model.ArtFestival &&
+                !_model.OnlineFestival)
+            {
+                _snackBar.Add("Select at least one festival type.", Severity.Error);
+                return false;
+            }
+        }
+
         Validated = _fluentValidationValidator.Validate(options => { options.IncludeAllRuleSets(); });
         if (Validated)
         {

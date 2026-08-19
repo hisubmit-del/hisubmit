@@ -57,6 +57,13 @@ namespace HiSubmit.Application.Features.Festivals.Commands.ReleaseFestival
             var messages = new List<string>();
             if (string.IsNullOrWhiteSpace(festival.LogoURL))
                 messages.Add(_localize["To publish the festival, you must upload a logo"]);
+            if (!festival.FilmFestival &&
+                !festival.ScreenWritingWriter &&
+                !festival.MusicContest &&
+                !festival.PhotographicContest &&
+                !festival.ArtFestival &&
+                !festival.OnlineFestival)
+                messages.Add(_localize["To publish the festival, you must select at least one festival type"]);
             if (string.IsNullOrWhiteSpace(festival.Description))
                 messages.Add(_localize["To publish the festival, you must enter a description"]);
             if (string.IsNullOrWhiteSpace(festival.Rules))

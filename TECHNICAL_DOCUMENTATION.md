@@ -1564,3 +1564,28 @@ The wizard therefore has six steps:
 
 No database schema or API contract changed. The wrapper saves only pending
 cover/gallery changes; file rows remain persisted by their existing modal.
+
+### Required festival setup and listing URL
+
+The festival detail step requires a logo and at least one event type before a
+normal save/next operation succeeds. The release command repeats the event
+type check server-side, together with the existing logo and cover checks.
+
+The listing URL is assigned during the first additional-settings save. The
+server normalizes it to a lowercase hyphenated slug and resolves collisions
+with a numeric suffix. The UI permits editing while the database value is
+empty; after the first successful save it disables the field. A later attempt
+to change to another festival's URL returns a validation failure. No schema
+change or unique-index migration is required for this behavior.
+
+Festival category/focus join updates use `ArtCategoryId` and `FestivalFocusId`
+when comparing existing links. The category table displays deadline names and
+fee readiness so a saved category does not appear as an empty or unreadable
+row.
+
+### Form visual consistency
+
+The modern workspace CSS now scopes readable foreground colors to form cards,
+marks required fields in red, reduces checkbox stack spacing, and prevents
+category/fee content from being clipped or visually washed out. This is a
+presentation-only change and does not alter permissions or data contracts.

@@ -15,6 +15,10 @@
                       IsAdmin="IsAdmin"
                       ShowNavigation="false" />
         <MudDivider Class="my-4" />
+        <MudAlert Severity="Severity.Info" Variant="Variant.Outlined" Dense="true" Class="mt-4">
+            @Localize["A cover/banner image is required before the festival can be released."]
+            <span class="required-field-mark">*</span>
+        </MudAlert>
         <FestivalImages @ref="_media"
                         FestivalId="FestivalId"
                         IsAdmin="IsAdmin"

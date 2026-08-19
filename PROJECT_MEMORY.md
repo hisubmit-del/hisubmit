@@ -1584,3 +1584,24 @@ data contract, privacy policy and pricing are approved.
   --disable-build-servers --nologo` succeeded with 0 errors. Existing
   MudBlazor analyzer and package/nullable warnings remain outside this
   checkpoint.
+
+## Festival form readability and required setup checkpoint (2026-08-19)
+
+- Festival detail now blocks normal save/next for a festival without a logo
+  or without at least one selected festival type. Release validation enforces
+  the same type rule server-side.
+- The combined Files & Media step requires a cover/banner before the wizard
+  can continue. Existing file and image persistence APIs were retained.
+- The first listing URL is generated from the festival name as a normalized
+  lowercase slug and made unique with a numeric suffix when needed. It can be
+  edited during the initial assignment; after the first successful save it is
+  locked. Later duplicate URL changes are rejected server-side.
+- Festival art-category and festival-focus relationship updates now compare
+  foreign-key IDs instead of link-row IDs, preventing silently missing or
+  duplicated selections.
+- Category rows now visibly show their deadline fee schedule and a clear
+  empty state. Form-scoped contrast, required-field markers, compact
+  checkbox spacing, and readable table cells were added to the modern
+  workspace styles.
+- Build verification: 0 errors. Remaining warnings are existing MudBlazor
+  analyzer/legacy nullable and package warnings.

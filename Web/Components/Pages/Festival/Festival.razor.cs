@@ -208,7 +208,7 @@ public partial class Festival : IDisposable
         switch (_activePanelIndex)
         {
             case 0:
-                return !_festivalDetail.ModifiedForm() || await _festivalDetail.SaveAsync();
+                return await _festivalDetail.SaveAsync();
             case 1:
                 return !_contactAndVenue.ModifiedForm() || await _contactAndVenue.SaveAsync();
             case 2:
@@ -216,6 +216,8 @@ public partial class Festival : IDisposable
             case 3:
                 return !_festivalDeadline.ModifiedForm() || await _festivalDeadline.SaveAsync();
             case 4:
+                if (!_festivalFilesAndMedia.ValidateRequiredMedia())
+                    return false;
                 return !_festivalFilesAndMedia.ModifiedForm() ||
                        await _festivalFilesAndMedia.SaveAsync();
             case 5:

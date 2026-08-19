@@ -12,6 +12,8 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using HiSubmit.Domain.Enums;
+using System.Text.RegularExpressions;
+using Microsoft.EntityFrameworkCore;
 
 namespace HiSubmit.Application.Features.Festivals.Commands.AddEditAdditinalSettings
 {
@@ -56,11 +58,25 @@ namespace HiSubmit.Application.Features.Festivals.Commands.AddEditAdditinalSetti
             var festivalDb = await _unitOfWork.Repository<Festival>().GetByIdAsync(request.Id);
             if (festivalDb != null)
             {
-                var updatedFestival = _mapper.Map(request, festivalDb);
-                if (string.IsNullOrWhiteSpace(request.URL))
+                var firstListingAssignment = string.IsNullOrWhiteSpace(festivalDb.URL);
+                if (firstListingAssignment)
                 {
-                    request.URL = $"{festivalDb.Name.Trim()}";
+                    request.URL = await CreateUniqueUrlAsync(
+                        string.IsNullOrWhiteSpace(request.URL) ? festivalDb.Name : request.URL,
+                        request.Id);
                 }
+                else
+                {
+                    request.URL = NormalizeUrl(request.URL);
+                    if (await _unitOfWork.Repository<Festival>().Entities
+                            .AnyAsync(p => p.Id != request.Id && p.URL == request.URL, cancellationToken))
+                    {
+                        return await Result<int>.FailAsync(
+                            _loclizer["This festival listing URL is already in use."]);
+                    }
+                }
+
+                var updatedFestival = _mapper.Map(request, festivalDb);
                 await UpdateFestivalArtCategory(request.FestivalArtCategoriesId,request.Id);
                 await UpdateFestivalFestivalfocus(request.FestivalFestivalFociId, request.Id);
                 await _unitOfWork.Repository<Festival>().UpdateAsync(updatedFestival);
@@ -73,15 +89,36 @@ namespace HiSubmit.Application.Features.Festivals.Commands.AddEditAdditinalSetti
             }
         }
 
+        private async Task<string> CreateUniqueUrlAsync(string name, int festivalId)
+        {
+            var baseUrl = NormalizeUrl(name);
+            if (string.IsNullOrWhiteSpace(baseUrl))
+                baseUrl = $"festival-{festivalId}";
+
+            var candidate = baseUrl;
+            var suffix = 2;
+            while (await _unitOfWork.Repository<Festival>().Entities
+                       .AnyAsync(p => p.Id != festivalId && p.URL == candidate))
+            {
+                candidate = $"{baseUrl}-{suffix++}";
+            }
+
+            return candidate;
+        }
+
+        private static string NormalizeUrl(string value)
+            => Regex.Replace(value?.Trim().ToLowerInvariant() ?? string.Empty,
+                @"[^a-z0-9]+", "-").Trim('-');
+
         private async Task UpdateFestivalFestivalfocus(List<int> festivalFoci,int festivalId)
         {
             var dbffFocus = _unitOfWork.Repository<FestivalFestivalFocus>().Entities
                 .Where(p => p.FestivalId == festivalId);
 
-            var deletedFFocus = dbffFocus.Where(deadlneCat => !festivalFoci.Any(id => id == deadlneCat.Id))
+            var deletedFFocus = dbffFocus.Where(link => !festivalFoci.Any(id => id == link.FestivalFocusId))
                .ToList();
 
-            var addedFestivalFocus = festivalFoci.Where(id => !dbffFocus.Any(focus => focus.Id == id))
+            var addedFestivalFocus = festivalFoci.Where(id => !dbffFocus.Any(focus => focus.FestivalFocusId == id))
                 .ToList();
 
             if (deletedFFocus != null)
@@ -108,10 +145,10 @@ namespace HiSubmit.Application.Features.Festivals.Commands.AddEditAdditinalSetti
             var dbFestivalArtCategory = _unitOfWork.Repository<FestivalArtCategory>().Entities
                 .Where(p => p.FestivalId == festivalId);
 
-            var deletedFestivalArtCategory = dbFestivalArtCategory.Where(deadlneCat => !artCategories.Any(id => id == deadlneCat.Id))
+            var deletedFestivalArtCategory = dbFestivalArtCategory.Where(link => !artCategories.Any(id => id == link.ArtCategoryId))
                .ToList();
 
-            var addedFestivalArtCategory = artCategories.Where(id => !dbFestivalArtCategory.Any(focus => focus.Id == id))
+            var addedFestivalArtCategory = artCategories.Where(id => !dbFestivalArtCategory.Any(focus => focus.ArtCategoryId == id))
                 .ToList();
 
             if (deletedFestivalArtCategory != null)

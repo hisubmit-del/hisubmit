@@ -32,6 +32,15 @@ public partial class FestivalFilesAndMedia
 
     public bool ModifiedForm() => _media?.ModifiedForm() == true;
 
+    public bool ValidateRequiredMedia()
+    {
+        if (IsAdmin || _media?.HasCover() == true)
+            return true;
+
+        _snackBar.Add("A festival banner/cover image is required.", MudBlazor.Severity.Error);
+        return false;
+    }
+
     private Task GoNext() => NextPanel.InvokeAsync();
     private Task GoPrev() => PrevPanel.InvokeAsync();
 }

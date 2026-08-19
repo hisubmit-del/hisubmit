@@ -59,6 +59,8 @@ public bool IsAdmin { get; set; }
     private FluentValidationValidator _fluentValidationValidator;
     private List<GetAllArtCategoryResponse> _artCategories  = new();
     private List<GetAllFestivalFocusResponse> _festivalFocus  = new();
+    private string _festivalName = string.Empty;
+    private bool _listingUrlLocked;
     #endregion
   
    
@@ -93,6 +95,7 @@ public bool IsAdmin { get; set; }
             {
                 _snackBar.Add(response.Messages[0], MudBlazor.Severity.Success);
                 _editForm.MarkAsUnmodified();
+                _listingUrlLocked = true;
                 result = true;
             }
             else
@@ -146,6 +149,10 @@ public bool IsAdmin { get; set; }
         if (response.Succeeded)
         {
             _model = Mapper.Map<AddEditAdditionalSettingCommand>(response.Data);
+            _festivalName = response.Data.Name ?? string.Empty;
+            _listingUrlLocked = !string.IsNullOrWhiteSpace(_model.URL);
+            if (!_listingUrlLocked)
+                _model.URL = ToListingSlug(_festivalName);
             _festivalFocusSelected = response.Data.FestivalFestivalFoci.Select(p => p.FestivalFocusId).ToList();
             _artCategorySelected = response.Data.FestivalArtCategories.Select(p => p.ArtCategoryId).ToList();
         }
@@ -226,11 +233,23 @@ public bool IsAdmin { get; set; }
         await PrevPanel.InvokeAsync();
     }
 
-     private void HandleURLChange(string value)
+    private void HandleURLChange(string value)
     {
         if (!string.IsNullOrEmpty(value))
         {
             _model.URL = value.TrimAll();
         }
+    }
+
+    private static string ToListingSlug(string value)
+    {
+        var slug = new string((value ?? string.Empty)
+            .Trim()
+            .ToLowerInvariant()
+            .Select(c => char.IsLetterOrDigit(c) ? c : '-')
+            .ToArray());
+        while (slug.Contains("--", StringComparison.Ordinal))
+            slug = slug.Replace("--", "-", StringComparison.Ordinal);
+        return slug.Trim('-');
     }
 }

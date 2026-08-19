@@ -47,6 +47,9 @@ else
                             </MudItem>
                             <MudGrid>
                                 <MudItem xs="12" md="6" Class="text-center">
+                                    <MudText Typo="Typo.caption">
+                                        @Localize["Festival logo"] <span class="required-field-mark">*</span>
+                                    </MudText>
                                     <ImageUploader @bind-Url="@_model.LogoURL"
                                                        SuggestedSize="200*200"
                                                    Title="@Localize["Logo"]"
@@ -77,11 +80,13 @@ else
                             </MudItem>
                             <MudGrid>
                                 <MudItem lg="3">
-                                    <MudText Typo="Typo.subtitle2">Event type:</MudText>
+                                    <MudText Typo="Typo.subtitle2">
+                                        Event type <span class="required-field-mark">*</span>
+                                    </MudText>
                                 </MudItem>
                                 <MudItem lg="9">
                                     <MudPaper Square="true" Elevation="1">
-                                        <MudStack>
+                                        <MudStack Class="compact-option-stack">
                                             <MudCheckBox T="bool" Dense="true" Size="Size.Small"
                                                          Disabled="@(_model.OnlineFestival)" @bind-Value="_model.FilmFestival"
                                                          Color="Color.Default">

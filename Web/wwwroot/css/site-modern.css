@@ -3009,6 +3009,74 @@ a:hover {
     min-width: max-content;
 }
 
+/* Form readability and compact option controls */
+:where(.workspace-form-card, .workspace-form-shell, .festival-editor-card) {
+    color: var(--text-strong, #17212b);
+}
+
+:where(.workspace-form-card, .workspace-form-shell, .festival-editor-card) .mud-card-header,
+:where(.workspace-form-card, .workspace-form-shell, .festival-editor-card) .mud-card-content {
+    color: var(--text-strong, #17212b);
+}
+
+:where(.workspace-form-card, .workspace-form-shell, .festival-editor-card) .mud-input-label,
+:where(.workspace-form-card, .workspace-form-shell, .festival-editor-card) .mud-input-slot,
+:where(.workspace-form-card, .workspace-form-shell, .festival-editor-card) .mud-typography {
+    color: var(--text-strong, #17212b);
+}
+
+.required-field-mark {
+    color: #d92d20;
+    font-weight: 800;
+    margin-inline-start: .2rem;
+}
+
+.compact-option-stack {
+    gap: .15rem !important;
+    padding: .45rem .65rem;
+}
+
+.compact-option-stack .mud-checkbox {
+    min-height: 2rem;
+    margin: 0 !important;
+}
+
+.compact-option-stack .mud-checkbox-content {
+    padding-inline-start: .25rem;
+}
+
+.festival-category-table {
+    border: 1px solid var(--border-soft);
+    border-radius: var(--radius-md);
+    background: rgba(255, 255, 255, .96);
+}
+
+.festival-category-table .mud-table-head .mud-table-cell {
+    color: var(--text-strong, #17212b);
+    font-weight: 700;
+    background: rgba(51, 92, 103, .08);
+}
+
+.festival-category-table .mud-table-row {
+    background: #fff;
+}
+
+.festival-category-table .mud-table-cell {
+    color: var(--text-strong, #17212b);
+    vertical-align: middle;
+    white-space: normal;
+    overflow-wrap: anywhere;
+}
+
+.festival-category-table .mud-chip {
+    max-width: 100%;
+}
+
+.festival-category-table .mud-chip-content {
+    white-space: normal;
+    overflow-wrap: anywhere;
+}
+
 .workspace-tabs .mud-tab {
     flex: 0 0 auto;
     min-width: max-content;

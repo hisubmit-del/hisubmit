@@ -59,9 +59,10 @@
                         </MudStack>
                     </MudItem>
                     <MudItem xs="12" md="9">
-                        <MudTable Class="default-table" Items="@Categories" Dense="true" Hover="true" Breakpoint="Breakpoint.Sm" LoadingProgressColor="Color.Info">
+                        <MudTable Class="default-table festival-category-table" Items="@Categories" Dense="true" Hover="true" Breakpoint="Breakpoint.Sm" LoadingProgressColor="Color.Info">
                             <HeaderContent>
                                 <MudTh>@Localize["Name"]</MudTh>
+                                <MudTh>@Localize["Fee schedule"]</MudTh>
                                @if (!IsAdmin)
                                {
                                    <MudTh Style="text-align:end">
@@ -72,8 +73,36 @@
                                    </MudTh>
                                }
                             </HeaderContent>
+                            <NoRecordsContent>
+                                <MudTd ColSpan="3">
+                                    <MudAlert Severity="Severity.Info" Variant="Variant.Text" Dense="true">
+                                        @Localize["No categories have been added yet."]
+                                    </MudAlert>
+                                </MudTd>
+                            </NoRecordsContent>
                             <RowTemplate>
                                 <MudTd DataLabel="Name">@context.Name</MudTd>
+                                <MudTd DataLabel="Fee schedule">
+                                    @if (context.DeadLineCategories?.Any() == true)
+                                    {
+                                        <MudStack Row="true" Wrap="Wrap.Wrap" Spacing="1">
+                                            @foreach (var fee in context.DeadLineCategories)
+                                            {
+                                                <MudChip T="string" Size="Size.Small"
+                                                         Color="@(fee.StandardFee.HasValue ? Color.Success : Color.Warning)">
+                                                    @(fee.DeadLineName ?? "Deadline")
+                                                    · @(fee.StandardFee?.ToString("0.##") ?? "Fee required")
+                                                </MudChip>
+                                            }
+                                        </MudStack>
+                                    }
+                                    else
+                                    {
+                                        <MudChip T="string" Size="Size.Small" Color="Color.Warning">
+                                            @Localize["Add deadline fees"]
+                                        </MudChip>
+                                    }
+                                </MudTd>
                                 <MudTd DataLabel="Actions">
                                     <MudHidden Breakpoint="Breakpoint.LgAndUp">
                                         <MudMenu Label="@Localize["Actions"]" Size="Size.Small" Variant="Variant.Filled" DisableElevation="true"

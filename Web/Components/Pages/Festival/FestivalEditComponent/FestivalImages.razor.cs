@@ -135,4 +135,8 @@ public partial class FestivalImages
             return true;
         return false;
     }
+
+    public bool HasCover() => _covers.Any(p =>
+        !string.IsNullOrWhiteSpace(p.Url) ||
+        p.UploadRequest?.Data is { Length: > 0 });
 }
