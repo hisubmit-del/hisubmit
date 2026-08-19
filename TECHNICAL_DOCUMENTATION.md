@@ -35,8 +35,8 @@ HiSubmit.sln
 ```
 
 The current source branch is `recovery-clean-20260816`. The GitHub remote is
-the `hisubmit-del/hisubmit` repository. The current documented checkpoint was
-committed as `08a82d2`.
+the `hisubmit-del/hisubmit` repository. The latest documented source
+checkpoint is `7b62d78`.
 
 Do not use old copies such as `Web-nested-recovery-20260816`,
 `Web-origin-main-20260816`, or `Web-stable-inner-copy-20260816` as development
@@ -1076,3 +1076,29 @@ The current domain is Festival-centric. The next model should add an
 | Event pass/accreditation | access scope, validity window, venue/program permissions, quotas, identity verification |
 
 This remains a planning checkpoint. No schema migration is introduced here.
+
+## 27. Phase 1 regression checkpoint (2026-08-19)
+
+The first regression pass for shared-experience stabilization was completed
+against the local Development server after stopping stale `Web` processes and
+building the active `Web\Web.csproj`.
+
+Verified:
+
+- The locked-file-safe build completed with 0 errors.
+- `/`, `/festivals`, `/news`, `/store`, `/tickets`, `/faq`, and `/advertise`
+  returned HTTP 200.
+- Guest cart endpoint `/api/v1/cart/GetItems?UserId=` returned HTTP 200 with
+  a successful empty result.
+- Public deadline endpoint
+  `/api/v1/public/festival/AllDeadlineEventCategory?FestivalId=9&TakeCurrentDeadLine=False&SpecfyWithProject=False`
+  returned HTTP 200 with a successful empty result.
+- The home response contained the public desktop navigation and the expected
+  Browse festivals, News, Store, and Tickets links.
+- No new runtime exception was produced by these requests.
+
+This is an HTTP/DOM smoke pass, not a replacement for interactive browser
+verification. Authenticated role switching, festival-scope allow/deny cases,
+form/modal/upload actions, payment, and visual desktop/mobile inspection
+remain before Phase 1 can be closed. Phase 2 must not start until those checks
+are completed or a specific blocker is recorded.

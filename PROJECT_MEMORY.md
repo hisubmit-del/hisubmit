@@ -1182,3 +1182,22 @@ data contract, privacy policy and pricing are approved.
   residencies, grants, exhibitions, gallery open calls, and reusable event
   passes/accreditation should build on the current Festival/Submission model
   through an additive taxonomy after the current workflow is stable.
+
+## Phase 1 regression checkpoint (2026-08-19)
+
+- Rebuilt the active `Web\Web.csproj` after stopping stale `Web` processes.
+- Build completed successfully with 0 errors. The existing warning backlog
+  remains categorized in the technical documentation and was not changed in
+  this test-only checkpoint.
+- Local HTTP smoke tests returned 200 for `/`, `/festivals`, `/news`,
+  `/store`, `/tickets`, `/faq`, and `/advertise`.
+- Guest cart API `/api/v1/cart/GetItems?UserId=` returned a successful empty
+  result.
+- Public deadline API for `FestivalId=9` returned a successful empty result.
+- The home HTML contained the public desktop navigation and expected primary
+  links.
+- No new runtime exception was produced by the tested requests.
+- This pass did not exercise authenticated role switching, cross-festival
+  denial, interactive form/modal/upload actions, payment, or visual browser
+  rendering. Those remain the final Phase 1 regression items before Phase 2.
+- No database schema, production data, or authorization rule was changed.
