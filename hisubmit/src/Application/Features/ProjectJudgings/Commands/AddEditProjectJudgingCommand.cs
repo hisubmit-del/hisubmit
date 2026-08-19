@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using HiSubmit.Application.Interfaces.Repositories;
 using HiSubmit.Domain.Entities.Festivals;
+using HiSubmit.Domain.Entities.Submitter;
 using HiSubmit.Client.SharedModels.Wrapper;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -43,17 +44,49 @@ public class AddEditProjectJudgingCommandHandler :
     public async Task<Result<int>> Handle
         (AddEditProjectJudgingCommand request, CancellationToken cancellationToken)
     {
+        if (request.FestivalId <= 0 ||
+            request.SubmitsId is null || request.SubmitsId.Count == 0 ||
+            request.UsersId is null || request.UsersId.Count == 0)
+            return await Result<int>.FailAsync(_localizer["A festival, at least one submission, and at least one referee are required"]);
+
+        var submitIds = request.SubmitsId.Distinct().ToList();
+        var submitsInFestival = await _unitOfWork.Repository<Submit>()
+            .Entities
+            .Where(p => submitIds.Contains(p.Id) && p.FestivalId == request.FestivalId)
+            .Select(p => p.Id)
+            .ToListAsync(cancellationToken);
+
+        if (submitsInFestival.Count != submitIds.Count)
+            return await Result<int>.FailAsync(_localizer["One or more submissions do not belong to this festival"]);
+
+        var refereeIds = request.UsersId
+            .Where(p => !string.IsNullOrWhiteSpace(p))
+            .Distinct()
+            .ToList();
+
+        var activeRefereeIds = await _unitOfWork.Repository<FestivalSubUser>()
+            .Entities
+            .Where(p => p.FestivalId == request.FestivalId &&
+                        !p.IsRemoved &&
+                        p.IsReferee &&
+                        refereeIds.Contains(p.UserId))
+            .Select(p => p.UserId)
+            .ToListAsync(cancellationToken);
+
+        if (activeRefereeIds.Count != refereeIds.Count)
+            return await Result<int>.FailAsync(_localizer["Every selected user must be an active referee in this festival"]);
+
         var projectJudgingList = new List<ProjectJudging>();
         if (request.AssignToReferee || request.MultiProjectToMultiReferee)
         {
-            foreach (var userId in request.UsersId)
+            foreach (var userId in refereeIds)
             {
                 var refereeId =userId;
                 var dbProjectJudgings = _unitOfWork.Repository<ProjectJudging>()
                     .Entities.Where(p => p.UserId == refereeId && p.Submit.FestivalId == request.FestivalId);
             
                 foreach (var submitId in request.SubmitsId
-                             .Where(submitId => !dbProjectJudgings
+                    .Where(submitId => !dbProjectJudgings
                                  .Any(projJud => projJud.SubmitId == submitId)))
                 {
                     var projectJudging = new ProjectJudging()
@@ -67,7 +100,7 @@ public class AddEditProjectJudgingCommandHandler :
                 if (!request.MultiProjectToMultiReferee)
                 {
                     foreach (var deletedProjJudging in dbProjectJudgings
-                            .Where(proJudg => request.SubmitsId.All(submitId => submitId != proJudg.SubmitId)))
+                            .Where(proJudg => submitIds.All(submitId => submitId != proJudg.SubmitId)))
                     {
                         await _unitOfWork.Repository<ProjectJudging>().DeleteAsync(deletedProjJudging);
                     }
@@ -81,7 +114,7 @@ public class AddEditProjectJudgingCommandHandler :
                 .Entities.Where(p => p.SubmitId == submitId && 
                                      p.Submit.FestivalId == request.FestivalId);
 
-            foreach (var userId in request.UsersId
+            foreach (var userId in refereeIds
                          .Where(userId => !dbProjectJudgings
                              .Any(projJud => projJud.UserId == userId)))
             {
@@ -94,7 +127,7 @@ public class AddEditProjectJudgingCommandHandler :
                 await _unitOfWork.Repository<ProjectJudging>().AddAsync(projectJudging);
             }
             foreach (var deletedProjJudging in dbProjectJudgings
-                         .Where(p => request.UsersId
+                         .Where(p => refereeIds
                              .All(userId => userId != p.UserId)))
             {
                 await _unitOfWork.Repository<ProjectJudging>().DeleteAsync(deletedProjJudging);

@@ -69,6 +69,17 @@ public class AddEditProjectJudgingResultCommandHandler
             throw new DontPermissionException();
         }
 
+        var activeFestivalReferee = await _unitOfWork.Repository<FestivalSubUser>()
+            .Entities
+            .AnyAsync(p => p.FestivalId == dbProjectJudging.Submit.FestivalId &&
+                           p.UserId == _currentUserService.UserId &&
+                           p.IsReferee &&
+                           !p.IsRemoved, cancellationToken);
+
+        if (!activeFestivalReferee)
+            return await Result<int>
+                .FailAsync(_localize["You are no longer an active referee for this festival"]);
+
 
         var updatedProjectJudging = _mapper.Map(request, dbProjectJudging);
         await _unitOfWork.Repository<ProjectJudging>().UpdateAsync(updatedProjectJudging);
