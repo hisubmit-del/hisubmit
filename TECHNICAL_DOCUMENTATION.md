@@ -1242,6 +1242,13 @@ does not claim the complete Phase 2 submission wizard: draft autosave,
 validation summary, and interactive end-to-end submission/payment checks are
 still required by the roadmap.
 
+The festival editor follows the same pattern with seven panels: event details,
+contact/venue, deadlines, categories, files, gallery/cover, and additional
+settings. It now exposes shared progress and step guidance, and its event
+details form has a stable unique `FormName`. Build verification completed with
+0 errors. Explicit draft recovery/autosave and full interactive save/release
+verification remain pending.
+
 ### Commerce audit checkpoint
 
 Products are festival-owned and tickets are linked through festival-owned

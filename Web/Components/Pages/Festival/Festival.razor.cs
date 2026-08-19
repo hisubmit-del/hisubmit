@@ -299,5 +299,17 @@ public partial class Festival
         }
     }
 
+    private string GetStepHint() => _activePanelIndex switch
+    {
+        0 => Localize["Start with the festival identity, description, awards and rules."],
+        1 => Localize["Add contact details, venues and event locations."],
+        2 => Localize["Define deadlines and the fee schedule for submissions."],
+        3 => Localize["Configure event categories and their submission questions."],
+        4 => Localize["Upload the festival files required for review or publication."],
+        5 => Localize["Add the cover, gallery images and public presentation assets."],
+        6 => Localize["Review automation and additional settings before release."],
+        _ => Localize["Review your festival."]
+    };
+
     #endregion
 }

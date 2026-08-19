@@ -1288,3 +1288,14 @@ data contract, privacy policy and pricing are approved.
 - This is a partial Phase 2 checkpoint, not completion: draft autosave,
   validation summary, and end-to-end interactive submission/payment checks
   remain unverified.
+
+## Phase 2 festival-wizard checkpoint (2026-08-19)
+
+- The festival editor is a seven-panel wizard:
+  event details, contact/venue, deadlines, categories, files,
+  gallery/cover, and additional settings.
+- Added a shared progress indicator and step-specific guidance.
+- The event-details form now has a stable unique `FormName`.
+- The active `Web.csproj` builds successfully with 0 errors after this change.
+- Phase 2 remains open: explicit draft recovery/autosave and complete
+  interactive save/release verification are still pending.
