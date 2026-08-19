@@ -6,6 +6,7 @@ using HiSubmit.Application.Features.FestivalPaymentsInformation.Queries.GetAll;
 using HiSubmit.Application.Features.FestivalPaymentsInformation.Queries.GetDetail;
 using HiSubmit.Application.Features.Payments.Commands;
 using HiSubmit.Application.Features.Payments.Queries;
+using HiSubmit.Application.Features.Settlements;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Web.Controllers.v1.Admin;
@@ -97,6 +98,13 @@ public class PaymentController : BaseAdminController<PaymentController>
 
    [HttpPost("DownloadCartFactor")]
    public async Task<IActionResult> Download(DownloadCartFactorCommand command)
+   {
+      return Ok(await Mediator.Send(command));
+   }
+
+   [HttpPost("AdvertisingInvoices")]
+   public async Task<IActionResult> CreateAdvertisingInvoice(
+      CreateAdvertisingInvoiceRequest command)
    {
       return Ok(await Mediator.Send(command));
    }

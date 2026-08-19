@@ -10,7 +10,7 @@
 @inject IStringLocalizer<Settlements> Localize
 
 <MudContainer MaxWidth="MaxWidth.Large" Class="py-6">
-    <MudPaper Class="pa-5 settlement-page" Elevation="1">
+    <MudPaper Class="pa-5 settlement-page settlement-page-shell" Elevation="1">
         <MudStack Row="true" AlignItems="AlignItems.Center" Justify="Justify.SpaceBetween" Spacing="2">
             <div>
                 <MudText Typo="Typo.h4">Settlement statements</MudText>
@@ -85,7 +85,7 @@
                     <MudStack Row="true" AlignItems="AlignItems.Center" Justify="Justify.SpaceBetween">
                         <div>
                             <MudText Typo="Typo.h6">
-                                @statement.PeriodStart.ToString("yyyy-MM-dd") – @statement.PeriodEnd.ToString("yyyy-MM-dd")
+                                @statement.PeriodStart.ToString("yyyy-MM-dd") - @statement.PeriodEnd.ToString("yyyy-MM-dd")
                             </MudText>
                             <MudText Typo="Typo.caption">Statement #@statement.Id</MudText>
                         </div>
@@ -105,6 +105,12 @@
                             Adjustments: @statement.Adjustments.Sum(x => x.Amount).ToString("C2")
                         </MudText>
                     }
+                    @if (statement.AdvertisingInvoices.Count > 0)
+                    {
+                        <MudText Typo="Typo.caption" Class="mt-2">
+                            Advertising invoices: @statement.AdvertisingInvoices.Sum(x => x.Amount).ToString("C2")
+                        </MudText>
+                    }
                     <MudStack Row="true" Spacing="1" Class="mt-4">
                         <MudButton Size="Size.Small" Variant="Variant.Outlined" Href="@ExportUrl(statement.Id, "excel")">
                             Excel
@@ -118,8 +124,40 @@
                                        OnClick="@(() => AddAdjustmentAsync(statement.Id))">
                                 Add adjustment
                             </MudButton>
+                            <MudButton Size="Size.Small" Color="Color.Success" Variant="Variant.Outlined"
+                                       OnClick="@(() => ConfirmStatementAsync(statement.Id))"
+                                       Disabled="@_processing">
+                                Confirm statement
+                            </MudButton>
                         }
                     </MudStack>
+                </MudPaper>
+            }
+            @if (_statements.Count > 1)
+            {
+                var latest = _statements[0];
+                var previous = _statements[1];
+                <MudPaper Class="settlement-comparison-card pa-4 my-4" Elevation="0">
+                    <MudText Typo="Typo.h6">Period comparison</MudText>
+                    <MudText Typo="Typo.body2" Color="Color.Secondary">
+                        Adjacent periods are compared independently; transactions are never combined across periods.
+                    </MudText>
+                    <MudGrid Class="mt-3">
+                        <MudItem xs="12" sm="4">
+                            <MudText Typo="Typo.caption">Net settlement change</MudText>
+                            <MudText Typo="Typo.h5" Color="@(latest.NetAmount >= previous.NetAmount ? Color.Success : Color.Error)">
+                                @((latest.NetAmount - previous.NetAmount).ToString("C2"))
+                            </MudText>
+                        </MudItem>
+                        <MudItem xs="12" sm="4">
+                            <MudText Typo="Typo.caption">Gross income change</MudText>
+                            <MudText Typo="Typo.h5">@((latest.GrossIncome - previous.GrossIncome).ToString("C2"))</MudText>
+                        </MudItem>
+                        <MudItem xs="12" sm="4">
+                            <MudText Typo="Typo.caption">Advertising change</MudText>
+                            <MudText Typo="Typo.h5">@((latest.AdvertisingCharges - previous.AdvertisingCharges).ToString("C2"))</MudText>
+                        </MudItem>
+                    </MudGrid>
                 </MudPaper>
             }
         }

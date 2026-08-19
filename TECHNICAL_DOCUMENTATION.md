@@ -1420,6 +1420,11 @@ Migration `20260819190000_AddSettlementStatementsAndAdvertisingInvoices` was
 applied locally to `HiSubmitDB50`. It is additive and does not alter existing
 commerce, submission, ticket, or payment rows. The festival UI route
 `/festival/settlements` now exposes period selection, statement creation,
-status badges, adjustment entry, and Excel/PDF download links. Admin approval
-and reconciliation UI, invoice creation UI, and year-over-year artist finance
-views remain separate follow-up work.
+status badges, adjacent-period comparison, adjustment entry,
+advertising-invoice totals, confirmation, and Excel/PDF download links. It is
+linked from both festival navigation variants. The admin payment API also
+accepts `POST /api/v1/admin/payment/AdvertisingInvoices`, validating the
+festival and optional exact settlement link before creating an advertising
+invoice. Admin reconciliation screens and year-over-year artist finance views
+remain separate follow-up work; the current artist dashboard still provides
+paid total, savings, count, and category chart.

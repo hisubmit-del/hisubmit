@@ -4,6 +4,7 @@ namespace Hisubmit.Client.SharedModels.Features.Settlements.Commands;
 
 public class UpdateSettlementStatusCommand
 {
+    public int FestivalId { get; set; }
     public int StatementId { get; set; }
     public SettlementStatus Status { get; set; }
     public string Note { get; set; }

@@ -1452,8 +1452,13 @@ data contract, privacy policy and pricing are approved.
   was applied to the local `HiSubmitDB50` database. It creates only the three
   new tables and does not modify or delete existing rows.
 - Added `/festival/settlements` for festival users with period selection,
-  statement creation, status badges, adjustment entry, and Excel/PDF download
-  links. It is linked from the festival payment-information page.
-- Admin-side approval/reconciliation screens, invoice creation UI, and
-  year-over-year artist finance views remain to be wired without mixing
-  periods.
+  statement creation, status badges, adjacent-period comparison, adjustment
+  entry, advertising-invoice totals, confirmation, and Excel/PDF download
+  links. It is linked from both festival navigation variants and the payment
+  information page.
+- Added the admin API endpoint
+  `POST /api/v1/admin/payment/AdvertisingInvoices`. It validates the festival
+  and optional exact settlement link before creating an advertising invoice.
+  Admin reconciliation screens and year-over-year artist finance views remain
+  the next UI follow-up; the current artist dashboard still shows paid total,
+  savings, count, and category chart.

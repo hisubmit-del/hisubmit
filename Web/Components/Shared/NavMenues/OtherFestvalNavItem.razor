@@ -134,6 +134,14 @@ CanView(Permissions.Reviews.View) ||
             <MudNavLink Href="/festival/payment-information"  IconColor="Color.Tertiary"
                         Icon="@Icons.Material.Outlined.CreditCard">Payment Information</MudNavLink>
         }
+        @if (CanView(Permissions.FestivalPayment.PaymentInformation) ||
+             CanView(Permissions.FestivalPayment.CartItem))
+        {
+            <MudNavLink Href="/festival/settlements" IconColor="Color.Tertiary"
+                        Icon="@Icons.Material.Outlined.AccountBalance">
+                Settlement statements
+            </MudNavLink>
+        }
         @if (CanView(Permissions.FestivalPayment.CartItem))
         {
             @* <MudNavLink Href="/festival/payments" Icon="@Icons.Material.Outlined.Payments">Payments</MudNavLink> *@

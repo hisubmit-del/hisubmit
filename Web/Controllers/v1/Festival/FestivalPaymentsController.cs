@@ -33,6 +33,7 @@ public class FestivalPaymentsController : BaseFestivalController<FestivalPayment
     public async Task<IActionResult> AddSettlementAdjustment(
         AddSettlementAdjustmentRequest command, int festivalId, int statementId)
     {
+        command.FestivalId = festivalId;
         command.StatementId = statementId;
         return Ok(await Mediator.Send(command));
     }
@@ -41,6 +42,7 @@ public class FestivalPaymentsController : BaseFestivalController<FestivalPayment
     public async Task<IActionResult> UpdateSettlementStatus(
         UpdateSettlementStatusRequest command, int festivalId, int statementId)
     {
+        command.FestivalId = festivalId;
         command.StatementId = statementId;
         return Ok(await Mediator.Send(command));
     }

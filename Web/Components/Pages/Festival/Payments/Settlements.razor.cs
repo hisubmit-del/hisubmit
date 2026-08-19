@@ -101,6 +101,26 @@ public partial class Settlements
         _processing = false;
     }
 
+    private async Task ConfirmStatementAsync(int statementId)
+    {
+        _processing = true;
+        _error = null;
+        var result = await PaymentsManager.UpdateSettlementStatus(
+            SelectedFestivalId,
+            statementId,
+            new UpdateSettlementStatusCommand
+            {
+                FestivalId = SelectedFestivalId,
+                StatementId = statementId,
+                Status = SettlementStatus.Confirmed,
+                Note = "Confirmed by festival account."
+            });
+        if (!result.Succeeded)
+            _error = string.Join(" ", result.Messages);
+        await LoadStatementsAsync();
+        _processing = false;
+    }
+
     private string ExportUrl(int statementId, string format) =>
         $"/api/v1/FestivalPayments/{SelectedFestivalId}/SettlementStatements/{statementId}/export?format={format}";
 

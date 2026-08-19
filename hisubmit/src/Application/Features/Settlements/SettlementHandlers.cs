@@ -207,6 +207,8 @@ public sealed class AddSettlementAdjustmentCommandHandler
             .GetByIdAsync(request.StatementId);
         if (statement is null)
             return await Result.FailAsync("Settlement statement was not found.");
+        if (statement.FestivalId != request.FestivalId)
+            return await Result.FailAsync("This settlement statement does not belong to the selected festival.");
         if (statement.Status is SettlementStatus.Paid or SettlementStatus.Confirmed)
             return await Result.FailAsync("A confirmed or paid statement cannot be adjusted.");
 
@@ -240,6 +242,8 @@ public sealed class UpdateSettlementStatusCommandHandler
             .GetByIdAsync(request.StatementId);
         if (statement is null)
             return await Result.FailAsync("Settlement statement was not found.");
+        if (statement.FestivalId != request.FestivalId)
+            return await Result.FailAsync("This settlement statement does not belong to the selected festival.");
 
         statement.Status = (SettlementStatus)request.Status;
         statement.ApprovalNote = request.Note?.Trim();
@@ -366,5 +370,50 @@ public sealed class ExportFestivalSettlementRequestHandler
         public decimal Adjustments { get; set; }
         public decimal NetAmount { get; set; }
         public string Status { get; set; }
+    }
+}
+
+public sealed class CreateAdvertisingInvoiceCommandHandler
+    : IRequestHandler<CreateAdvertisingInvoiceRequest, IResult>
+{
+    private readonly IUnitOfWork<int> _unitOfWork;
+
+    public CreateAdvertisingInvoiceCommandHandler(IUnitOfWork<int> unitOfWork)
+    {
+        _unitOfWork = unitOfWork;
+    }
+
+    public async Task<IResult> Handle(
+        CreateAdvertisingInvoiceRequest request,
+        CancellationToken cancellationToken)
+    {
+        if (request.FestivalId <= 0 || request.Amount <= 0 ||
+            string.IsNullOrWhiteSpace(request.InvoiceNumber))
+            return await Result.FailAsync("Festival, invoice number and a positive amount are required.");
+
+        if (request.StatementId.HasValue)
+        {
+            var statement = await _unitOfWork.Repository<FestivalSettlementStatement>()
+                .Entities
+                .FirstOrDefaultAsync(x => x.Id == request.StatementId.Value, cancellationToken);
+            if (statement is null || statement.FestivalId != request.FestivalId)
+                return await Result.FailAsync("The selected settlement statement is invalid.");
+        }
+
+        var invoice = new AdvertisingInvoice
+        {
+            FestivalId = request.FestivalId,
+            AdvertiseRequestId = request.AdvertiseRequestId,
+            FestivalSettlementStatementId = request.StatementId,
+            InvoiceNumber = request.InvoiceNumber.Trim(),
+            Amount = request.Amount,
+            Description = request.Description?.Trim(),
+            IssuedOn = request.IssuedOn == default ? DateTime.UtcNow : request.IssuedOn,
+            DueOn = request.DueOn
+        };
+
+        await _unitOfWork.Repository<AdvertisingInvoice>().AddAsync(invoice);
+        await _unitOfWork.SaveChangesAsync(cancellationToken);
+        return await Result.SuccessAsync("Advertising invoice created.");
     }
 }

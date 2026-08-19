@@ -32,3 +32,8 @@ public sealed class ExportFestivalSettlementRequest
       IRequest<IResult<SettlementFileResponse>>
 {
 }
+
+public sealed class CreateAdvertisingInvoiceRequest
+    : CreateAdvertisingInvoiceCommand, IRequest<IResult>
+{
+}
