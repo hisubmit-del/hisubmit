@@ -149,6 +149,24 @@ public class GetProjectDetailQueryHandler(
                 .ToListAsync(cancellationToken);
         }
 
+        project.CanViewSubmittedFiles = isOwner ||
+                                       isAdministrator ||
+                                       visibleRegistrations.Any() ||
+                                       project.CanViewJudgingDetails;
+        project.CanViewPrivateContact = isOwner || isAdministrator;
+
+        // Redact personal contact data at the application boundary. Hiding
+        // fields in Razor alone would still expose them to API consumers.
+        if (!project.CanViewPrivateContact)
+        {
+            project.UserId = null;
+            project.Email = null;
+            project.PhoneNumber = null;
+            project.Address = null;
+            project.BirthDate = default;
+            project.Gender = default;
+        }
+
         return await Result<GetProjectDetailResponse>.SuccessAsync(project);
     }
 }

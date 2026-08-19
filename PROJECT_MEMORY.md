@@ -1108,3 +1108,24 @@ data contract, privacy policy and pricing are approved.
   (1,050), MUD0002 (107), CS0618 (103), CS8602 (80), and CS0414 (69).
 - No database schema, migration, payment, or production data changed in this
   checkpoint.
+
+## Mobile header, category loading, and project-view access checkpoint (2026-08-19)
+
+- Public and authenticated mobile headers now use explicit non-wrapping rows.
+  The final CSS override is intentionally at the end of `site-modern.css`;
+  an older responsive block was forcing desktop navigation onto small screens.
+- `FestivalCategories` initializes to empty collections, reloads only when
+  FestivalId changes, and handles empty/error responses safely. The
+  `GetAllDeadLineEventCategory` handler validates FestivalId, uses
+  `AsNoTracking`, and constrains deadline lookups to the requested festival.
+- Project detail responses expose server-calculated
+  `CanViewSubmittedFiles` and `CanViewPrivateContact` flags. Contact fields
+  are redacted in the Application layer for festival/referee viewers, and
+  the project-files query independently checks read permission.
+- Artist-selectable public visibility (full, hide file/contact, password
+  protected, or hidden) still needs a dedicated database field/API. Do not
+  repurpose `Project.Password`, which belongs to file access.
+- Verification: build succeeded with 0 errors. The local site returned HTTP
+  200 on `/`, and the categories endpoint returned HTTP 200 with a controlled
+  empty result for FestivalId=9. No new startup/API errors were written to
+  the active log during this smoke test.

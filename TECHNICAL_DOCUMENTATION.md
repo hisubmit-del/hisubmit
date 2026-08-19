@@ -931,3 +931,35 @@ MUD0002 (MudBlazor component parameters), CS0618 (obsolete APIs), CS8602
 already removed unnecessary `async` methods in server local storage and the
 custom `FileUploader.Url` parameter setter. The remaining groups require
 feature-by-feature tests and must not be mass-suppressed.
+
+## 24. Current cross-cutting safeguards (2026-08-19)
+
+The mobile header has two implementations: `PublicHeader.razor` for the
+public layout and the responsive bar in `MainLayout.razor` for workspace
+pages. Both use explicit flex rows and grouped action elements. The final
+responsive rules in `Web/wwwroot/css/site-modern.css` must remain last so
+legacy Bootstrap/MudBlazor display utilities cannot re-enable the desktop
+header on mobile.
+
+Festival category/deadline data is loaded by
+`FestivalCategories.razor.cs` and
+`GetAllDeadLineEventCategoryQuery`. The handler must scope every deadline
+lookup by `FestivalId`; a browser-supplied ID is input only and never grants
+festival access. The component is resilient to empty responses and avoids
+duplicate calls for the same festival.
+
+Project viewing is role-scoped in the Application layer. Owners and
+administrators may receive private contact information. Festival owners,
+festival sub-users, and assigned referees receive only the registrations and
+judging records allowed by server-side membership/assignment checks.
+`GetAllProjectFilesQuery` independently calls `ICheckPermission`, preventing
+a direct file API request from bypassing the project page. A future artist
+visibility feature requires an explicit domain field and migration;
+`Project.Password` must not be reused because it is associated with file
+access.
+
+Checkpoint verification on 2026-08-19: the application built with zero
+errors, `/` returned HTTP 200, and
+`/api/v1/public/festival/AllDeadlineEventCategory?FestivalId=9...` returned
+HTTP 200 with an empty result rather than an unhandled exception. The active
+log had no new startup/API exception during this test.

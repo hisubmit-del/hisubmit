@@ -25,25 +25,34 @@ namespace Web.Components.Pages.Public.Festivals.Components
 
         [Parameter] public int FestivalId { get; set; }
 
-        private List<GetAllDeadLineEventCategoryResponse> DeadLineCategories { get; set; }
+        private List<GetAllDeadLineEventCategoryResponse> DeadLineCategories { get; set; } = new();
 
 
         private List<GetAllEventCategoryResponse> EventCategories { get; set; }
 
-        private IEnumerable<IGrouping<int, GetAllDeadLineEventCategoryResponse>> DeadlineCategoriesGrouping
-        {
-            get;
-            set;
-        }
+        private IEnumerable<IGrouping<int, GetAllDeadLineEventCategoryResponse>> DeadlineCategoriesGrouping { get; set; }
+            = Enumerable.Empty<IGrouping<int, GetAllDeadLineEventCategoryResponse>>();
 
         private bool _loaded;
+        private int _loadedFestivalId;
 
         protected override async Task OnInitializedAsync()
         {
             _subscription = ApplicationState.RegisterOnPersisting(PersistFestival);
-            await LoadDeadLineCategories();
-            await GroupedCategories();
             await base.OnInitializedAsync();
+        }
+
+        protected override async Task OnParametersSetAsync()
+        {
+            if (FestivalId <= 0 || (_loaded && _loadedFestivalId == FestivalId))
+            {
+                return;
+            }
+
+            _loaded = false;
+            _loadedFestivalId = FestivalId;
+            await LoadDeadLineCategories();
+            GroupedCategories();
             _loaded = true;
         }
 
@@ -52,7 +61,7 @@ namespace Web.Components.Pages.Public.Festivals.Components
             if (ApplicationState.TryTakeFromJson<List<GetAllDeadLineEventCategoryResponse>>(StateKey("deadLineCategories"),
                     out var stored))
             {
-                DeadLineCategories = stored;
+                DeadLineCategories = stored ?? new();
             }
             else
             {
@@ -64,11 +73,12 @@ namespace Web.Components.Pages.Public.Festivals.Components
 
                 if (response.Succeeded)
                 {
-                    DeadLineCategories = response.Data;
+                    DeadLineCategories = response.Data ?? new();
                 }
                 else
                 {
-                    foreach (var message in response.Messages)
+                    DeadLineCategories = new();
+                    foreach (var message in response.Messages ?? Enumerable.Empty<string>())
                     {
                         _snackBar.Add(message, Severity.Error);
                     }
@@ -76,7 +86,7 @@ namespace Web.Components.Pages.Public.Festivals.Components
             }
         }
 
-        private async Task SubmitToFestival(GetAllDeadLineEventCategoryResponse deadCat)
+        private Task SubmitToFestival(GetAllDeadLineEventCategoryResponse deadCat)
         {
             var selectCats = new List<int> { deadCat.Id };
             var parameter = new DialogParameters
@@ -93,13 +103,14 @@ namespace Web.Components.Pages.Public.Festivals.Components
                 
             };
             _dialogService.Show<FestivalCategorySelected>("Selected category", parameter, options);
+            return Task.CompletedTask;
         }
 
-        private async Task GroupedCategories()
+        private void GroupedCategories()
         {
-            if (DeadLineCategories == null)
+            if (DeadLineCategories.Count == 0)
             {
-                DeadlineCategoriesGrouping = new List<IGrouping<int, GetAllDeadLineEventCategoryResponse>>();
+                DeadlineCategoriesGrouping = Enumerable.Empty<IGrouping<int, GetAllDeadLineEventCategoryResponse>>();
                 return;
             }
 

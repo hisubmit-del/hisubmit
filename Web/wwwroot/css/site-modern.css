@@ -304,6 +304,87 @@
     }
 }
 
+/* Authoritative header layout.
+   Keep this block last: legacy Bootstrap/MudBlazor display utilities used by
+   older pages otherwise make the mobile header wrap into a vertical stack. */
+.main-mobile-header-row,
+.main-desktop-header-row,
+.public-header-row {
+    min-width: 0;
+    flex-wrap: nowrap !important;
+    align-items: center;
+}
+
+.main-mobile-header-row {
+    min-height: 4.25rem;
+    gap: .25rem;
+}
+
+.main-mobile-header-row > .mud-spacer,
+.public-header-row > .mud-spacer {
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+.main-mobile-header-actions,
+.public-header-actions {
+    display: inline-flex;
+    flex: 0 0 auto;
+    align-items: center;
+    gap: .15rem;
+    min-width: 0;
+}
+
+.main-mobile-header-row > .mud-icon-button,
+.main-mobile-header-actions .mud-icon-button,
+.public-header-actions .mud-icon-button,
+.public-header-actions .mud-menu {
+    flex: 0 0 auto;
+}
+
+@media (min-width: 992px) {
+    .public-layout .public-brand--desktop,
+    .public-layout .public-desktop-nav {
+        display: inline-flex !important;
+    }
+
+    .public-layout .public-mobile-menu-button,
+    .public-layout .public-brand--mobile {
+        display: none !important;
+    }
+}
+
+@media (max-width: 991.98px) {
+    .public-layout .public-brand--desktop,
+    .public-layout .public-desktop-nav {
+        display: none !important;
+    }
+
+    .public-layout .public-mobile-menu-button,
+    .public-layout .public-brand--mobile {
+        display: inline-flex !important;
+    }
+
+    .public-layout .public-header-container,
+    .public-layout .public-header-row {
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .public-layout .public-header-row {
+        min-height: 4.25rem;
+        padding-inline: .35rem;
+    }
+
+    .public-layout .public-header-actions {
+        margin-inline-start: auto;
+    }
+
+    .public-layout .public-brand--mobile {
+        margin-inline-start: .15rem;
+    }
+}
+
 /* Project detail workflow surfaces. The server controls whether the
    artist-only or festival/reviewer-only panel is rendered. */
 .project-work-overview,

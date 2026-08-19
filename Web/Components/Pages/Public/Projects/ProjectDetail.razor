@@ -292,6 +292,8 @@
         @* <div class="mt-2"> *@
         @* </div> *@
     </div>
+    @if (Project.CanViewPrivateContact)
+    {
     <MudContainer MaxWidth="MaxWidth.Medium">
         <MudGrid Class="user-card-data">
             <MudItem xs="6" md="2" Class="text-end">
@@ -324,5 +326,6 @@
             </MudItem>
         </MudGrid>
     </MudContainer>
+    }
     }
 }

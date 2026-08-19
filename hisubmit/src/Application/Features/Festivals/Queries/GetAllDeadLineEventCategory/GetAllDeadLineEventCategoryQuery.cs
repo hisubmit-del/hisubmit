@@ -44,6 +44,12 @@ public class GetAllDeadLineEventCategoryQueryHandler : IRequestHandler<GetAllDea
     public async Task<Result<List<GetAllDeadLineEventCategoryResponse>>> Handle(
         GetAllDeadLineEventCategoryQuery request, CancellationToken cancellationToken)
     {
+        if (request.FestivalId <= 0)
+        {
+            return await Result<List<GetAllDeadLineEventCategoryResponse>>
+                .FailAsync("A valid festival is required.");
+        }
+
         var deadLineId = request.DeadLineId;
        
     
@@ -55,7 +61,8 @@ public class GetAllDeadLineEventCategoryQueryHandler : IRequestHandler<GetAllDea
                 .Entities
                 .Include(p => p.DeadLine)
                 .Include(p => p.EventCategory)
-                .Where(p => p.EventCategory.FestivalId == request.FestivalId);
+                .Where(p => p.EventCategory.FestivalId == request.FestivalId)
+                .AsNoTracking();
         }
         else
         {
@@ -63,7 +70,8 @@ public class GetAllDeadLineEventCategoryQueryHandler : IRequestHandler<GetAllDea
             {
                 deadLineId = await _unitOfWork.Repository<DeadLine>()
                     .Entities
-                    .Where(p => p.Date >= DateTime.UtcNow)
+                    .Where(p => p.FestivalId == request.FestivalId &&
+                                p.Date >= DateTime.UtcNow)
                     .OrderBy(p => p.Date)
                     .Select(p => p.Id)
                     .FirstOrDefaultAsync(cancellationToken);
@@ -73,13 +81,23 @@ public class GetAllDeadLineEventCategoryQueryHandler : IRequestHandler<GetAllDea
                 .Entities
                 .Include(p => p.DeadLine)
                 .Include(p => p.EventCategory)
-                .Where(p => p.DeadLineId == deadLineId);
+                .Where(p => p.DeadLineId == deadLineId &&
+                            p.DeadLine.FestivalId == request.FestivalId &&
+                            p.EventCategory.FestivalId == request.FestivalId)
+                .AsNoTracking();
         }
         Project project=null;
         if (request.SpecfyWithProject && request.ProjectId != null)
         {
              project = await _unitOfWork.Repository<Project>()
-                .GetByIdAsync(request.ProjectId.Value);
+                .Entities
+                .AsNoTracking()
+                .FirstOrDefaultAsync(p => p.Id == request.ProjectId.Value, cancellationToken);
+             if (project is null)
+             {
+                 return await Result<List<GetAllDeadLineEventCategoryResponse>>
+                     .FailAsync("Project not found.");
+             }
              var countryId = await GetProjectCountry(project);
             var filterSpecification =
                 new GetAllDeadLineEventCategoryFilter
@@ -100,7 +118,14 @@ public class GetAllDeadLineEventCategoryQueryHandler : IRequestHandler<GetAllDea
         if (request.SpecfyWithProject && project !=null)
         {
             var festival = await _unitOfWork.Repository<Festival>()
-                .GetByIdAsync(request.FestivalId);
+                .Entities
+                .AsNoTracking()
+                .FirstOrDefaultAsync(p => p.Id == request.FestivalId, cancellationToken);
+            if (festival is null)
+            {
+                return await Result<List<GetAllDeadLineEventCategoryResponse>>
+                    .FailAsync("Festival not found.");
+            }
             foreach (var dc in deadLineCategories)
             {
                 dc.SelectedFeeType = GetMinPrice(dc, project.StudentProject, festival.FeeStatus);

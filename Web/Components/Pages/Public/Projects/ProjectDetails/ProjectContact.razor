@@ -78,7 +78,7 @@
                     </a>
                 </li>
             }
-            @if (!string.IsNullOrWhiteSpace(Project.Email))
+            @if (Project.CanViewPrivateContact && !string.IsNullOrWhiteSpace(Project.Email))
             {
                 <li>
                     <a href="#" target="_blank">

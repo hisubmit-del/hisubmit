@@ -56,6 +56,8 @@ namespace Hisubmit.Client.SharedModels.Features.Projects.Queries.GetDetail
         // The server populates workflow data only for an authorized workspace.
         public bool CanViewFestivalRegistrations { get; set; }
         public bool CanViewJudgingDetails { get; set; }
+        public bool CanViewSubmittedFiles { get; set; }
+        public bool CanViewPrivateContact { get; set; }
         public List<ProjectFestivalRegistrationResponse> FestivalRegistrations { get; set; } = new();
         public List<ProjectJudgingSummaryResponse> JudgingAssignments { get; set; } = new();
     }

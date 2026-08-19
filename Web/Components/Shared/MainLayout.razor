@@ -9,7 +9,7 @@
 @* <MudRTLProvider RightToLeft="@_rightToLeft"> *@
     <MudLayout Class="main-layout">
         <MudAppBar Elevation="0" id="main-header" Class="main-header">
-            <div class="d-flex d-lg-none ma-0 pa-0 w-100">
+            <div class="main-mobile-header-row d-flex d-lg-none ma-0 pa-0 w-100">
                 @if (!_navigationManager.Uri.Contains("/account/login"))
                 {
                     <MudIconButton Icon="@Icons.Material.Filled.Menu"
@@ -25,8 +25,10 @@
                 <MudSpacer/>
                 <AuthorizeView>
                     <Authorized>
-                        <NotificationDropDown/>
-                        <UserCartItems/>
+                        <div class="main-mobile-header-actions">
+                            <NotificationDropDown/>
+                            <UserCartItems/>
+                        </div>
                     </Authorized>
                     <NotAuthorized>
 
@@ -34,7 +36,7 @@
                 </AuthorizeView>
                <NavLink href="/"> <MudImage Height="57" Width="57"  Src="@ClientAppConstants.SmallLogoUrl" Alt="hisubmit-logo-small"></MudImage></NavLink>
             </div>
-            <div class="d-none d-lg-flex pa-0 ma-0 w-100">
+            <div class="main-desktop-header-row d-none d-lg-flex pa-0 ma-0 w-100">
                 <MudImage Src="/assets/img/logo.png" Alt="hisubmit-logo"></MudImage>
                 @if (_showDrawer)
                 {
@@ -88,7 +90,7 @@
 
                              @* <a href="/login" class="btn-login" >Login6</a>  *@
                              <MudButton Color="Color.Dark"
-                                       Href="/login"
+                                       Href="/Account/Login"
                                        UserAttributes="@(new() { { "data-enhance-nav", "false" } })"
                                        Class="btn-login"
                                        Variant="Variant.Text">Login</MudButton>

@@ -181,9 +181,11 @@
                 <MudSpacer/>
                 <AuthorizeView>
                     <Authorized>
-                        <NotificationDropDown/>
-                        <UserCartItems/>
-                        <UserCard ShowAnotherAccount="true" UserInHeader="true"/>
+                        <div class="public-header-actions">
+                            <NotificationDropDown/>
+                            <UserCartItems/>
+                            <UserCard ShowAnotherAccount="true" UserInHeader="true"/>
+                        </div>
                     </Authorized>
                     <NotAuthorized>
                         <div class="public-header-auth d-none d-md-flex">
