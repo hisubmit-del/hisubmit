@@ -35,6 +35,9 @@ public class AddSoldCommandHandler(
 {
     public async Task<IResult> Handle(AddSoldBadgeCommand request, CancellationToken cancellationToken)
     {
+        if (request.TicketId <= 0 || request.Count <= 0)
+            return await Result.FailAsync(localizer["A valid ticket and quantity are required"]);
+
         var ticket = await unitOfWork.Repository<Ticket>().GetByIdAsync(request.TicketId);
         if (ticket == null)
             return await Result.FailAsync(localizer["Ticket not found"]);
@@ -45,6 +48,8 @@ public class AddSoldCommandHandler(
 
         var commission = await unitOfWork.Repository<SiteCommission>()
             .Entities.FirstOrDefaultAsync(cancellationToken);
+        if (commission == null)
+            return await Result.FailAsync(localizer["Site commission settings are not configured"]);
         
         var cost =(int)(ticket.AddManagerPercentage ? ticket.Cost * 1.2 : ticket.Cost);
         var soldTicket = mapper.Map<SoldTicket>(request);

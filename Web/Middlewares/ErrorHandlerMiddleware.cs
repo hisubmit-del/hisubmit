@@ -25,6 +25,11 @@ namespace Web.Middlewares
 
         public async Task Invoke(HttpContext context)
         {
+            var correlationId = context.Request.Headers["X-Correlation-ID"].FirstOrDefault();
+            if (string.IsNullOrWhiteSpace(correlationId) || correlationId.Length > 100)
+                correlationId = Guid.NewGuid().ToString("N");
+            context.Response.Headers["X-Correlation-ID"] = correlationId;
+
             try
             {
                 await _next(context);
@@ -59,6 +64,7 @@ namespace Web.Middlewares
                     ? error.Message
                     : "An unexpected error occurred while processing your request.";
                 var responseModel = await Result<string>.FailAsync(responseMessage);
+                responseModel.Messages.Add($"Correlation ID: {correlationId}");
 
                 switch (error)
                 {

@@ -2,6 +2,7 @@
 using HiSubmit.Application.Features.SoldTickets.Commands;
 using HiSubmit.Application.Features.SoldTickets.Queries;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Web.Controllers.v1.Ticket;
 
@@ -14,6 +15,7 @@ public class SoldTicketController : BaseApiController<SoldTicketController>
     /// <param name="command"></param>
     /// <returns></returns>
     [HttpPost("AddTicketToCart")]
+    [Authorize]
     public async Task<IActionResult> AddToCard(AddSoldTicketCommand command)
     {
         return Ok(await Mediator.Send(command));
@@ -27,6 +29,7 @@ public class SoldTicketController : BaseApiController<SoldTicketController>
     /// <param name="command"></param>
     /// <returns></returns>
     [HttpPost("AddBadgeToCart")]
+    [Authorize]
     public async Task<IActionResult> AddToCard(AddSoldBadgeCommand command)
     {
         return Ok(await Mediator.Send(command));

@@ -1428,3 +1428,23 @@ festival and optional exact settlement link before creating an advertising
 invoice. Admin reconciliation screens and year-over-year artist finance views
 remain separate follow-up work; the current artist dashboard still provides
 paid total, savings, count, and category chart.
+
+## Phase 1 critical-flow verification checkpoint (2026-08-19)
+
+The local app was verified on `http://localhost:5120` after a successful
+no-restore build. Read-only checks for public festival deadlines, tickets,
+products, news, ratings, reviews, and art categories returned controlled HTTP
+200 responses. Guest cart loading returned an empty successful result, while
+the authenticated QA artist cart also loaded successfully.
+
+Festival settlement endpoints now have an explicit
+`FestivalAuthentication` policy. Unauthenticated requests return HTTP 401,
+and a festival user requesting another festival is rejected. Ticket commands
+validate ticket ID, quantity, show time, commission configuration, and missing
+ticket records before accessing related entities.
+
+Cookie authentication now returns HTTP 401/403 for `/api/*` authorization
+failures instead of redirecting API clients to the HTML login page.
+`ErrorHandlerMiddleware` emits `X-Correlation-ID` and includes the same value
+in unexpected-error responses, allowing a failed request to be traced through
+server logs.

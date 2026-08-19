@@ -40,11 +40,18 @@ public class AddSoldTicketCommandHandler(
 {
     public async Task<IResult> Handle(AddSoldTicketCommand request, CancellationToken cancellationToken)
     {
+        if (request.TicketId <= 0 || request.Count <= 0)
+            return await Result.FailAsync(localizer["A valid ticket and quantity are required"]);
+
         var ticket = await unitOfWork.Repository<Ticket>().GetByIdAsync(request.TicketId);
+        if (ticket == null)
+            return await Result.FailAsync(localizer["Ticket not found"]);
 
         if (request.ShowTimeId != null)
         {
             var showTime = await unitOfWork.Repository<ShowTime>().GetByIdAsync(request.ShowTimeId.Value);
+            if (showTime == null)
+                return await Result.FailAsync(localizer["Show time not found"]);
             if (showTime.AvailableCapacity < request.Count)
             {
                 return await Result.FailAsync(localizer["The capacity of the hall for this session is full"]);
@@ -58,6 +65,8 @@ public class AddSoldTicketCommandHandler(
 
         var commission = await unitOfWork.Repository<SiteCommission>()
             .Entities.FirstOrDefaultAsync(cancellationToken);
+        if (commission == null)
+            return await Result.FailAsync(localizer["Site commission settings are not configured"]);
         
         var soldTicket = mapper.Map<SoldTicket>(request);
         

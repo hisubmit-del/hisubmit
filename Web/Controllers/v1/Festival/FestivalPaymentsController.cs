@@ -8,12 +8,15 @@ using HiSubmit.Application.Features.FestivalPaymentsInformation.Commands.AddEdit
 using HiSubmit.Application.Features.FestivalPaymentsInformation.Queries.GetDetail;
 using HiSubmit.Application.Features.Wrapper;
 using HiSubmit.Application.Features.Settlements;
+using Hisubmit.Client.SharedModels.Contracts.Permission;
+using Web.Filters;
 
 namespace Web.Controllers.v1.Festival;
 
 public class FestivalPaymentsController : BaseFestivalController<FestivalPaymentsController>
 {
     [HttpGet("SettlementStatements")]
+    [FestivalAuthentication(Policy = Permissions.FestivalPayment.CartItem)]
     public async Task<IActionResult> GetSettlementStatements(
         [FromQuery] GetFestivalSettlementStatementsRequest query, int festivalId)
     {
@@ -22,6 +25,7 @@ public class FestivalPaymentsController : BaseFestivalController<FestivalPayment
     }
 
     [HttpPost("SettlementStatements")]
+    [FestivalAuthentication(Policy = Permissions.FestivalPayment.CartItem)]
     public async Task<IActionResult> CreateSettlementStatement(
         CreateFestivalSettlementStatementRequest command, int festivalId)
     {
@@ -30,6 +34,7 @@ public class FestivalPaymentsController : BaseFestivalController<FestivalPayment
     }
 
     [HttpPost("SettlementStatements/{statementId:int}/adjustments")]
+    [FestivalAuthentication(Policy = Permissions.FestivalPayment.CartItem)]
     public async Task<IActionResult> AddSettlementAdjustment(
         AddSettlementAdjustmentRequest command, int festivalId, int statementId)
     {
@@ -39,6 +44,7 @@ public class FestivalPaymentsController : BaseFestivalController<FestivalPayment
     }
 
     [HttpPost("SettlementStatements/{statementId:int}/status")]
+    [FestivalAuthentication(Policy = Permissions.FestivalPayment.CartItem)]
     public async Task<IActionResult> UpdateSettlementStatus(
         UpdateSettlementStatusRequest command, int festivalId, int statementId)
     {
@@ -48,6 +54,7 @@ public class FestivalPaymentsController : BaseFestivalController<FestivalPayment
     }
 
     [HttpGet("SettlementStatements/{statementId:int}/export")]
+    [FestivalAuthentication(Policy = Permissions.FestivalPayment.CartItem)]
     public async Task<IActionResult> ExportSettlementStatement(
         [FromQuery] ExportFestivalSettlementRequest query,
         int festivalId, int statementId)
