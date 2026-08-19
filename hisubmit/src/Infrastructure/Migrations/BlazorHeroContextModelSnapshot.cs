@@ -976,6 +976,12 @@ namespace HiSubmit.Infrastructure.Migrations
                     b.Property<bool>("IsActivePeriod")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("EnableAutomaticPeriodCreation")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("EnableAutomaticSelectionNews")
+                        .HasColumnType("bit");
+
                     b.Property<string>("LastModifiedBy")
                         .HasColumnType("nvarchar(max)");
 

@@ -1216,3 +1216,31 @@ data contract, privacy policy and pricing are approved.
 - Product, ticket, and news ownership paths were reviewed without a schema
   change. Products and tickets are festival-owned; news supports festival
   news and administrator-managed global news.
+
+## Automation controls and notification publishing checkpoint (2026-08-19)
+
+- The legacy daily `GoNextFestivalPeriod` job clones an ended active period,
+  advances its dates by one year, updates `FestivalMaster.ActiveId/ActivePeriod`,
+  and publishes `CreatedFestival`. It is now opt-in through
+  `Festival.EnableAutomaticPeriodCreation`, defaulting to `false`.
+- A festival manager can enable or disable automatic period creation in
+  Festival > Additional Settings.
+- The new daily `PublishFestivalNotificationNews` Hangfire job publishes one
+  public festival-scoped news item after `NotificationDate` when
+  `EnableAutomaticSelectionNews` is enabled. It includes the festival
+  introduction and selected/finalist/award-related submissions. Its
+  date-bearing title makes the operation idempotent; empty selections are
+  deferred to the next daily run.
+- `EnableAutomaticSelectionNews` defaults to `true` and can be disabled by the
+  festival manager in the same settings screen.
+- `20260819142432_AddFestivalAutomationSettings` is a manually constrained
+  migration adding only the two automation columns to `Festivals`. It has not
+  been applied to any database in this checkpoint.
+- Public active tickets now exclude records with no available capacity, and
+  deadline email scheduling checks each nullable deadline independently.
+- Store and ticket management remain structurally functional but visually
+  basic. Storefront cards, reservation states, pass/accreditation metadata,
+  checkout/receipt polish, and sales analytics remain future work.
+- Startup initialization now applies pending EF migrations before running the
+  database seeders. If migration fails, seeding is skipped and the failure is
+  logged.

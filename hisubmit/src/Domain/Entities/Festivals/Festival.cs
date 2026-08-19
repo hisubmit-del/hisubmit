@@ -119,6 +119,8 @@ public class Festival:AuditableEntity<int>
     public double? MinFee { get; set; }
     public double? MaxFee { get; set; }
     public bool IsActivePeriod { get; set; }
+    public bool EnableAutomaticPeriodCreation { get; set; }
+    public bool EnableAutomaticSelectionNews { get; set; } = true;
     
     public Festival Clone()
     {

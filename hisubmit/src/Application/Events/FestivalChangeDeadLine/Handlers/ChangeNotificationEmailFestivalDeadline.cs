@@ -35,6 +35,8 @@ public class ChangeNotificationEmailFestivalDeadline(
 
     public async Task<string> SendNotificationDateEmail(Festival festival)
     {
+        if (festival.NotificationDate == null) return string.Empty;
+
         var model = new SendNotificationDateEmailViewModel()
         {
             NotificationDate = festival.NotificationDate.Value,
@@ -49,8 +51,6 @@ public class ChangeNotificationEmailFestivalDeadline(
             To = festival.Email,
             Subject = "Today is the notification day of the festival"
         };
-        if (festival.NotificationDate == null) return string.Empty;
-        
         var jobId = backGroundJobService
             .AddSchedule(() => SendEmail(request), festival.NotificationDate.Value);
         
@@ -59,6 +59,8 @@ public class ChangeNotificationEmailFestivalDeadline(
 
     public async Task<string> SendOpenDateNotificationEmail(Festival festival)
     {
+        if (festival.OpeningDate == null) return string.Empty;
+
         var model = new SendOpenDateNotificationEmailViewModel();
         var content = await renderViewService.RenderViewToStringAsync("_OpenDateNotificationEmail", model);
         var request = new MailRequest()
@@ -67,7 +69,6 @@ public class ChangeNotificationEmailFestivalDeadline(
             To = festival.Email,
             Subject = "Today is the opening day of the festival"
         };
-        if (festival.NotificationDate == null) return string.Empty;
         var jobId = backGroundJobService
             .AddSchedule(() => SendEmail(request), festival.OpeningDate.Value);
         return jobId;
@@ -75,6 +76,8 @@ public class ChangeNotificationEmailFestivalDeadline(
 
     public async Task<string> SendEventEndDateNotificationEmail(Festival festival)
     {
+        if (festival.EventEndDate == null) return string.Empty;
+
         var model = new SendEventEndDateNotificationEmailViewModel();
         var content = await renderViewService.RenderViewToStringAsync("_EventEndDateNotificationEmail", model);
         var request = new MailRequest()
@@ -83,7 +86,6 @@ public class ChangeNotificationEmailFestivalDeadline(
             To = festival.Email,
             Subject = "Today  is the last day of the festival "
         };
-        if (festival.NotificationDate == null) return string.Empty;
         var jobId = backGroundJobService
             .AddSchedule(() => SendEmail(request), festival.EventEndDate.Value);
         return jobId;
@@ -91,6 +93,8 @@ public class ChangeNotificationEmailFestivalDeadline(
 
     public async Task<string> SendEventStartDateNotificationEmail(Festival festival)
     {
+        if (festival.EventStartDate == null) return string.Empty;
+
         var model = new SendEventStartDateNotificationEmailViewModel();
         var content = await renderViewService.RenderViewToStringAsync("_EventStartDateNotificationEmail", model);
         var request = new MailRequest()
@@ -99,7 +103,6 @@ public class ChangeNotificationEmailFestivalDeadline(
             To = festival.Email,
             Subject = "Today is the start of the festival"
         };
-        if (festival.NotificationDate == null) return string.Empty;
         var jobId = backGroundJobService
             .AddSchedule(() => SendEmail(request), festival.EventStartDate.Value);
         return jobId;

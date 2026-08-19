@@ -14,6 +14,7 @@ using HiSubmit.Client.Infrastructure.Managers.Preferences;
 using HiSubmit.Client.Infrastructure.Services;
 using HiSubmit.Client.SharedModels.Constants.Application;
 using HiSubmit.Client.SharedModels.Constants.Role;
+using HiSubmit.Application.Jobs.Daily.Festivals;
 using HiSubmit.Infrastructure.Extensions;
 using HiSubmit.Infrastructure.Models.Identity;
 using Microsoft.AspNetCore.Components.Authorization;
@@ -286,6 +287,18 @@ app.UseHangfireDashboard("/jobs", new DashboardOptions
 
 app.ConfigureSwagger();
 app.Initialize(builder.Configuration);
+
+// Register application recurring jobs once when the host starts. The jobs
+// themselves are persisted by Hangfire and remain idempotent.
+using (var recurringJobScope = app.Services.CreateScope())
+{
+    await recurringJobScope.ServiceProvider
+        .GetRequiredService<IGoToNextPeriodOfFestival>()
+        .InvokeAsync();
+    await recurringJobScope.ServiceProvider
+        .GetRequiredService<IPublishFestivalNotificationNews>()
+        .InvokeAsync();
+}
 
 app.UseHttpsRedirection();
 

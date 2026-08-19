@@ -184,6 +184,32 @@
                         </MudItem>
                     </MudItem>
 
+                    <MudItem xs="12" md="2" Class="mt-3">
+                        <MudText Typo="Typo.subtitle2">
+                            @Localize["Automatic workflows"]:
+                        </MudText>
+                    </MudItem>
+                    <MudItem xs="12" md="10" Class="mt-3">
+                        <MudStack Spacing="1">
+                            <MudSwitch T="bool"
+                                       @bind-Value="_model.EnableAutomaticSelectionNews"
+                                       For="() => _model.EnableAutomaticSelectionNews"
+                                       Color="Color.Secondary"
+                                       Label="@Localize["Publish official selection news on Notification Date"]"/>
+                            <MudText Typo="Typo.caption" Class="ml-2">
+                                @Localize["Creates one public news item with selected, finalist and award-winning works."]
+                            </MudText>
+                            <MudSwitch T="bool"
+                                       @bind-Value="_model.EnableAutomaticPeriodCreation"
+                                       For="() => _model.EnableAutomaticPeriodCreation"
+                                       Color="Color.Secondary"
+                                       Label="@Localize["Create the next festival period automatically"]"/>
+                            <MudText Typo="Typo.caption" Class="ml-2">
+                                @Localize["Clones this period after Event End Date and moves its dates one year forward."]
+                            </MudText>
+                        </MudStack>
+                    </MudItem>
+
                     <MudItem xs="12" md="2" Class="d-flex align-content-center flex-wrap">
                         <MudText Typo="Typo.subtitle2">
                             @Localize["Tracking Sequence"]:
@@ -250,4 +276,3 @@
     </MudCardContent>
 </MudCard>
 
-                                                   

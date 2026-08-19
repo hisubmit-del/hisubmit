@@ -34,6 +34,7 @@ public class GoToNextPeriodOfFestival(
         var festivals = unitOfWork.Repository<Festival>()
             .Entities
             .Where(p => p.EventEndDate != null && p.IsActivePeriod &&
+                        p.EnableAutomaticPeriodCreation &&
                         p.EventEndDate.Value <= DateTime.Today)
             .ToList();
 

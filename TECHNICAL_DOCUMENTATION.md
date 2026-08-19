@@ -1140,3 +1140,71 @@ verification. Authenticated role switching, festival-scope allow/deny cases,
 form/modal/upload actions, payment, and visual desktop/mobile inspection
 remain before Phase 1 can be closed. Phase 2 must not start until those checks
 are completed or a specific blocker is recorded.
+
+## Automation and scheduled festival workflows (2026-08-19)
+
+### Legacy next-period job
+
+`HiSubmit/src/Application/Jobs/Daily/Festivals/GoToNextPeriodOfFestival.cs`
+registers the daily Hangfire job `GoNextFestivalPeriod`. For an active period
+whose `EventEndDate` has passed, it creates the next period, advances date
+fields by one year, deactivates the old period, updates the festival master
+pointer, and publishes `CreatedFestival`.
+
+This operation is opt-in per festival through
+`Festival.EnableAutomaticPeriodCreation`, defaulting to `false`. The control is
+exposed in Festival > Additional Settings. The legacy clone behavior should
+receive a preview/deep-copy test before production activation.
+
+### Automatic official-selection news
+
+`HiSubmit/src/Application/Jobs/Daily/Festivals/PublishFestivalNotificationNews.cs`
+registers `PublishFestivalNotificationNews` as a daily Hangfire job. It
+selects public festivals whose `NotificationDate` has arrived and whose
+`EnableAutomaticSelectionNews` setting is enabled. It publishes one
+festival-scoped `New` item containing the festival description and
+submissions with a selection-related judging status. The title includes the
+notification date to prevent duplicates without another column. If no selected
+works exist, publication is deferred to the next daily run.
+
+The manager can disable this workflow in Festival > Additional Settings. The
+job is registered at startup together with the legacy period job; it does not
+run database migrations automatically.
+
+### Migration and deployment safety
+
+`20260819142432_AddFestivalAutomationSettings` is a manually constrained
+migration that adds only:
+
+- `Festivals.EnableAutomaticPeriodCreation` (`bit`, default `false`)
+- `Festivals.EnableAutomaticSelectionNews` (`bit`, default `true`)
+
+It has not been applied by this checkpoint. Back up the target database and
+inspect the connection string before applying it. The controlled local command
+is:
+
+```powershell
+dotnet ef database update `
+  --project .\hisubmit\src\Infrastructure\Infrastructure.csproj `
+  --startup-project .\Web\Web.csproj
+```
+
+Production deployment must include the migration code and apply it through the
+approved database process. Copying publish files or deploying a Git commit
+alone must not be assumed to update the database.
+
+The current startup initializer now calls `BlazorHeroContext.Database.Migrate()`
+before database seeding. This supports a deliberately reset empty database:
+the application applies the committed migrations first and then seeds the
+required baseline roles/catalog data. A migration failure is logged and
+seeding is skipped. This behavior must still be verified on the hosting
+provider before treating it as a production database migration policy.
+
+### Commerce audit checkpoint
+
+Products are festival-owned and tickets are linked through festival-owned
+venues. Public active tickets now exclude sold-out records
+(`AvailableCapacity <= 0`). The current store/ticket UI remains a basic
+management form and list; richer storefront, reservation/stock states,
+event-pass/accreditation metadata, receipt/checkout improvements, and income
+analytics are planned but not yet implemented.

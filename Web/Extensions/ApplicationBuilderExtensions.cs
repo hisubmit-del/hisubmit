@@ -9,6 +9,8 @@ using Microsoft.AspNetCore.Localization;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.EntityFrameworkCore;
+using HiSubmit.Infrastructure.Contexts;
 using System.Globalization;
 using System.Linq;
 
@@ -71,6 +73,18 @@ namespace Web.Extensions
             using var serviceScope = app.ApplicationServices.CreateScope();
             var loggerFactory = serviceScope.ServiceProvider.GetService<ILoggerFactory>();
             var logger = loggerFactory?.CreateLogger("ApplicationBuilderExtensions");
+
+            try
+            {
+                var db = serviceScope.ServiceProvider.GetRequiredService<BlazorHeroContext>();
+                db.Database.Migrate();
+                logger?.LogInformation("Database migrations applied successfully.");
+            }
+            catch (Exception ex)
+            {
+                logger?.LogError(ex, "Database migration failed. Database seeding was skipped.");
+                return app;
+            }
 
             var initializers = serviceScope.ServiceProvider.GetServices<IDatabaseSeeder>();
 

@@ -407,6 +407,7 @@ internal static class ServiceCollectionExtensions
     public static IServiceCollection AddRecurringJobServices(this  IServiceCollection service)
     {
         service.AddScoped<IGoToNextPeriodOfFestival, GoToNextPeriodOfFestival>();
+        service.AddScoped<IPublishFestivalNotificationNews, PublishFestivalNotificationNews>();
         return service;
     }
 }

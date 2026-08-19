@@ -22,4 +22,6 @@ public class AddEditAdditionalSettingCommand
     public  FestivalStatus FestivalStatus { get; set; }
         
     public bool ChangesNotAllowed { get; set; }
+    public bool EnableAutomaticPeriodCreation { get; set; }
+    public bool EnableAutomaticSelectionNews { get; set; } = true;
 }

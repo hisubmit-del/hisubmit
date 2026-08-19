@@ -35,6 +35,8 @@ namespace HiSubmit.Application.Features.Festivals.Commands.AddEditAdditinalSetti
         public  FestivalStatus FestivalStatus { get; set; }
         
         public bool ChangesNotAllowed { get; set; }
+        public bool EnableAutomaticPeriodCreation { get; set; }
+        public bool EnableAutomaticSelectionNews { get; set; } = true;
     }
 
     public class AddEditAdditionalSettingCommandHandler : IRequestHandler<AddEditAdditionalSettingCommand, Result<int>>
