@@ -13,6 +13,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using HiSubmit.Application.Services.Text;
 
 namespace HiSubmit.Application.Features.Festivals.Commands.AddEditEventCategory
 {
@@ -62,6 +63,9 @@ namespace HiSubmit.Application.Features.Festivals.Commands.AddEditEventCategory
 
         public async Task<Result<int>> Handle(AddEditEventCategoryCommand request, CancellationToken cancellationToken)
         {
+            request.Name = request.Name?.Trim();
+            request.Description = HtmlTextSanitizer.SanitizeWithoutLinks(request.Description);
+
             if (request.Id == 0)
             {
                 var category = _mapper.Map<EventCategory>(request);

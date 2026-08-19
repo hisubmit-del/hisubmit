@@ -28,14 +28,24 @@ const simpleToolbarOptions = [     // dropdown with defaults from theme
 
 let quillList = []
 function createRichText(elementId, simpleOption, text = "", enableLink = true) {
-    let opts = toolbarOptions;
-    if (enableLink)
-        toolbarOptions[2].push('link')
+    // Build a fresh toolbar array so repeated editors do not mutate the
+    // shared toolbar and accidentally re-enable links in later editors.
+    let opts = enableLink
+        ? toolbarOptions.map((group, index) => index === 2
+            ? [...group, 'link']
+            : (Array.isArray(group) ? [...group] : group))
+        : toolbarOptions
+            .filter(group => !(Array.isArray(group) && group.includes('link')))
+            .map(group => Array.isArray(group) ? [...group] : group);
 
     if (simpleOption) {
-        if (enableLink)
-            simpleToolbarOptions[0].push('link')
-        opts = simpleToolbarOptions;
+        opts = enableLink
+            ? simpleToolbarOptions.map((group, index) => index === 0
+                ? [...group, 'link']
+                : (Array.isArray(group) ? [...group] : group))
+            : simpleToolbarOptions
+                .filter(group => !(Array.isArray(group) && group.includes('link')))
+                .map(group => Array.isArray(group) ? [...group] : group);
     }
    
     let q = new Quill(`#${elementId}`, {
@@ -44,10 +54,15 @@ function createRichText(elementId, simpleOption, text = "", enableLink = true) {
             toolbar: opts
         },
     })
-    q.pasteHTML(text);
+    q.pasteHTML(enableLink ? text : stripRichTextLinks(text));
 
     q.on('text-change', function (delta, oldDelta, source) {
-        let content = q.root.innerHTML;
+        let content = enableLink ? q.root.innerHTML : stripRichTextLinks(q.root.innerHTML);
+        if (!enableLink && content !== q.root.innerHTML) {
+            const selection = q.getSelection();
+            q.clipboard.dangerouslyPasteHTML(content, 'silent');
+            if (selection) q.setSelection(selection);
+        }
         let rf;
         $.each(GLOBALB.DotNetReference, (index, item) => {
             if (item.editorId === elementId) {
@@ -57,6 +72,29 @@ function createRichText(elementId, simpleOption, text = "", enableLink = true) {
         rf.invokeMethodAsync('ChangedRicheText', content);
     })
     quillList.push({ editorId: elementId, qu: q });
+}
+
+function stripRichTextLinks(html) {
+    const template = document.createElement('template');
+    template.innerHTML = html || '';
+    template.content.querySelectorAll('a, script, style, iframe, object, embed, form').forEach(node => {
+        if (node.tagName.toLowerCase() === 'a') {
+            node.replaceWith(...Array.from(node.childNodes));
+        } else {
+            node.remove();
+        }
+    });
+    template.content.querySelectorAll('*').forEach(node => {
+        Array.from(node.attributes).forEach(attribute => {
+            const name = attribute.name.toLowerCase();
+            const value = attribute.value.toLowerCase();
+            if (name.startsWith('on') || name === 'href' || name === 'src' ||
+                value.includes('javascript:') || value.includes('data:text/html')) {
+                node.removeAttribute(attribute.name);
+            }
+        });
+    });
+    return template.innerHTML;
 }
 
 function RemoveRichTextEvent(editorId) {

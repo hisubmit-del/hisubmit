@@ -1480,3 +1480,22 @@ data contract, privacy policy and pricing are approved.
   API clients to the HTML login page.
 - `ErrorHandlerMiddleware` emits `X-Correlation-ID` and includes it in
   unexpected-error responses for log correlation.
+- Festival wizard and text-safety checkpoint (2026-08-20):
+  - The festival editor remains a seven-step wizard, but the order is now
+    identity, contact/venue, categories, deadlines/fees, files, gallery/cover,
+    and additional settings. Categories are intentionally before deadlines so
+    each fee schedule can be attached to an already-defined submission option.
+  - The shared festival-editor guide now explains the complete order and tells
+    organizers that red asterisks identify fields required for the current step.
+  - The actual required fields in the event-details validator are still
+    festival name, description, and rules. Release-only prerequisites such as
+    logo, website, email, organizer and cover remain release checks and were
+    not incorrectly made required during draft editing.
+  - Festival description, awards, rules, and event-category descriptions are
+    sanitized on the server to remove anchors, URL attributes, event-handler
+    attributes, executable/embed blocks and similar unsafe content.
+  - The rich-text editor now builds an isolated toolbar per instance and
+    removes links from editors configured with `EnableLink=false`, including
+    pasted content. This prevents one editor instance from re-enabling links
+    in another instance.
+  - No database schema or migration was required for this checkpoint.

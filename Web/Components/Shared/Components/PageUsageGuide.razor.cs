@@ -51,7 +51,7 @@ public partial class PageUsageGuide : IDisposable
         if (lower == "/festival/dashboard")
             return New("Festival dashboard", "Monitor submissions, deadlines, judging, sales and audience activity from one operational overview.", Icons.Material.Outlined.Dashboard);
         if (lower.StartsWith("/festival/edit"))
-            return New("Festival editor", "Complete the festival information step by step. Save a section before moving to the next tab.", Icons.Material.Outlined.Edit);
+            return New("Festival editor", "Complete the festival in this order: identity, contact and venue, categories, deadlines and fees, files, gallery, then final settings. Save each section before continuing. Red asterisks mark fields required for this step.", Icons.Material.Outlined.Edit);
         if (lower.StartsWith("/festival/submits"))
             return New("Festival submissions", "Filter submitted works, open their project pages and manage the review or judging workflow.", Icons.Material.Outlined.Approval);
         if (lower.StartsWith("/festival/judging") || lower.StartsWith("/festival/projectjudging"))

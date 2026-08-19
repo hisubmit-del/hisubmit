@@ -15,6 +15,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using HiSubmit.Application.Events.Festivals.FestivalReleasedRequests;
 using Hisubmit.Client.SharedModels.Requests;
+using HiSubmit.Application.Services.Text;
 
 namespace HiSubmit.Application.Features.Festivals.Commands.CreateFestival
 {
@@ -74,6 +75,10 @@ namespace HiSubmit.Application.Features.Festivals.Commands.CreateFestival
 
         public async Task<Result<int>> Handle(AddEditFestivalDetailCommand request, CancellationToken cancellationToken)
         {
+            request.Description = HtmlTextSanitizer.SanitizeWithoutLinks(request.Description);
+            request.Rewards = HtmlTextSanitizer.SanitizeWithoutLinks(request.Rewards);
+            request.Rules = HtmlTextSanitizer.SanitizeWithoutLinks(request.Rules);
+
             if (request.Id == 0)
             {
                 var festival = mapper.Map<Festival>(request);

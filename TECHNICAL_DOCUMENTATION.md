@@ -1448,3 +1448,34 @@ failures instead of redirecting API clients to the HTML login page.
 `ErrorHandlerMiddleware` emits `X-Correlation-ID` and includes the same value
 in unexpected-error responses, allowing a failed request to be traced through
 server logs.
+- Festival wizard and rich-text safety checkpoint (2026-08-20)
+
+  The festival editor route (`/festival/edit`) uses the existing seven
+  components and no schema change. Its user-facing order is:
+
+  1. Event details
+  2. Contact and venue
+  3. Event categories and submission questions
+  4. Dates, deadlines and fees
+  5. Files
+  6. Gallery and cover
+  7. Additional settings
+
+  The parent tab navigation and save guards were updated together, including
+  the modified-form prompt. Category records are saved by their inline editor;
+  the parent does not invent a second category save operation.
+
+  Required-field semantics remain based on the existing validator rather than
+  UI assumptions: event name, description and rules are required for this
+  section. Logo, email, website, prefix, organizer, notification date,
+  categories and cover are validated by the existing release command and are
+  presented as release prerequisites.
+
+  `HiSubmit.Application.Services.Text.HtmlTextSanitizer` is applied by the
+  festival detail and event-category command handlers. It preserves ordinary
+  rich text but removes anchor tags, `href`/`src`, inline event handlers, and
+  executable/embed blocks. `Web/wwwroot/js/richtext.js` applies the same
+  no-link policy in editors with `EnableLink=false`, including pasted HTML.
+
+  This is a presentation/validation hardening change only; it does not change
+  the database model or migration history.

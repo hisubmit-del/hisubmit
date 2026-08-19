@@ -95,17 +95,17 @@ else
                                          NextPanel="() => ChangeTab(2)"
                                          PrevPanel="()=>ChangeTab(0)"></ContactAndVenue>
                     </MudTabPanel>
-                    <MudTabPanel Style="text-transform:none" Text="@Localize["DeadLines"]">
-                        <FestivalDeadline @ref="_festivalDeadline" 
-                                          NextPanel="() => ChangeTab(3)"
-                                          PrevPanel="()=>ChangeTab(1)"
-                                          FestivalId="FestivalId"/>
-                    </MudTabPanel>
                     <MudTabPanel Style="text-transform:none" Text="@Localize["Categories"]">
                         <FestivalEventCategory @ref="_festivalEventCategory"
-                                               NextPanel="() => ChangeTab(4)" 
-                                               PrevPanel="()=>ChangeTab(2)"
+                                               NextPanel="() => ChangeTab(3)"
+                                               PrevPanel="()=>ChangeTab(1)"
                                                FestivalId="FestivalId"/>
+                    </MudTabPanel>
+                    <MudTabPanel Style="text-transform:none" Text="@Localize["DeadLines"]">
+                        <FestivalDeadline @ref="_festivalDeadline"
+                                          NextPanel="() => ChangeTab(4)"
+                                          PrevPanel="()=>ChangeTab(2)"
+                                          FestivalId="FestivalId"/>
                     </MudTabPanel>
                     <MudTabPanel Style="text-transform:none" Text="@Localize["Files"]">
                         <FestivalFile @ref="_festivalFile" 
