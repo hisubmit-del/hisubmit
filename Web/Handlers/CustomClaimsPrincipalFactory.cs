@@ -145,11 +145,14 @@ BlazorHeroContext dbContext)
             .Where(festival => festival.UserId == userId ||
                                (festival.FestivalMaster != null &&
                                 festival.FestivalMaster.UserId == userId))
+            .Where(festival => festival.IsActive)
             .Select(festival => festival.Id)
             .ToListAsync();
 
         var memberFestivalIds = await dbContext.FestivalSubUser
-            .Where(member => member.UserId == userId && !member.IsRemoved)
+            .Where(member => member.UserId == userId &&
+                             !member.IsRemoved &&
+                             member.Festival.IsActive)
             .Select(member => member.FestivalId)
             .ToListAsync();
 

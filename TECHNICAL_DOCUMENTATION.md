@@ -1382,3 +1382,16 @@ automatically verified by this checkpoint.
 - Recommended settlement sequence: introduce an immutable ledger, link every
   charge/payment/adjustment to exact `FestivalId` and period, add monthly
   statement approval, then add exports and payout/reconciliation states.
+
+## Festival account active-scope correction (2026-08-19)
+
+- `qa.festival@hisubmit.test` has one active owned festival (`15`) and two
+  inactive legacy test festival rows (`16`, `18`) in the local database.
+- `Web/Handlers/CustomClaimsPrincipalFactory.cs` now filters owned and member
+  festivals by `Festival.IsActive` before building festival permission and
+  current-festival claims. This prevents an inactive row from becoming the
+  selected festival and avoids festival-scope 401 responses caused by stale
+  or invalid active IDs.
+- Existing inactive rows are retained for audit/test history; no data deletion
+  or migration was performed. Users must sign out and sign in again to
+  regenerate the authentication cookie claims.

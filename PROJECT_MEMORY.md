@@ -1414,3 +1414,20 @@ data contract, privacy policy and pricing are approved.
 - Future settlement work must add exact-period statements, immutable
   adjustments, monthly close/approval, payout status, reconciliation, and
   downloadable reports without combining adjacent festival periods.
+
+## Festival account active-scope correction (2026-08-19)
+
+- Local data for `qa.festival@hisubmit.test` contains three owned festival
+  rows: festival `15` is active; festivals `16` and `18` are inactive legacy
+  test rows. This is not three active festivals.
+- `CustomClaimsPrincipalFactory` now includes only active owned festivals and
+  active festival memberships in `FestivalPermission` and `FestivalId`
+  claims. Inactive test rows are retained in the database and are not
+  deleted.
+- The account must log out and log in again after this change so the
+  authentication cookie receives regenerated claims. Expected active festival
+  after relogin: `[QA] Complete Creative Showcase 2026` (`FestivalId=15`).
+- This correction preserves the documented single-owner create-festival
+  guard. A new festival user was not created because the existing account
+  already has one valid active festival; creating another test account would
+  add duplicate data without fixing the claim scope.
