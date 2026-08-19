@@ -10,6 +10,14 @@
         </MudText>
     </TitleContent>
     <DialogContent>
+        <MudAlert Severity="Severity.Info" Variant="Variant.Outlined" Class="mb-4">
+            <MudText Typo="Typo.body2">
+                @Localize["Festival-scoped judging assignment"]: <b>@FestivalName</b>
+            </MudText>
+            <MudText Typo="Typo.caption">
+                @Localize["Review only this assigned work. Your scores and answers are saved for this assignment."]
+            </MudText>
+        </MudAlert>
         @if (_loaded)
         {
             <MudGrid Style="max-height:500px;overflow-y:scroll">

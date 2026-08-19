@@ -16,8 +16,17 @@
 {
     <MudProgressCircular Color="Color.Primary" Indeterminate="true"/>
 }
+else if (_pagedDate is null || !_pagedDate.Any())
+{
+    <MudAlert Severity="Severity.Info" Variant="Variant.Outlined" Class="my-4">
+        @Localize["Your judging queue is empty. New assignments will appear here when a festival manager assigns a project to you."]
+    </MudAlert>
+}
 else
 {
+    <MudAlert Severity="Severity.Info" Variant="Variant.Outlined" Class="mb-4">
+        @Localize["Each row is a festival-scoped assignment. Open the work only when the festival name and assignment context match your authorization."]
+    </MudAlert>
     @* <MudButton Class="mb-3" OnClick="ToggleSearchFor" EndIcon="@Icons.Material.Filled.Search" Color="Color.Surface" Variant="Variant.Filled">
         Advanced Search
     </MudButton>*@
@@ -109,6 +118,9 @@ else
             <MudTh>
                 @Localize["Enable"]
             </MudTh>
+            <MudTh>
+                @Localize["Assignment context"]
+            </MudTh>
             <MudTh Style="text-align:center">
                 @Localize["Average of rates"]
             </MudTh>
@@ -143,6 +155,12 @@ else
                              Variant="Variant.Text"
                              Text="@context.JudgingButtonName"/>
                 }
+            </MudTd>
+            <MudTd style="@(context.JudgingFiledAverage == 0 ? $"background:{Colors.DeepOrange.Lighten4}" : "")" DataLabel="Assignment context">
+                <MudText Typo="Typo.caption">@context.FestivalName</MudText>
+                <MudText Typo="Typo.caption" Color="Color.Secondary">
+                    @context.CreatedOn.ToLongDate()
+                </MudText>
             </MudTd>
             <MudTd style="@(context.JudgingFiledAverage == 0 ? $"background:{Colors.DeepOrange.Lighten4}" : "")" DataLabel="Rate Average">
                 @{

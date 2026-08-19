@@ -1325,3 +1325,17 @@ data contract, privacy policy and pricing are approved.
 - Build verification completed with 0 errors.
 - The task queue is a UI checkpoint; permission-denial and interactive
   completion checks remain pending.
+
+## Phase 2 referee queue checkpoint (2026-08-19)
+
+- The referee queue now has an explicit empty state and explains that each
+  row is a festival-scoped assignment.
+- The queue shows the available assignment context from the current response
+  contract: project, festival, assignment date, status and average score.
+- The judging dialog now displays the assigned festival name and reminds the
+  reviewer that scores and answers belong only to that assignment.
+- The current DTO does not contain season/period or category fields, so they
+  were not inferred or fabricated.
+- Build verification completed with 0 errors.
+- Phase 2 remains open pending interactive referee save confirmation,
+  festival-scope denial checks, autosave/recovery, and full checkout tests.

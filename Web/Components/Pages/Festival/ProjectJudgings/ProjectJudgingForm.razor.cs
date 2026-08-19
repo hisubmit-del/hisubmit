@@ -32,6 +32,7 @@ public partial class ProjectJudgingForm
     [Parameter] public int FestivalId { get; set; }
     [Parameter] public int ProjectJudgingId { get; set; }
     [Parameter] public ProjectType ProjectType { get; set; }
+    [Parameter] public string FestivalName { get; set; }
     [CascadingParameter] public IMudDialogInstance MudDialog { get; set; }
     [Parameter] public AddEditProjectJudgingResultCommand JudgingResult { get; set; }
 

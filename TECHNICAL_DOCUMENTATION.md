@@ -1268,6 +1268,16 @@ immediate task is detected. No API, database, or permission contract was
 changed. Build verification completed with 0 errors; interactive completion
 and denial checks remain pending.
 
+### Phase 2 referee queue checkpoint
+
+The referee queue now has an explicit empty state, shows the available
+festival-scoped assignment context, and explains the confidentiality boundary
+to the reviewer. The judging dialog receives and displays the assigned
+festival name. The current response DTO does not contain a judging
+period/season or category, so those fields were not inferred. Build
+verification completed with 0 errors. Interactive save confirmation,
+festival-scope denial, autosave and full checkout tests remain pending.
+
 ### Commerce audit checkpoint
 
 Products are festival-owned and tickets are linked through festival-owned

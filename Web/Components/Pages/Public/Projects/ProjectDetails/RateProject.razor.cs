@@ -81,6 +81,7 @@ public partial class RateProject
             { nameof(ProjectJudgingForm.SubmitId), selectedSubmit.SubmitId },
             { nameof(ProjectJudgingForm.ProjectJudgingId), selectedSubmit.Id },
             { nameof(ProjectJudgingForm.FestivalId), selectedSubmit.FestivalId },
+            { nameof(ProjectJudgingForm.FestivalName), selectedSubmit.FestivalName },
         };
         var options = new DialogOptions
         {
