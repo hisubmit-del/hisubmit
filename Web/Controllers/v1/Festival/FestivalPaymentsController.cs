@@ -7,11 +7,56 @@ using HiSubmit.Application.Features.FestivalPaymentItems.Queries.GetAll;
 using HiSubmit.Application.Features.FestivalPaymentsInformation.Commands.AddEdit;
 using HiSubmit.Application.Features.FestivalPaymentsInformation.Queries.GetDetail;
 using HiSubmit.Application.Features.Wrapper;
+using HiSubmit.Application.Features.Settlements;
 
 namespace Web.Controllers.v1.Festival;
 
 public class FestivalPaymentsController : BaseFestivalController<FestivalPaymentsController>
 {
+    [HttpGet("SettlementStatements")]
+    public async Task<IActionResult> GetSettlementStatements(
+        [FromQuery] GetFestivalSettlementStatementsRequest query, int festivalId)
+    {
+        query.FestivalId = festivalId;
+        return Ok(await Mediator.Send(query));
+    }
+
+    [HttpPost("SettlementStatements")]
+    public async Task<IActionResult> CreateSettlementStatement(
+        CreateFestivalSettlementStatementRequest command, int festivalId)
+    {
+        command.FestivalId = festivalId;
+        return Ok(await Mediator.Send(command));
+    }
+
+    [HttpPost("SettlementStatements/{statementId:int}/adjustments")]
+    public async Task<IActionResult> AddSettlementAdjustment(
+        AddSettlementAdjustmentRequest command, int festivalId, int statementId)
+    {
+        command.StatementId = statementId;
+        return Ok(await Mediator.Send(command));
+    }
+
+    [HttpPost("SettlementStatements/{statementId:int}/status")]
+    public async Task<IActionResult> UpdateSettlementStatus(
+        UpdateSettlementStatusRequest command, int festivalId, int statementId)
+    {
+        command.StatementId = statementId;
+        return Ok(await Mediator.Send(command));
+    }
+
+    [HttpGet("SettlementStatements/{statementId:int}/export")]
+    public async Task<IActionResult> ExportSettlementStatement(
+        [FromQuery] ExportFestivalSettlementRequest query,
+        int festivalId, int statementId)
+    {
+        query.FestivalId = festivalId;
+        query.StatementId = statementId;
+        var result = await Mediator.Send(query);
+        if (!result.Succeeded || result.Data is null)
+            return Ok(result);
+        return File(result.Data.File, result.Data.MimeType, result.Data.FileName);
+    }
 
     /// <summary>
     /// Get  festival Cart item such as product , ticket , submit 

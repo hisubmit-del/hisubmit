@@ -1395,3 +1395,28 @@ automatically verified by this checkpoint.
 - Existing inactive rows are retained for audit/test history; no data deletion
   or migration was performed. Users must sign out and sign in again to
   regenerate the authentication cookie claims.
+
+## Settlement ledger and period reporting (2026-08-19)
+
+The existing `FestivalPaymentItem` remains the record of payments made to a
+festival. A new additive ledger layer now provides period-specific statements:
+
+- `FestivalSettlementStatement`: exact festival and period, gross income,
+  service charges, advertising charges, payments to the festival, net amount,
+  approval/payment metadata, and status.
+- `SettlementAdjustment`: signed adjustment with mandatory reason and optional
+  evidence URL. Confirmed and paid statements cannot receive new adjustments.
+- `AdvertisingInvoice`: invoice number, amount, dates, festival, optional
+  advertising request, and optional settlement statement link.
+
+New festival-scoped routes are exposed under
+`api/v1/FestivalPayments/{festivalId}/SettlementStatements` for listing,
+creation, adjustment, status changes, and `export?format=excel|pdf`. The
+controller still uses the existing festival authorization pipeline; the
+browser-supplied festival ID is a selector and is not sufficient to bypass
+festival permissions.
+
+Migration `20260819190000_AddSettlementStatementsAndAdvertisingInvoices` was
+applied locally to `HiSubmitDB50`. It is additive and does not alter existing
+commerce, submission, ticket, or payment rows. UI wiring for period filters,
+approval actions, and download controls remains the next presentation step.

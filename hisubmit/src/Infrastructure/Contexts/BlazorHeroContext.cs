@@ -106,6 +106,9 @@ public class BlazorHeroContext : AuditableContext
     public DbSet<UserSpecialPeriod> UserSpecialPeriods { get; set; }
     public DbSet<FestivalPaymentItem> FestivalPaymentItems { get; set; }
     public DbSet<FestivalPaymentInformation> FestivalPaymentsInformation { get; set; }
+    public DbSet<FestivalSettlementStatement> FestivalSettlementStatements { get; set; }
+    public DbSet<SettlementAdjustment> SettlementAdjustments { get; set; }
+    public DbSet<AdvertisingInvoice> AdvertisingInvoices { get; set; }
 
     #endregion
 

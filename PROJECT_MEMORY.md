@@ -1431,3 +1431,26 @@ data contract, privacy policy and pricing are approved.
   guard. A new festival user was not created because the existing account
   already has one valid active festival; creating another test account would
   add duplicate data without fixing the claim scope.
+
+## Settlement ledger foundation (2026-08-19)
+
+- Added additive settlement tables:
+  `FestivalSettlementStatements`, `SettlementAdjustments`, and
+  `AdvertisingInvoices`.
+- Statements are keyed by the exact `FestivalId`, `PeriodStart`, and
+  `PeriodEnd`, so reports for different festival periods cannot be combined.
+- Supported settlement states are Pending, Confirmed, Paid, and Disputed.
+  Adjustments require a non-zero amount and reason, may include an evidence
+  URL, and are blocked after confirmation or payment.
+- Advertising invoices carry a festival reference and may be linked to both
+  an advertising request and an exact settlement statement. Advertising
+  charges are included in a newly created period statement.
+- Added festival-scoped API operations for listing/creating statements,
+  adding adjustments, changing status, and exporting an individual statement
+  as Excel or PDF. Existing income and payment calculations remain intact.
+- Migration `20260819190000_AddSettlementStatementsAndAdvertisingInvoices`
+  was applied to the local `HiSubmitDB50` database. It creates only the three
+  new tables and does not modify or delete existing rows.
+- The current export endpoint is API-ready; the next UI wiring must expose
+  period filters, status badges, approval controls, and download buttons in
+  the festival/admin finance pages without mixing periods.
