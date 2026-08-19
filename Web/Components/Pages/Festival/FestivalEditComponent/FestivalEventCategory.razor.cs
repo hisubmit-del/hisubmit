@@ -156,6 +156,15 @@ public partial class FestivalEventCategory
         return (_editFormClass  || (AddEditCategoryForm != null && AddEditCategoryForm.ModifiedForm()));
     }
 
+    public async Task<bool> SaveAsync()
+    {
+        if (IsAdmin || !_editFormClass || AddEditCategoryForm == null)
+            return true;
+
+        await AddEditCategoryForm.SaveAsync();
+        return !AddEditCategoryForm.ModifiedForm();
+    }
+
     private async Task DeleteAsync(int id, string name)
     {
         var parameters = new DialogParameters

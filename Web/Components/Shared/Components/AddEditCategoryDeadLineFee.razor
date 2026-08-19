@@ -1,9 +1,25 @@
 ﻿@using HiSubmit.Client.SharedModels.Extensions
 @inject IStringLocalizer<AddEditCategoryDeadLineFee> Localizer
-<MudGrid>
+<MudGrid Spacing="2">
   <MudItem xs="12">
-    <MudText Typo="Typo.subtitle2">@Fee.DeadLineName </MudText>
-    <MudText Typo="Typo.caption">@Fee.DeadLineDate.ToLongDate()</MudText>
+    <MudStack Row="true" AlignItems="AlignItems.Center" Justify="Justify.SpaceBetween" Spacing="1">
+      <MudStack Spacing="0">
+        <MudText Typo="Typo.subtitle1">@Fee.DeadLineName</MudText>
+        <MudText Typo="Typo.caption" Color="Color.Secondary">@Fee.DeadLineDate.ToLongDate()</MudText>
+      </MudStack>
+      @if (Fee.StandardFee is null)
+      {
+        <MudChip T="string" Size="Size.Small" Color="Color.Warning" Variant="Variant.Outlined">
+          Fee required
+        </MudChip>
+      }
+      else
+      {
+        <MudChip T="string" Size="Size.Small" Color="Color.Success" Variant="Variant.Outlined">
+          Ready
+        </MudChip>
+      }
+    </MudStack>
   </MudItem>
 
     <MudItem xs="12" md="6" lg="4">
@@ -11,8 +27,9 @@
                          Margin="Margin.Dense" 
                          T="double?"
                          Min="0"
+                         Required="true"
                          For="()=>Fee.StandardFee"
-                         Label="@Localizer["Standard Fee"]" 
+                         Label="@Localizer["Standard Fee (required)"]"
                          Variant="Variant.Outlined" />
     </MudItem>
     <MudItem xs="12" md="6" lg="4">

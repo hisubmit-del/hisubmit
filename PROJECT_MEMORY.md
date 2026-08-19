@@ -1546,3 +1546,24 @@ data contract, privacy policy and pricing are approved.
 - The local QA festival proved both states: release was rejected while the
   fee was null, then succeeded after setting standard/student/gold fees to
   zero. No schema change was required.
+
+## Wizard autosave and fee-table usability checkpoint (2026-08-19)
+
+- Removed duplicate save triggers from festival detail, category, and
+  additional-settings forms. Submit buttons no longer invoke the same handler
+  again through `OnClick`.
+- Wizard tab changes and step Next actions now save the active section once
+  and stay on that section when validation/save fails; the confirmation popup
+  is no longer used by this wizard flow.
+- The active wizard section is autosaved once per minute on the server.
+  Successful autosaves are reported to the user and overlapping saves are
+  prevented.
+- The category fee editor now shows each deadline as a readable card with its
+  date, readiness state, and required Standard Fee. Zero remains valid for
+  free submissions.
+- Event-category mapping and eager loading now return the category deadline
+  fee rows to the UI. The local endpoint was verified with the configured
+  category/deadline/fee matrix.
+- Files and gallery remain separate for now because their child components
+  own independent upload/save controls. The next safe tab reduction is a
+  coordinated `Files & Media` wrapper step.

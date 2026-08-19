@@ -14,7 +14,10 @@ namespace HiSubmit.Application.Mappings
         {
             public EventCategoryProfile()
             {
-                CreateMap<GetAllEventCategoryResponse, EventCategory>().ReverseMap();
+                CreateMap<EventCategory, GetAllEventCategoryResponse>()
+                    .ForMember(des => des.DeadLineCategories,
+                        map => map.MapFrom(src => src.DeadlineEventCategories));
+                CreateMap<GetAllEventCategoryResponse, EventCategory>();
                 CreateMap<GetEventCategoryByIdResponse , EventCategory>().ReverseMap()
                     .ForMember(des=>des.DeadLineCategories,map=>map.MapFrom(src=>src.DeadlineEventCategories))
                     .ForMember(des=>des.CountriesId,map=>map.MapFrom(src=>src.EventCategoryCountries.Select(p=>p.CountryId)))

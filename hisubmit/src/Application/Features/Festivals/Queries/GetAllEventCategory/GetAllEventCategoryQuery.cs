@@ -40,6 +40,7 @@ namespace HiSubmit.Application.Features.Festivals.Queries.GetAllEventCategory
         {
             var getAllEventCategories = await _unitOfWork.Repository<EventCategory>().Entities
                 .Include(p => p.DeadlineEventCategories)
+                    .ThenInclude(p => p.DeadLine)
             .Where(p => p.FestivalId == request.FestivalId).ToListAsync();
             //  var categories = await _appCache.GetOrAddAsync(ApplicationConstants.Cache.GetAllEventCategoryCacheKefy, getAllEventCategories);
             var mappedCategories = _mapper.Map<List<GetAllEventCategoryResponse>>(getAllEventCategories);

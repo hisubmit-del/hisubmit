@@ -1523,3 +1523,23 @@ The release command now loads `DeadlineEventCategories` and enforces these
 rules server-side. The category editor displays an explanatory alert while
 the matrix is incomplete. The local QA festival was rejected with a null fee
 and accepted after all three fee fields were set to zero.
+
+### Wizard save behavior and fee table
+
+Several wizard forms previously combined a form submit handler with an
+explicit click handler, which could send duplicate requests and destabilize
+an Interactive Server circuit. Those duplicate triggers are removed.
+Changing a wizard tab or pressing a step Next now saves the active section
+once and remains on that section if validation fails.
+
+The active wizard section is autosaved once per minute. The save is
+server-side, festival-scoped, protected against overlapping requests, and
+reported with a snackbar. This is draft persistence; it does not release or
+publish a festival.
+
+The category list now maps and returns its `DeadlineEventCategories`,
+including deadline date/name and Standard/Student/Gold fees. The editor
+displays each deadline as a readable card with a readiness badge and a
+required Standard Fee label. Categories and deadlines remain separate because
+the fee matrix is created from their relationship. Files and gallery are the
+remaining safe candidates for a future combined wizard step.

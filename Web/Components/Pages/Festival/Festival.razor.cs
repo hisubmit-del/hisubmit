@@ -11,14 +11,18 @@ using ClientComponents.Shared.Dialogs;
 using Hisubmit.Client.SharedModels.Enums;
 using Hisubmit.Client.SharedModels.Contracts.Permission;
 using Web.Components.Shared.Dialogs;
+using System;
+using System.Threading;
+using Microsoft.Extensions.Logging;
 
 namespace Web.Components.Pages.Festival;
 
-public partial class Festival
+public partial class Festival : IDisposable
 {
     #region Inject
 
     [Inject] private IFestivalManager FestivalManager { get; set; }
+    [Inject] private ILogger<Festival> Logger { get; set; }
 
     #endregion
 
@@ -34,6 +38,8 @@ public partial class Festival
     private bool _checkForNext;
 
     private bool _releaseProcess;
+    private Timer _draftTimer;
+    private int _draftSaveInProgress;
 
     private int FestivalId { get; set; }
     private bool _loaded;
@@ -61,6 +67,11 @@ public partial class Festival
         await CheckPermission(Permissions.Festival.View);
         await LoadData();
         _loaded = true;
+        _draftTimer = new Timer(
+            _ => _ = InvokeAsync(AutoSaveDraftAsync),
+            null,
+            TimeSpan.FromMinutes(1),
+            TimeSpan.FromMinutes(1));
         await base.OnInitializedAsync();
     }
     
@@ -85,7 +96,14 @@ public partial class Festival
 
     private async Task ChangeTab(int index)
     {
-        await Task.Run(() => { MainTab.ActivatePanel(index); });
+        if (index == _activePanelIndex)
+            return;
+
+        if (!await SaveCurrentPanelAsync())
+            return;
+
+        _activePanelIndex = index;
+        await InvokeAsync(StateHasChanged);
     }
 
     private async Task LoadData()
@@ -182,122 +200,55 @@ public partial class Festival
 
     private async Task ChangeTabChecked(int selectedIndex)
     {
-        _checkForNext = !_checkForNext;
         if (selectedIndex != _activePanelIndex)
+            await ChangeTab(selectedIndex);
+    }
+
+    private async Task<bool> SaveCurrentPanelAsync()
+    {
+        switch (_activePanelIndex)
         {
-            switch (_activePanelIndex)
-            {
-                case 0: //festival detail
-                    if (_festivalDetail.ModifiedForm())
-                        await ShowNextModal(selectedIndex);
-                    else
-                        _activePanelIndex = selectedIndex;
-                    break;
-                case 1: //contact and venue
-                    if (_contactAndVenue.ModifiedForm())
-                        await ShowNextModal(selectedIndex);
-                    else
-                        _activePanelIndex = selectedIndex;
-                    break;
-
-                case 2: //festival categories
-                    if (_festivalEventCategory.ModifiedForm())
-                        await ShowNextModal(selectedIndex);
-                    else
-                        _activePanelIndex = selectedIndex;
-                    break;
-
-                case 3: //festival deadline
-                    if (_festivalDeadline.ModifiedForm())
-                        await ShowNextModal(selectedIndex);
-                    else
-                        _activePanelIndex = selectedIndex;
-                    break;
-
-                case 4: //festival file
-                    _activePanelIndex = selectedIndex;
-                    break;
-
-                case 5: //festival images
-                    if (_festivalImages.ModifiedForm())
-                        await ShowNextModal(selectedIndex);
-                    else
-                        _activePanelIndex = selectedIndex;
-                    break;
-
-                case 6: //additional setting
-                    if (_festivalAdditionalSetting.ModifiedForm())
-                        await ShowNextModal(selectedIndex);
-                    else
-                        _activePanelIndex = selectedIndex;
-                    break;
-            }
+            case 0:
+                return !_festivalDetail.ModifiedForm() || await _festivalDetail.SaveAsync();
+            case 1:
+                return !_contactAndVenue.ModifiedForm() || await _contactAndVenue.SaveAsync();
+            case 2:
+                return !_festivalEventCategory.ModifiedForm() || await _festivalEventCategory.SaveAsync();
+            case 3:
+                return !_festivalDeadline.ModifiedForm() || await _festivalDeadline.SaveAsync();
+            case 4:
+                return true;
+            case 5:
+                return !_festivalImages.ModifiedForm() || await _festivalImages.SaveAsync();
+            case 6:
+                return !_festivalAdditionalSetting.ModifiedForm() ||
+                       await _festivalAdditionalSetting.SaveAsync();
+            default:
+                return true;
         }
     }
 
-    private async Task ShowNextModal(int selectedTab, bool saveButton = true)
+    private async Task AutoSaveDraftAsync()
     {
-        var option = new DialogOptions
-        {
-            FullWidth = true,
-            CloseButton = true,
-            MaxWidth = MaxWidth.Small,
-            
-        };
-        var parameters = new DialogParameters
-        {
-            { nameof(SaveAndNext.SaveButton), saveButton }
-        };
-        var dialog = _dialogService.Show<SaveAndNext>("Save or Next", parameters, option);
-        var result = await dialog.Result;
-
-        if (result.Canceled || result.Data is null)
+        if (!_loaded || Interlocked.Exchange(ref _draftSaveInProgress, 1) == 1)
             return;
 
-        switch (result.Data.ToString())
+        try
         {
-            case "SaveAndNext":
-                switch (_activePanelIndex)
-                {
-                    case 0: //festival detail
-                        if (await _festivalDetail.SaveAsync())
-                            _activePanelIndex = selectedTab;
-                        break;
-                    case 1: //contact and venue
-                        if (await _contactAndVenue.SaveAsync())
-                            _activePanelIndex = selectedTab;
-                        break;
-
-                    case 2: //festival categories
-                        // Categories are saved by their inline editor; there is no
-                        // second parent-level save operation for this step.
-                        _activePanelIndex = selectedTab;
-                        break;
-
-                    case 3: //festival deadline
-                        if (await _festivalDeadline.SaveAsync())
-                            _activePanelIndex = selectedTab;
-                        break;
-
-                    case 4: //festival file
-                        //No form exists without making changes to this form
-                        break;
-
-                    case 5: //festival images
-                        if (await _festivalImages.SaveAsync())
-                            _activePanelIndex = selectedTab;
-                        break;
-
-                    case 6: //additional setting
-                        if (await _festivalAdditionalSetting.SaveAsync())
-                            _activePanelIndex = selectedTab;
-                        break;
-                }
-
-                break;
-            case "Next":
-                _activePanelIndex = selectedTab;
-                break;
+            if (await SaveCurrentPanelAsync())
+            {
+                _snackBar.Add(
+                    Localize["Draft saved automatically"],
+                    Severity.Info);
+            }
+        }
+        catch (Exception exception)
+        {
+            Logger.LogWarning(exception, "Automatic festival draft save failed for festival {FestivalId}", FestivalId);
+        }
+        finally
+        {
+            Interlocked.Exchange(ref _draftSaveInProgress, 0);
         }
     }
 
@@ -312,6 +263,11 @@ public partial class Festival
         6 => Localize["Review automation and additional settings before release."],
         _ => Localize["Review your festival."]
     };
+
+    public void Dispose()
+    {
+        _draftTimer?.Dispose();
+    }
 
     #endregion
 }
