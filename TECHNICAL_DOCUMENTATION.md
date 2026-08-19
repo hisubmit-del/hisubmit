@@ -1200,6 +1200,34 @@ required baseline roles/catalog data. A migration failure is logged and
 seeding is skipped. This behavior must still be verified on the hosting
 provider before treating it as a production database migration policy.
 
+The restored local `HiSubmitDB50` database already contained the fee-type
+migration identifier `20250726170647_Change_FeePropTypeInCategoryDeadlineFeeTB`,
+while the active source tree only contained the older differently named fee
+migration file. A no-op compatibility migration with the recorded identifier
+is now present. It records the existing database state without replaying the
+fee alteration and prevents EF from attempting to recreate the initial
+`Users` table.
+
+The restored database keeps application tables and migration history in the
+`hisubmi1_user` schema. The DbContext therefore configures
+`MigrationsHistoryTable("__EFMigrationsHistory", "hisubmi1_user")`, and the
+automation migration explicitly names that schema. The local database update
+completed successfully; both automation columns and all eight expected
+migration identifiers were verified.
+
+Phase 1 smoke verification after restart:
+
+- Public routes `/`, `/festivals`, `/news`, `/store`, `/tickets`, `/faq`,
+  `/advertise`, `/Account/Login`, `/PrivacyPolicy`, and `/terms`: HTTP 200.
+- Guest cart API: HTTP 200 with a successful empty result.
+- Public deadline API for FestivalId 9: HTTP 200 with a successful empty
+  result.
+- Startup log: `Database migrations applied successfully`.
+
+This does not close Phase 1. Authenticated role switching, cross-festival
+allow/deny interaction, form/modal/upload actions, payment paths, and visual
+browser checks are still unverified.
+
 ### Commerce audit checkpoint
 
 Products are festival-owned and tickets are linked through festival-owned

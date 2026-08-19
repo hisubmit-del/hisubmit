@@ -166,7 +166,9 @@ internal static class ServiceCollectionExtensions
         IConfiguration configuration)
         => services
             .AddDbContext<BlazorHeroContext>(options => options
-                .UseSqlServer(configuration.GetConnectionString("DefaultConnection")))
+                .UseSqlServer(
+                    configuration.GetConnectionString("DefaultConnection"),
+                    sql => sql.MigrationsHistoryTable("__EFMigrationsHistory", "hisubmi1_user")))
             .AddTransient<IDatabaseSeeder, DatabaseSeeder>();
 
     internal static IServiceCollection AddCurrentUserService(this IServiceCollection services)

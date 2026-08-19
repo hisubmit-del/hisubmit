@@ -21,6 +21,7 @@ public partial class AddFestivalAutomationSettings : Migration
         migrationBuilder.AddColumn<bool>(
             name: "EnableAutomaticPeriodCreation",
             table: "Festivals",
+            schema: "hisubmi1_user",
             type: "bit",
             nullable: false,
             defaultValue: false);
@@ -28,6 +29,7 @@ public partial class AddFestivalAutomationSettings : Migration
         migrationBuilder.AddColumn<bool>(
             name: "EnableAutomaticSelectionNews",
             table: "Festivals",
+            schema: "hisubmi1_user",
             type: "bit",
             nullable: false,
             defaultValue: true);
@@ -37,10 +39,12 @@ public partial class AddFestivalAutomationSettings : Migration
     {
         migrationBuilder.DropColumn(
             name: "EnableAutomaticPeriodCreation",
-            table: "Festivals");
+            table: "Festivals",
+            schema: "hisubmi1_user");
 
         migrationBuilder.DropColumn(
             name: "EnableAutomaticSelectionNews",
-            table: "Festivals");
+            table: "Festivals",
+            schema: "hisubmi1_user");
     }
 }

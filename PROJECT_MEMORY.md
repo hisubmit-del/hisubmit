@@ -1244,3 +1244,32 @@ data contract, privacy policy and pricing are approved.
 - Startup initialization now applies pending EF migrations before running the
   database seeders. If migration fails, seeding is skipped and the failure is
   logged.
+- The local `HiSubmitDB50` database already recorded
+  `20250726170647_Change_FeePropTypeInCategoryDeadlineFeeTB`, but that
+  migration identifier was missing from the active source tree. A no-op
+  compatibility migration with the recorded identifier was added so EF does
+  not replay the initial schema or fail on the existing `Users` table.
+
+## Phase 1 database compatibility and API smoke checkpoint (2026-08-19)
+
+- The restored local `HiSubmitDB50` database stores application tables and
+  migration history under the `hisubmi1_user` schema. EF was initially
+  checking `dbo.__EFMigrationsHistory`, which made all migrations appear
+  pending and caused an attempt to recreate the existing `Identity.Users`
+  table.
+- `MigrationsHistoryTable("__EFMigrationsHistory", "hisubmi1_user")` is now
+  configured for the application DbContext.
+- The automation migration explicitly targets `hisubmi1_user.Festivals`.
+- The missing recorded fee migration identifier was added as a no-op
+  compatibility migration.
+- Local `HiSubmitDB50` was updated successfully. Both automation columns are
+  present and the history contains all eight expected migration identifiers.
+- After restart, startup logged `Database migrations applied successfully`.
+  `/`, `/festivals`, `/news`, `/store`, `/tickets`, `/faq`, `/advertise`,
+  `/Account/Login`, `/PrivacyPolicy`, and `/terms` returned HTTP 200.
+  Guest cart and the public deadline endpoint returned HTTP 200 with
+  successful empty results.
+- Older errors in `Web/Logs/log20260819.txt` belong to the pre-migration run.
+  Authenticated role switching, cross-festival allow/deny interaction,
+  form/modal/upload actions, payment, and visual browser checks remain
+  unverified; Phase 1 is not closed.
