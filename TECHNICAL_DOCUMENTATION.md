@@ -1228,6 +1228,20 @@ This does not close Phase 1. Authenticated role switching, cross-festival
 allow/deny interaction, form/modal/upload actions, payment paths, and visual
 browser checks are still unverified.
 
+### Phase 2 submission wizard checkpoint
+
+The current artist project editor already uses five panels: project
+information, credits, type-specific specification, awards/distribution, and
+project files. The first Phase 2 implementation adds a shared progress
+indicator and step guidance without changing the project or submission API.
+The editor forms now have stable unique `FormName` values, and a cancelled or
+closed unsaved-changes dialog is treated as a no-op.
+
+Build verification after the change completed with 0 errors. This checkpoint
+does not claim the complete Phase 2 submission wizard: draft autosave,
+validation summary, and interactive end-to-end submission/payment checks are
+still required by the roadmap.
+
 ### Commerce audit checkpoint
 
 Products are festival-owned and tickets are linked through festival-owned

@@ -116,6 +116,11 @@ public partial class AddEditProject
         var dialog = _dialogService.Show<SaveAndNext>("Save or Next", parameters, option);
         var result = await dialog.Result;
 
+        if (result.Canceled || result.Data is null)
+        {
+            return;
+        }
+
         switch (result.Data.ToString())
         {
             case "SaveAndNext":
@@ -190,4 +195,14 @@ public partial class AddEditProject
     {
      _navigationManager.NavigateTo($"/project/{_projectUrl}");   
     }
+
+    private string GetStepHint() => _activePanelIndex switch
+    {
+        0 => Localize["Start with the title, project type, synopsis, contact and submitter information."],
+        1 => Localize["Add the people and credits that should appear with your work."],
+        2 => Localize["Complete the fields specific to the selected project type."],
+        3 => Localize["Record awards and distribution information when applicable."],
+        4 => Localize["Add local or external project files and arrange their order."],
+        _ => Localize["Review your project."]
+    };
 }

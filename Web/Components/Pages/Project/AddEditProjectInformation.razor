@@ -21,7 +21,7 @@
             <MudContainer MaxWidth="MaxWidth.Medium" Class="px-2">
                 <MudGrid>
                     <MudItem xs="12">
-                        <EditForm OnValidSubmit="SaveAsync" EditContext="EditForm">
+                        <EditForm FormName="project-information" OnValidSubmit="SaveAsync" EditContext="EditForm">
                             <FluentValidationValidator @ref="_fluentValidationValidator"></FluentValidationValidator>
                             <MudGrid>
                                 <MudItem xs="12" md="6">

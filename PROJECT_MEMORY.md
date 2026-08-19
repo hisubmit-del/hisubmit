@@ -1273,3 +1273,18 @@ data contract, privacy policy and pricing are approved.
   Authenticated role switching, cross-festival allow/deny interaction,
   form/modal/upload actions, payment, and visual browser checks remain
   unverified; Phase 1 is not closed.
+
+## Phase 2 submission-wizard checkpoint (2026-08-19)
+
+- The existing artist project flow is a five-panel wizard:
+  information, credits, type-specific specification, awards/distribution,
+  and project files.
+- Added a visible progress indicator and step guidance to the wizard.
+- Added stable `FormName` values to the information, credits, and
+  type-specific specification forms.
+- Closing/cancelling the unsaved-changes dialog now safely leaves the current
+  panel unchanged instead of dereferencing a null dialog result.
+- The active `Web.csproj` builds successfully with 0 errors after this change.
+- This is a partial Phase 2 checkpoint, not completion: draft autosave,
+  validation summary, and end-to-end interactive submission/payment checks
+  remain unverified.

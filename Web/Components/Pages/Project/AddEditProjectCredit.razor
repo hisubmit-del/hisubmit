@@ -19,7 +19,7 @@
             <MudContainer MaxWidth="MaxWidth.Medium">
                 <MudGrid>
                     <MudItem xs="12" sm="12" md="12">
-                        <EditForm OnValidSubmit="SaveAsync" EditContext="_editContext">
+                        <EditForm FormName="project-credits" OnValidSubmit="SaveAsync" EditContext="_editContext">
                             <FluentValidationValidator @ref="_fluentValidationValidator"></FluentValidationValidator>
                             <MudGrid>
                                 @foreach (var credit in _model.Credits)

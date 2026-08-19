@@ -10,7 +10,7 @@
             else
             {
                 <MudItem xs="12" sm="12" md="12">
-                    <EditForm OnValidSubmit="SaveAsync" EditContext="@_editContext">
+                    <EditForm FormName="project-script-specification" OnValidSubmit="SaveAsync" EditContext="@_editContext">
                         <FluentValidationValidator @ref="_fluentValidationValidator"/>
                         <MudGrid>
                             <MudItem xs="12">

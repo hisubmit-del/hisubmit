@@ -4,6 +4,25 @@
 @inherits Web.Components.Pages.User.BaseUserPages
 
 <MudContainer MaxWidth="MaxWidth.Large">
+    <MudPaper Class="pa-4 mb-4" Elevation="1">
+        <MudStack Row="true" AlignItems="AlignItems.Center" Justify="Justify.SpaceBetween" Spacing="2">
+            <MudStack Spacing="0">
+                <MudText Typo="Typo.h6">@Localize["Build your project"]</MudText>
+                <MudText Typo="Typo.body2" Color="Color.Secondary">
+                    @Localize["Complete each section, save your progress, then release the project when it is ready."]
+                </MudText>
+            </MudStack>
+            <MudChip T="string" Color="Color.Primary" Variant="Variant.Outlined">
+                @($"{Math.Min(_activePanelIndex + 1, 5)} / 5")
+            </MudChip>
+        </MudStack>
+        <MudProgressLinear Class="mt-3" Color="Color.Primary"
+                           Value="@(((_activePanelIndex + 1) / 5d) * 100)"
+                           Rounded="true" />
+        <MudText Class="mt-2" Typo="Typo.caption" Color="Color.Secondary">
+            @GetStepHint()
+        </MudText>
+    </MudPaper>
     <MudTabs ActivePanelIndex="_activePanelIndex"
              ActivePanelIndexChanged="ChangeTabChecked" @ref="MainTab"
              Elevation="25" Color="Color.Surface" Rounded="true" Centered="true" PanelClass="mt-6">
