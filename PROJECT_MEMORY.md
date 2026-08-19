@@ -1201,3 +1201,18 @@ data contract, privacy policy and pricing are approved.
   denial, interactive form/modal/upload actions, payment, or visual browser
   rendering. Those remain the final Phase 1 regression items before Phase 2.
 - No database schema, production data, or authorization rule was changed.
+
+## Workflow and festival-scope audit checkpoint (2026-08-19)
+
+- One reusable `Project` can have multiple `Submit` rows, one per festival.
+- Each submission can have multiple `ProjectJudging` rows, one per referee.
+- Referee assignment validates that submissions belong to the requested
+  festival and selected users are active referees in that festival.
+- Submission, judging-assignment, and ticket-management endpoints now require
+  festival-scoped permissions.
+- Referee result submission rechecks active referee membership.
+- `FestivalAuthentication` no longer treats a selected festival claim as
+  sufficient authority; the requested policy must be present in permissions.
+- Product, ticket, and news ownership paths were reviewed without a schema
+  change. Products and tickets are festival-owned; news supports festival
+  news and administrator-managed global news.

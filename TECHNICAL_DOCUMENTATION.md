@@ -1077,6 +1077,44 @@ The current domain is Festival-centric. The next model should add an
 
 This remains a planning checkpoint. No schema migration is introduced here.
 
+## 28. Workflow and festival-scope audit (2026-08-19)
+
+The implemented relationship is:
+
+`Project` -> many `Submit` rows -> one festival per submission, and each
+`Submit` -> many `ProjectJudging` rows -> one referee per assignment.
+Therefore one work may enter several festivals and be assigned to several
+referees, while every assignment remains tied to its submission's festival.
+
+Verified and reinforced:
+
+- Festival submission list/detail/form-answer endpoints require
+  `Permissions.Submits.View`.
+- Referee assignment requires `Permissions.Submits.AddToReferee` and validates
+  all submission IDs against the requested festival.
+- Selected referees must be active, non-removed `FestivalSubUser` records with
+  `IsReferee=true` for that festival.
+- Project-judging listing requires `Permissions.Judging.View`.
+- Ticket list/detail require `Permissions.Ticket.View`; create/update/delete
+  require `Permissions.Ticket.Edit`.
+- A judging result is rejected after referee membership is removed.
+- `FestivalAuthentication` no longer treats a selected festival claim as
+  sufficient authority; the policy must be present in the festival permission
+  claim. Administrator bypass remains intentional.
+
+Product and content review:
+
+- `Product` is owned by one festival and its update/delete paths check the
+  festival boundary.
+- `Ticket` is linked through `Venue`; ticket commands validate the venue and
+  ticket relationship.
+- `New` supports nullable `FestivalId`: festival news is festival-scoped,
+  while administrator-created site news can be global.
+
+Build validation after this audit: `Web.csproj` completed with 0 errors.
+The existing warning backlog remains tracked separately. No database migration
+was introduced.
+
 ## 27. Phase 1 regression checkpoint (2026-08-19)
 
 The first regression pass for shared-experience stabilization was completed
