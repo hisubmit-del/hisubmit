@@ -35,18 +35,8 @@
 
 @code {
 
-    private string _url;
-
     [Parameter]
-    public string Url
-    {
-        set
-        {
-            if (!string.IsNullOrWhiteSpace(value))
-                _url = value;
-        }
-        get => _url;
-    }
+    public string Url { get; set; } = string.Empty;
 
     [Parameter]
     public EventCallback<string> UrlChanged { get; set; }

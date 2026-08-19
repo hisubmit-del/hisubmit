@@ -7,6 +7,7 @@ using HiSubmit.Application.Interfaces.Repositories;
 using HiSubmit.Application.Interfaces.Services;
 using HiSubmit.Domain.Entities.Projects;
 using HiSubmit.Domain.Entities.Submitter;
+using HiSubmit.Domain.Entities.Festivals;
 using HiSubmit.Client.SharedModels.Constants.Role;
 using Microsoft.EntityFrameworkCore;
 
@@ -55,6 +56,16 @@ public class CheckPermission : ICheckPermission
 
         //check project submit to current user festival
         if (projectSubmits.Any(p => p.FestivalId == _currentUserService.FestivalId))
+            return true;
+
+        var activeFestivalIds = await _unitOfWork.Repository<FestivalSubUser>()
+            .Entities
+            .Where(member => member.UserId == _currentUserService.UserId &&
+                             !member.IsRemoved)
+            .Select(member => member.FestivalId)
+            .ToListAsync();
+
+        if (projectSubmits.Any(p => activeFestivalIds.Contains(p.FestivalId)))
             return true;
 
         

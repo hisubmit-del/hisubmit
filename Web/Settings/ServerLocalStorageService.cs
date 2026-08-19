@@ -28,19 +28,19 @@ public class ServerLocalStorageService : ILocalStorageService
         return ValueTask.FromResult<string?>(null);
     }
 
-    public async ValueTask<IEnumerable<string>> KeysAsync(CancellationToken cancellationToken = default)
+    public ValueTask<IEnumerable<string>> KeysAsync(CancellationToken cancellationToken = default)
     {
-        return new List<string>();
+        return ValueTask.FromResult<IEnumerable<string>>(Array.Empty<string>());
     }
 
-    public async ValueTask<bool> ContainKeyAsync(string key, CancellationToken cancellationToken = default)
+    public ValueTask<bool> ContainKeyAsync(string key, CancellationToken cancellationToken = default)
     {
-        return false;
+        return ValueTask.FromResult(false);
     }
 
-    public async ValueTask<int> LengthAsync(CancellationToken cancellationToken = default)
+    public ValueTask<int> LengthAsync(CancellationToken cancellationToken = default)
     {
-        return 0;
+        return ValueTask.FromResult(0);
     }
 
     public ValueTask RemoveItemAsync(string key, CancellationToken cancellationToken = default)

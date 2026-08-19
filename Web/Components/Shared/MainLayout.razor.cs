@@ -196,7 +196,7 @@ namespace Web.Components.Shared
                                         Severity.Error);
                                     await hubConnection.SendAsync(ApplicationConstants.SignalR.OnDisconnect, CurrentUserId);
                                     await AuthenticationManager.Logout();
-                                    _navigationManager.NavigateTo("/login");
+                                    _navigationManager.NavigateTo("/Account/Login", forceLoad: true);
                                 }
                             }
                         }

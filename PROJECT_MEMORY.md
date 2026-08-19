@@ -1056,3 +1056,55 @@ data contract, privacy policy and pricing are approved.
     `CS0618`, and fire-and-forget `CS4014`.
 - No database schema, migration, payment total, or production data was
   changed by this checkpoint.
+
+## Login and project-detail checkpoint (2026-08-18)
+
+- The frozen Sign in action was traced to the legacy interactive `/login`
+  component calling `PasswordSignInAsync` after the response had started.
+  The runtime exception was `Headers are read-only, response has already
+  started`.
+- `/login` is now a compatibility alias that force-loads the static Identity
+  page at `/Account/Login`. Public header links, protected-route redirects,
+  and role-refresh redirects use `/Account/Login`.
+- `/Account/Login` uses a native HTML submit button so ASP.NET Identity can
+  issue the authentication cookie during static form processing.
+- Project detail now has server-populated optional workflow data:
+  artist-only festival registrations and restricted judging summaries.
+  The Application handler resolves Submit and ProjectJudging relationships
+  from the database and filters them by owner, administrator, active festival
+  membership, or active per-submission referee assignment. Browser festival
+  IDs and selected-account cookies are not authorization.
+- A reusable responsive `ProjectWorkflowAccessPanel` and work-overview
+  surface were added to the public project detail page. Unauthorized users
+  receive empty workflow collections and do not see private panels.
+- No database schema, migration, payment, or production data was changed.
+- Full verification completed after stopping stale build processes:
+
+  ```text
+  dotnet build .\Web\Web.csproj --no-restore --disable-build-servers
+    -p:UseSharedCompilation=false --nologo -v:minimal
+  Build succeeded
+  0 errors
+  ```
+
+- The existing `Web/Logs/log20260819.txt` contains old login-circuit errors
+  from before this checkpoint. After a fresh restart, the static login flow
+  was verified end-to-end: `GET /Account/Login` returned HTTP 200 with a
+  native POST form and anti-forgery token; a valid local test submission
+  returned HTTP 302 and the log recorded `User logged in.`.
+- The previous `Headers are read-only, response has already started`
+  exception was caused by manually appending a selected-festival cookie after
+  `PasswordSignInAsync`. That append was removed. Identity now owns the
+  authentication cookie; the selected-festival cookie remains only a
+  workspace selector and is never an authorization grant.
+- Warning cleanup in this checkpoint was intentionally limited to safe,
+  localized changes: unnecessary `async` was removed from server local
+  storage methods and `FileUploader.Url` is now a normal bindable parameter.
+  Broad nullable, MudBlazor migration, obsolete API, and fire-and-forget
+  warnings remain for separately tested migrations.
+- Latest full-output warning audit (with duplicated diagnostics counted
+  separately from unique file/line/code locations) found 3,610 parsed warning
+  lines and 1,579 unique locations. The largest unique groups were CS8618
+  (1,050), MUD0002 (107), CS0618 (103), CS8602 (80), and CS0414 (69).
+- No database schema, migration, payment, or production data changed in this
+  checkpoint.

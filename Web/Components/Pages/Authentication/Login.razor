@@ -1,95 +1,14 @@
 @page "/login"
-
-@layout MainLayout
 @attribute [AllowAnonymous]
-@inject IStringLocalizer<Login> Localize
-@inherits Web.Components.Pages.Public.BasePublicPages
-@using MudBlazor.StaticInput
+@inject NavigationManager Navigation
 
-<MudGrid Class="mt-lg-8 auth-page" Justify="Justify.Center">
+@* Kept as a compatibility alias. Authentication is handled by the static
+   ASP.NET Identity endpoint at /Account/Login so the response can set cookies
+   before the response headers are committed. *@
 
-    <MudItem xs="12" md="6" lg="5" Class="pl-0">
-
-        <MudPaper Class="pa-5 auth-card">
-            @if (errorMessage is { Length: > 0 })
-            {
-                <MudAlert Severity="Severity.Error"
-                          Dense="true"
-                          Variant="Variant.Outlined"
-                          Class="mb-4"
-                          UserAttributes="@(new() { { "role", "alert" } })">
-                    <MudText>@errorMessage</MudText>
-                </MudAlert>
-            }
-            <EditForm Model="@Input"
-                      method="post"
-                      OnValidSubmit="LoginUser"
-                      FormName="LoginForm"
-                      Enhance="false">
-                @* <FluentValidationValidator @ref="_fluentValidationValidator"/> *@
-                <MudGrid Class=" pa-lg-8 pa-2">
-                    <DataAnnotationsValidator />
-                    <MudItem xs="12">
-                        <div class="d-flex justify-center">
-                            <MudText Color="Color.Primary" Typo="Typo.h4" Class="auth-form-title">Sign In</MudText>
-                        </div>
-                    </MudItem>
-                    <MudItem xs="12" Class="text-center">
-                        <MudImage Style="width: 60%" Src="@ClientAppConstants.LogoUrl" Alt="HiSubmit"></MudImage>
-                    </MudItem>
-                    <MudItem xs="12">
-                        <div class="d-flex justify-center">
-                            <MudText Class="auth-form-subtitle">
-                                @Localize["Don't have an account?"] <MudLink Href="/register">@Localize["Register here"]</MudLink>
-                            </MudText>
-                        </div>
-                    </MudItem>
-                    <MudItem xs="12">
-                        <MudStaticTextField T="string"
-                                            Label="@Localize["E-mail"]"
-                                            Required="true"
-                                            Variant="Variant.Outlined"
-                                            InputType="InputType.Email"
-                                            @bind-Value="Input.Email"
-                                            For="@(() => Input.Email)"
-                                            UserAttributes="@(new() { { "autocomplete", "username" }, { "aria-required", "true" } })" />
-                    </MudItem>
-                    <MudItem xs="12">
-                        <MudStaticTextField T="string"
-                                            Label="@Localize["Password"]"
-                                            InputType="InputType.Password"
-                                            UserAttributes="@(new() { { "autocomplete", "current-password" }, { "aria-required", "true" } })"
-                                            @bind-Value="Input.Password"
-                                            Variant="Variant.Outlined"
-                                            For="@(() => Input.Password)"
-                                            Required="true" />
-
-                    </MudItem>
-                    <MudItem xs="12" Class="d-flex justify-space-between align-center">
-                        <MudStaticCheckBox T="bool"
-                                           For="@(() => _rememberMe)"
-                                           @bind-Value="_rememberMe"
-                                           Color="Color.Primary"
-                                           Class="ml-n1">
-                            @Localize["Remember me?"]
-                        </MudStaticCheckBox>
-
-                    </MudItem>
-                    <MudItem xs="12" Class="d-flex justify-center">
-                        <MudStaticButton FormAction="FormAction.Submit"
-                                         Variant="Variant.Filled"
-                                         Color="Color.Dark"
-                                         FullWidth="true"
-                                         Style="width: 100%;">
-                            @Localize["Sign In"]
-                        </MudStaticButton>
-                    </MudItem>
-                    <MudItem xs="12" Class="text-center">
-                        <MudLink Typo="Typo.body1" Href="/account/forgot-password">@Localize["Forgot password?"]</MudLink>
-                    </MudItem>
-
-                </MudGrid>
-            </EditForm>
-        </MudPaper>
-    </MudItem>
-</MudGrid>
+@code {
+    protected override void OnInitialized()
+    {
+        Navigation.NavigateTo("/Account/Login", forceLoad: true);
+    }
+}

@@ -48,6 +48,59 @@
                                       @bind-MusicSpecification="MusicSpecification"
                                       @bind-ScriptSpecification="ScriptSpecification"
                                       @bind-VrXrSpecification="VrXrSpecification" />
+
+                        <section class="project-work-overview" aria-labelledby="project-overview-title">
+                            <div class="project-work-overview__heading">
+                                <span class="project-section-kicker">Work overview</span>
+                                <MudText Typo="Typo.h5" id="project-overview-title">@Project.Title</MudText>
+                            </div>
+                            <div class="project-work-overview__grid">
+                                @if (!string.IsNullOrWhiteSpace(Project.SubTitle))
+                                {
+                                    <div><span>Subtitle</span><strong>@Project.SubTitle</strong></div>
+                                }
+                                @if (!string.IsNullOrWhiteSpace(Project.OriginalTitle))
+                                {
+                                    <div><span>Original title</span><strong>@Project.OriginalTitle</strong></div>
+                                }
+                                <div><span>Project type</span><strong>@Project.ProjectType</strong></div>
+                                <div><span>Created</span><strong>@Project.CreateOn.ToShortDateString()</strong></div>
+                                @if (Project.StudentProject)
+                                {
+                                    <div><span>Artist status</span><strong>Student project</strong></div>
+                                }
+                                @if (!string.IsNullOrWhiteSpace(Project.UniversityName))
+                                {
+                                    <div><span>University</span><strong>@Project.UniversityName</strong></div>
+                                }
+                            </div>
+                            @if (!string.IsNullOrWhiteSpace(Project.WebSite) ||
+                                 !string.IsNullOrWhiteSpace(Project.Instagram) ||
+                                 !string.IsNullOrWhiteSpace(Project.Youtube) ||
+                                 !string.IsNullOrWhiteSpace(Project.Twitter))
+                            {
+                                <div class="project-work-overview__links">
+                                    @if (!string.IsNullOrWhiteSpace(Project.WebSite))
+                                    {
+                                        <a href="@Project.WebSite" target="_blank" rel="noopener noreferrer">Website</a>
+                                    }
+                                    @if (!string.IsNullOrWhiteSpace(Project.Instagram))
+                                    {
+                                        <a href="@Project.Instagram" target="_blank" rel="noopener noreferrer">Instagram</a>
+                                    }
+                                    @if (!string.IsNullOrWhiteSpace(Project.Youtube))
+                                    {
+                                        <a href="@Project.Youtube" target="_blank" rel="noopener noreferrer">YouTube</a>
+                                    }
+                                    @if (!string.IsNullOrWhiteSpace(Project.Twitter))
+                                    {
+                                        <a href="@Project.Twitter" target="_blank" rel="noopener noreferrer">X / Twitter</a>
+                                    }
+                                </div>
+                            }
+                        </section>
+
+                        <ProjectWorkflowAccessPanel Project="Project" />
                  
                 </MudContainer>
 

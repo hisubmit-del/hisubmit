@@ -304,6 +304,144 @@
     }
 }
 
+/* Project detail workflow surfaces. The server controls whether the
+   artist-only or festival/reviewer-only panel is rendered. */
+.project-work-overview,
+.project-workflow-panel {
+    width: 100%;
+    margin: 1.25rem 0;
+    padding: clamp(1rem, 2.5vw, 1.6rem);
+    border: 1px solid var(--border-soft);
+    border-radius: var(--radius-lg);
+    background: var(--surface-card);
+    box-shadow: var(--shadow-card);
+}
+
+.project-work-overview__heading,
+.project-workflow-panel__heading {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.project-section-kicker {
+    display: block;
+    margin-bottom: .25rem;
+    color: var(--brand-accent);
+    font-size: .72rem;
+    font-weight: 800;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+}
+
+.project-work-overview__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+    gap: .85rem;
+}
+
+.project-work-overview__grid > div {
+    min-width: 0;
+    padding: .85rem;
+    border-radius: var(--radius-md);
+    background: var(--surface-muted);
+}
+
+.project-work-overview__grid span,
+.project-workflow-row__content .mud-typography-body2 {
+    overflow-wrap: anywhere;
+}
+
+.project-work-overview__grid span {
+    display: block;
+    margin-bottom: .25rem;
+    color: var(--text-muted);
+    font-size: .76rem;
+}
+
+.project-work-overview__grid strong {
+    display: block;
+    color: var(--text-strong);
+    overflow-wrap: anywhere;
+}
+
+.project-work-overview__links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .55rem;
+    margin-top: 1rem;
+}
+
+.project-work-overview__links a {
+    max-width: 100%;
+    padding: .45rem .75rem;
+    border: 1px solid var(--border-soft);
+    border-radius: 999px;
+    color: var(--brand-primary);
+    overflow-wrap: anywhere;
+    text-decoration: none;
+}
+
+.project-work-overview__links a:hover {
+    border-color: var(--brand-accent);
+    color: var(--brand-accent-hover);
+}
+
+.project-workflow-panel--restricted {
+    border-color: rgba(217, 144, 26, .25);
+}
+
+.project-workflow-list {
+    display: grid;
+    gap: .65rem;
+}
+
+.project-workflow-row {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center;
+    gap: .8rem;
+    min-width: 0;
+    padding: .8rem;
+    border: 1px solid var(--border-soft);
+    border-radius: var(--radius-md);
+    background: var(--surface-muted);
+}
+
+.project-workflow-row__icon {
+    display: grid;
+    width: 2.4rem;
+    height: 2.4rem;
+    place-items: center;
+    border-radius: 50%;
+    background: rgba(51, 92, 103, .12);
+    color: var(--brand-primary);
+}
+
+.project-workflow-row__content {
+    min-width: 0;
+}
+
+.project-workflow-row__status {
+    display: grid;
+    justify-items: end;
+    gap: .2rem;
+    min-width: 6.5rem;
+}
+
+@media (max-width: 575.98px) {
+    .project-workflow-row {
+        grid-template-columns: auto minmax(0, 1fr);
+    }
+
+    .project-workflow-row__status {
+        grid-column: 2;
+        justify-items: start;
+    }
+}
+
 /* Final public festival polish: stable sizing, safe wrapping and calm spacing. */
 .public-layout .home-hero {
     min-height: clamp(25rem, 62vh, 38rem);

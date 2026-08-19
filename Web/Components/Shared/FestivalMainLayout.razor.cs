@@ -127,7 +127,7 @@ namespace Web.Components.Shared
                                 _snackBar.Add(localizer["You are logged out because the Permissions of one of your Roles have been updated."], Severity.Error);
                                 await hubConnection.SendAsync(ApplicationConstants.SignalR.OnDisconnect, CurrentUserId);
                                 await AuthenticationManager.Logout();
-                                _navigationManager.NavigateTo("/login");
+                                _navigationManager.NavigateTo("/Account/Login", forceLoad: true);
                             }
                         }
                     }

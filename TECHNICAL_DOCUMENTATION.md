@@ -851,3 +851,83 @@ HTTP 500 or frozen action:
 
 Never commit local logs, uploaded QA files, profile pictures, credentials, or
 production database settings.
+
+## 22. Authentication and project-detail access contract
+
+### Authentication entry point
+
+The canonical login route is `/Account/Login`. It is statically rendered so
+ASP.NET Identity can append the authentication cookie before the response is
+committed. The legacy `/login` route is retained only as a compatibility
+alias and force-loads `/Account/Login`; it must not contain a second
+interactive `PasswordSignInAsync` implementation.
+
+Links and protected-route redirects should target `/Account/Login`. When the
+navigation originates from an interactive component, use a full reload so the
+static Identity form is rendered in a fresh HTTP response.
+
+### Project-detail visibility
+
+`GetProjectDetailQueryHandler` is the server authority for workflow visibility:
+
+```text
+Public viewer
+  -> public project fields and media only
+
+Project owner / artist
+  -> public fields
+  -> registrations for their own project
+
+Active referee
+  -> public fields
+  -> active ProjectJudging assignments for that referee
+
+Festival owner or active festival sub-user
+  -> public fields
+  -> rows belonging to festivals they manage
+
+Administrator
+  -> authorized workflow rows for the requested project
+```
+
+The project URL and project ID are lookup inputs only. The handler resolves
+the project and its Submit/ProjectJudging relationships from the database,
+checks the current authenticated user, and filters the response. A selected
+festival cookie or browser-supplied festival ID is never proof of access.
+
+The response contract exposes `CanViewFestivalRegistrations`,
+`FestivalRegistrations`, `CanViewJudgingDetails`, and `JudgingAssignments`.
+Unauthorized users receive empty collections. The UI component
+`ProjectWorkflowAccessPanel.razor` renders each section only when the server
+sets its corresponding flag.
+
+## 23. Login verification and warning-audit policy
+
+The supported local login entry point is `/Account/Login`. The legacy
+`/login` route is a compatibility redirect to that static Identity form. The
+form uses a native HTML submit button because the account endpoint is
+processed before an interactive Blazor circuit exists. After
+`PasswordSignInAsync` succeeds, the handler must not append another
+authentication or selected-festival cookie; the response may already be
+committed. Identity owns the authentication cookie, while a selected-festival
+cookie is only a workspace selector. Every protected request and command must
+still resolve the current user and verify database-backed role, membership,
+festival, and assignment scope.
+
+A local smoke test on 2026-08-19 verified:
+
+- `GET /Account/Login` returned HTTP 200 with a native POST form and
+  anti-forgery token.
+- A valid local test login returned HTTP 302 and logged `User logged in.`.
+- No new response-started exception was produced after removing the duplicate
+  cookie append.
+
+The warning audit is intentionally tracked by unique file/line/code
+locations, because the build output repeats diagnostics for project
+references. The latest audit produced 3,610 parsed warning lines and 1,579
+unique locations. The main groups were CS8618 (nullable initialization),
+MUD0002 (MudBlazor component parameters), CS0618 (obsolete APIs), CS8602
+(nullable dereference), and CS0414 (unused fields). Safe localized fixes have
+already removed unnecessary `async` methods in server local storage and the
+custom `FileUploader.Url` parameter setter. The remaining groups require
+feature-by-feature tests and must not be mass-suppressed.

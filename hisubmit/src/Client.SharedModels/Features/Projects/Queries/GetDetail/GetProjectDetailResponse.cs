@@ -1,6 +1,7 @@
 ﻿using Hisubmit.Client.SharedModels.Features.Locatuions.Commands.AddEdit;
 using Hisubmit.Client.SharedModels.Enums;
 using System;
+using System.Collections.Generic;
 
 namespace Hisubmit.Client.SharedModels.Features.Projects.Queries.GetDetail
 {
@@ -51,5 +52,32 @@ namespace Hisubmit.Client.SharedModels.Features.Projects.Queries.GetDetail
         
         
         public  DateTime CreateOn { get; set; }
+
+        // The server populates workflow data only for an authorized workspace.
+        public bool CanViewFestivalRegistrations { get; set; }
+        public bool CanViewJudgingDetails { get; set; }
+        public List<ProjectFestivalRegistrationResponse> FestivalRegistrations { get; set; } = new();
+        public List<ProjectJudgingSummaryResponse> JudgingAssignments { get; set; } = new();
+    }
+
+    public class ProjectFestivalRegistrationResponse
+    {
+        public int SubmitId { get; set; }
+        public int FestivalId { get; set; }
+        public string FestivalName { get; set; }
+        public DateTime SubmitDate { get; set; }
+        public SubmitStatus SubmitStatus { get; set; }
+        public JudgingStatus JudgingStatus { get; set; }
+        public string TrackingCode { get; set; }
+    }
+
+    public class ProjectJudgingSummaryResponse
+    {
+        public int SubmitId { get; set; }
+        public int FestivalId { get; set; }
+        public string FestivalName { get; set; }
+        public string RefereeUserId { get; set; }
+        public RefereeStatus RefereeStatus { get; set; }
+        public int? JudgingButtonId { get; set; }
     }
 }

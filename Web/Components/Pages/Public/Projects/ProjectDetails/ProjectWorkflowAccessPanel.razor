@@ -1,0 +1,99 @@
+@using Hisubmit.Client.SharedModels.Features.Projects.Queries.GetDetail
+
+@if (Project?.CanViewFestivalRegistrations == true)
+{
+    <section class="project-workflow-panel project-workflow-panel--artist" aria-labelledby="project-registrations-title">
+        <div class="project-workflow-panel__heading">
+            <div>
+                <span class="project-section-kicker">Artist workspace</span>
+                <MudText Typo="Typo.h5" id="project-registrations-title">Festival registrations</MudText>
+            </div>
+            <MudIcon Icon="@Icons.Material.Outlined.EventAvailable" Color="Color.Primary" />
+        </div>
+
+        @if (Project.FestivalRegistrations.Count == 0)
+        {
+            <MudText Typo="Typo.body2" Class="mud-text-secondary">
+                This work has not been submitted to a festival yet.
+            </MudText>
+        }
+        else
+        {
+            <div class="project-workflow-list">
+                @foreach (var registration in Project.FestivalRegistrations)
+                {
+                    <article class="project-workflow-row">
+                        <div class="project-workflow-row__icon">
+                            <MudIcon Icon="@Icons.Material.Outlined.LocalActivity" />
+                        </div>
+                        <div class="project-workflow-row__content">
+                            <MudText Typo="Typo.subtitle1">@registration.FestivalName</MudText>
+                            <MudText Typo="Typo.body2" Class="mud-text-secondary">
+                                Submitted @registration.SubmitDate.ToShortDateString()
+                                @if (!string.IsNullOrWhiteSpace(registration.TrackingCode))
+                                {
+                                    <span> · @registration.TrackingCode</span>
+                                }
+                            </MudText>
+                        </div>
+                        <div class="project-workflow-row__status">
+                            <MudChip T="string" Size="Size.Small" Variant="Variant.Outlined" Color="Color.Primary">
+                                @registration.SubmitStatus
+                            </MudChip>
+                            <MudText Typo="Typo.caption" Class="mud-text-secondary">
+                                @registration.JudgingStatus
+                            </MudText>
+                        </div>
+                    </article>
+                }
+            </div>
+        }
+    </section>
+}
+
+@if (Project?.CanViewJudgingDetails == true)
+{
+    <section class="project-workflow-panel project-workflow-panel--restricted" aria-labelledby="project-judging-title">
+        <div class="project-workflow-panel__heading">
+            <div>
+                <span class="project-section-kicker">Restricted workspace</span>
+                <MudText Typo="Typo.h5" id="project-judging-title">Judging access</MudText>
+            </div>
+            <MudIcon Icon="@Icons.Material.Outlined.HowToVote" Color="Color.Warning" />
+        </div>
+        <MudText Typo="Typo.body2" Class="mud-text-secondary mb-3">
+            Only assignments and festival-scoped judging records available to your account are shown.
+        </MudText>
+
+        <div class="project-workflow-list">
+            @foreach (var assignment in Project.JudgingAssignments)
+            {
+                <article class="project-workflow-row">
+                    <div class="project-workflow-row__icon">
+                        <MudIcon Icon="@Icons.Material.Outlined.RateReview" />
+                    </div>
+                    <div class="project-workflow-row__content">
+                        <MudText Typo="Typo.subtitle1">@assignment.FestivalName</MudText>
+                        <MudText Typo="Typo.body2" Class="mud-text-secondary">
+                            Submission #@assignment.SubmitId
+                            @if (assignment.JudgingButtonId.HasValue)
+                            {
+                                <span> · Judging form assigned</span>
+                            }
+                        </MudText>
+                    </div>
+                    <MudChip T="string"
+                             Size="Size.Small"
+                             Variant="Variant.Outlined"
+                             Color="Color.Warning">
+                        @assignment.RefereeStatus
+                    </MudChip>
+                </article>
+            }
+        </div>
+    </section>
+}
+
+@code {
+    [Parameter] public GetProjectDetailResponse? Project { get; set; }
+}

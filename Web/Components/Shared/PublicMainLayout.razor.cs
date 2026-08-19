@@ -215,7 +215,7 @@ public partial class PublicMainLayout
 
     private void GoToLoginPage()
     {
-        _navigationManager.NavigateTo("/login");   
+        _navigationManager.NavigateTo("/Account/Login", forceLoad: true);
     }
     private async Task DarkMode()
     {

@@ -87,15 +87,13 @@
                                            @bind-Value="Input.RememberMe">Remember me</MudStaticCheckBox>
                     </MudItem>
                     <MudItem xs="12" Class="d-flex justify-center">
-                        <MudStaticButton Variant="Variant.Filled" 
-                                         Color="Color.Primary" FullWidth="true" 
-                                         Style="width: 100%;"
-                                         FormAction="FormAction.Submit">Login</MudStaticButton>
-
-                        @* <LoadingButton ButtonType="ButtonType.Submit"
-                                       Variant="Variant.Filled"
-                                       Color="Color.Dark" Size="Size.Large"
-                                       Style="width: 100%;">@Localize["Sign In"]</LoadingButton> *@
+                        @* Keep this a native submit button: this page is static
+                           so ASP.NET Identity can set the authentication cookie. *@
+                        <button type="submit"
+                                class="mud-button-root mud-button mud-button-filled mud-button-filled-primary mud-width-full"
+                                style="width: 100%;">
+                            Login
+                        </button>
                     </MudItem>
                     <MudItem xs="12" Class="text-center">
                         <MudLink Typo="Typo.body1" Href="/account/forgot-password">@Localize["Forgot password?"]</MudLink>
@@ -196,27 +194,9 @@
 
         if (result.Succeeded)
         {
-            // HttpContext.User is still the pre-login principal here. Build
-            // claims from the newly signed-in user so festival accounts get
-            // their festival context immediately after login.
-            var signedInPrincipal = await SignInManager.CreateUserPrincipalAsync(user);
-            var festivalClaims = signedInPrincipal.FindFirst(ApplicationClaimTypes.FestivalId);
-            if (festivalClaims != null)
-            {
-                HttpContext.Response.Cookies.Append(
-                    ApplicationClaimTypes.SelectedFestival,
-                    festivalClaims.Value,
-                    new CookieOptions
-                    {
-                        Expires = DateTimeOffset.UtcNow.AddDays(3),
-                        HttpOnly = true,
-                        Secure = HttpContext.Request.IsHttps,
-                        SameSite = SameSiteMode.Lax,
-                        IsEssential = true,
-                        Path = "/"
-                    });
-            }
-
+            // PasswordSignInAsync has already issued the Identity cookie.
+            // Do not append another cookie here: the response is already
+            // committed on a static Identity form post.
             Logger.LogInformation("User logged in.");
             RedirectManager.RedirectTo("/");
         }
