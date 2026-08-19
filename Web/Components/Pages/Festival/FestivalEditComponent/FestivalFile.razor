@@ -71,12 +71,14 @@
                 </MudTable>
            </div>
          </MudCardContent>
+        @if (ShowNavigation)
+        {
         <MudPaper Class="d-flex justify-end flex-grow-1 ">
             <MudPaper Class="mr-2 mb-2">
                 <MudButtonGroup OverrideStyles="false">
                     <ResponsiveButton Variant="Variant.Filled" OnClick="GoPrev"
                                EndIcon="@Icons.Material.Filled.ArrowLeft"
-                               Color="Color.Secondary"> @Localize["Next"]</ResponsiveButton>
+                               Color="Color.Secondary"> @Localize["Previous"]</ResponsiveButton>
 
                     <ResponsiveButton Variant="Variant.Filled" OnClick="GoNext"
                                EndIcon="@Icons.Material.Filled.ArrowRight"
@@ -86,5 +88,6 @@
 
             </MudPaper>
         </MudPaper>
+        }
     }
 </MudCard>

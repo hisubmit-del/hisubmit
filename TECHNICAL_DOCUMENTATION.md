@@ -1541,5 +1541,26 @@ The category list now maps and returns its `DeadlineEventCategories`,
 including deadline date/name and Standard/Student/Gold fees. The editor
 displays each deadline as a readable card with a readiness badge and a
 required Standard Fee label. Categories and deadlines remain separate because
-the fee matrix is created from their relationship. Files and gallery are the
-remaining safe candidates for a future combined wizard step.
+the fee matrix is created from their relationship.
+
+### Files & Media wizard step
+
+The festival editor now combines the previous `Files` and `Gallery & Cover`
+tabs into one `Files & Media` step. This is a presentation-level composition:
+`FestivalFile` still owns the file list and its add/edit/delete modal, while
+`FestivalImages` still owns cover/gallery upload state and its upload API.
+`FestivalFilesAndMedia` coordinates the two components and exposes one shared
+navigation/save bar. The child navigation bars are disabled only when rendered
+inside the wrapper.
+
+The wizard therefore has six steps:
+
+1. Event Details
+2. Contact And Venue
+3. Categories
+4. Deadlines
+5. Files & Media
+6. Additional Setting
+
+No database schema or API contract changed. The wrapper saves only pending
+cover/gallery changes; file rows remain persisted by their existing modal.

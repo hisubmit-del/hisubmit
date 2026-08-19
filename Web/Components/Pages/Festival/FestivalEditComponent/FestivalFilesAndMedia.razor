@@ -1,0 +1,48 @@
+@inject IStringLocalizer<FestivalFilesAndMedia> Localize
+
+<MudCard Class="festival-editor-card">
+    <MudCardHeader>
+        <CardHeaderContent>
+            <MudText Typo="Typo.h3">@Localize["Files & Media"]</MudText>
+            <MudText Typo="Typo.body2" Color="Color.Secondary">
+                @Localize["Upload supporting files, the public cover and gallery images in one place."]
+            </MudText>
+        </CardHeaderContent>
+    </MudCardHeader>
+    <MudCardContent Class="pa-2 pa-md-4">
+        <FestivalFile @ref="_files"
+                      FestivalId="FestivalId"
+                      IsAdmin="IsAdmin"
+                      ShowNavigation="false" />
+        <MudDivider Class="my-4" />
+        <FestivalImages @ref="_media"
+                        FestivalId="FestivalId"
+                        IsAdmin="IsAdmin"
+                        ShowNavigation="false" />
+    </MudCardContent>
+    <MudPaper Class="d-flex justify-end flex-grow-1 pa-3" Elevation="0">
+        <MudButtonGroup OverrideStyles="false">
+            <ResponsiveButton Variant="Variant.Filled"
+                              OnClick="GoPrev"
+                              EndIcon="@Icons.Material.Filled.ArrowLeft"
+                              Color="Color.Secondary">
+                @Localize["Previous"]
+            </ResponsiveButton>
+            @if (!IsAdmin && _media is not null && _media.ModifiedForm())
+            {
+                <ResponsiveButton Processing="_saving"
+                                  Variant="Variant.Filled"
+                                  Color="Color.Info"
+                                  OnClick="SaveAsync">
+                    @Localize["Save"]
+                </ResponsiveButton>
+            }
+            <ResponsiveButton Variant="Variant.Filled"
+                              OnClick="GoNext"
+                              EndIcon="@Icons.Material.Filled.ArrowRight"
+                              Color="Color.Secondary">
+                @Localize["Next"]
+            </ResponsiveButton>
+        </MudButtonGroup>
+    </MudPaper>
+</MudCard>

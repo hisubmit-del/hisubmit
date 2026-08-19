@@ -80,6 +80,8 @@
              
 
         </MudGrid>
+        @if (ShowNavigation)
+        {
         <MudPaper Class="d-flex justify-end flex-grow-1 mt-2 mt-lg-0" Elevation="0">
             <MudPaper Class="mr-2 mb-2" Elevation="0">
                 <MudButtonGroup Variant="Variant.Filled" OverrideStyles="false">
@@ -101,5 +103,6 @@
                 </MudButtonGroup>
             </MudPaper>
         </MudPaper>
+        }
     </MudCardContent>
 </MudCard>

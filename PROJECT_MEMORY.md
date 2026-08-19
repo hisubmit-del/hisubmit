@@ -1567,3 +1567,20 @@ data contract, privacy policy and pricing are approved.
 - Files and gallery remain separate for now because their child components
   own independent upload/save controls. The next safe tab reduction is a
   coordinated `Files & Media` wrapper step.
+
+## Files and media wizard checkpoint (2026-08-19)
+
+- The festival editor now presents `Files & Media` as one wizard step instead
+  of separate `Files` and `Gallery & Cover` tabs.
+- The existing file table and image/cover uploader components are reused
+  inside a coordinating wrapper; their APIs, storage paths, and database
+  models are unchanged.
+- File records continue to save through their existing add/edit modal.
+  Gallery and cover uploads continue to use their existing save operation.
+  The wrapper provides one shared Previous/Save/Next action bar.
+- The wizard now has six steps. Category/deadline ordering and release
+  validation are unchanged. No database migration was required.
+- Build verification: `dotnet build Web/Web.csproj --no-restore
+  --disable-build-servers --nologo` succeeded with 0 errors. Existing
+  MudBlazor analyzer and package/nullable warnings remain outside this
+  checkpoint.

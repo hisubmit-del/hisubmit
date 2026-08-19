@@ -27,6 +27,9 @@ public partial class FestivalFile
     public EventCallback NextPanel { get; set; }
     [Parameter]
     public EventCallback PrevPanel { get; set; }
+
+    [Parameter]
+    public bool ShowNavigation { get; set; } = true;
     
     [Parameter]
     public bool IsAdmin { get; set; }

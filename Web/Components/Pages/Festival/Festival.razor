@@ -22,11 +22,11 @@ else
                     </MudText>
                 </MudStack>
                 <MudChip T="string" Color="Color.Primary" Variant="Variant.Outlined">
-                    @($"{Math.Min(_activePanelIndex + 1, 7)} / 7")
+                    @($"{Math.Min(_activePanelIndex + 1, 6)} / 6")
                 </MudChip>
             </MudStack>
             <MudProgressLinear Class="mt-3" Color="Color.Primary"
-                               Value="@(((_activePanelIndex + 1) / 7d) * 100)"
+                               Value="@(((_activePanelIndex + 1) / 6d) * 100)"
                                Rounded="true" />
             <MudText Class="mt-2" Typo="Typo.caption" Color="Color.Secondary">
                 @GetStepHint()
@@ -107,22 +107,16 @@ else
                                           PrevPanel="()=>ChangeTab(2)"
                                           FestivalId="FestivalId"/>
                     </MudTabPanel>
-                    <MudTabPanel Style="text-transform:none" Text="@Localize["Files"]">
-                        <FestivalFile @ref="_festivalFile" 
-                                      NextPanel="() => ChangeTab(5)"
-                                      PrevPanel="() => ChangeTab(3)"
-                                      FestivalId="FestivalId"></FestivalFile>
-                    </MudTabPanel>
-                    <MudTabPanel Style="text-transform:none" Text="@Localize["Gallery & Cover"]">
-                        <FestivalImages @ref="_festivalImages"
-                                        NextPanel="() => ChangeTab(6)"
-                                        PrevPanel="() => ChangeTab(4)"
-                                        FestivalId="FestivalId"></FestivalImages>
+                    <MudTabPanel Style="text-transform:none" Text="@Localize["Files & Media"]">
+                        <FestivalFilesAndMedia @ref="_festivalFilesAndMedia"
+                                               NextPanel="() => ChangeTab(5)"
+                                               PrevPanel="() => ChangeTab(3)"
+                                               FestivalId="FestivalId"></FestivalFilesAndMedia>
                     </MudTabPanel>
                     <MudTabPanel Style="text-transform:none" Text="@Localize["Additional Setting"]">
                         <FestivalAdditionalSetting @ref="_festivalAdditionalSetting"
                                                    OnReleasedFestivalClick="ReleaseFestival"
-                                                   PrevPanel="()=>ChangeTab(5)"
+                                                   PrevPanel="()=>ChangeTab(4)"
                                                    ReleasProcessing="_releaseProcess"
                             FestivalId="FestivalId"></FestivalAdditionalSetting>
                     </MudTabPanel>

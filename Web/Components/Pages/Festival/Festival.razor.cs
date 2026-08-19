@@ -50,8 +50,7 @@ public partial class Festival : IDisposable
 
     private MudTabs MainTab { get; set; }
 
-    private FestivalFile _festivalFile;
-    private FestivalImages _festivalImages;
+    private FestivalFilesAndMedia _festivalFilesAndMedia;
     private FestivalDetail _festivalDetail;
     private ContactAndVenue _contactAndVenue;
     private FestivalDeadline _festivalDeadline;
@@ -217,10 +216,9 @@ public partial class Festival : IDisposable
             case 3:
                 return !_festivalDeadline.ModifiedForm() || await _festivalDeadline.SaveAsync();
             case 4:
-                return true;
+                return !_festivalFilesAndMedia.ModifiedForm() ||
+                       await _festivalFilesAndMedia.SaveAsync();
             case 5:
-                return !_festivalImages.ModifiedForm() || await _festivalImages.SaveAsync();
-            case 6:
                 return !_festivalAdditionalSetting.ModifiedForm() ||
                        await _festivalAdditionalSetting.SaveAsync();
             default:
@@ -258,9 +256,8 @@ public partial class Festival : IDisposable
         1 => Localize["Add contact details, venues and event locations."],
         2 => Localize["Define the submission categories and questions before setting their deadlines and fees."],
         3 => Localize["Set the opening, notification and event dates, then add the fee schedule for each category."],
-        4 => Localize["Upload the festival files required for review or publication."],
-        5 => Localize["Add the cover, gallery images and public presentation assets."],
-        6 => Localize["Review automation and additional settings before release."],
+        4 => Localize["Upload supporting files, the public cover and gallery images before release."],
+        5 => Localize["Review automation and additional settings before release."],
         _ => Localize["Review your festival."]
     };
 

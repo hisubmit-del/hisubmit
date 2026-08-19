@@ -28,6 +28,7 @@ public partial class FestivalImages
     [Parameter] public EventCallback NextPanel { get; set; }
     [Parameter] public EventCallback PrevPanel { get; set; }
     [Parameter]public bool IsAdmin { get; set; }
+    [Parameter] public bool ShowNavigation { get; set; } = true;
 
     #endregion
 
