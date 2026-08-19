@@ -168,3 +168,19 @@ change existing Festival behavior.
 
 These are UI/UX-only changes. No database schema, production data, payment
 logic, or authorization rule was changed in this checkpoint.
+
+## Phase 3 financial and judging transparency checkpoint (2026-08-19)
+
+- Receipt downloads now enforce ownership for normal users. Administrators
+  retain access through the existing admin endpoint.
+- Receipt downloads require a paid cart and no longer publish the payment event
+  again. Downloading a receipt is now read-only and does not repeat payment
+  notifications or downstream payment handlers.
+- Zero-total checkout now returns a controlled failure when the user's open
+  cart does not exist instead of dereferencing a missing cart and producing a
+  500 response.
+- No database schema or payment-provider contract was changed.
+- Provider-side payment verification, immutable transaction storage, payout
+  reconciliation, and KPI trend reporting remain documented follow-up work;
+  the current code still contains the pre-existing provider-verification TODO
+  and must not be treated as payment-provider verification.

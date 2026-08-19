@@ -1360,3 +1360,16 @@ data contract, privacy policy and pricing are approved.
 - Manual provider-payment, receipt-download, browser-visual, and real
   referee-assignment interaction remain test-session items; they are not
   falsely marked as verified by source/build checks alone.
+
+## Phase 3 financial transparency checkpoint (2026-08-19)
+
+- Receipt downloads are now owner-scoped for normal users and remain available
+  to administrators through the admin endpoint.
+- Unpaid carts cannot generate receipts.
+- Downloading a receipt no longer republishes the paid-cart event, preventing
+  duplicate payment notifications or downstream handlers.
+- Zero-total payment with no open cart now returns a controlled failure instead
+  of a null-reference error.
+- No schema, payment-provider contract, or production database was changed.
+- Provider payment verification, immutable transaction references, payout
+  reconciliation, and income KPI trends remain the next documented items.

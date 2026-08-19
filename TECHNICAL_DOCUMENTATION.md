@@ -1318,3 +1318,21 @@ listed above. Full interactive payment-provider, receipt-download, browser
 visual, and real referee-submit tests still require a manual local test
 session with valid transaction and assignment data; they are not claimed as
 automatically verified by this checkpoint.
+
+## Phase 3 financial and judging transparency checkpoint (2026-08-19)
+
+- `DownloadCartFactorCommand` now checks the current user against the cart
+  owner, while preserving administrator access through the admin controller.
+- Receipt generation now rejects unpaid carts and is read-only: it no longer
+  republishes `CartPaidedEvent` when a user downloads an existing receipt.
+- `PaidZeroCartCommand` now returns a controlled failure when no open cart
+  exists, preventing a null-reference 500 response.
+- These changes preserve the existing API and database contracts; no
+  migration is required.
+- Local build completed with 0 errors. Public route and guest-cart smoke
+  checks returned HTTP 200, and the latest restart/migration log contains no
+  new exception after the test run.
+- Provider-side payment verification remains an explicit pre-existing TODO.
+  Immutable transaction/receipt storage, payout reconciliation, and admin/
+  festival KPI trend reports remain the next financial work items and are not
+  claimed complete by this checkpoint.

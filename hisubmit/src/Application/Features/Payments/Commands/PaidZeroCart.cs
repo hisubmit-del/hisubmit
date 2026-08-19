@@ -29,6 +29,9 @@ public class PaidZeroCartCommandHandler(IUnitOfWork<int> unitOfWork, IMediator m
             .Include(p => p.CartItems)
             .FirstOrDefaultAsync(cancellationToken);
 
+        if (cart is null)
+            return await Result.FailAsync("Your open cart was not found.");
+
         if (cart.CartItems.Sum(p => p.Price) != 0)
         {
             throw new BadRequestException();

@@ -7,7 +7,9 @@ using HiSubmit.Application.Events.Payments.PaidCartEvent;
 using HiSubmit.Application.Interfaces.PdfConverter;
 using HiSubmit.Application.Interfaces.RenderView;
 using HiSubmit.Application.Interfaces.Repositories;
+using HiSubmit.Application.Interfaces.Services;
 using HiSubmit.Client.SharedModels.Constants.Application;
+using HiSubmit.Client.SharedModels.Constants.Role;
 using Hisubmit.Client.SharedModels.Features.Payments.Commands;
 using Hisubmit.Client.SharedModels.Features.Payments.Queries;
 using HiSubmit.Client.SharedModels.Wrapper;
@@ -23,9 +25,9 @@ public class
     DownloadCartFactorCommandHandler(
         IRenderViewService renderViewService,
         IPdfGenerator pdfGenerator,
-        IMediator mediator,
         IUnitOfWork<int> unitOfWork,
-        IMapper mapper)
+        IMapper mapper,
+        ICurrentUserService currentUserService)
     : IRequestHandler<DownloadCartFactorCommand, IResult<DownloadCartFactorResponse>>
 {
     public async Task<IResult<DownloadCartFactorResponse>>
@@ -45,9 +47,14 @@ public class
             .ProjectTo<GetAllCartsResponse>(mapper.ConfigurationProvider)
             .FirstOrDefaultAsync(cancellationToken);
 
-        if (cart == null)
+        if (cart == null ||
+            (!currentUserService.IsInRole(RoleConstants.AdministratorRole) &&
+             cart.UserId != currentUserService.UserId))
             return await Result<DownloadCartFactorResponse>.FailAsync("Cart not found");
 
+        if (!cart.Paid)
+            return await Result<DownloadCartFactorResponse>.FailAsync(
+                "A receipt is available only for a paid cart.");
 
         var content = await renderViewService.RenderViewToStringAsync("CartFactor", cart, "Tickets");
         var pdfFileByteArray = await pdfGenerator.GenerateFile(new PdfGeneratorRequest()
@@ -55,7 +62,6 @@ public class
             Content = content,
             DocTitle = $"cartFile.pdf"
         });
-        await mediator.Publish(new CartPaidedEvent() { CartId = cart.Id });
         return await Result<DownloadCartFactorResponse>.SuccessAsync(new DownloadCartFactorResponse()
         {
             File = pdfFileByteArray,
