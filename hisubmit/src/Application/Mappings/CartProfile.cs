@@ -31,7 +31,9 @@ public class CartProfile : Profile
             .ForMember(des => des.SoldTicketShareFestival, map =>
                 map.MapFrom(p => p.SoldTicket!.ShareFestivalIncome))
             .ForMember(des => des.SubmitTrackCode, map =>
-                map.MapFrom(p => p.Submit!.TrackingCode));
+                map.MapFrom(p => p.Submit!.TrackingCode))
+            .ForMember(des => des.DiscountCode, map =>
+                map.MapFrom(p => p.DiscountCode!.Code));
 
         CreateMap<GetAllCartsResponse, Cart>()
             .ReverseMap();

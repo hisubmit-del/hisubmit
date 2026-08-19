@@ -22,6 +22,10 @@
                                       Icon="@Icons.Material.Filled.Summarize"
                                       Name="@Localize["Total"]"
                                       Value="@_state.Income.ToString("C2")"/>
+                    <DividerNameValue Class="pa-3"
+                                      Icon="@Icons.Material.Filled.CalendarMonth"
+                                      Name="@Localize["Last 30 days"]"
+                                      Value="@_state.LastMonthIncome.ToString("C2")"/>
                     <DividerNameValue Class="pa-3"  
                                       Icon="@Icons.Material.Filled.Paid"
                                       Name="@Localize["Paid"]"

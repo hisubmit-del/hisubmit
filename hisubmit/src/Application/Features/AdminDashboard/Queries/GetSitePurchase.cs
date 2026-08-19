@@ -63,7 +63,7 @@ public class GetSitePurchaseQueryHandler(IUnitOfWork<int> unitOfWork)
                 .SumAsync(p => p.Price)
             ;
 
-        _response.ServiceFee = submission??0;
+        _response.Submission = submission??0;
     }
 
 

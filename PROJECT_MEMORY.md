@@ -1373,3 +1373,23 @@ data contract, privacy policy and pricing are approved.
 - No schema, payment-provider contract, or production database was changed.
 - Provider payment verification, immutable transaction references, payout
   reconciliation, and income KPI trends remain the next documented items.
+
+## Phase 3 commerce and financial reporting audit (2026-08-19)
+
+- Discount codes are validated on the server per cart item. Festival-bound
+  codes are limited to their festival and configured item types; global admin
+  codes may be cross-festival. Codes are not cumulative; the best eligible
+  code is selected for each item and payment recalculates the final total.
+- Free festival registration uses the zero-total cart path. One submission
+  can be linked to multiple categories in the same festival, while all
+  payment/report/authorization queries remain scoped to the exact festival
+  period.
+- Receipts now carry the applied discount-code names and show discounted line
+  prices where available.
+- Festival financial state now counts only paid product, ticket, and
+  submission records, uses discounted submission values, and exposes a
+  last-30-days KPI. The admin report's submission field and upper date bound
+  were corrected.
+- No schema or production data was changed. Provider-side payment
+  verification and immutable transaction/payout reconciliation remain
+  explicitly unfinished and must not be inferred from these reports.

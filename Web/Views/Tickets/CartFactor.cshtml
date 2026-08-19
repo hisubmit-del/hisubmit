@@ -3,6 +3,13 @@
 @using HiSubmit.Client.SharedModels.Extensions
 @using Hisubmit.Client.SharedModels.Features.Payments.Queries
 @model Hisubmit.Client.SharedModels.Features.Payments.Queries.GetAllCartsResponse
+@{
+    var discountCodes = Model.CartItems
+        .Where(p => !string.IsNullOrWhiteSpace(p.DiscountCode))
+        .Select(p => p.DiscountCode)
+        .Distinct()
+        .ToList();
+}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -82,7 +89,7 @@
             </td >
             <td rowspan="@tCodeSpan"> @item.First().SubmitTrackCode </td>
             <td > @item.First().CartItemType.ToDisplay() </td >
-            <td > @item.First().Price.ToString("N2") </td >
+            <td > @item.First().GetRealPrice().ToString("N2") </td >
         </tr>
         foreach (var i in item.Where(p => p != item.First()))
         {
@@ -125,7 +132,7 @@
                 }
 
                 <td>@i.CartItemType.ToDisplay()</td>
-                <td>@i.Price.ToString("N2")</td>
+                <td>@i.GetRealPrice().ToString("N2")</td>
             </tr>
         }
     }
@@ -151,13 +158,13 @@
                     @item.First().FestivalName
                 </td>
                 <td>@item.First().ProductName</td>
-                <td>@item.First().Price</td>
+                <td>@item.First().GetRealPrice().ToString("N2")</td>
             </tr>
             foreach (var i in item.Where(p => p != item.First()))
             {
                 <tr style="text-align: center;background-color: #eeeeee">
                     <td>@i.ProductName</td>
-                    <td>@i.Price.ToString("C2")</td>
+                    <td>@i.GetRealPrice().ToString("C2")</td>
                 </tr>
             }
         }
@@ -184,13 +191,13 @@
                     @item.First().FestivalName
                 </td>
                 <td>@item.First().SoldTicketName</td>
-                <td>@item.First().Price</td>
+                <td>@item.First().GetRealPrice().ToString("N2")</td>
             </tr>
             foreach (var i in item.Where(p => p != item.First()))
             {
                 <tr style="text-align: center;background-color: #eeeeee">
                     <td>@i.SoldTicketName</td>
-                    <td>@i.Price.ToString("C2")</td>
+                    <td>@i.GetRealPrice().ToString("C2")</td>
                 </tr>
             }
         }
@@ -213,6 +220,13 @@
         <td>@Model.CartDate.ToShortDateString()</td>
         <td>@Model.Price.ToString("N2")</td>
     </tr>
+    @if (discountCodes.Count > 0)
+    {
+        <tr style="text-align: center;height: 40px; background-color: #f8f8f8;">
+            <th colspan="2">Discount code(s)</th>
+            <td colspan="2">@string.Join(", ", discountCodes)</td>
+        </tr>
+    }
     @* <tr style="text-align: center;"> *@
     @*     <td colspan="4">Cart Items</td> *@
     @* </tr> *@

@@ -11,7 +11,7 @@ public class SitePurchaseFilterSpecification:HeroSpecification<CarTItem>
         Criteria = (cartItem) =>
                 (cartItem.Cart.Paid) &&
                 (filter.DateFilter.GetMinDate()==null || filter.DateFilter.GetMinDateTime().Value <=cartItem.Cart.CartDate) &&
-                (filter.DateFilter.GetMaxDate()==null || filter.DateFilter.GetMaxDateTime().Value <=cartItem.Cart.CartDate) 
+                (filter.DateFilter.GetMaxDate()==null || cartItem.Cart.CartDate <= filter.DateFilter.GetMaxDateTime().Value)
         ;
     }
 }

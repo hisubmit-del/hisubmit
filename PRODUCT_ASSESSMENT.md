@@ -184,3 +184,26 @@ logic, or authorization rule was changed in this checkpoint.
   reconciliation, and KPI trend reporting remain documented follow-up work;
   the current code still contains the pre-existing provider-verification TODO
   and must not be treated as payment-provider verification.
+
+### Phase 3 commerce and reporting audit checkpoint (2026-08-19)
+
+- Discount codes remain server-validated per cart item. A festival-scoped
+  code applies only to the matching festival and configured item types;
+  global administrator codes may apply across festivals. Codes do not stack:
+  the best eligible code is selected for each item, and the final payment
+  amount is recalculated on the server.
+- A free festival submission follows the existing zero-total cart completion
+  path. A submission may contain multiple selected categories through its
+  category links; the festival scope remains the exact `FestivalId`.
+- Receipt DTOs and receipt templates now expose applied discount-code names,
+  and receipt line prices use the stored discounted amount when present.
+- Festival income reports now include only paid product/ticket/submission
+  records, use the discounted submission amount, and expose a last-30-days
+  KPI. The query remains scoped to the selected festival period, not its
+  master festival.
+- The admin purchase report now places submission income in the submission
+  field, and its date upper-bound filter now excludes purchases after the
+  requested end date.
+- No database schema or payment-provider contract was changed. Provider
+  verification, immutable transaction references, payout reconciliation, and
+  exportable period reports remain follow-up work.

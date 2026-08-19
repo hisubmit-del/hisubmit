@@ -36,6 +36,7 @@ public class
         var cart = await unitOfWork.Repository<Cart>().Entities
             .Where(p => p.Id == request.Id)
             .Include(p => p.CartItems)
+            .Include(p => p.CartItems).ThenInclude(p => p.DiscountCode)
             .Include(p => p.CartItems).ThenInclude(p => p.Submit).ThenInclude(p => p.Festival)
             .Include(p => p.CartItems).ThenInclude(p => p.Submit)
             .ThenInclude(p => p.SubmitDeadlineEventCategories).ThenInclude(p => p.DeadlineEventCategory)
