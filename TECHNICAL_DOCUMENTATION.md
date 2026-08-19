@@ -1249,6 +1249,16 @@ details form has a stable unique `FormName`. Build verification completed with
 0 errors. Explicit draft recovery/autosave and full interactive save/release
 verification remain pending.
 
+### Phase 2 checkout and receipt checkpoint
+
+The existing cart is the shared checkout surface for submissions, tickets,
+badges, and products. It now has explicit loading, failed-load, and empty
+states, reports cart API failures, and only redirects to the payment result
+when the payment callback contains a valid reference. The payable amount is
+labelled as the checkout total. No payment or receipt API contract was
+changed. Build verification completed with 0 errors; provider success/failure,
+receipt download, and full interactive checkout remain unverified.
+
 ### Commerce audit checkpoint
 
 Products are festival-owned and tickets are linked through festival-owned

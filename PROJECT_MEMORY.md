@@ -1299,3 +1299,17 @@ data contract, privacy policy and pricing are approved.
 - The active `Web.csproj` builds successfully with 0 errors after this change.
 - Phase 2 remains open: explicit draft recovery/autosave and complete
   interactive save/release verification are still pending.
+
+## Phase 2 checkout and receipt checkpoint (2026-08-19)
+
+- The shared checkout flow covers submission, ticket, badge, and product cart
+  items through the existing cart/payment contracts.
+- Added explicit cart loading, failed-load, and empty states.
+- Cart API failures are now surfaced to the user instead of being silently
+  ignored.
+- Payment success navigation now requires a non-empty payment/receipt
+  reference; an incomplete callback does not claim success.
+- The cart summary now labels the payable amount as the checkout total.
+- Build verification completed with 0 errors.
+- Payment-provider success/failure, receipt download, and end-to-end checkout
+  remain interactive test items; Phase 2 is not complete.

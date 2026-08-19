@@ -24,6 +24,8 @@ public partial class ShoppingCart
     private List<GetCartItemResponse> _shopCartItems = new();
     private bool IsVisibleOveralls { get; set; }
     private List<string> _discountCodes = [];
+    private bool _cartLoading;
+    private bool _cartLoadFailed;
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
@@ -40,11 +42,16 @@ public partial class ShoppingCart
             TakeCurrentUserCarts = true,
         });
         if (response.Succeeded)
+        {
             foreach (var cart in response.Data)
                 _shopCartItems.AddRange(cart.CartItems);
+        }
         else
+        {
+            _cartLoadFailed = true;
             foreach (var message in response.Messages)
                 _snackBar.Add(message, Severity.Error);
+        }
 
     }
 
@@ -66,10 +73,21 @@ public partial class ShoppingCart
 
     private async Task LoadCartItems()
     {
+        _cartLoading = true;
+        _cartLoadFailed = false;
         var response = await CartManager.GetItems(new GetUserOpenCartItemQuery());
 
         if (response.Succeeded)
             _shopCartItems = response.Data;
+        else
+        {
+            _shopCartItems = new();
+            _cartLoadFailed = true;
+            foreach (var message in response.Messages)
+                _snackBar.Add(message, Severity.Error);
+        }
+
+        _cartLoading = false;
     }
 
     private async Task PaidCart()
@@ -92,6 +110,12 @@ public partial class ShoppingCart
 
     private async Task PaidSuccessfully(IResult<CheckPaymentResponse> response)
     {
+        if (response?.Data is null || string.IsNullOrWhiteSpace(response.Data.PaymentId))
+        {
+            _snackBar.Add("Payment was received without a valid receipt reference. Please check Receipts before retrying.", Severity.Warning);
+            return;
+        }
+
         _snackBar.Add("Successfully paid cart", Severity.Success);
         UserCartService.ChangeUserCart();
         _navigationManager.NavigateTo($"user/payment-result/{response.Data.PaymentId}");

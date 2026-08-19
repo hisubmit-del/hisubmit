@@ -6,6 +6,19 @@
 <MudContainer MaxWidth="MaxWidth.Large" Class="cart-page-shell">
     <HeroTitle Title="@Localize["Cart"]" Description="@Localize["All your purchases"]" />
     <MudDivider />
+    @if (_cartLoading)
+    {
+        <MudPaper Class="pa-6 my-4 text-center" Elevation="1">
+            <MudProgressCircular Indeterminate="true" Color="Color.Primary" />
+            <MudText Class="mt-3" Typo="Typo.body2">@Localize["Loading your cart and receipts..."]</MudText>
+        </MudPaper>
+    }
+    else if (_cartLoadFailed && !_shopCartItems.Any())
+    {
+        <MudAlert Class="my-4" Severity="Severity.Error" Variant="Variant.Outlined">
+            @Localize["We could not load your cart. Refresh the page and try again before starting a new payment."]
+        </MudAlert>
+    }
     <MudTabs Elevation="0" Color="Color.Surface" Rounded="true"
               Class="workspace-tabs cart-tabs" PanelClass="mt-6">
         <MudTabPanel Text="@Localize["Cart Items"]">
@@ -27,10 +40,10 @@
                                            Color="Color.Default" Edge="Edge.End" />
                         </MudStack>
                         <MudStack Spacing="5">
-                            @if (_shopCartItems.Where(p => !p.Paid).ToList() is null or { Count: 0 })
+                            @if (!_shopCartItems.Any(p => !p.Paid))
                             {
                                 <MudText Class="py-16" Typo=Typo.h6 Align="Align.Center">
-                                    Your cart is empty... ☹️
+                                    @Localize["Your cart is empty."]
                                 </MudText>
                             }
                             else
@@ -116,7 +129,7 @@
                         <MudStack Class="mt-4">
                             <MudStack Row="true" Justify="Justify.SpaceBetween">
                                 <MudText Typo=Typo.subtitle1>
-                                    <b>Pretax Total:</b>
+                                    <b>@Localize["Checkout total"]:</b>
                                 </MudText>
                                 <MudText Typo=Typo.subtitle1>
                                     <b>@_shopCartItems?.Where(p => !p.Paid).Sum(p => p.GetRealPrice()).ToString("C2")</b>
@@ -139,7 +152,7 @@
                                            FullWidth="true"
                                            Disabled="@(!(_shopCartItems?.Where(p=>!p.Paid)).Any())" DisableElevation
                                            Size=@Size.Large>
-                                    Checkout
+                                    @Localize["Complete checkout"]
                                 </MudButton>
                             }
                         </MudStack>
