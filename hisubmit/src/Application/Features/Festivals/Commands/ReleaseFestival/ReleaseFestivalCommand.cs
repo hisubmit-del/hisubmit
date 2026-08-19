@@ -38,6 +38,7 @@ namespace HiSubmit.Application.Features.Festivals.Commands.ReleaseFestival
             var festival = await _unitOfWork.Repository<Festival>()
                 .Entities.Include(p => p.EventOrginizers)
                 .Include(p => p.EventCategories)
+                    .ThenInclude(p => p.DeadlineEventCategories)
                 .Include(p => p.Images)
                 .Include(p => p.DeadLines)
                 .Include(p => p.Venues)
@@ -78,6 +79,25 @@ namespace HiSubmit.Application.Features.Festivals.Commands.ReleaseFestival
                 messages.Add(_localize["At least one submission deadline is required"]);
             if (festival.EventCategories == null || !festival.EventCategories.Any())
                 messages.Add(_localize["The Event Categories section has not been completed"]);            
+            else
+            {
+                if (festival.EventCategories.Any(category =>
+                        category.DeadlineEventCategories == null ||
+                        !category.DeadlineEventCategories.Any()))
+                {
+                    messages.Add(_localize[
+                        "Each category must be assigned to at least one submission deadline"]);
+                }
+
+                if (festival.EventCategories
+                    .Where(category => category.DeadlineEventCategories != null)
+                    .SelectMany(category => category.DeadlineEventCategories)
+                    .Any(deadlineCategory => deadlineCategory.StandardFee == null))
+                {
+                    messages.Add(_localize[
+                        "Every category deadline must have a standard fee. Use 0 for a free submission"]);
+                }
+            }
             if (!festival.OnlineEvent && (festival.Venues == null || !festival.Venues.Any()))
                 messages.Add(_localize["At least one event venue is required for an offline festival"]);
             if (festival.Images.All(p => p.ImageType != ImageType.Cover))

@@ -1530,3 +1530,19 @@ data contract, privacy policy and pricing are approved.
 - Earlier notes saying all owned drafts are filtered out are superseded by
   this checkpoint: only unrelated inactive memberships remain excluded; an
   owned draft is intentionally claimable by its owner.
+
+## Category/deadline fee workflow checkpoint (2026-08-19)
+
+- Categories are intentionally created before deadlines. A category may be
+  saved with no fee rows while the wizard is still incomplete.
+- After a deadline is created, its category links form the fee matrix. The
+  festival editor shows those rows when the category is edited.
+- `StandardFee = 0` means a valid free submission. `StandardFee = null` means
+  the fee is not configured.
+- Release validation now requires every category to be linked to at least one
+  submission deadline and every linked deadline/category row to have a
+  non-null standard fee. This preserves category-specific deadlines while
+  preventing incomplete pricing from reaching the public site.
+- The local QA festival proved both states: release was rejected while the
+  fee was null, then succeeded after setting standard/student/gold fees to
+  zero. No schema change was required.

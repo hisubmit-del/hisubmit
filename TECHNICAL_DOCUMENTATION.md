@@ -1505,3 +1505,21 @@ category, deadline, organizer, venue, tracking prefix, cover upload, and
 release all completed. Release returned the expected successful
 `UnderInvestigation` review state. The test used only local `HiSubmitDB50`;
 no production data was changed.
+
+### Category and deadline fee sequencing
+
+The wizard keeps categories before deadlines because a fee belongs to the
+relationship between a category and a deadline, not to either record alone.
+The supported workflow is:
+
+1. Save one or more categories without fee rows.
+2. Define deadlines and choose which categories each deadline applies to.
+3. Reopen each category and complete the generated fee matrix.
+4. Use `0` for a free submission; leave no required fee as `null`.
+5. Release only after every category has an applicable deadline and every
+   applicable row has a standard fee.
+
+The release command now loads `DeadlineEventCategories` and enforces these
+rules server-side. The category editor displays an explanatory alert while
+the matrix is incomplete. The local QA festival was rejected with a null fee
+and accepted after all three fee fields were set to zero.

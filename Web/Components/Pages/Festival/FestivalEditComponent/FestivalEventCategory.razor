@@ -28,6 +28,21 @@
                    }
                 </MudGrid>
                 <MudGrid Class="px-0 px-md-20 px-lg-20">
+                    @if (Categories.Any() &&
+                         Categories.Any(category =>
+                             category.DeadLineCategories == null ||
+                             !category.DeadLineCategories.Any() ||
+                             category.DeadLineCategories.Any(fee => fee.StandardFee == null)))
+                    {
+                        <MudItem xs="12" Class="mb-3">
+                            <MudAlert Severity="Severity.Info" Variant="Variant.Outlined">
+                                Create categories first, then add submission deadlines in the next step.
+                                After deadlines are created, edit each category here and complete its fee
+                                schedule. Use <strong>0</strong> for a free submission; an empty fee means
+                                the category is not ready to publish.
+                            </MudAlert>
+                        </MudItem>
+                    }
                     <MudItem xs="12" md="2">
                         <MudStack Justify="Justify.SpaceBetween">
                             <MudText Typo="Typo.h5"> @Localize["Categories"] <span style="color:#d32f2f;font-weight:700" aria-hidden="true">*</span></MudText>
