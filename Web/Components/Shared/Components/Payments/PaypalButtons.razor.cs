@@ -125,7 +125,17 @@ public partial class PaypalButtons : IDisposable
                 // Component disposal cancelled the pending SDK initialization.
             }
             if (!_lifetime.IsCancellationRequested)
-                StateHasChanged();
+            {
+                try
+                {
+                    StateHasChanged();
+                }
+                catch (InvalidOperationException)
+                {
+                    // The circuit can disconnect between the JS call and
+                    // rendering the component; there is nothing to recover.
+                }
+            }
         }
 
         await base.OnAfterRenderAsync(firstRender);
