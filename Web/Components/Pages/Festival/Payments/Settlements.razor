@@ -27,6 +27,50 @@
 
         <MudDivider Class="my-5"/>
 
+        @if (!_paymentInfoLoading)
+        {
+            <MudPaper Class="settlement-readiness-card pa-4 mb-5" Outlined="true">
+                <MudText Typo="Typo.h6">Settlement readiness</MudText>
+                <MudText Typo="Typo.body2" Color="Color.Secondary" Class="mb-3">
+                    This checklist shows what is ready before a future payout is initiated. No money is transferred
+                    from this page.
+                </MudText>
+                <MudGrid>
+                    <MudItem xs="12" md="4">
+                        <MudAlert Severity="@(_paymentRecipientReady ? Severity.Success : Severity.Warning)"
+                                  Variant="Variant.Outlined" Dense="true">
+                            <strong>Recipient:</strong>
+                            @(_paymentRecipientReady ? "PayPal recipient email is saved." : "Add a PayPal recipient email.")
+                        </MudAlert>
+                    </MudItem>
+                    <MudItem xs="12" md="4">
+                        <MudAlert Severity="@(_statements.Any(s => s.Status == SettlementStatus.Confirmed || s.Status == SettlementStatus.Paid)
+                                             ? Severity.Success : Severity.Info)"
+                                  Variant="Variant.Outlined" Dense="true">
+                            <strong>Approval:</strong>
+                            @(_statements.Any(s => s.Status == SettlementStatus.Confirmed || s.Status == SettlementStatus.Paid)
+                                ? "A confirmed or paid statement exists."
+                                : "Confirm a statement after reviewing it.")
+                        </MudAlert>
+                    </MudItem>
+                    <MudItem xs="12" md="4">
+                        <MudAlert Severity="Severity.Info" Variant="Variant.Outlined" Dense="true">
+                            <strong>Transfer:</strong> Future payouts will require provider approval,
+                            idempotency and status reconciliation.
+                        </MudAlert>
+                    </MudItem>
+                </MudGrid>
+                @if (!_paymentRecipientReady)
+                {
+                    <MudButton Class="mt-3" Variant="Variant.Outlined" Color="Color.Primary"
+                               StartIcon="@Icons.Material.Filled.AccountBalanceWallet"
+                               Href="/festival/payment-information">
+                        Add payout information
+                    </MudButton>
+                }
+            </MudPaper>
+        }
+
         <MudGrid>
             <MudItem xs="12" md="5">
                 <MudDateRangePicker @bind-DateRange="_period" Label="Statement period"/>
@@ -109,6 +153,22 @@
                     {
                         <MudText Typo="Typo.caption" Class="mt-2">
                             Advertising invoices: @statement.AdvertisingInvoices.Sum(x => x.Amount).ToString("C2")
+                        </MudText>
+                    }
+                    @if (statement.Status == SettlementStatus.Confirmed)
+                    {
+                        <MudAlert Severity="Severity.Info" Variant="Variant.Text" Dense="true" Class="mt-3">
+                            This statement is confirmed and is waiting for the approved payout process.
+                        </MudAlert>
+                    }
+                    @if (statement.Status == SettlementStatus.Paid && !string.IsNullOrWhiteSpace(statement.PaymentReference))
+                    {
+                        <MudText Typo="Typo.caption" Class="mt-3">
+                            Payment reference: @statement.PaymentReference
+                            @if (statement.PaidOn.HasValue)
+                            {
+                                <span> · Paid @statement.PaidOn.Value.ToLocalTime().ToString("yyyy-MM-dd HH:mm")</span>
+                            }
                         </MudText>
                     }
                     <MudStack Row="true" Spacing="1" Class="mt-4">

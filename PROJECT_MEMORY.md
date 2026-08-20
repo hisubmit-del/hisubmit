@@ -1894,3 +1894,17 @@ data contract, privacy policy and pricing are approved.
 - No production database was accessed or changed. Production maintenance
   requires a verified backup, a maintenance window, and a reviewed recovery/
   log-retention policy.
+
+## Phase 3 settlement readiness checkpoint (2026-08-20)
+
+- `/festival/settlements` now includes a read-only Settlement readiness
+  checklist.
+- The checklist verifies whether a PayPal recipient email is configured,
+  whether a confirmed/paid statement exists, and explains that a future
+  transfer still requires provider approval, idempotency and status
+  reconciliation.
+- Confirmed statements explicitly show that they are waiting for the approved
+  payout process. Paid statements show the payment reference and local paid
+  timestamp when available.
+- No payout, PayPal API call, migration, or financial mutation was added in
+  this checkpoint.

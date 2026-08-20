@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Hisubmit.Client.SharedModels.Contracts.Permission;
 using Hisubmit.Client.SharedModels.Enums.Payments;
+using Hisubmit.Client.SharedModels.Enums.Festivals;
+using Hisubmit.Client.SharedModels.Features.FestivalPaymentsInformation.Queries.GetDetail;
 using Hisubmit.Client.SharedModels.Features.Settlements.Commands;
 using Hisubmit.Client.SharedModels.Features.Settlements.Queries;
 using HiSubmit.Client.Infrastructure.Managers.FestivalPayments;
@@ -23,12 +25,28 @@ public partial class Settlements
     private decimal _adjustmentAmount;
     private string _adjustmentReason;
     private string _adjustmentEvidence;
+    private bool _paymentInfoLoading;
+    private bool _paymentRecipientReady;
 
     protected override async Task OnInitializedAsync()
     {
         await base.CheckPermission(Permissions.FestivalPayment.CartItem);
         _canCreate = SelectedFestivalId > 0;
-        await LoadStatementsAsync();
+        await Task.WhenAll(LoadStatementsAsync(), LoadPaymentInformationAsync());
+    }
+
+    private async Task LoadPaymentInformationAsync()
+    {
+        if (SelectedFestivalId <= 0)
+            return;
+
+        _paymentInfoLoading = true;
+        var result = await PaymentsManager.GetFestivalPaymentInformationAsync(
+            new GetFestivalPaymentInformationDetailQuery { FestivalId = SelectedFestivalId });
+        _paymentRecipientReady = result.Succeeded &&
+                                result.Data?.Type == FestivalPaymentType.Paypal &&
+                                !string.IsNullOrWhiteSpace(result.Data.PaypalEmail);
+        _paymentInfoLoading = false;
     }
 
     private async Task LoadStatementsAsync()

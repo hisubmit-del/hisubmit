@@ -1746,3 +1746,18 @@ The script was executed against the local `HiSubmitDB50` database. The result
 was 208 MB allocated (`72 MB` data and `136 MB` log). No application rows,
 audit rows, or Hangfire rows were deleted. Production execution still requires
 an approved backup and maintenance window.
+
+### Settlement readiness checkpoint (2026-08-20)
+
+The festival settlement page now includes a read-only readiness checklist. It
+loads the existing festival payout-information record and reports whether a
+PayPal recipient email is configured, whether a confirmed or paid statement
+exists, and which requirements remain before a future payout can be initiated.
+Confirmed statements explain that they are waiting for the approved payout
+process; paid statements expose the stored payment reference and paid
+timestamp when available.
+
+This checkpoint deliberately does not call PayPal, create a payout, change
+settlement status, add a migration, or mutate financial data. Automatic
+payout remains blocked on provider approval, idempotency keys, webhook/status
+reconciliation, and refund/dispute handling.
