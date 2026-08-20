@@ -3077,6 +3077,68 @@ a:hover {
     overflow-wrap: anywhere;
 }
 
+/* Keep the public header within the viewport at every desktop width. */
+.public-layout .public-header-row {
+    display: flex;
+    flex-wrap: nowrap !important;
+    min-width: 0;
+    overflow: hidden;
+}
+
+.public-layout .public-header-row > .public-brand--desktop {
+    flex: 0 1 clamp(12rem, 18vw, 17rem);
+    min-width: 10.5rem;
+}
+
+.public-layout .public-header-row > .public-desktop-nav {
+    flex: 1 1 auto;
+    min-width: 0;
+    overflow: hidden;
+}
+
+.public-layout .public-desktop-nav ul {
+    justify-content: flex-end;
+    flex-wrap: nowrap;
+    min-width: 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+}
+
+.public-layout .public-desktop-nav ul::-webkit-scrollbar {
+    display: none;
+}
+
+.public-layout .public-desktop-nav .public-nav-link,
+.public-layout .public-desktop-nav .public-nav-cta {
+    white-space: nowrap;
+    padding-inline: clamp(.45rem, .8vw, .8rem);
+}
+
+.public-layout .public-header-actions {
+    display: inline-flex;
+    align-items: center;
+    flex: 0 0 auto;
+    min-width: max-content;
+    gap: .25rem;
+}
+
+@media (min-width: 992px) and (max-width: 1199.98px) {
+    .public-layout .public-brand--desktop span {
+        display: none;
+    }
+
+    .public-layout .public-header-row > .mud-spacer {
+        flex: 0 0 .25rem;
+        min-width: .25rem;
+    }
+
+    .public-layout .public-desktop-nav .public-nav-link,
+    .public-layout .public-desktop-nav .public-nav-cta {
+        font-size: .78rem;
+        padding-inline: .4rem;
+    }
+}
+
 .workspace-tabs .mud-tab {
     flex: 0 0 auto;
     min-width: max-content;

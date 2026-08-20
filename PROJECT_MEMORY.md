@@ -1605,3 +1605,18 @@ data contract, privacy policy and pricing are approved.
   workspace styles.
 - Build verification: 0 errors. Remaining warnings are existing MudBlazor
   analyzer/legacy nullable and package warnings.
+
+## UpdateDetail 500 and public header alignment checkpoint (2026-08-19)
+
+- The festival detail update endpoint could throw when an edit request
+  contained no new logo upload: `UploadRequest` was null, but the handler
+  accessed `UploadRequest.Data` directly. The handler now accepts a null upload
+  request and the component initializes upload request objects after loading.
+- This was the confirmed source of the reported `UpdateDetail` 500 and its
+  correlation ID response; no database change was required.
+- The public desktop header now uses one bounded flex contract: the brand,
+  navigation, and account actions cannot overlap or escape the viewport. The
+  desktop navigation scrolls inside its own area at narrow desktop widths.
+  The mobile drawer remains the same navigation source, and the duplicate
+  desktop cart link was removed because the account action already renders it.
+- Build verification: 0 errors. Existing MudBlazor analyzer warnings remain.

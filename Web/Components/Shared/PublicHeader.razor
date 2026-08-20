@@ -162,12 +162,6 @@
                         }
                         <AuthorizeView>
                             <Authorized Context="desktopAuthorized">
-                                <li class="public-nav-auth">
-                                    <a class="public-nav-link" href="/user/shoppingCart">
-                                        <MudIcon Icon="@Icons.Material.Outlined.ShoppingCart" Size="Size.Small" />
-                                        <span>Cart</span>
-                                    </a>
-                                </li>
                                 <AuthorizeView Roles="@RoleConstants.ArtistRole">
                                     <NotAuthorized>
                                         <AuthorizeView Roles="@RoleConstants.FestivalRole">

@@ -82,7 +82,7 @@ namespace HiSubmit.Application.Features.Festivals.Commands.CreateFestival
             if (request.Id == 0)
             {
                 var festival = mapper.Map<Festival>(request);
-                if (request.UploadRequest.Data != null)
+                if (request.UploadRequest?.Data is { Length: > 0 })
                 {
                     festival.LogoURL = uploadService.UploadAsync(request.UploadRequest);
                 }

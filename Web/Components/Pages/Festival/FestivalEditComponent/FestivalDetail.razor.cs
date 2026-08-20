@@ -111,6 +111,9 @@ public partial class FestivalDetail
         {
             var festival = result.Data;
             _model = Mapper.Map<AddEditFestivalDetailCommand>(festival);
+            _model.UploadRequest ??= new UploadRequest();
+            _model.RewardLogoUploadRequest ??= new UploadRequest();
+            _model.ApprovedLicenseUploadRequest ??= new UploadRequest();
             //  Console.WriteLine(_model.QualifyersId.Count);
             QualifyersSelectedId = _model.QualifyersId;
         }

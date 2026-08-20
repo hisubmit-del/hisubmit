@@ -1589,3 +1589,17 @@ The modern workspace CSS now scopes readable foreground colors to form cards,
 marks required fields in red, reduces checkbox stack spacing, and prevents
 category/fee content from being clipped or visually washed out. This is a
 presentation-only change and does not alter permissions or data contracts.
+
+### Festival detail update safety and public header contract
+
+`POST /api/v1/festival/{festivalId}/UpdateDetail` accepts edits without a new
+logo upload. The application handler must treat `UploadRequest` as optional;
+the UI initializes upload request objects after mapping an existing festival,
+but the server remains authoritative and null-safe.
+
+The public header uses the same navigation items for desktop and mobile. On
+desktop, the header is a bounded flex row with a shrinkable brand, an
+overflow-contained navigation region, and non-shrinkable account actions. At
+narrow desktop widths, navigation scrolls within its region instead of
+covering the profile/account controls. The mobile drawer continues to render
+the same primary links and account actions.
