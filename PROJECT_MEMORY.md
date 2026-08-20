@@ -1939,3 +1939,18 @@ data contract, privacy policy and pricing are approved.
 - Full AI-assisted selection, model governance, human approval workflow,
   quality evaluation, and production recommendation analytics remain follow-up
   work before calling the intelligent jury feature complete.
+
+## Advertising and judging terminology checkpoint (2026-08-21)
+
+- Public advertising placement choices now use clear names: sponsored festival
+  search card, site and email editorial feature, site editorial feature, and
+  email newsletter feature.
+- The advertising request page explains where each placement appears, what
+  material should be supplied, and that availability, dates, and pricing are
+  confirmed after review.
+- Gold purchase is now linked from the artist navigation at `/goldaccount`.
+  Gold recommendations remain available inside the artist dashboard for active
+  Gold users.
+- All visible `Judging Enable` labels and sort keys were corrected to
+  `Judging result`. This is terminology-only and does not change judging data
+  or authorization behavior.

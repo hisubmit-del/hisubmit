@@ -73,7 +73,7 @@
                                                 </MudSelect>
                                             </MudItem>
                                             <MudItem xs="12" md="4">
-                                                <MudSelect T="JudgingStatus?" @bind-Value="_advancedSearch.JudgingStatus" Label="@Localize["Judging Enable"]"
+                                                <MudSelect T="JudgingStatus?" @bind-Value="_advancedSearch.JudgingStatus" Label="@Localize["Judging result"]"
                                                            Variant="Variant.Text">
                                                     <MudSelectItem Value="@(null as JudgingStatus?)">@Localize["All Enable"]</MudSelectItem>
                                                     @foreach (JudgingStatus? status in Enum.GetValues(typeof(JudgingStatus)))
@@ -151,7 +151,7 @@
                                                         </MudItem>
                                                         <MudItem  xs="12" md="6" Class="pt-0">
                                                             <MudText Typo="Typo.subtitle2">
-                                                                Judging Enable:
+                                                                Judging result:
                                                                 <JudgingStatusChip SelectedJudgingStatus="@context.JudgingStatus"/>
                                                             </MudText>
     

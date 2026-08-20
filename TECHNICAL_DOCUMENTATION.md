@@ -1797,3 +1797,21 @@ The intelligent jury portion is intentionally not represented as autonomous
 judging in this checkpoint. A production implementation still requires a
 reviewable rubric, human approval, model/version audit, bias and quality
 evaluation, explainability, opt-out handling, and festival-period scoping.
+
+## Advertising placement and judging terminology checkpoint (2026-08-21)
+
+The public advertising request page now presents explicit placement names and
+descriptions:
+
+- Sponsored festival search card: a paid, clearly labelled card above public
+  festival search filters.
+- Site and email editorial feature: review for both a HiSubmit editorial
+  feature and newsletter placement.
+- Site editorial feature: review for a site-only editorial feature.
+- Email newsletter feature: review for a newsletter-only placement.
+
+The artist navigation now links directly to `/goldaccount`; active Gold users
+continue to find the recommendation advisor inside the artist dashboard.
+`Judging Enable` was removed from visible UI text and sort-key labels in the
+submission, referee, judging, and project-review surfaces and replaced with
+`Judging result`. No judging state, data, or permission behavior changed.

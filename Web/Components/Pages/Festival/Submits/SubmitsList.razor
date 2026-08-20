@@ -131,8 +131,8 @@ else
             </MudTh>
             <MudTh>
                 <MudTableSortLabel T="GetAllSubmitsResponse"
-                                   SortLabel="JudgingEnable">
-                    @Localize["Judging  Enable"]
+                                   SortLabel="JudgingResult">
+                    @Localize["Judging result"]
                 </MudTableSortLabel>
             </MudTh>
             <MudTh Style="text-align:center">
@@ -169,7 +169,7 @@ else
             <MudTd DataLabel="submission state">
                 <SubmitStatusChip SelectedSubmitStatus="@context.SubmitStatus"/>
             </MudTd>
-            <MudTd DataLabel="Judging Enable">
+            <MudTd DataLabel="Judging result">
                 <JudgingStatusChip SelectedJudgingStatus="@context.JudgingStatus"/>
             </MudTd>
             <MudTd DataLabel="Actions">

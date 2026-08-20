@@ -61,12 +61,16 @@
                                 <MudSelect Variant="Variant.Outlined" T="AdvertiseType"
                                            @bind-Value="_advertise.AdvertiseType"
                                            For="() => _advertise.AdvertiseType"
-                                           Label="Placement type">
+                                           Label="Advertising placement">
                                     @foreach (AdvertiseType type in Enum.GetValues<AdvertiseType>())
                                     {
                                         <MudSelectItem Value="@type">@type.ToDisplay()</MudSelectItem>
                                     }
                                 </MudSelect>
+                                <MudText Typo="Typo.caption" Class="advertise-placement-help">
+                                    Choose where your approved promotion should appear. We confirm availability,
+                                    campaign dates and pricing after reviewing your brief.
+                                </MudText>
                             </MudItem>
                             <MudItem xs="12" md="6">
                                 <MudTextField @bind-Value="_advertise.Email" For="() => _advertise.Email"
@@ -82,8 +86,11 @@
                         @if (_advertise.AdvertiseType == AdvertiseType.Banner)
                         {
                             <div class="advertise-upload-section">
-                                <MudText Typo="Typo.subtitle1">Creative assets</MudText>
-                                <MudText Typo="Typo.body2" Class="text-muted">Upload the images you want our team to review.</MudText>
+                                <MudText Typo="Typo.subtitle1">Sponsored festival search card</MudText>
+                                <MudText Typo="Typo.body2" Class="text-muted">
+                                    A paid, clearly labelled festival card shown above the public festival search filters.
+                                    Upload the banner artwork and tell us the festival, audience and campaign dates.
+                                </MudText>
                                 <MudGrid Class="mt-2">
                                     @foreach (var image in _advertise.Images)
                                     {
@@ -100,8 +107,11 @@
                         else
                         {
                             <div class="advertise-upload-section">
-                                <MudText Typo="Typo.subtitle1">Supporting files</MudText>
-                                <MudText Typo="Typo.body2" Class="text-muted">Attach a brief, media kit or other useful material.</MudText>
+                                <MudText Typo="Typo.subtitle1">Editorial or newsletter feature material</MudText>
+                                <MudText Typo="Typo.body2" Class="text-muted">
+                                    Attach a media kit, press release, images or copy. Site features appear in HiSubmit
+                                    editorial content; email features are considered for a newsletter placement.
+                                </MudText>
                                 <MudGrid Class="mt-2">
                                     @foreach (var file in _advertise.Files)
                                     {

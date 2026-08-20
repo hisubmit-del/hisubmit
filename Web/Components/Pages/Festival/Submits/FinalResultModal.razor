@@ -16,7 +16,7 @@
             <MudGrid>
 
                 <MudItem Class="mb-2 " xs="12" md="6">
-                    <MudSelect T="JudgingStatus" @bind-Value="FinalJudging.JudgingStatus" Label="Judging Enable" Variant="Variant.Filled" AnchorOrigin="Origin.BottomCenter">
+                    <MudSelect T="JudgingStatus" @bind-Value="FinalJudging.JudgingStatus" Label="Judging result" Variant="Variant.Filled" AnchorOrigin="Origin.BottomCenter">
                         @foreach (JudgingStatus value in Enum.GetValues(typeof(JudgingStatus)))
                         {
                             <MudSelectItem Value="value">@value.ToDisplay()</MudSelectItem>
