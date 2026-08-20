@@ -1647,3 +1647,25 @@ data contract, privacy policy and pricing are approved.
 - After each change, run the narrowest relevant build/test and record what was
   actually verified. Do not claim a workflow is fixed until it has been tested
   or the remaining runtime test is clearly identified.
+
+## Overnight verification checkpoint (2026-08-20)
+
+- Local power settings were changed to prevent automatic Sleep and Hibernate
+  on both AC and battery while the project is being tested.
+- Local branch remains `recovery-clean-20260816`; no push or publish was made.
+- Local commits created during this verification:
+  - `22c53f8` Fix data URL handling in festival and artist uploads
+  - `b454b2c` Harden ticket cart errors and commission calculation
+  - `bf71371` Handle empty festival image URLs safely
+- The exact `UpdateDetail` failure was reproduced in the runtime log as a
+  `PathTooLongException` caused by a browser `data:image/...` value being
+  treated as a filesystem path. A subsequent runtime run exposed and fixed a
+  null-value edge case in the new guard.
+- Verified after the latest build/run:
+  - public deadline endpoint: HTTP 200
+  - guest cart endpoint: HTTP 200 with an empty result
+  - public ticket endpoint: HTTP 200 with an empty result
+  - application startup and database migrations: successful
+- Authenticated workflows (real login, ticket purchase, project submission,
+  role switching, and festival wizard interaction) have not been claimed as
+  complete without an authenticated browser test.
