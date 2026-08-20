@@ -43,6 +43,9 @@ public class AddSoldTicketCommandHandler(
         if (request.TicketId <= 0 || request.Count <= 0)
             return await Result.FailAsync(localizer["A valid ticket and quantity are required"]);
 
+        if (currentUserService == null || string.IsNullOrWhiteSpace(currentUserService.UserId))
+            return await Result.FailAsync(localizer["You must be signed in to add a ticket to your cart"]);
+
         var ticket = await unitOfWork.Repository<Ticket>().GetByIdAsync(request.TicketId);
         if (ticket == null)
             return await Result.FailAsync(localizer["Ticket not found"]);
@@ -63,17 +66,24 @@ public class AddSoldTicketCommandHandler(
             }
         }
 
-        var commission = await unitOfWork.Repository<SiteCommission>()
-            .Entities.FirstOrDefaultAsync(cancellationToken);
+        var commissionRepository = unitOfWork.Repository<SiteCommission>();
+        if (commissionRepository == null)
+            return await Result.FailAsync(localizer["Site commission settings are unavailable"]);
+
+        var commission = await commissionRepository.Entities
+            .FirstOrDefaultAsync(cancellationToken);
         if (commission == null)
             return await Result.FailAsync(localizer["Site commission settings are not configured"]);
         
         var soldTicket = mapper.Map<SoldTicket>(request);
+        if (soldTicket == null)
+            return await Result.FailAsync(localizer["The ticket could not be added to your shopping cart"]);
         
         soldTicket.SoldTicketStatus = SoldTicketStatus.AwaitingPayment;
         soldTicket.UserId = currentUserService.UserId;
         soldTicket.Cost = ticket.Cost * request.Count;
-        soldTicket.ShareFestivalIncome =(decimal) (100 - commission.TicketSalesCommission) * soldTicket.Cost;
+        soldTicket.ShareFestivalIncome =
+            (decimal)(100 - commission.TicketSalesCommission) / 100m * soldTicket.Cost;
         soldTicket.SerialNumber = Guid.NewGuid();
         soldTicket.QrCode =await generateQrCode.Generate(soldTicket.SerialNumber.ToString());
         
