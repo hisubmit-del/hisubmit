@@ -6,6 +6,7 @@ public class GetFestivalPaymentInformationDetailResponse
 {
     public  int Id { get; set; }
     public FestivalPaymentType Type { get; set; }
+    [System.ComponentModel.DataAnnotations.EmailAddress]
     public string PaypalEmail { get; set; }
     public string CardNumber { get; set; }
     public string CVC { get; set; }

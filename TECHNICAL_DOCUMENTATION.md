@@ -1703,6 +1703,22 @@ to festival owners requires a separate approved payout flow, recipient
 verification, payout idempotency key, webhook/status reconciliation, refund or
 dispute handling, and a confirmed PayPal Payouts-enabled business account.
 
+### UAE PayPal payout-recipient UI checkpoint (2026-08-20)
+
+The festival payment-information page now describes the PayPal field as the
+recipient email for a festival payout, explains that the account must be
+verified and Payouts-eligible, and makes clear that saving the email does not
+trigger a transfer. The existing database column and API shape are preserved,
+so no migration is required. Server validation now requires a valid email when
+PayPal is selected. The legacy debit-card path remains available but is
+visually separated and warns users not to enter PayPal passwords or security
+codes.
+
+PayPal's UAE fee page currently lists Payouts at 2% of the transaction amount
+with a cap based on currency, and UAE bank withdrawal can be fee-free above
+AED 750 when no currency conversion is involved. These are PayPal-published
+rates and can change; the account's live fee page remains authoritative.
+
 The referee dashboard and queue now use a correct empty-state condition:
 `RatedProject + NotRatedProject == 0`. They also make the active
 festival-scoped assignment context explicit in the page guidance and table.

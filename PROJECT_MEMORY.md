@@ -1862,6 +1862,21 @@ data contract, privacy policy and pricing are approved.
   PayPal balance, recipient PayPal address/ID, idempotent payout tracking,
   webhook reconciliation, and dispute/refund controls.
 
+## UAE PayPal payout recipient checkpoint (2026-08-20)
+
+- The festival dashboard payment-information UI now clearly collects the
+  PayPal Business payout recipient email and explains verification, eligibility,
+  settlement approval, and the fact that saving the email does not transfer
+  money.
+- Server validation rejects a missing or invalid PayPal recipient email.
+- Existing API/database shape is preserved; no migration was added.
+- The legacy debit-card form remains available with a warning not to enter
+  PayPal passwords or security codes.
+- PayPal's UAE fee page currently lists PayPal Payouts at 2% of the amount,
+  capped by currency, and indicates no-fee AED bank withdrawal above AED 750
+  when no currency conversion is involved. Verify the live account-specific
+  rate before calculating a settlement.
+
 ## Local database storage maintenance checkpoint (2026-08-20)
 
 - The FilmFreeway wizard draft-source option was removed after review. The

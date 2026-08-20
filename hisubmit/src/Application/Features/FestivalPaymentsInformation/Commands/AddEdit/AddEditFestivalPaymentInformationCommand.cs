@@ -14,6 +14,7 @@ public class AddEditFestivalPaymentInformationCommand:IRequest<IResult>
 {
     public  int Id { get; set; }
     public FestivalPaymentType Type { get; set; }
+    [System.ComponentModel.DataAnnotations.EmailAddress]
     public string PaypalEmail { get; set; }
     public string CardNumber { get; set; }
     public string CVC { get; set; }
@@ -39,6 +40,15 @@ public  class  AddEditFestivalPaymentInformationCommandHandler
     public async Task<IResult> Handle
         (AddEditFestivalPaymentInformationCommand request, CancellationToken cancellationToken)
     {
+        if (request.Type == FestivalPaymentType.Paypal &&
+            string.IsNullOrWhiteSpace(request.PaypalEmail))
+            return await Result.FailAsync(_localizer["A PayPal payout recipient email is required."]);
+
+        if (request.Type == FestivalPaymentType.Paypal &&
+            !new System.ComponentModel.DataAnnotations.EmailAddressAttribute()
+                .IsValid(request.PaypalEmail))
+            return await Result.FailAsync(_localizer["Enter a valid PayPal payout recipient email."]);
+
         if (request.Id==0)
         {
             var info = _mapper.Map<FestivalPaymentInformation>(request);
