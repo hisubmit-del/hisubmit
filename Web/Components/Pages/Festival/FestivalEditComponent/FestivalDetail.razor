@@ -43,6 +43,7 @@ else
                             <MudItem Style="margin-bottom:40px;">
                                 <MudTextField @bind-Value="_model.Name" Label="@Localize["Event Name"]"
                                               id="fes-from"
+                                              Required="true"
                                               For="@(() => _model.Name)" Variant="Variant.Filled" Margin="Margin.Dense"/>
                             </MudItem>
                             <MudGrid>
@@ -122,7 +123,7 @@ else
                                                </MudItem>
                         <MudItem xs="12" lg="2">
                             <MudText Typo="Typo.subtitle2">
-                                Event Description <span style="color:#d32f2f;font-weight:700" aria-hidden="true">*</span>
+                                Event Description <span class="required-field-mark" aria-hidden="true">*</span>
                             </MudText>
 
                         </MudItem>
@@ -157,7 +158,7 @@ else
                                                  </MudItem>
                         <MudItem xs="12" lg="2">
                             <MudText Typo="Typo.subtitle2">
-                                Rules And Terms <span style="color:#d32f2f;font-weight:700" aria-hidden="true">*</span>
+                                Rules And Terms <span class="required-field-mark" aria-hidden="true">*</span>
                             </MudText>
                         </MudItem>
                         <MudItem xs="12" lg="10" Class="h-100">

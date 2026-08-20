@@ -62,12 +62,20 @@ public partial class AddEditFestivalFileModal
         _file = e.File;
         if (_file != null)
         {
-            var buffer = new byte[_file.Size];
+            await using var stream = _file.OpenReadStream(maxAllowedSize: 25 * 1024 * 1024);
+            await using var memoryStream = new MemoryStream();
+            await stream.CopyToAsync(memoryStream);
+            var buffer = memoryStream.ToArray();
             var extension = Path.GetExtension(_file.Name);
             var format = "application/octet-stream";
-            await _file.OpenReadStream(_file.Size).ReadAsync(buffer);
-            File.FileURL = $"data:{format};base64,{Convert.ToBase64String(buffer)}";
-            File.UploadFileRequest = new UploadRequest { Data = buffer,FileName=_file.Name, UploadType = UploadType.Document, Extension = extension };
+            File.FileURL = string.Empty;
+            File.UploadFileRequest = new UploadRequest
+            {
+                Data = buffer,
+                FileName = _file.Name,
+                UploadType = UploadType.Document,
+                Extension = extension
+            };
         }
     }
 }

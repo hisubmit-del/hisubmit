@@ -19,14 +19,29 @@
       
         @if (_information != null)
         {
-            <MudPaper Class="pa-2 h-100 position-relative" Elevation="25" >
-                        <MudText Typo="Typo.h5" Color="Color.Primary" Class="my-3">
+            <MudPaper Class="pa-4 h-100 payment-information-card d-flex flex-column" Elevation="25">
+                        <MudText Typo="Typo.h5" Color="Color.Primary" Class="my-2">
                             Festival payout information
                         </MudText>
-                        <MudText Typo="Typo.body2" Color="Color.Secondary" Class="mb-4">
+                        <MudText Typo="Typo.body2" Color="Color.Secondary" Class="mb-3">
                             This information prepares settlement payments for this festival.
                             HiSubmit never asks for your PayPal password.
                         </MudText>
+                        <MudAlert Severity="Severity.Info" Variant="Variant.Outlined" Dense="true" Class="mb-4 settlement-guide">
+                            <MudText Typo="Typo.subtitle2">How settlement works</MudText>
+                            <MudText Typo="Typo.body2">
+                                HiSubmit creates a statement for a completed period. You can review the income,
+                                platform charges and adjustments, then confirm the statement. A payout is prepared
+                                only after the statement is approved according to the festival settlement rules;
+                                saving this page never transfers money automatically.
+                            </MudText>
+                            <MudText Typo="Typo.body2" Class="mt-2">
+                                PayPal recipients may use a supported personal or business PayPal account in their
+                                own country. The recipient account must be able to receive the payout, and the
+                                email below must belong to that account. HiSubmit's UAE Business account is the
+                                sender account, not a requirement for the festival recipient.
+                            </MudText>
+                        </MudAlert>
                 <EditForm Model="@_information" 
                     OnSubmit="SaveAsync">
                     <FluentValidationValidator @ref="_fluentValidationValidator"/>
@@ -36,7 +51,8 @@
                                 T="FestivalPaymentType" 
                                 Variant="Variant.Filled"
                                 @bind-Value="_information.Type" 
-                                Label="Preferred settlement method">
+                                Required="true"
+                                Label="Preferred settlement method *">
                                 @foreach (FestivalPaymentType type in Enum.GetValues(typeof(FestivalPaymentType)))
                                 {
                                     <MudSelectItem Value="@(type)">
@@ -55,14 +71,16 @@
                             {
                                 <MudItem xs="12">
                                     <MudAlert Severity="Severity.Info" Variant="Variant.Outlined" Dense="true" Class="mb-3">
-                                        Use the exact email of the PayPal Business account that should receive
-                                        the festival payout. The account must be verified and eligible for PayPal Payouts.
+                                        Enter the exact email of the PayPal account that should receive the festival
+                                        payout. It may be a personal or business account from a supported country;
+                                        it does not need to be a UAE PayPal account.
                                     </MudAlert>
                                     <MudTextField Disabled="_readOnly"
                                                   Variant="Variant.Filled"
                                                   @bind-Value="_information.PaypalEmail"
                                                   For="() => _information.PaypalEmail"
-                                                  Label="PayPal payout recipient email"
+                                                  Required="true"
+                                                  Label="PayPal payout recipient email *"
                                                   Placeholder="payments@yourfestival.com"
                                                   HelperText="Adding this email does not trigger a transfer."
                                                   InputMode="InputMode.email"
@@ -108,8 +126,7 @@
                             }
                         }
                         <MudSpacer/>
-                        <MudGrid Justify="Justify.Center" 
-                                 Class="mb-0 position-absolute bottom-0">
+                        <MudGrid Justify="Justify.Center" Class="mb-0 mt-auto">
                             <MudItem xs="12" md="8">
                                 
                                 @if (_readOnly)

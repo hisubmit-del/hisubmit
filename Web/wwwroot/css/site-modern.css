@@ -1027,6 +1027,107 @@
     }
 }
 
+/* Shared dialog/form readability contract. Dialogs use the same warm surface
+   palette as cards, while labels, inputs and actions remain high contrast. */
+:where(.mud-dialog-container, .mud-overlay) .mud-dialog {
+    background: var(--surface-card, #fffdfa);
+    color: var(--text-strong, #17212b);
+    border: 1px solid var(--border-soft, #d9e1e4);
+    border-radius: var(--radius-md, 14px);
+    overflow: hidden;
+}
+
+:where(.mud-dialog-container, .mud-overlay) .mud-dialog-title,
+:where(.mud-dialog-container, .mud-overlay) .mud-dialog-actions {
+    background: linear-gradient(135deg, rgba(51, 92, 103, .10), rgba(255, 131, 77, .10));
+    color: var(--text-strong, #17212b);
+}
+
+:where(.mud-dialog-container, .mud-overlay) .mud-dialog-content {
+    background: var(--surface-card, #fffdfa);
+    color: var(--text-strong, #17212b);
+}
+
+:where(.mud-dialog-container, .mud-overlay) .mud-input-filled,
+:where(.mud-dialog-container, .mud-overlay) .mud-input.mud-input-filled,
+:where(.mud-dialog-container, .mud-overlay) .mud-select .mud-input-control {
+    background: rgba(51, 92, 103, .07);
+    border-radius: var(--radius-sm, 10px);
+}
+
+:where(.mud-dialog-container, .mud-overlay) .mud-input-filled:hover,
+:where(.mud-dialog-container, .mud-overlay) .mud-input-filled:focus-within {
+    background: rgba(51, 92, 103, .12);
+}
+
+:where(.mud-dialog-container, .mud-overlay) .mud-input-label,
+:where(.mud-dialog-container, .mud-overlay) .mud-input-slot,
+:where(.mud-dialog-container, .mud-overlay) .mud-select-input,
+:where(.mud-dialog-container, .mud-overlay) .mud-input-helper-text {
+    color: var(--text-strong, #17212b) !important;
+}
+
+.wizard-navigation-buttons {
+    gap: .5rem;
+}
+
+.wizard-navigation-buttons .mud-button-root {
+    min-height: 2.75rem;
+    min-width: 7.25rem;
+    padding-inline: 1rem;
+    font-size: .9rem;
+    font-weight: 700;
+}
+
+.payment-information-card {
+    min-height: 100%;
+}
+
+.settlement-guide {
+    border-color: rgba(51, 92, 103, .35);
+    background: rgba(51, 92, 103, .06);
+}
+
+.file-upload-field {
+    min-height: 8rem;
+    padding: .9rem 1rem;
+    border: 1px dashed var(--brand-primary, #335c67);
+    border-radius: var(--radius-sm, 10px);
+    background: rgba(51, 92, 103, .06);
+}
+
+.file-upload-field__label {
+    display: block;
+    color: var(--text-muted, #617080);
+    font-weight: 700;
+    margin-bottom: .45rem;
+}
+
+.file-upload-field__name {
+    display: flex;
+    align-items: center;
+    gap: .35rem;
+    min-height: 2rem;
+    color: var(--text-strong, #17212b);
+    overflow-wrap: anywhere;
+}
+
+.file-upload-field__action {
+    margin-top: .65rem;
+}
+
+@media (max-width: 767.98px) {
+    .wizard-navigation-buttons {
+        width: 100%;
+        flex-wrap: wrap;
+    }
+
+    .wizard-navigation-buttons .mud-button-root {
+        flex: 1 1 8rem;
+        min-width: 0;
+    }
+}
+
 @media (max-width: 575.98px) {
     .festival-card .mud-card-actions {
         flex-wrap: wrap;

@@ -3,9 +3,9 @@
 
 @using HiSubmit.Client.SharedModels.Extensions
 
-<EditForm Model="@File" OnValidSubmit="SaveAsync">
+<EditForm Model="@File" OnValidSubmit="SaveAsync" FormName="festival-file-form">
     <FluentValidationValidator @ref="_fluentValidationValidator" />
-    <MudDialog>
+    <MudDialog Class="form-dialog">
         <TitleContent>
             @{
                 if (File.Id == 0)
@@ -27,13 +27,15 @@
         <DialogContent>
             <MudGrid>
                 <MudItem xs="12" md="6">
-                    <MudTextField For="@(() => File.Name)" @bind-Value="File.Name" Label="@Localize["Name"]" />
+                    <MudTextField For="@(() => File.Name)" @bind-Value="File.Name"
+                                  Required="true" Label="@Localize["Name"]" Variant="Variant.Filled"
+                                  Margin="Margin.Dense" />
                 </MudItem>
               
                 <MudItem xs="12" md="6">
-                    <MudSelect T="FileFormat" Label="@Localize["format"]" 
+                    <MudSelect T="FileFormat" Label="@Localize["format"]"
                     Disabled="@(File.Id != 0 )"   @bind-Value="File.FileFormat" 
-                    For="@(()=>File.FileFormat)" Variant="Variant.Filled" >
+                    For="@(()=>File.FileFormat)" Variant="Variant.Filled" Margin="Margin.Dense" >
                       @foreach (FileFormat fileFormat in Enum.GetValues(typeof(FileFormat)))
                       {
                           <MudSelectItem Value="fileFormat" >@fileFormat.ToDisplay()</MudSelectItem>
@@ -42,23 +44,31 @@
                 </MudItem>
            
                 <MudItem xs="12" md="6">
-                    <MudItem>
-                      @if (_file != null)
+                    <div class="file-upload-field">
+                        <MudText Typo="Typo.caption" Class="file-upload-field__label">
+                            @Localize["File"] <span class="required-field-mark">*</span>
+                        </MudText>
+                        @if (_file != null)
                         {
-                            <MudAlert>@_file.Name</MudAlert>
+                            <MudText Typo="Typo.body2" Class="file-upload-field__name">
+                                <MudIcon Icon="@Icons.Material.Filled.AttachFile" Size="Size.Small" />
+                                @_file.Name
+                            </MudText>
                         }
                         @if (File.Id != 0 && !string.IsNullOrEmpty(File.FileURL))
                         {
-                            <MudAlert>@(File.FileURL)</MudAlert>
+                            <MudText Typo="Typo.caption" Class="file-upload-field__name">
+                                @Localize["Existing file attached"]
+                            </MudText>
                         }
                         <InputFile id="fileInput" hidden OnChange="UploadFiles" />
-                        <div>
+                        <div class="file-upload-field__action">
                             @if (File.Id == 0)
                             {
                                 <MudButton HtmlTag="label"
-                                           Variant="Variant.Text"
+                                           Variant="Variant.Filled"
                                            Color="Color.Primary"
-                                           Size="Size.Small"
+                                           Size="Size.Medium"
                                            StartIcon="@Icons.Material.Filled.CloudUpload"
                                            for="fileInput">
                                     @Localize["Upload"]
@@ -76,11 +86,12 @@
 
                             }
                         </div>
-                    </MudItem>
+                    </div>
                 </MudItem>
                   <MudItem xs="12" md="6">
                     <MudTextField For="@(() => File.Description)" @bind-Value="File.Description" 
-                        Label="@Localize["Description"]" Lines="2" />
+                        Label="@Localize["Description"]" Lines="3" Variant="Variant.Filled"
+                        Margin="Margin.Dense" />
                       </MudItem>
             </MudGrid>
         </DialogContent>

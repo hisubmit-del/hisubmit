@@ -32,7 +32,7 @@
                 <ValidationSummary />
                 <MudGrid Class="mb-3 ">
                     <MudItem xs="12" md="2" Class="d-flex align-content-center flex-wrap">
-                        <MudText Typo="Typo.subtitle2"> @localizer["Opening Date"]:</MudText>
+                        <MudText Typo="Typo.subtitle2"> @localizer["Opening Date"] <span class="required-field-mark">*</span>:</MudText>
                     </MudItem>
                     <MudItem xs="12" md="4">
                         <MudDatePicker PickerVariant="PickerVariant.Dialog"
@@ -44,7 +44,7 @@
                 </MudGrid>
                 <MudGrid Class="mb-3" >
                     <MudItem xs="12" md="2" Class="d-flex align-content-center flex-wrap">
-                        <MudText Typo="Typo.subtitle2"> @localizer["Notification Date"] :</MudText>
+                        <MudText Typo="Typo.subtitle2"> @localizer["Notification Date"] <span class="required-field-mark">*</span>:</MudText>
                     </MudItem>
                     <MudItem xs="12" md="4">
                         <MudDatePicker PickerVariant="PickerVariant.Dialog"
@@ -57,7 +57,7 @@
 
                 <MudGrid Class="mb-3">
                     <MudItem xs="12" md="2" Class="d-flex align-content-center flex-wrap">
-                        <MudText Typo="Typo.subtitle2"> @localizer["Event  Dates"]:</MudText>
+                        <MudText Typo="Typo.subtitle2"> @localizer["Event  Dates"] <span class="required-field-mark">*</span>:</MudText>
                     </MudItem>
                     <MudItem xs="12" md="4">
                         <MudDatePicker PickerVariant="PickerVariant.Dialog" Margin="Margin.Dense"
@@ -80,7 +80,7 @@
         </MudCardContent>
         <MudPaper Class="d-flex justify-end flex-grow-1 ">
             <MudPaper Class="mr-2 mb-2">
-                <MudButtonGroup Variant="Variant.Outlined" OverrideStyles="false">
+                <MudButtonGroup Class="wizard-navigation-buttons" Variant="Variant.Outlined" OverrideStyles="false">
                     <MudButton Variant="Variant.Filled" OnClick="GoPrev"
                                EndIcon="@Icons.Material.Filled.ArrowLeft" Color="Color.Secondary">
                         @localizer["Prev"]

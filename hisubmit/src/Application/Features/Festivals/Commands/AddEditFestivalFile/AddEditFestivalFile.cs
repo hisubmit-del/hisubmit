@@ -52,8 +52,14 @@ namespace HiSubmit.Application.Features.Festivals.Commands.AddEditFestivalFile
 
         public async Task<Result<int>> Handle(AddEditFestivalFileCommand request, CancellationToken cancellationToken)
         {
+            if (string.IsNullOrWhiteSpace(request.Name))
+                return await Result<int>.FailAsync(_localizer["File name is required"]);
+
             if(request.Id == 0)
             {
+                if (request.UploadFileRequest?.Data is not { Length: > 0 })
+                    return await Result<int>.FailAsync(_localizer["Please select a file to upload"]);
+
                 var file = _mapper.Map<FestivalFile>(request);
                 if (request.UploadFileRequest != null)
                 {
