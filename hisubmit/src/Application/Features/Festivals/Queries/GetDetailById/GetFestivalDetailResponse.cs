@@ -83,7 +83,7 @@ namespace HiSubmit.Application.Features.Festivals.Queries.GetDetailById
                                          DateTime.Now.Between(EventStartDate, EventEndDate);
 
         
-        public List<int> QualifyersId { get; set; }
+        public List<int> QualifyersId { get; set; } = new();
         
         
         

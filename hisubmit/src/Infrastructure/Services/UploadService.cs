@@ -90,7 +90,8 @@ namespace HiSubmit.Infrastructure.Services
 
         public bool DeleteAsync(DeleteFileRequest request)
         {
-            if (!string.IsNullOrWhiteSpace(request.RelativeDirectory))
+            if (!string.IsNullOrWhiteSpace(request.RelativeDirectory) &&
+                IsSafeRelativeFilePath(request.RelativeDirectory))
             {
                 var rootDirectory = Directory.GetCurrentDirectory();
                 var absoluteDirectory = EnsurePathWithinRoot(rootDirectory, Path.Combine(rootDirectory, request.RelativeDirectory));
@@ -101,6 +102,19 @@ namespace HiSubmit.Infrastructure.Services
                 }
             }
             return false;
+        }
+
+        private static bool IsSafeRelativeFilePath(string value)
+        {
+            var path = value.Trim();
+            if (path.Length > 1024 ||
+                path.StartsWith("data:", StringComparison.OrdinalIgnoreCase) ||
+                Uri.TryCreate(path, UriKind.Absolute, out _))
+            {
+                return false;
+            }
+
+            return !Path.IsPathRooted(path);
         }
 
         public bool ExistAsync(ExistFileRequest request)

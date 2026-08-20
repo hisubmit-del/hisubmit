@@ -75,6 +75,7 @@ namespace HiSubmit.Application.Features.Festivals.Commands.CreateFestival
 
         public async Task<Result<int>> Handle(AddEditFestivalDetailCommand request, CancellationToken cancellationToken)
         {
+            request.QualifyersId ??= new List<string>();
             request.Description = HtmlTextSanitizer.SanitizeWithoutLinks(request.Description);
             request.Rewards = HtmlTextSanitizer.SanitizeWithoutLinks(request.Rewards);
             request.Rules = HtmlTextSanitizer.SanitizeWithoutLinks(request.Rules);
@@ -97,6 +98,13 @@ namespace HiSubmit.Application.Features.Festivals.Commands.CreateFestival
                 var festival = await unitOfWork.Repository<Festival>().GetByIdAsync(request.Id);
                 if (festival != null)
                 {
+                    // AutoMapper maps request values into the tracked entity. Preserve
+                    // the stored file paths before mapping so a data URL from the
+                    // browser cannot be mistaken for an old filesystem path.
+                    var storedLogoUrl = festival.LogoURL;
+                    var storedRewardLogoUrl = festival.RewardLogoURL;
+                    var storedApprovedLicenseUrl = festival.ApprovedLicenseURL;
+
                     if (string.IsNullOrWhiteSpace(festival.URL))
                     {
                         festival.URL = $"{festival.Name.Trim()}";
@@ -107,11 +115,11 @@ namespace HiSubmit.Application.Features.Festivals.Commands.CreateFestival
 
                     var newFestival = mapper.Map(request, festival);
                     newFestival.LogoURL = UpdateLogoUrl
-                        (festival.LogoURL, request.LogoURL, request.UploadRequest);
+                        (storedLogoUrl, request.LogoURL, request.UploadRequest);
 
                     newFestival.RewardLogoURL = UpdateRewardLogoURL
-                        (festival.RewardLogoURL, request.RewardLogoURL, request.RewardLogoUploadRequest);
-                    newFestival.ApprovedLicenseURL = UpdateApprovedLicenseUrl(festival.ApprovedLicenseURL,
+                        (storedRewardLogoUrl, request.RewardLogoURL, request.RewardLogoUploadRequest);
+                    newFestival.ApprovedLicenseURL = UpdateApprovedLicenseUrl(storedApprovedLicenseUrl,
                         request.ApprovedLicenseURL, request.ApprovedLicenseUploadRequest);
                     
                     //check potential edit
@@ -142,16 +150,23 @@ namespace HiSubmit.Application.Features.Festivals.Commands.CreateFestival
         private string UpdateLogoUrl(string dbLogoUrl, string clientLogoUrl, UploadRequest uploadRequest)
         {
             var updatedLogoUrl = dbLogoUrl;
+            var hasNewUpload = uploadRequest?.Data is { Length: > 0 };
+
             if (string.IsNullOrWhiteSpace(clientLogoUrl))
             {
                 TryDeleteOldLogoFile(dbLogoUrl);
                 updatedLogoUrl = string.Empty;
             }
 
-            if (uploadRequest != null && uploadRequest.Data.Any())
+            if (hasNewUpload)
             {
                 TryDeleteOldLogoFile(dbLogoUrl);
                 updatedLogoUrl = uploadService.UploadAsync(uploadRequest);
+            }
+            else if (IsEmbeddedDataUrl(clientLogoUrl))
+            {
+                // The browser preview is not a persisted file path.
+                updatedLogoUrl = dbLogoUrl;
             }
 
             return updatedLogoUrl;
@@ -161,16 +176,22 @@ namespace HiSubmit.Application.Features.Festivals.Commands.CreateFestival
             (string dbLogoUrl, string clientLogoUrl, UploadRequest uploadRequest)
         {
             var updatedLogoUrl = dbLogoUrl;
+            var hasNewUpload = uploadRequest?.Data is { Length: > 0 };
+
             if (string.IsNullOrWhiteSpace(clientLogoUrl))
             {
                 TryDeleteOldApprovedLicenseFile(dbLogoUrl);
                 updatedLogoUrl = string.Empty;
             }
 
-            if (uploadRequest != null && uploadRequest.Data.Any())
+            if (hasNewUpload)
             {
                 TryDeleteOldApprovedLicenseFile(dbLogoUrl);
                 updatedLogoUrl = uploadService.UploadAsync(uploadRequest);
+            }
+            else if (IsEmbeddedDataUrl(clientLogoUrl))
+            {
+                updatedLogoUrl = dbLogoUrl;
             }
 
             return updatedLogoUrl;
@@ -196,20 +217,29 @@ namespace HiSubmit.Application.Features.Festivals.Commands.CreateFestival
             UploadRequest uploadRequest)
         {
             var updatedRewardLogoUrl = dbRewardLogoUrl;
+            var hasNewUpload = uploadRequest?.Data is { Length: > 0 };
+
             if (string.IsNullOrWhiteSpace(clientRewardLogoUrl))
             {
                 TryDeleteOldRewardLogoFile(dbRewardLogoUrl);
                 updatedRewardLogoUrl = string.Empty;
             }
 
-            if (uploadRequest != null && uploadRequest.Data.Any())
+            if (hasNewUpload)
             {
                 TryDeleteOldRewardLogoFile(dbRewardLogoUrl);
                 updatedRewardLogoUrl = uploadService.UploadAsync(uploadRequest);
             }
+            else if (IsEmbeddedDataUrl(clientRewardLogoUrl))
+            {
+                updatedRewardLogoUrl = dbRewardLogoUrl;
+            }
 
             return updatedRewardLogoUrl;
         }
+
+        private static bool IsEmbeddedDataUrl(string value) =>
+            value.StartsWith("data:", System.StringComparison.OrdinalIgnoreCase);
 
         private void TryDeleteOldRewardLogoFile(string dbLogoUrl)
         {
@@ -222,9 +252,10 @@ namespace HiSubmit.Application.Features.Festivals.Commands.CreateFestival
         private async Task UpdateQualifiers(List<string> qualifiersStringId, int festivalId)
         {
             var qualifiersId = new List<int>();
-            foreach (var item in qualifiersStringId)
+            foreach (var item in qualifiersStringId ?? [])
             {
-                qualifiersId.Add(int.Parse(item));
+                if (int.TryParse(item, out var qualifierId) && qualifierId > 0)
+                    qualifiersId.Add(qualifierId);
             }
 
             var dbFestivalQualifiers = unitOfWork.Repository<FestivalFestivalQualifying>().Entities

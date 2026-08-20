@@ -115,7 +115,8 @@ public partial class FestivalDetail
             _model.RewardLogoUploadRequest ??= new UploadRequest();
             _model.ApprovedLicenseUploadRequest ??= new UploadRequest();
             //  Console.WriteLine(_model.QualifyersId.Count);
-            QualifyersSelectedId = _model.QualifyersId;
+            _model.QualifyersId ??= new List<string>();
+            QualifyersSelectedId = _model.QualifyersId.ToList();
         }
         else
         {

@@ -119,12 +119,16 @@ public class AddEditProjectDetailCommandHandler : IRequestHandler<AddEditProject
             {
                 await _checkPermission.CheckWrightProjectPermission(dbProject.UserId);
 
+                // Keep the persisted file paths before AutoMapper copies the browser
+                // preview data URLs into the tracked entity.
+                var storedStudentPhotoCard = dbProject.StudentPhotoCard;
+                var storedProjectFileUrl = dbProject.FileURl;
                 var updatedProject = _mapper.Map(request, dbProject);
                 if (request.StudentProject)
-                    updatedProject.StudentPhotoCard = UpdateUniversityCard(dbProject.StudentPhotoCard,
+                    updatedProject.StudentPhotoCard = UpdateUniversityCard(storedStudentPhotoCard,
                         request.StudentPhotoCard, request.UploadRequest);
 
-                updatedProject.FileURl = UpdateUProjectImage(dbProject.FileURl, request.FileURl, request.FileUrlUploadRequest);
+                updatedProject.FileURl = UpdateUProjectImage(storedProjectFileUrl, request.FileURl, request.FileUrlUploadRequest);
                 if (updatedProject.Address.CountryId == 0)
                 {
                     updatedProject.Address = null;
@@ -151,10 +155,15 @@ public class AddEditProjectDetailCommandHandler : IRequestHandler<AddEditProject
             updatedRewardLogoUrl = string.Empty;
         }
 
-        if (uploadRequest != null && uploadRequest.Data.Any())
+        if (uploadRequest?.Data is { Length: > 0 })
         {
             TryDeleteOldRewardLogoFile(dbRewardLogoUrl);
             updatedRewardLogoUrl = _uploadService.UploadAsync(uploadRequest);
+        }
+        else if (IsEmbeddedDataUrl(clientRewardLogoUrl))
+        {
+            // A data URL is only a browser preview, never a persisted file path.
+            updatedRewardLogoUrl = dbRewardLogoUrl;
         }
 
         return updatedRewardLogoUrl;
@@ -178,10 +187,15 @@ public class AddEditProjectDetailCommandHandler : IRequestHandler<AddEditProject
             updatedRewardLogoUrl = string.Empty;
         }
 
-        if (uploadRequest != null && uploadRequest.Data.Any())
+        if (uploadRequest?.Data is { Length: > 0 })
         {
             TryDeleteOldProjectCoverFile(dbProjectCoverUrl);
             updatedRewardLogoUrl = _uploadService.UploadAsync(uploadRequest);
+        }
+        else if (IsEmbeddedDataUrl(clientRewardLogoUrl))
+        {
+            // A data URL is only a browser preview, never a persisted file path.
+            updatedRewardLogoUrl = dbProjectCoverUrl;
         }
 
         return updatedRewardLogoUrl;
@@ -194,4 +208,7 @@ public class AddEditProjectDetailCommandHandler : IRequestHandler<AddEditProject
             _uploadService.DeleteAsync(new DeleteFileRequest { RelativeDirectory = dbLogoUrl });
         }
     }
+
+    private static bool IsEmbeddedDataUrl(string? value) =>
+        value?.StartsWith("data:", StringComparison.OrdinalIgnoreCase) == true;
 }

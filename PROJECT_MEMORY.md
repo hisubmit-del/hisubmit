@@ -1635,3 +1635,15 @@ data contract, privacy policy and pricing are approved.
 - No business logic, permission, API, or database behavior changed.
 - Fast local build verification: 0 errors, 7 package warnings, 5.16 seconds
   using `--no-restore --disable-build-servers`.
+
+## Evidence-first project rule (2026-08-20)
+
+- Do not change code, database, permissions, workflows, or deployment settings
+  from assumptions or guesses.
+- Before making a change, verify the relevant project documentation, source
+  code, database state, runtime logs, and permission rules as applicable.
+- If the available evidence is insufficient, explicitly report that it is
+  unknown and ask for or collect the missing evidence before changing anything.
+- After each change, run the narrowest relevant build/test and record what was
+  actually verified. Do not claim a workflow is fixed until it has been tested
+  or the remaining runtime test is clearly identified.

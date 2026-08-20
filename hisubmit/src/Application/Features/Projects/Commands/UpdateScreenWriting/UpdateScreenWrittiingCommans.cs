@@ -48,7 +48,7 @@ internal class UpdateScreenWritingCommandHandler(
             {
                 var mappedWriter = mapper.Map<ScreeningAward>(writer)
                                    ?? throw new ArgumentNullException("mapper.Map<ScreeningAward>(writer)");
-                if (writer.UploadRequest.Data != null)
+                if (writer.UploadRequest?.Data is { Length: > 0 })
                 {
                     writer.UploadRequest.UploadType = UploadType.Awards;
                     mappedWriter.ImageUrl = uploadService.UploadAsync(writer.UploadRequest);
@@ -69,9 +69,10 @@ internal class UpdateScreenWritingCommandHandler(
                     writer.UploadRequest.UploadType = UploadType.Awards;
                 }
 
+                var storedImageUrl = dbWriter.ImageUrl;
                 var updatedWriter = mapper.Map(writer, dbWriter);
 
-                updatedWriter.ImageUrl = UpdateLogoUrl(dbWriter.ImageUrl, writer.ImageUrl, writer.UploadRequest);
+                updatedWriter.ImageUrl = UpdateLogoUrl(storedImageUrl, writer.ImageUrl, writer.UploadRequest);
                 await unitOfWork.Repository<ScreeningAward>().UpdateAsync(updatedWriter);
             }
         }
@@ -89,10 +90,14 @@ internal class UpdateScreenWritingCommandHandler(
             updatedLogoUrl = string.Empty;
         }
 
-        if (uploadRequest != null && uploadRequest.Data.Any())
+        if (uploadRequest?.Data is { Length: > 0 })
         {
             TryDeleteOldLogoFile(dbLogoUrl);
             updatedLogoUrl = uploadService.UploadAsync(uploadRequest);
+        }
+        else if (clientLogoUrl?.StartsWith("data:", StringComparison.OrdinalIgnoreCase) == true)
+        {
+            updatedLogoUrl = dbLogoUrl;
         }
 
         return updatedLogoUrl;

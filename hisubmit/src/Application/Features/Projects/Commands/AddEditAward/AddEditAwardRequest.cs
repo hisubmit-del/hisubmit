@@ -47,7 +47,7 @@ public class UpdateAwardCommandHandler(
             {
                 
                 var mappedWriter = mapper.Map<Award>(writer);
-                if (writer.UploadRequest.Data != null)
+                if (writer.UploadRequest?.Data is { Length: > 0 })
                 {
                     writer.UploadRequest.UploadType = UploadType.Awards;
                     mappedWriter.ImageUrl =  uploadService.UploadAsync(writer.UploadRequest);
@@ -62,8 +62,9 @@ public class UpdateAwardCommandHandler(
                     return await Result.FailAsync(localizer["award updated has error"]);
                 }
                 
+                var storedImageUrl = dbWriter.ImageUrl;
                 var updatedWriter = mapper.Map(writer, dbWriter);
-                updatedWriter.ImageUrl = UpdateLogoUrl(dbWriter.ImageUrl, writer.ImageUrl, writer.UploadRequest);
+                updatedWriter.ImageUrl = UpdateLogoUrl(storedImageUrl, writer.ImageUrl, writer.UploadRequest);
                 await unitOfWork.Repository<Award>().UpdateAsync(updatedWriter);
             }
         }
@@ -80,10 +81,14 @@ public class UpdateAwardCommandHandler(
             updatedLogoUrl = string.Empty;
         }
 
-        if (uploadRequest != null && uploadRequest.Data.Any())
+        if (uploadRequest?.Data is { Length: > 0 })
         {
             TryDeleteOldLogoFile(dbLogoUrl);
             updatedLogoUrl = uploadService.UploadAsync(uploadRequest);
+        }
+        else if (clientLogoUrl?.StartsWith("data:", System.StringComparison.OrdinalIgnoreCase) == true)
+        {
+            updatedLogoUrl = dbLogoUrl;
         }
 
         return updatedLogoUrl;
