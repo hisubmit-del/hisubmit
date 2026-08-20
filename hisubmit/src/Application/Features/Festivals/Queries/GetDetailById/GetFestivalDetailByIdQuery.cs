@@ -79,7 +79,13 @@ namespace HiSubmit.Application.Features.Festivals.Queries.GetDetailById
                     await query.ProjectTo<GetFestivalDetailResponse>(_mapper.ConfigurationProvider)
                         .FirstOrDefaultAsync(cancellationToken);
                // result.QualifyersId = qualiId;
-                
+
+                if (result is null)
+                {
+                    return await Result<GetFestivalDetailResponse>.FailAsync(
+                        _stringLocalizer["Festival Not Found"]);
+                }
+
                 return await Result<GetFestivalDetailResponse>
                     .SuccessAsync(result);
                 }

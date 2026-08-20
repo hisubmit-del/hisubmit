@@ -1720,3 +1720,39 @@ data contract, privacy policy and pricing are approved.
 - Phase 1 is not complete: authenticated submission, payment, ticket/product
   purchase, role switching, and cross-festival authorization remain pending
   dedicated tests.
+
+## Phase 1 critical endpoint follow-up checkpoint (2026-08-20)
+
+- `PaidZeroCartCommandHandler` no longer throws `BadRequestException` when
+  the open cart still has a balance. It now returns a controlled, user-facing
+  failure message, so this invalid state no longer becomes HTTP 500.
+- `GetFestivalDetailByIdQueryHandler` now returns a failed result with
+  `Festival Not Found` when the requested ID/URL has no matching row instead
+  of returning `Succeeded=true` with `data=null`.
+- `FestivalAuthentication` now returns `Forbid (403)` for an authenticated
+  user without access and does not overwrite that result with `Unauthorized
+  (401)`. Unauthenticated requests still return 401.
+- Verification after restart:
+  - local database migrations completed and the app listened on
+    `http://localhost:5120`;
+  - authenticated artist `PaidZeroCart` with a non-zero cart returned HTTP
+    200 with a controlled failure message, not 500;
+  - authenticated artist submission with an empty payload returned controlled
+    validation (`Project not selected`);
+  - authenticated festival owner `mio2@mio.mio` could read festival 19 and
+    received 403 for festival 15;
+  - an authenticated request for a non-existent festival as administrator
+    returned `Succeeded=false` and `Festival Not Found`;
+  - runtime stderr remained empty after restart.
+- Build verification: `dotnet build Web/Web.csproj --no-restore
+  --disable-build-servers --nologo` completed with 0 errors. The current
+  output still contains legacy MudBlazor `MUD0002` and other existing
+  warnings; they were not suppressed or bulk-rewritten in this checkpoint.
+- Database ownership evidence: `qa.festival@hisubmit.test` owns festivals
+  15, 16 and 18; `mio2@mio.mio` owns festival 19. This is the current local
+  database state, not an inferred role count.
+- The referee account has a `FestivalSubUser` row for festival 15, but its
+  current authenticated claims did not pass the festival policy filter during
+  HTTP verification. This is recorded as an unresolved claims/permission
+  integration issue for the security phase; no access was granted by
+  assumption.

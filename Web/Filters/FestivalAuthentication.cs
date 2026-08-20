@@ -49,8 +49,9 @@ public class FestivalAuthentication : Attribute, IAuthorizationFilter
                 //    return;
             }
             context.Result = new ForbidResult();
-           // return TypedResults.LocalRedirect($"~/{ForbidResult}");
+            return;
         }
+
         context.Result = new UnauthorizedResult();
     }
 }

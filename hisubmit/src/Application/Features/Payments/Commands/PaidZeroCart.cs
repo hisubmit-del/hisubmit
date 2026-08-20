@@ -3,7 +3,6 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using HiSubmit.Application.Events.Payments.PaidCartEvent;
-using HiSubmit.Application.Exceptions;
 using HiSubmit.Application.Interfaces.Repositories;
 using HiSubmit.Application.Services.PaymentService;
 using Hisubmit.Client.SharedModels.Features.Payments.Commands;
@@ -36,7 +35,8 @@ public class PaidZeroCartCommandHandler(IUnitOfWork<int> unitOfWork, IMediator m
         // Check the effective price rather than the original catalogue price.
         if (cart.CartItems.Sum(p => p.GetRealPrice) != 0)
         {
-            throw new BadRequestException();
+            return await Result.FailAsync(
+                "This cart still has a balance. Apply a valid discount or continue with the regular payment flow.");
         }
 
         var res = await paymentService.ChangeCartItemState(cart, cancellationToken);
