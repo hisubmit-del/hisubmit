@@ -11,7 +11,8 @@
 </style>
 
 
-<HeroTitle Title="@Localize["Judges"]" Description="@Localize["List of  My Judges."]"/>
+<HeroTitle Title="@Localize["Judges"]"
+           Description="@Localize["Review your active festival-scoped assignments and open a project only from its matching queue context."]"/>
 @if (!_loaded)
 {
     <MudProgressCircular Color="Color.Primary" Indeterminate="true"/>
@@ -157,9 +158,9 @@ else
                 }
             </MudTd>
             <MudTd style="@(context.JudgingFiledAverage == 0 ? $"background:{Colors.DeepOrange.Lighten4}" : "")" DataLabel="Assignment context">
-                <MudText Typo="Typo.caption">@context.FestivalName</MudText>
+                <MudText Typo="Typo.body2"><b>@context.FestivalName</b></MudText>
                 <MudText Typo="Typo.caption" Color="Color.Secondary">
-                    @context.CreatedOn.ToLongDate()
+                    Assigned: @context.CreatedOn.ToLongDate()
                 </MudText>
             </MudTd>
             <MudTd style="@(context.JudgingFiledAverage == 0 ? $"background:{Colors.DeepOrange.Lighten4}" : "")" DataLabel="Rate Average">

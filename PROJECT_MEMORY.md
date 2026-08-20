@@ -1821,3 +1821,14 @@ data contract, privacy policy and pricing are approved.
   navigation.
 - The change is presentation-only. It does not re-submit payment, fetch a
   second payment event, or change receipt/payment persistence.
+
+### Phase 2 referee queue clarity checkpoint (2026-08-20)
+
+- Referee dashboard empty-state logic now considers both rated and awaiting
+  review assignments. A referee with only completed ratings is no longer shown
+  a false empty queue.
+- Referee dashboard and queue copy now state that assignments are active,
+  festival-scoped, and period-bound; the assignment table labels the festival
+  and assigned date directly.
+- No referee authorization, assignment query, or judging result behavior was
+  changed.

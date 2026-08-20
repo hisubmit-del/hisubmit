@@ -1673,3 +1673,9 @@ receipt handoff page. It shows the payment reference, confirms that no further
 payment action is required, and links the user to the cart/receipts area and
 personal dashboard. This is UI-only and does not invoke payment processing or
 publish a payment event.
+
+The referee dashboard and queue now use a correct empty-state condition:
+`RatedProject + NotRatedProject == 0`. They also make the active
+festival-scoped assignment context explicit in the page guidance and table.
+This is a presentation correction; the existing server-side assignment and
+authorization checks remain unchanged.

@@ -12,18 +12,22 @@
         <MudIcon Icon="@Icons.Material.Outlined.Score" Size="Size.Large" />
     </div>
 
-@if (_refereeData.RatedProject == 0)
+@if (_refereeData.RatedProject + _refereeData.NotRatedProject == 0)
 {
     <MudGrid>
         <MudAlert ContentAlignment=HorizontalAlignment.Center Variant="Variant.Text" Severity="Severity.Warning"
          Class="pa-3 ma-7 w-100">
-            You haven't had any judges assigned yet.
+            Your judging queue is empty. New festival-scoped assignments will appear here when a manager assigns work to you.
         </MudAlert>
     </MudGrid>
 }
 
 else
 {
+    <MudAlert Severity="Severity.Info" Variant="Variant.Outlined" Class="mb-4">
+        Your queue is limited to active assignments. Each project remains tied to its festival and assignment period.
+    </MudAlert>
+
     <MudGrid>
         <MudItem >
             <MudPaper Elevation="25"
