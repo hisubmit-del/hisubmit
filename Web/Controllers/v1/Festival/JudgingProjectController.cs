@@ -1,5 +1,6 @@
 ﻿using HiSubmit.Application.Features.ProjectJudgings.Commands;
 using HiSubmit.Application.Features.ProjectJudgings.Queries.GetAll;
+using HiSubmit.Application.Features.ProjectJudgings.Queries.GetSelectionRecommendations;
 using Hisubmit.Client.SharedModels.Contracts.Permission;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
@@ -34,6 +35,16 @@ namespace Web.Controllers.v1.Festival
         [FestivalAuthentication(Policy = Permissions.Judging.View)]
         public async Task<IActionResult> GetAllProjectJudgings(
             [FromQuery] GetAllProjectJudgingQuery query,
+            int festivalId)
+        {
+            query.FestivalId = festivalId;
+            return Ok(await Mediator.Send(query));
+        }
+
+        [HttpGet("SelectionRecommendations")]
+        [FestivalAuthentication(Policy = Permissions.Judging.View)]
+        public async Task<IActionResult> GetSelectionRecommendations(
+            [FromQuery] GetSelectionRecommendationsQuery query,
             int festivalId)
         {
             query.FestivalId = festivalId;

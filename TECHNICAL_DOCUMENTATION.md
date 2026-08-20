@@ -1815,3 +1815,28 @@ continue to find the recommendation advisor inside the artist dashboard.
 `Judging Enable` was removed from visible UI text and sort-key labels in the
 submission, referee, judging, and project-review surfaces and replaced with
 `Judging result`. No judging state, data, or permission behavior changed.
+
+## Festival selection recommendations checkpoint (2026-08-21)
+
+Festival managers can open `/festival/selection` from the festival navigation.
+The page provides a transparent, read-only ranking based on the existing
+festival-scoped referee assignments:
+
+- completed review count versus assigned review count;
+- average score from completed judging field answers;
+- a bounded recommendation (`Strong candidate`, `Consider for review`, or
+  `Needs more review`);
+- a plain-language explanation for every row.
+
+The endpoint is
+`GET api/v1/JudgingProject/{festivalId}/SelectionRecommendations`. It uses
+the existing `Permissions.Judging.View` festival authorization and supports
+project-type and minimum-review filters. It does not change `JudgingStatus`,
+publish a work, assign a referee, or write an AI decision. The festival team
+must review the source judging records and confirm the final result manually.
+No migration is required.
+
+This is the first safe selection-assistance layer, not an autonomous jury.
+An eventual Gold/AI implementation must add a reviewed rubric, model/version
+audit trail, human approval, quality and bias evaluation, opt-out behavior,
+and strict festival-period scoping.

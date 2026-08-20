@@ -1,0 +1,128 @@
+@page "/festival/selection"
+@using Hisubmit.Client.SharedModels.Enums
+@using Hisubmit.Client.SharedModels.Features.ProjectJudgings.Queries
+@using HiSubmit.Client.Infrastructure.Managers.Referee
+@inherits BaseFestival
+
+<MudContainer MaxWidth="MaxWidth.ExtraLarge" Class="dashboard-page-shell">
+    <div class="dashboard-page-intro">
+        <div>
+            <MudText Typo="Typo.overline">Assisted selection</MudText>
+            <MudText Typo="Typo.h3">Selection recommendations</MudText>
+            <MudText Typo="Typo.body2">
+                A transparent ranking of submitted works based on completed referee scores.
+                It does not publish or change a final result.
+            </MudText>
+        </div>
+        <MudIcon Icon="@Icons.Material.Outlined.AutoAwesome" Size="Size.Large" />
+    </div>
+
+    <MudAlert Severity="Severity.Info" Variant="Variant.Outlined" Class="mb-4">
+        This is decision support for the festival team. Review the underlying judging records
+        and confirm the final result manually.
+    </MudAlert>
+
+    <MudPaper Class="dashboard-section-card pa-4" Elevation="0">
+        <MudGrid Class="mb-3">
+            <MudItem xs="12" sm="4">
+                <MudSelect T="ProjectType?" @bind-Value="_projectType"
+                           Label="Project type" Variant="Variant.Outlined" Dense="true">
+                    <MudSelectItem T="ProjectType?" Value="@(null as ProjectType?)">All types</MudSelectItem>
+                    @foreach (var type in Enum.GetValues<ProjectType>())
+                    {
+                        <MudSelectItem T="ProjectType?" Value="@type">@type</MudSelectItem>
+                    }
+                </MudSelect>
+            </MudItem>
+            <MudItem xs="12" sm="4">
+                <MudNumericField T="int" @bind-Value="_minimumReviews"
+                                 Label="Minimum completed reviews" Min="1"
+                                 Variant="Variant.Outlined" Dense="true" />
+            </MudItem>
+            <MudItem xs="12" sm="4" Class="d-flex align-center">
+                <MudButton Variant="Variant.Filled" Color="Color.Primary"
+                           Disabled="_loading" OnClick="LoadRecommendations"
+                           StartIcon="@Icons.Material.Filled.Refresh">
+                    @(_loading ? "Loading..." : "Refresh recommendations")
+                </MudButton>
+            </MudItem>
+        </MudGrid>
+
+        @if (_loading)
+        {
+            <MudProgressLinear Indeterminate="true" Color="Color.Primary" />
+        }
+        else if (_recommendations.Count == 0)
+        {
+            <MudAlert Severity="Severity.Info">
+                No judging assignments are available for this filter yet.
+            </MudAlert>
+        }
+        else
+        {
+            <MudTable Items="_recommendations" Dense="true" Hover="true" Breakpoint="Breakpoint.Sm">
+                <HeaderContent>
+                    <MudTh>Rank</MudTh>
+                    <MudTh>Work</MudTh>
+                    <MudTh>Average score</MudTh>
+                    <MudTh>Reviews</MudTh>
+                    <MudTh>Recommendation</MudTh>
+                    <MudTh>Explanation</MudTh>
+                </HeaderContent>
+                <RowTemplate>
+                    <MudTd DataLabel="Rank">@(_recommendations.IndexOf(context) + 1)</MudTd>
+                    <MudTd DataLabel="Work">
+                        <MudText Typo="Typo.subtitle2">@context.ProjectTitle</MudText>
+                        <MudText Typo="Typo.caption">@context.TrackingCode · @context.ProjectType</MudText>
+                    </MudTd>
+                    <MudTd DataLabel="Average score">
+                        <MudChip T="string" Color="@(context.AverageScore >= 4 ? Color.Success : Color.Info)">
+                            @context.AverageScore.ToString("0.00")
+                        </MudChip>
+                    </MudTd>
+                    <MudTd DataLabel="Reviews">
+                        @context.CompletedReviewCount / @context.ReviewCount
+                    </MudTd>
+                    <MudTd DataLabel="Recommendation">@context.Recommendation</MudTd>
+                    <MudTd DataLabel="Explanation">@context.Explanation</MudTd>
+                </RowTemplate>
+            </MudTable>
+        }
+    </MudPaper>
+</MudContainer>
+
+@code {
+    [Inject] private ISelectionAdvisorManager SelectionAdvisorManager { get; set; }
+
+    private List<SelectionRecommendationResponse> _recommendations = new();
+    private ProjectType? _projectType;
+    private int _minimumReviews = 1;
+    private bool _loading;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await CheckPermission(Permissions.Judging.View);
+        await LoadRecommendations();
+        await base.OnInitializedAsync();
+    }
+
+    private async Task LoadRecommendations()
+    {
+        _loading = true;
+        var response = await SelectionAdvisorManager.GetRecommendations(
+            SelectedFestivalId,
+            new GetSelectionRecommendationsRequest
+            {
+                ProjectType = _projectType.HasValue ? (int)_projectType.Value : null,
+                MinimumReviews = Math.Max(1, _minimumReviews)
+            });
+
+        if (response.Succeeded)
+            _recommendations = response.Data ?? new();
+        else
+            foreach (var message in response.Messages)
+                _snackBar.Add(message, Severity.Error);
+
+        _loading = false;
+    }
+}

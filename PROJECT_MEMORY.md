@@ -1954,3 +1954,23 @@ data contract, privacy policy and pricing are approved.
 - All visible `Judging Enable` labels and sort keys were corrected to
   `Judging result`. This is terminology-only and does not change judging data
   or authorization behavior.
+
+## Festival selection recommendations checkpoint (2026-08-21)
+
+- Festival managers with `Permissions.Judging.View` can open
+  `/festival/selection` from the festival navigation.
+- The page is a transparent, read-only decision-support panel. It groups the
+  existing festival-scoped referee assignments by submission, shows completed
+  review counts and average field scores, and explains each recommendation.
+- Recommendations are intentionally not an autonomous jury: the panel never
+  changes `JudgingStatus`, publishes a work, assigns a referee, or submits a
+  result. The festival team must inspect the underlying records and confirm
+  the final result manually.
+- The API is `GET api/v1/JudgingProject/{festivalId}/SelectionRecommendations`
+  and is protected by the existing festival judging permission. It supports
+  project-type and minimum-completed-review filters and returns at most 100
+  ordered rows.
+- No database migration or new stored AI decision was introduced. A future
+  Gold/AI expansion still requires an explicit rubric, model/version audit,
+  human approval, quality and bias evaluation, opt-out handling, and period
+  scoping before it can be called autonomous selection.
