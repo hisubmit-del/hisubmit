@@ -15,7 +15,7 @@
                         <MudItem xs="12" md="6" lg="4" xl="3">
                             <MudSelect T="ProjectType" For="@(() => _judging.ProjectType)"
                                        SelectedValuesChanged="async (types) => { await ChangeProjectType(types.ToList()); }"
-                                       @bind-Value="_judging.ProjectType" Label="@Localize["Project ItemType"]">
+                                       @bind-Value="_judging.ProjectType" Label="Project type">
                                 @foreach (ProjectType qType in Enum.GetValues(typeof(ProjectType)))
                                 {
                                     <MudSelectItem Value="qType">@qType.ToDisplay()</MudSelectItem>
@@ -90,7 +90,7 @@
                                             <MudText Align="Align.Center" Typo="Typo.subtitle1"> @Localize["Name"]</MudText>
                                         </MudTh>
                                         <MudTh>
-                                            <MudText Align="Align.Center" Typo="Typo.subtitle1"> @Localize["Question ItemType"]</MudText>
+                                            <MudText Align="Align.Center" Typo="Typo.subtitle1">Question type</MudText>
                                         </MudTh>
                                         <MudTh>
                                             <MudText Align="Align.Center" Typo="Typo.subtitle1"> @Localize["Apply to all category"]</MudText>
@@ -106,7 +106,7 @@
                                         <MudTd DataLabel="Name" Style="text-align:center">
                                             <MudHighlighter Text="@context.Title" />
                                         </MudTd>
-                                        <MudTd DataLabel="Question ItemType" Style="text-align:center">
+                                        <MudTd DataLabel="Question type" Style="text-align:center">
                                             <MudChip T="string" Size="Size.Small" Label="true" Variant="Variant.Text" Color="Color.Default">@context.Questiontype.ToDisplay()</MudChip>
                                         </MudTd>
                                         <MudTd DataLabel="Apply To all Category" Style="text-align:center">

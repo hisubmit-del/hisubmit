@@ -2,7 +2,7 @@
 
 <EditForm Model="@Organizer" FormName="festival-organizer">
     <FluentValidationValidator @ref="_fluentValidationValidator"/>
-    <MudDialog>
+    <MudDialog Class="form-dialog">
         <TitleContent>
             <MudText Typo="Typo.h6">
                 <MudIcon Icon="@Icons.Material.Filled.Add" Class="mr-3 mb-n1"/>
@@ -22,12 +22,14 @@
                     <MudItem xs="12" md="6">
                         <MudTextField T="string" For="@(() => Organizer.Name)"
                                       Required="true"
-                                      @bind-Value="Organizer.Name" Label="@Localize["Name"]"/>
+                                      @bind-Value="Organizer.Name" Label="@Localize["Name"]"
+                                      Variant="Variant.Filled" Margin="Margin.Dense"/>
                     </MudItem>
                     <MudItem xs="12" md="6">
                         <MudTextField For="@(() => Organizer.Title)" 
                                       Required="true"
-                                      @bind-Value="Organizer.Title" Label="@Localize["Title"]"/>
+                                      @bind-Value="Organizer.Title" Label="@Localize["Title"]"
+                                      Variant="Variant.Filled" Margin="Margin.Dense"/>
                     </MudItem>
                     <MudItem md="6">
                         <ImageUploader MaxHeight="200px"

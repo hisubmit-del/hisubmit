@@ -22,7 +22,7 @@
         <MudTable Class="default-table" Items="@_venues" Dense="true" Hover="true" Breakpoint="Breakpoint.Sm" LoadingProgressColor="Color.Info">
             <HeaderContent>
                 <MudTh>@Localize["Name"]</MudTh>
-                <MudTh>@Localize["ItemType"]</MudTh>
+                <MudTh>Venue type</MudTh>
                 <MudTh>
                  @if (!IsAdmin)
                  {
@@ -35,7 +35,7 @@
             </HeaderContent>
             <RowTemplate>
                 <MudTd DataLabel="Name">@context.Name</MudTd>
-                <MudTd DataLabel="ItemType">
+                        <MudTd DataLabel="Venue type">
                     <MudChip T="string" Size="Size.Small">@context.VenueType.ToDisplay()</MudChip>
                 </MudTd>
 

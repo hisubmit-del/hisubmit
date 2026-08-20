@@ -33,14 +33,12 @@
                 </MudItem>
               
                 <MudItem xs="12" md="6">
-                    <MudSelect T="FileFormat" Label="@Localize["format"]"
-                    Disabled="@(File.Id != 0 )"   @bind-Value="File.FileFormat" 
-                    For="@(()=>File.FileFormat)" Variant="Variant.Filled" Margin="Margin.Dense" >
-                      @foreach (FileFormat fileFormat in Enum.GetValues(typeof(FileFormat)))
-                      {
-                          <MudSelectItem Value="fileFormat" >@fileFormat.ToDisplay()</MudSelectItem>
-                      }
-                    </MudSelect>
+                    <MudText Typo="Typo.caption" Class="file-format-note">
+                        @Localize["Allowed format"] <span class="required-field-mark">*</span>
+                    </MudText>
+                    <MudText Typo="Typo.body2" Class="file-format-value">
+                        Word (.doc, .docx) or PDF (.pdf)
+                    </MudText>
                 </MudItem>
            
                 <MudItem xs="12" md="6">
@@ -61,7 +59,7 @@
                                 @Localize["Existing file attached"]
                             </MudText>
                         }
-                        <InputFile id="fileInput" hidden OnChange="UploadFiles" />
+                        <InputFile id="fileInput" hidden accept=".doc,.docx,.pdf" OnChange="UploadFiles" />
                         <div class="file-upload-field__action">
                             @if (File.Id == 0)
                             {

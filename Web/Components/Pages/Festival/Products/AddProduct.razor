@@ -26,7 +26,7 @@
                 </MudItem>
                 <MudItem xs="12" md="6">
                     <MudSelect @bind-Value="Model.ProductType" For="@(() => Model.ProductType)" Margin="Margin.Dense"
-                               T="ProductType" Label="@Localize["Product ItemType"]" Variant="Variant.Filled" AnchorOrigin="Origin.BottomCenter">
+                               T="ProductType" Label="Product type" Variant="Variant.Filled" AnchorOrigin="Origin.BottomCenter">
                         @foreach (ProductType productType in Enum.GetValues<ProductType>())
                         {
                             <MudSelectItem Value="productType">@productType.ToDisplay()</MudSelectItem>

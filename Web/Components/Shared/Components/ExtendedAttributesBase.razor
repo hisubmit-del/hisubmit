@@ -63,7 +63,7 @@ else
                         <MudTHeadRow IgnoreCheckbox="true">
                             <MudTh><MudTableSortLabel SortBy="SortById">@_localizer["Id"]</MudTableSortLabel></MudTh>
                             <MudTh><MudTableSortLabel SortBy="SortById">@_localizer["Entity Id"]</MudTableSortLabel></MudTh>
-                            <MudTh><MudTableSortLabel SortBy="SortByType">@_localizer["ItemType"]</MudTableSortLabel></MudTh>
+                            <MudTh><MudTableSortLabel SortBy="SortByType">Attribute type</MudTableSortLabel></MudTh>
                             <MudTh><MudTableSortLabel SortBy="SortByKey">@_localizer["Key"]</MudTableSortLabel></MudTh>
                             <MudTh><MudTableSortLabel SortBy="SortByValue">@_localizer["Value"]</MudTableSortLabel></MudTh>
                             <MudTh><MudTableSortLabel SortBy="SortByExternalId">@_localizer["External Id"]</MudTableSortLabel></MudTh>
@@ -77,7 +77,7 @@ else
                     <RowTemplate>
                         <MudTd DataLabel="@_localizer["Id"]">@context.Id</MudTd>
                         <MudTd DataLabel="@_localizer["Entity Id"]">@context.EntityId</MudTd>
-                        <MudTd DataLabel="@_localizer["ItemType"]">@context.Type</MudTd>
+                        <MudTd DataLabel="Attribute type">@context.Type</MudTd>
                         <MudTd DataLabel="@_localizer["Key"]">
                             <MudHighlighter Text="@context.Key" HighlightedText="@_searchString" />
                         </MudTd>

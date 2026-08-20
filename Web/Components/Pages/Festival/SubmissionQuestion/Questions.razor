@@ -40,7 +40,7 @@ else
                 <MudText Align="Align.Center" Typo="Typo.subtitle1"> @Localize["Name"]</MudText>
             </MudTh>
             <MudTh>
-                <MudText Align="Align.Center" Typo="Typo.subtitle1"> @Localize["Question ItemType"]</MudText>
+                <MudText Align="Align.Center" Typo="Typo.subtitle1">Question type</MudText>
             </MudTh>
             <MudTh>
                 <MudText Align="Align.Center" Typo="Typo.subtitle1"> @Localize["Apply to all category"]</MudText>
@@ -52,7 +52,7 @@ else
             <MudTd DataLabel="Name" Style="text-align:center">
                 <MudHighlighter Text="@context.Title"/>
             </MudTd>
-            <MudTd DataLabel="Question ItemType" Style="text-align:center">
+            <MudTd DataLabel="Question type" Style="text-align:center">
                 <MudChip T="string" Variant="Variant.Text" Label="true" Color="Color.Secondary">@context.Questiontype.ToDisplay()</MudChip>
             </MudTd>
             <MudTd DataLabel="Apply To all Category" Style="text-align:center">

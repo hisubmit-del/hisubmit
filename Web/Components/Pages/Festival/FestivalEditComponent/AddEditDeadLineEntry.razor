@@ -1,7 +1,7 @@
 @inject IStringLocalizer<AddEditDeadLineEntry> Localize
 <EditForm Model="DeadLine">
     <FluentValidationValidator @ref="_fluentValidationValidator"></FluentValidationValidator>
-    <MudDialog>
+    <MudDialog Class="form-dialog">
         <TitleContent>
             <MudText Typo="Typo.h6">
                 <MudIcon Icon="@Icons.Material.Filled.Add" Class="mr-3 mb-n1"/>

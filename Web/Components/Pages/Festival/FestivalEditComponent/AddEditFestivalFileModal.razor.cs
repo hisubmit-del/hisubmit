@@ -67,7 +67,18 @@ public partial class AddEditFestivalFileModal
             await stream.CopyToAsync(memoryStream);
             var buffer = memoryStream.ToArray();
             var extension = Path.GetExtension(_file.Name);
-            var format = "application/octet-stream";
+            var normalizedExtension = extension.ToLowerInvariant();
+            if (normalizedExtension is not (".doc" or ".docx" or ".pdf"))
+            {
+                _snackBar.Add("Only Word and PDF files are allowed.", Severity.Error);
+                _file = null;
+                File.UploadFileRequest = null;
+                return;
+            }
+
+            File.FileFormat = normalizedExtension == ".pdf"
+                ? FileFormat.PDF
+                : FileFormat.Doc;
             File.FileURL = string.Empty;
             File.UploadFileRequest = new UploadRequest
             {

@@ -76,12 +76,16 @@ else
                         {
                             <MudHidden Breakpoint="Breakpoint.MdAndDown">
                                 <LoadingButton Processing="_releaseProcess" Style="position: absolute; top:15px;right:6%;" Size="Size.Small"
-                                               Variant="Variant.Filled" Color="Color.Primary" OnClick="ReleaseFestival">Release FestivalId</LoadingButton>
+                                               Variant="Variant.Filled" Color="Color.Primary" OnClick="ReleaseFestival">
+                                    Request publication
+                                </LoadingButton>
                             </MudHidden>
 
                             <MudHidden Breakpoint="Breakpoint.LgAndUp">
-                                <MudIconButton Icon="@Icons.Material.Filled.NewReleases" Style="position: absolute; top:15px;right:6%;"
-                                               Size="Size.Small" Variant="Variant.Filled" Color="Color.Primary" OnClick="ReleaseFestival"/>
+                                <MudButton Class="mobile-release-button" StartIcon="@Icons.Material.Filled.NewReleases"
+                                           Variant="Variant.Filled" Color="Color.Primary" OnClick="ReleaseFestival">
+                                    Request publication
+                                </MudButton>
                             </MudHidden>
                         }
                     }

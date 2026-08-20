@@ -3,7 +3,7 @@
 @using HiSubmit.Client.SharedModels.Extensions
 <EditForm Model="@Venue">
     <FluentValidationValidator @ref="_fluentValidationValidator"/>
-    <MudDialog>
+    <MudDialog Class="form-dialog">
         <TitleContent>
             <MudText Typo="Typo.h6">
                 <MudIcon Icon="@Icons.Material.Filled.Add" Class="mr-3 mb-n1"/>
@@ -23,11 +23,11 @@
                     <MudItem xs="12" md="6">
                         <MudTextField T="string" For="@(() => Venue.Name)"
                                       Required="true"
-                                      Variant="Variant.Filled"  Margin="Margin.Dense" 
-                                      @bind-Value="Venue.Name" Label="@_localizer["Name"]"/>
+                                      @bind-Value="Venue.Name" Label="@_localizer["Name"]"
+                                      Variant="Variant.Filled" Margin="Margin.Dense"/>
                     </MudItem>
                     <MudItem xs="12" md="6">
-                        <MudSelect T="VenueType" Margin="Margin.Dense" Label="ItemType"
+                        <MudSelect T="VenueType" Margin="Margin.Dense" Label="Venue type"
                                    Variant="Variant.Filled" @bind-Value="Venue.VenueType"
                                    AnchorOrigin="Origin.BottomCenter">
 

@@ -9,9 +9,9 @@
             </MudTextField>
         </MudItem>
         <MudItem xs="12" md="3">
-            <MudSelect T="ProjectType?" @bind-Value="Model.ProjectType" Label="@Localize["Project ItemType"]"
+            <MudSelect T="ProjectType?" @bind-Value="Model.ProjectType" Label="Project type"
                        Variant="Variant.Text">
-                <MudSelectItem Value="@(null as ProjectType?)">@Localize["All ItemType"]</MudSelectItem>
+                <MudSelectItem Value="@(null as ProjectType?)">All project types</MudSelectItem>
                 @foreach (ProjectType? status in Enum.GetValues(typeof(ProjectType)))
                 {
                     <MudSelectItem Value="@(status as ProjectType?)">@status.ToDisplay()</MudSelectItem>

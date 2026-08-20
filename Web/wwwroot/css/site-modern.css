@@ -1116,6 +1116,81 @@
     margin-top: .65rem;
 }
 
+.file-format-note {
+    display: block;
+    color: var(--text-muted, #617080);
+    font-weight: 700;
+}
+
+.file-format-value {
+    min-height: 3.25rem;
+    display: flex;
+    align-items: center;
+    padding: .75rem 1rem;
+    border: 1px solid var(--border-soft, #d9e1e4);
+    border-radius: var(--radius-sm, 10px);
+    background: rgba(51, 92, 103, .07);
+    color: var(--text-strong, #17212b);
+    font-weight: 700;
+}
+
+.compact-checkbox-grid {
+    row-gap: .1rem !important;
+    column-gap: .35rem !important;
+}
+
+.compact-checkbox-grid .mud-grid-item {
+    padding-top: .1rem;
+    padding-bottom: .1rem;
+}
+
+.compact-checkbox-grid .mud-checkbox {
+    min-height: 1.8rem;
+}
+
+.mobile-release-button {
+    margin-top: .25rem;
+    font-weight: 700;
+}
+
+/* Apply the readability contract to every MudDialog, including dialogs that
+   do not provide a custom wrapper class, and to inline form/dialog patterns. */
+:where(.mud-dialog, .inline-form-dialog) {
+    color: var(--text-strong, #17212b);
+}
+
+:where(.mud-dialog, .inline-form-dialog) :where(.mud-input-control, .mud-select, .mud-autocomplete, .mud-picker) {
+    min-width: 0;
+    margin-block: .45rem;
+}
+
+:where(.mud-dialog, .inline-form-dialog) :where(.mud-input, .mud-input-root, .mud-input-slot, .mud-select-input) {
+    color: var(--text-strong, #17212b) !important;
+}
+
+:where(.mud-dialog, .inline-form-dialog) :where(.mud-input-filled, .mud-input.mud-input-filled, .mud-input-root.mud-input-filled) {
+    background-color: rgba(51, 92, 103, .08) !important;
+    border-radius: var(--radius-sm, 10px);
+}
+
+:where(.mud-dialog, .inline-form-dialog) :where(.mud-input-filled:hover, .mud-input.mud-input-filled:hover, .mud-input-root.mud-input-filled:hover) {
+    background-color: rgba(51, 92, 103, .14) !important;
+}
+
+:where(.mud-dialog, .inline-form-dialog) .mud-input-label {
+    color: var(--text-muted, #617080) !important;
+    font-weight: 700;
+}
+
+:where(.mud-dialog, .inline-form-dialog) .mud-input-helper-text {
+    color: var(--text-muted, #617080) !important;
+}
+
+:where(.mud-dialog, .inline-form-dialog) .mud-button-root {
+    min-height: 2.6rem;
+    font-weight: 700;
+}
+
 @media (max-width: 767.98px) {
     .wizard-navigation-buttons {
         width: 100%;

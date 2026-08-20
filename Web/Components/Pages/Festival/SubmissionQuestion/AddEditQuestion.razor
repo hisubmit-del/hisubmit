@@ -33,7 +33,7 @@
                 <MudItem xs="12" md="6">
                     <MudSelect T="Questiontype" For="@(()=>SubQuestionModal.Questiontype)"
                                Variant="Variant.Outlined"
-                               @bind-Value="SubQuestionModal.Questiontype" Label="@_localizer["Questions ItemType"]">
+                               @bind-Value="SubQuestionModal.Questiontype" Label="Question type">
                         @foreach (Questiontype qType in Enum.GetValues(typeof(Questiontype)))
                         {
                             <MudSelectItem Value="qType">@qType.ToDisplay()</MudSelectItem>

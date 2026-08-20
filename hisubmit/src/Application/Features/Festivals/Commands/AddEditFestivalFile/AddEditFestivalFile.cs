@@ -60,6 +60,11 @@ namespace HiSubmit.Application.Features.Festivals.Commands.AddEditFestivalFile
                 if (request.UploadFileRequest?.Data is not { Length: > 0 })
                     return await Result<int>.FailAsync(_localizer["Please select a file to upload"]);
 
+                var extension = request.UploadFileRequest.Extension?.ToLowerInvariant();
+                if (extension is not (".doc" or ".docx" or ".pdf") ||
+                    request.FileFormat is not (FileFormat.Doc or FileFormat.PDF))
+                    return await Result<int>.FailAsync(_localizer["Only Word and PDF files are allowed"]);
+
                 var file = _mapper.Map<FestivalFile>(request);
                 if (request.UploadFileRequest != null)
                 {

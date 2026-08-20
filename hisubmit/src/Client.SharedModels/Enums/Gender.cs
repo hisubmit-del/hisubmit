@@ -14,8 +14,8 @@ namespace Hisubmit.Client.SharedModels.Enums
 
     public enum VenueType:int
     {
-        [Display(Name = "Secretariat")]
-        Secretariat=0,
+        [Display(Name = "Office")]
+        Office=0,
         [Display(Name = "Show Location")]
         ShowLocation=1,
         [Display(Name = "Gallery")]

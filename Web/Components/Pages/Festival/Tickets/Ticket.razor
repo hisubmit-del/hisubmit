@@ -6,7 +6,7 @@
 @inject IStringLocalizer<Ticket> Localize
 <MudContainer MaxWidth="MaxWidth.Medium">
     <HeroTitle Title="@Localize["Ticket"]"/>
-    <MudCard Class="pa-4 workspace-form-card" Elevation="0">
+    <MudCard Class="pa-4 workspace-form-card inline-form-dialog" Elevation="0">
       @if (_loaded)
         {
               <EditForm Model="_ticket" OnSubmit="SaveAsync">

@@ -42,7 +42,7 @@
                 <MudItem xs="12" md="6">
                     <MudSelect @bind-Value="AddEditProductModel.ProductType"
                                For="@(() => AddEditProductModel.ProductType)" Margin="Margin.Dense"
-                               T="ProductType" Label="@Localize["Product ItemType"]"
+                               T="ProductType" Label="Product type"
                                Variant="Variant.Filled" AnchorOrigin="Origin.BottomCenter">
 
                         @foreach (ProductType productType in Enum.GetValues<ProductType>())

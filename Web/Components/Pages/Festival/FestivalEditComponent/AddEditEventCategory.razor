@@ -4,7 +4,7 @@
 
 
 
-    <EditForm EditContext="_EditForm" OnValidSubmit="SaveAsync">
+    <EditForm Class="inline-form-dialog" EditContext="_EditForm" OnValidSubmit="SaveAsync">
         <FluentValidationValidator @ref="_fluentValidationValidator" />
         @if (!Loaded)
         {
@@ -50,8 +50,8 @@
                     <MudGrid>
                         <MudItem xs="12" md="6">
                             <MudSelect @bind-Value="Category.ProjectType" For="@(() => Category.ProjectType)" Margin="Margin.Dense"
-                                       T="ProjectType?" Label="@Localize["Project ItemType"]" Variant="Variant.Filled" AnchorOrigin="Origin.BottomCenter">
-                                <MudSelectItem Value="null as ProjectType?">@Localize["All Project ItemType"]</MudSelectItem>
+                                       T="ProjectType?" Label="Project type" Variant="Variant.Filled" AnchorOrigin="Origin.BottomCenter">
+                                <MudSelectItem Value="null as ProjectType?">All project types</MudSelectItem>
                                 @foreach (ProjectType projType in Enum.GetValues<ProjectType>())
                                 {
                                     <MudSelectItem Value="projType as ProjectType?">@projType.ToDisplay()</MudSelectItem>

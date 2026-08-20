@@ -35,7 +35,7 @@
                     <MudTableSortLabel T="GetAllVenueResponse" SortLabel="Name">@Localize["Name"]</MudTableSortLabel>
                 </MudTh>
                 <MudTh>
-                    <MudTableSortLabel T="GetAllVenueResponse" SortLabel="ItemType">@Localize["Venue ItemType"]</MudTableSortLabel>
+                    <MudTableSortLabel T="GetAllVenueResponse" SortLabel="ItemType">Venue type</MudTableSortLabel>
                 </MudTh>
                 <MudTh>
                     <MudTableSortLabel T="GetAllVenueResponse" SortLabel="NumberOfTheaters">@Localize["Number of theaters"]</MudTableSortLabel>
@@ -47,7 +47,7 @@
                 <MudTd DataLabel="Name">
                     <MudHighlighter Text="@context.Name" HighlightedText="@_searchString" />
                 </MudTd>
-                <MudTd DataLabel="VenueItemType">
+                <MudTd DataLabel="Venue type">
                     <MudChip T="string" Text="@context.VenueType.ToDisplay()" Size="Size.Small"></MudChip>
                 </MudTd>
                 <MudTd DataLabel="NumberOfTheaters">

@@ -61,10 +61,10 @@
                     </MudItem>
                     <MudItem xs="12" md="10">
                         <MudPaper Square="true" Elevation="0">
-                            <MudGrid>
+                            <MudGrid Class="compact-checkbox-grid" Spacing="1">
                                 @foreach (var artCat in _artCategoryList)
                                 {
-                                    <MudItem xs="6" md="4">
+                                    <MudItem xs="12" sm="4" md="4">
                                         <MudCheckBox T="bool" Dense="true" Size="Size.Small"
                                                      Value="@artCat.IsSelected"
                                                      ValueChanged="(t) => CheckCatValidate(t, artCat)"
@@ -87,10 +87,10 @@
                     </MudItem>
                     <MudItem xs="12" md="10" Style="margin-top:20px;">
                         <MudPaper Square="true" Elevation="0">
-                            <MudGrid>
+                            <MudGrid Class="compact-checkbox-grid" Spacing="1">
                                 @foreach (var focus in _festivalFocusList)
                                 {
-                                    <MudItem xs="6" md="4">
+                                    <MudItem xs="12" sm="4" md="4">
                                         <MudCheckBox T="bool" Dense="true"
                                                      Size="Size.Small"
                                                      Value="@focus.IsSelected"
@@ -260,13 +260,18 @@
                                                Processing="_processing">
                                     @Localize["Save"]
                                 </ResponsiveButton>
-                                if (_model.FestivalStatus == FestivalStatus.UnderInvestigation)
+                                @if (_model.FestivalStatus == FestivalStatus.UnderInvestigation)
+                                {
+                                    <MudButton Disabled="true" Variant="Variant.Outlined" Color="Color.Info">
+                                        @Localize["Publication request is under review"]
+                                    </MudButton>
+                                }
+                                else
                                 {
                                     <ResponsiveButton Processing="ReleasProcessing"
-                                                   Size="Size.Small"
-                                                   Variant="Variant.Filled" Color="Color.Primary"
-                                                   OnClick="ReleaseFestival">
-                                        @Localize["Release festival"]
+                                                       Variant="Variant.Filled" Color="Color.Primary"
+                                                       OnClick="ReleaseFestival">
+                                        @Localize["Request publication"]
                                     </ResponsiveButton>
                                 }
                             }
