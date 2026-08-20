@@ -1,33 +1,62 @@
-﻿@page "/user/payment-result/{PaymentId}"
+@page "/user/payment-result/{PaymentId}"
 @inherits BaseUserPages
-<style>
-    .question-box p{
-    font-size: 14px;
-    }
-</style>
-<MudContainer MaxWidth="MaxWidth.Medium">
-    <MudCard Class="pa-3">
-        <MudCardContent>
-            <MudAlert Class="text-center w-100 pa-2" ContentAlignment="HorizontalAlignment.Center" NoIcon="true"
-                      Severity="Severity.Success">
-                Your payment has been successfully completed
-            </MudAlert>
 
-             <MudText Typo="Typo.subtitle2" Class="mt-2">Payment Id:@PaymentId</MudText> 
-            @* <MudText Typo="Typo.subtitle2"  Class="mbt-2">Order Id:@OrderId</MudText> *@
-            <MudDivider/>
-            
-            <MudItem xs="12" Class="justify-end mt-2 d-flex ">
-                <MudButton Color="Color.Tertiary" Href="/user/ShoppingCart"
-                           StartIcon="@Icons.Material.Filled.ShoppingCart"> Go to Cart</MudButton>
-            </MudItem>
-        </MudCardContent>
-    </MudCard>
+<MudContainer MaxWidth="MaxWidth.Medium" Class="payment-result-page-shell">
+    <MudPaper Class="payment-result-card" Outlined="true">
+        <div class="payment-result-hero">
+            <div class="payment-result-icon">
+                <MudIcon Icon="@Icons.Material.Filled.CheckCircle" Color="Color.Success" Size="Size.Large" />
+            </div>
+            <div>
+                <MudText Typo="Typo.overline">Payment confirmation</MudText>
+                <MudText Typo="Typo.h4">Payment completed</MudText>
+                <MudText Typo="Typo.body2">
+                    Your order has been recorded. Keep the payment reference below for support or receipt lookup.
+                </MudText>
+            </div>
+        </div>
+
+        <MudAlert Class="mt-5" Severity="Severity.Success" Variant="Variant.Outlined">
+            Payment received successfully. No additional payment action is required.
+        </MudAlert>
+
+        <div class="payment-result-reference">
+            <MudText Typo="Typo.overline">Payment reference</MudText>
+            <MudText Typo="Typo.body1" Class="payment-reference-value">@PaymentId</MudText>
+        </div>
+
+        <MudDivider Class="my-5" />
+
+        <MudText Typo="Typo.h6">What happens next?</MudText>
+        <MudList T="string" Class="payment-next-steps">
+            <MudListItem T="string" Icon="@Icons.Material.Outlined.ReceiptLong">
+                Open <b>Receipts</b> from your cart to review paid items and download the receipt.
+            </MudListItem>
+            <MudListItem T="string" Icon="@Icons.Material.Outlined.Assignment">
+                Submission status, ticket access, or product delivery will appear in your account area.
+            </MudListItem>
+            <MudListItem T="string" Icon="@Icons.Material.Outlined.SupportAgent">
+                Include the payment reference above when contacting support.
+            </MudListItem>
+        </MudList>
+
+        <div class="payment-result-actions">
+            <MudButton Color="Color.Primary" Variant="Variant.Filled"
+                       Href="/user/ShoppingCart"
+                       StartIcon="@Icons.Material.Filled.ReceiptLong">
+                Open cart and receipts
+            </MudButton>
+            <MudButton Color="Color.Tertiary" Variant="Variant.Outlined"
+                       Href="/user/dashboard"
+                       StartIcon="@Icons.Material.Filled.Dashboard">
+                Go to dashboard
+            </MudButton>
+        </div>
+    </MudPaper>
 </MudContainer>
 
 @code {
     [Parameter] public string PaymentId { get; set; }
 
     [Parameter] public string OrderId { get; set; }
-    
 }

@@ -3225,6 +3225,72 @@ a:hover {
     min-width: 0;
 }
 
+.payment-result-page-shell {
+    min-width: 0;
+}
+
+.payment-result-card {
+    margin-block: 1.5rem;
+    padding: clamp(1.25rem, 3vw, 2.25rem);
+    overflow: hidden;
+}
+
+.payment-result-hero {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+}
+
+.payment-result-hero .mud-typography {
+    overflow-wrap: anywhere;
+}
+
+.payment-result-icon {
+    display: grid;
+    flex: 0 0 3.25rem;
+    width: 3.25rem;
+    height: 3.25rem;
+    place-items: center;
+    border-radius: 50%;
+    background: color-mix(in srgb, var(--color-success, #177245) 12%, transparent);
+}
+
+.payment-result-reference {
+    min-width: 0;
+    margin-top: 1.5rem;
+    padding: 1rem;
+    border: 1px solid var(--border-soft);
+    border-radius: var(--radius-sm);
+    background: var(--surface-muted, #f7f8fa);
+}
+
+.payment-reference-value {
+    margin-top: .25rem;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+    font-family: var(--font-mono, ui-monospace, monospace);
+}
+
+.payment-next-steps {
+    padding-block: .5rem;
+}
+
+.payment-next-steps .mud-list-item {
+    min-height: 2.75rem;
+}
+
+.payment-next-steps .mud-list-item-text {
+    overflow-wrap: anywhere;
+}
+
+.payment-result-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .75rem;
+    justify-content: flex-end;
+    margin-top: 1.5rem;
+}
+
 @media (max-width: 767.98px) {
     .dashboard-page-intro {
         align-items: flex-start;
@@ -4235,6 +4301,18 @@ a:hover {
 
     .cart-summary-card {
         position: static;
+    }
+
+    .payment-result-hero {
+        flex-direction: column;
+    }
+
+    .payment-result-actions {
+        flex-direction: column;
+    }
+
+    .payment-result-actions .mud-button-root {
+        width: 100%;
     }
 
     .cart-festival-group {

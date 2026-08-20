@@ -1667,3 +1667,9 @@ Build verification after the change completed with 0 errors. A populated-cart
 browser visual check remains dependent on a local authenticated account with
 an active cart containing submission/category data; the available referee
 session currently exposes an empty cart.
+
+The payment result route `/user/payment-result/{PaymentId}` now acts as a
+receipt handoff page. It shows the payment reference, confirms that no further
+payment action is required, and links the user to the cart/receipts area and
+personal dashboard. This is UI-only and does not invoke payment processing or
+publish a payment event.
