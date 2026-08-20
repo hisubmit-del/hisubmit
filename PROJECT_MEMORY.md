@@ -1669,3 +1669,27 @@ data contract, privacy policy and pricing are approved.
 - Authenticated workflows (real login, ticket purchase, project submission,
   role switching, and festival wizard interaction) have not been claimed as
   complete without an authenticated browser test.
+
+## Authentication and payment-circuit checkpoint (2026-08-20)
+
+- The database does not contain `kio@kio.ko`. It contains a separate,
+  truncated account `kio@kio.c` with `EmailConfirmed = 0`; no account row was
+  changed automatically because correcting a real user record requires
+  explicit confirmation.
+- Browser login was verified successfully with
+  `qa.artist@hisubmit.test` / `123Pa$$word!`. The cart page
+  (`/user/shoppingCart`) and artist projects page (`/user/projects`) loaded
+  without a new HTTP 500.
+- The payment component previously raised `JSDisconnectedException` when a
+  Blazor Server circuit was closed while the PayPal SDK retry loop was still
+  active. `PaypalButtons` now cancels its retry loop on disposal, disposes its
+  `DotNetObjectReference`, and ignores normal circuit-disconnect races.
+- Build verification after the payment fix succeeded with 0 errors. The
+  current warning count is 1929, dominated by legacy `MUD0002` analyzer
+  warnings; these remain a separate staged-warning task.
+- Local commits added in this checkpoint:
+  - `9b6c68a` Handle PayPal circuit disconnects safely
+  - `94a1d8f` Guard PayPal render after circuit disposal
+- No push, publish, database reset, or unrelated working-tree files were
+  changed. Authenticated ticket purchase, payment completion, role switching,
+  and cross-festival authorization still require dedicated browser tests.
