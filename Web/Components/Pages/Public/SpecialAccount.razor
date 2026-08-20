@@ -31,8 +31,34 @@
                     <MudText Typo="Typo.h3">
                         Unlock exclusive benefits with a Gold account!
                     </MudText>
+                    <MudText Typo="Typo.body1" Color="Color.Secondary" Class="mt-2">
+                        Gold is purchased through your cart. It becomes active only after the checkout is
+                        completed successfully and remains available for the selected period.
+                    </MudText>
                 </MudItem>
             </MudGrid>
+            @if (_hasActiveGold)
+            {
+                <MudAlert Severity="Severity.Success" Variant="Variant.Outlined" Class="mb-4">
+                    Your Gold account is active until @_accountType.CloseDate?.ToShortDateString().
+                    You cannot purchase another Gold period while this one is active.
+                </MudAlert>
+            }
+            else if (_goldAddedToCart)
+            {
+                <MudAlert Severity="Severity.Success" Variant="Variant.Outlined" Class="mb-4">
+                    A Gold plan is already in your cart. Open the Cart page and complete checkout
+                    to activate it. Do not add another Gold plan.
+                </MudAlert>
+            }
+            else
+            {
+                <MudAlert Severity="Severity.Info" Variant="Variant.Outlined" Class="mb-4">
+                    Choose a period, add it to your cart, then complete checkout from the Cart page.
+                    Gold benefits are enabled after payment confirmation; adding an item to the cart alone
+                    does not activate Gold.
+                </MudAlert>
+            }
             <MudPaper>
                 <MudGrid Class="pa-8">
                     <MudItem xs="12" lg="4">
@@ -57,7 +83,8 @@
                                         All the above benefits are available for 30 day
                                     </li>
                                 </ul>
-                                <LoadingButton Class="mb-2" Processing="_processing"
+                                <LoadingButton Class="mb-2" Processing="_processing || _hasActiveGold || _goldAddedToCart"
+                                               Disabled="_hasActiveGold || _goldAddedToCart"
                                                FullWidth="true" Variant="Variant.Filled" Color="Color.Primary"
                                                OnClick="() => AddToCard(StatusFeePeriod.Monthly)">Add To Card</LoadingButton>
                             </div>
@@ -84,7 +111,8 @@
                                         Enjoy all these perks for 90 days
                                     </li>
                                 </ul>
-                                <LoadingButton Class="mb-2" Processing="_processing"
+                                <LoadingButton Class="mb-2" Processing="_processing || _hasActiveGold || _goldAddedToCart"
+                                               Disabled="_hasActiveGold || _goldAddedToCart"
                                                FullWidth="true" Variant="Variant.Filled"
                                                Color="Color.Primary"
                                                OnClick="() => AddToCard(StatusFeePeriod.ThreeMonth)">
@@ -117,7 +145,8 @@
 
                                     </li>
                                 </ul>
-                                <LoadingButton Class="mb-2" Processing="_processing"
+                                <LoadingButton Class="mb-2" Processing="_processing || _hasActiveGold || _goldAddedToCart"
+                                               Disabled="_hasActiveGold || _goldAddedToCart"
                                                FullWidth="true" Variant="Variant.Filled"
                                                Color="Color.Primary" OnClick="() => AddToCard(StatusFeePeriod.Yearly)">
                                     Add To Card

@@ -1974,3 +1974,23 @@ data contract, privacy policy and pricing are approved.
   Gold/AI expansion still requires an explicit rubric, model/version audit,
   human approval, quality and bias evaluation, opt-out handling, and period
   scoping before it can be called autonomous selection.
+
+## Gold and PayPal readiness checkpoint (2026-08-20)
+
+- The Gold purchase page now explains the complete lifecycle: choose a
+  period, add it to the cart, complete checkout, and wait for payment
+  confirmation before Gold becomes active.
+- Active Gold periods are shown with their expiry date and the purchase
+  controls are disabled. After a plan is added to the cart, the page also
+  prevents another Gold plan from being added in the same session; the server
+  remains the final duplicate-plan safeguard.
+- PayPal remains Sandbox by default. Live verification is explicitly blocked
+  unless both the environment is `Live` and `PayPal:LivePaymentsEnabled=true`.
+  Placeholder credentials are rejected. `PayPal:PayoutsEnabled=false` is
+  retained as a future activation boundary; no real payout endpoint or
+  financial mutation was introduced.
+- `scripts/Smoke-Test.ps1` checks public Gold pricing and confirms that
+  unauthenticated cart and Gold-recommendation endpoints remain protected.
+  During this checkpoint the script was invoked successfully, but no local
+  server was listening on `localhost:5120`, so endpoint results remain
+  pending authenticated browser/local-server verification.

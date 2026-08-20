@@ -1840,3 +1840,31 @@ This is the first safe selection-assistance layer, not an autonomous jury.
 An eventual Gold/AI implementation must add a reviewed rubric, model/version
 audit trail, human approval, quality and bias evaluation, opt-out behavior,
 and strict festival-period scoping.
+
+## Gold and PayPal readiness checkpoint (2026-08-20)
+
+The Gold purchase page now documents and reflects the real lifecycle:
+
+1. choose a monthly, three-month, or yearly plan;
+2. add it to the authenticated user's cart;
+3. complete checkout;
+4. activate Gold only after verified payment confirmation.
+
+An active Gold account shows its expiry date and disables the purchase controls.
+After a successful add-to-cart response, the page also disables additional Gold
+buttons for that session. The server-side duplicate pending/active-plan check
+remains authoritative.
+
+PayPal remains intentionally Sandbox-first. `PayPal:Environment` defaults to
+`Sandbox`; Live verification is refused unless the environment is explicitly
+`Live` and `PayPal:LivePaymentsEnabled` is explicitly `true`. Placeholder or
+missing credentials are rejected. `PayPal:PayoutsEnabled` is currently
+`false` as a configuration boundary only: no real payout endpoint, transfer,
+or financial mutation was added.
+
+The repository now includes `scripts/Smoke-Test.ps1`. It can be run against a
+local server and optionally supplied a bearer token; it checks public Gold
+pricing and verifies unauthenticated protection for cart and Gold
+recommendation endpoints. The script was syntax-checked and invoked during
+this checkpoint; endpoint execution requires the local web server to be
+running on the selected base URL.

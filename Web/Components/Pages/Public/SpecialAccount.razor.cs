@@ -2,9 +2,11 @@
 using System.Threading.Tasks;
 using Hisubmit.Client.SharedModels.Features.News.Queries;
 using Hisubmit.Client.SharedModels.Features.Payments.Queries;
+using Hisubmit.Client.SharedModels.Features.SpecialAccounts.Queries;
 using Hisubmit.Client.SharedModels.Features.Users.Commands.SpecialFee;
 using HiSubmit.Client.Infrastructure.Managers.Contents;
 using HiSubmit.Client.Infrastructure.Managers.Payments;
+using HiSubmit.Client.Infrastructure.Managers.UsersAccounts;
 using HiSubmit.Client.Infrastructure.Services;
 using ClientComponents.Shared.Dialogs;
 using Hisubmit.Client.SharedModels.Enums;
@@ -21,6 +23,7 @@ public partial class SpecialAccount
     [Inject] public ICartManager CartManager { get; set; }
     [Inject] private IContentManager ContentManager { get; set; }
     [Inject] public UserCartService UserCartService { get; set; }
+    [Inject] private IUserAccountManager UserAccountManager { get; set; }
 
     #endregion
 
@@ -28,12 +31,32 @@ public partial class SpecialAccount
 
 
     private bool _processing;
+    private bool _hasActiveGold;
+    private bool _goldAddedToCart;
+    private GetUserAccountTypeResponse _accountType = new();
     private List<GetAllNewResponse> _news = new();
 
     protected override async Task OnInitializedAsync()
     {
         await LoadSiteCommission();
+        await LoadAccountStatus();
         await base.OnInitializedAsync();
+    }
+
+    private async Task LoadAccountStatus()
+    {
+        var user = await AuthenticationManager.CurrentUser();
+        if (user.Identity?.IsAuthenticated != true)
+            return;
+
+        var response = await UserAccountManager.GetAccountType(
+            new GetUserAccountTypeQuery { UserId = string.Empty });
+        if (response.Succeeded && response.Data is not null)
+        {
+            _accountType = response.Data;
+            _hasActiveGold = _accountType.FeeStatus == FeeStatus.Special &&
+                             _accountType.CloseDate > DateTime.Now;
+        }
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -109,6 +132,7 @@ public partial class SpecialAccount
         {
             _snackBar.Add(response.Messages[0], Severity.Success);
             UserCartService.ChangeUserCart();
+            _goldAddedToCart = true;
         }
         else
         {

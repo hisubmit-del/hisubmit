@@ -53,6 +53,20 @@ public class PaypalService(HttpClient httpClient, IConfiguration config) : IPayP
     {
         var clientId = config["PayPal:ClientId"];
         var clientSecret = config["PayPal:ClientSecret"];
+        var environment = config["PayPal:Environment"] ?? "Sandbox";
+
+        var livePaymentsEnabled = bool.TryParse(
+            config["PayPal:LivePaymentsEnabled"],
+            out var parsedLivePaymentsEnabled) && parsedLivePaymentsEnabled;
+        if (string.Equals(environment, "Live", StringComparison.OrdinalIgnoreCase) &&
+            !livePaymentsEnabled)
+            throw new InvalidOperationException(
+                "PayPal Live payments are disabled. Enable them explicitly after production approval.");
+
+        if (string.IsNullOrWhiteSpace(clientId) || clientId == "__SET_VIA_ENV__" ||
+            string.IsNullOrWhiteSpace(clientSecret) || clientSecret == "__SET_VIA_ENV__")
+            throw new InvalidOperationException(
+                "PayPal credentials are not configured for this environment.");
 
         var byteArray = Encoding.UTF8.GetBytes($"{clientId}:{clientSecret}");
         httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
