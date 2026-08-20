@@ -34,6 +34,7 @@ using Hisubmit.Client.SharedModels.Features.Projects.Commands.UpdateProjectFileO
 using Hisubmit.Client.SharedModels.Features.Projects.Queries.GetAllProjectImages;
 using Hisubmit.Client.SharedModels.Features.Projects.Queries.GetAllSubProjectType;
 using Hisubmit.Client.SharedModels.Features.SubProjectTypes.Queries.GetAll;
+using Hisubmit.Client.SharedModels.Features.Recommendations.Queries;
 
 namespace HiSubmit.Client.Infrastructure.Managers.Projects
 {
@@ -68,6 +69,8 @@ namespace HiSubmit.Client.Infrastructure.Managers.Projects
         Task<IResult> AddProjectImage(AddProjectImageCommand command);
         Task<PaginatedResult<GetAllProjectImageResponse>> GetAllProjectImage(GetAllProjectImagesQuery query);
         Task<IResult> UpdateProjectFileOrders(UpdateProjectFileOrderCommand command);
+        Task<IResult<List<GoldFestivalRecommendation>>> GetGoldFestivalRecommendations(
+            GetGoldFestivalRecommendationsRequest query);
     }
 
     public class ProjectManager : IProjectManager
@@ -79,6 +82,14 @@ namespace HiSubmit.Client.Infrastructure.Managers.Projects
         {
             _httpClient = httpClient;
             _projectEndPoint = new BaseEndPoint("api/v1/project");
+        }
+
+        public async Task<IResult<List<GoldFestivalRecommendation>>> GetGoldFestivalRecommendations(
+            GetGoldFestivalRecommendationsRequest query)
+        {
+            var response = await _httpClient.GetAsync(
+                ProjectEndPoint.GoldFestivalRecommendations(query));
+            return await response.ToResult<List<GoldFestivalRecommendation>>();
         }
 
         public async Task<IResult<List<GetAwardDetailResponse>>> DetailAward(GetAwardDetailRequest request)

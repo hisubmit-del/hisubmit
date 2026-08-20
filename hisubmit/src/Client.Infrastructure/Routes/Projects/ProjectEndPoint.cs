@@ -4,6 +4,7 @@ using Hisubmit.Client.SharedModels.Features.Projects.Queries.GetAllProjectCredit
 using Hisubmit.Client.SharedModels.Features.Projects.Queries.GetAwardDetail;
 using Hisubmit.Client.SharedModels.Features.Projects.Queries.GetDetail;
 using Hisubmit.Client.SharedModels.Features.Projects.Queries.GetScreenAward;
+using Hisubmit.Client.SharedModels.Features.Recommendations.Queries;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,6 +26,12 @@ namespace HiSubmit.Client.Infrastructure.Routes.Projects
         {
             var route = $"{_route}detail?{QueryHelper.GetQueryString(query)}";
             return route;
+        }
+
+        public static string GoldFestivalRecommendations(
+            GetGoldFestivalRecommendationsRequest query)
+        {
+            return $"{_route}GoldFestivalRecommendations?{QueryHelper.GetQueryString(query)}";
         }
 
         public static string UpdateDetail()

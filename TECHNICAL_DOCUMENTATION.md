@@ -1761,3 +1761,39 @@ This checkpoint deliberately does not call PayPal, create a payout, change
 settlement status, add a migration, or mutate financial data. Automatic
 payout remains blocked on provider approval, idempotency keys, webhook/status
 reconciliation, and refund/dispute handling.
+
+### PayPal test-data boundary (2026-08-20)
+
+Local QA must not enter real PayPal recipient credentials or payout details.
+The current settlement page is safe to inspect with no configured recipient:
+it reports readiness only and does not initiate a transfer. Any future live
+Payouts implementation must retain configuration-only secrets and introduce
+sandbox credentials, idempotency keys, webhook reconciliation, and
+refund/dispute controls before production activation.
+
+## Phase 5 and Phase 6 Gold implementation checkpoint (2026-08-20)
+
+The existing Gold purchase path is retained and hardened:
+
+- account status is scoped to the authenticated user and an active
+  `UserSpecialPeriod`;
+- unauthenticated purchases are rejected;
+- a user cannot create another pending or active Gold plan;
+- monthly, three-month, and yearly durations continue to activate from the
+  existing paid-cart flow;
+- the existing Gold fee selection remains the cart price source, and no
+  PayPal credential or live payout is needed for local QA.
+
+Gold artists now see an optional dashboard advisor. The advisor calls the
+authenticated `GET api/v1/project/GoldFestivalRecommendations` endpoint,
+requires ownership of the requested project, and matches the project's type
+against public festivals with at least one future deadline. It returns a
+bounded, ordered list with the next deadline, match score, Gold-fee
+availability, and an explanatory reason. It is a recommendation surface only:
+it does not submit a project, change a cart, assign a judge, or make a final
+selection.
+
+The intelligent jury portion is intentionally not represented as autonomous
+judging in this checkpoint. A production implementation still requires a
+reviewable rubric, human approval, model/version audit, bias and quality
+evaluation, explainability, opt-out handling, and festival-period scoping.

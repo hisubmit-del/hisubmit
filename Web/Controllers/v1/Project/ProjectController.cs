@@ -25,6 +25,7 @@ using HiSubmit.Application.Features.Projects.Commands.UpdateProjectFileOrder;
 using HiSubmit.Application.Features.Projects.Queries.GetAllProjectImages;
 using HiSubmit.Application.Features.Projects.Queries.GetAllSubProjectType;
 using Microsoft.AspNetCore.Authorization;
+using HiSubmit.Application.Features.Recommendations.Queries;
 
 namespace Web.Controllers.v1.Project
 {
@@ -38,6 +39,14 @@ namespace Web.Controllers.v1.Project
         [HttpGet("GetAll")]
         [Authorize]
         public async Task<IActionResult> GetAll([FromQuery] GetAllProjectQuery query)
+        {
+            return Ok(await Mediator.Send(query));
+        }
+
+        [HttpGet("GoldFestivalRecommendations")]
+        [Authorize]
+        public async Task<IActionResult> GoldFestivalRecommendations(
+            [FromQuery] GetGoldFestivalRecommendationsQuery query)
         {
             return Ok(await Mediator.Send(query));
         }

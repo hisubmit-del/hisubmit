@@ -35,6 +35,18 @@ public class SpecialFeeCommandHandler(
             .Entities.FirstOrDefaultAsync(cancellationToken);
 
         var userId = currentUserService.UserId;
+        if (string.IsNullOrWhiteSpace(userId))
+            return await Result.FailAsync(_localize["You must be signed in to buy Gold."]);
+
+        var hasPendingOrActivePlan = await _unitOfWork.Repository<UserSpecialPeriod>()
+            .Entities
+            .AnyAsync(p => p.UserId == userId &&
+                           (p.Status == UserSpecialAccountStatus.DontPaid ||
+                            (p.Status == UserSpecialAccountStatus.Open &&
+                             p.CloseDateTime > DateTime.Now)), cancellationToken);
+        if (hasPendingOrActivePlan)
+            return await Result.FailAsync(_localize["You already have a pending or active Gold plan."]);
+
         var cost = TakeCost(siteCommission, request.Period);
 
         var statusAccount = new UserSpecialPeriod()

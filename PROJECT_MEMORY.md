@@ -1908,3 +1908,34 @@ data contract, privacy policy and pricing are approved.
   timestamp when available.
 - No payout, PayPal API call, migration, or financial mutation was added in
   this checkpoint.
+
+## PayPal test-data boundary (2026-08-20)
+
+- Real PayPal recipient credentials or payout details must not be entered
+  during local QA or browser verification.
+- The settlement UI remains safe to inspect with an empty/unconfigured
+  recipient record; it only reports readiness and never initiates a transfer.
+- Future live payout work must preserve the current configuration-only secret
+  boundary and add sandbox credentials, idempotency keys, webhook
+  reconciliation, and refund/dispute controls before production activation.
+
+## Phase 5 and Phase 6 Gold checkpoint (2026-08-20)
+
+- Gold account status is now resolved for the authenticated user only. A
+  supplied user identifier cannot expose another user's Gold period.
+- Gold purchase now rejects unauthenticated requests and prevents duplicate
+  pending or active plans for the same user. Existing payment activation still
+  opens the selected monthly, three-month, or yearly period after the cart is
+  paid.
+- Gold artists now have a dashboard advisor that matches their own project
+  type against public festivals with a future deadline. Results include the
+  next deadline, match score, and human-readable reason. The advisor does not
+  submit work or make an automatic selection.
+- The recommendation endpoint is authenticated and verifies project ownership
+  before querying festivals. It is read-only and has no schema or payment
+  side effect.
+- Gold pricing, duration, cart impact, and existing admin sales reporting are
+  preserved. Real PayPal data is not required for this checkpoint.
+- Full AI-assisted selection, model governance, human approval workflow,
+  quality evaluation, and production recommendation analytics remain follow-up
+  work before calling the intelligent jury feature complete.

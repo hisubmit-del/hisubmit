@@ -14,6 +14,7 @@ using Hisubmit.Client.SharedModels.Features.Payments.Queries;
 using Hisubmit.Client.SharedModels.Features.Notifications.Queries;
 using Hisubmit.Client.SharedModels.Features.Projects.Queries.GetAll;
 using Hisubmit.Client.SharedModels.Features.Submits.Queries.GetAllSubmitsQueries;
+using Hisubmit.Client.SharedModels.Features.Recommendations.Queries;
 using Hisubmit.Client.SharedModels.Requests.Identity;
 using MudBlazor;
 
@@ -49,6 +50,9 @@ public partial class Dashboard
     private decimal _artistDiscountTotal;
     private int _artistPaidCartCount;
     private double[] _artistSpendChart = [0, 0, 0, 0];
+    private int _selectedRecommendationProjectId;
+    private List<GoldFestivalRecommendation> _goldRecommendations = new();
+    private bool _recommendationsLoading;
     protected override async Task OnInitializedAsync()
     {
         var currentUser = await AuthenticationManager.CurrentUser();
@@ -68,6 +72,26 @@ public partial class Dashboard
         if (_isArtist)
             await LoadArtistFinancialSummary();
         await base.OnInitializedAsync();
+    }
+
+    private async Task LoadGoldRecommendations()
+    {
+        if (_accountType.FeeStatus != FeeStatus.Special || _selectedRecommendationProjectId <= 0)
+            return;
+
+        _recommendationsLoading = true;
+        var response = await ProjectManager.GetGoldFestivalRecommendations(
+                new GetGoldFestivalRecommendationsRequest
+            {
+                ProjectId = _selectedRecommendationProjectId
+            });
+        if (response.Succeeded)
+            _goldRecommendations = response.Data ?? new();
+        else
+            foreach (var message in response.Messages)
+                _snackBar.Add(message, Severity.Error);
+
+        _recommendationsLoading = false;
     }
 
     private async Task LoadArtistFinancialSummary()
