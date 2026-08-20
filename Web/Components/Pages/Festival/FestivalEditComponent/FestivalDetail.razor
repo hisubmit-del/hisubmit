@@ -45,6 +45,32 @@ else
                                               id="fes-from"
                                               For="@(() => _model.Name)" Variant="Variant.Filled" Margin="Margin.Dense"/>
                             </MudItem>
+                            <MudAlert Severity="Severity.Info" Variant="Variant.Outlined" Dense="true" Class="mb-4">
+                                <MudText Typo="Typo.subtitle2">FilmFreeway draft source</MudText>
+                                <MudText Typo="Typo.body2">
+                                    If this festival already has a page, enter its real FilmFreeway URL.
+                                    We will keep it as a local draft reference and open it for manual review.
+                                    Copy the relevant information into the fields below before saving.
+                                </MudText>
+                                <MudStack Row="true" AlignItems="AlignItems.Start" Spacing="1" Class="mt-2">
+                                    <MudTextField @bind-Value="_model.FilmFreewayUrl"
+                                                  Label="FilmFreeway page URL"
+                                                  Placeholder="https://filmfreeway.com/YourFestival"
+                                                  Variant="Variant.Filled"
+                                                  Margin="Margin.Dense"
+                                                  Immediate="true"
+                                                  Error="@(!string.IsNullOrWhiteSpace(_filmFreewayUrlError))"
+                                                  ErrorText="@_filmFreewayUrlError"
+                                                  Class="flex-grow-1" />
+                                    <MudButton Variant="Variant.Outlined"
+                                               Color="Color.Primary"
+                                               Disabled="@(!IsFilmFreewayUrlValid)"
+                                               OnClick="OpenFilmFreewayAsync"
+                                               StartIcon="@Icons.Material.Filled.OpenInNew">
+                                        Open page
+                                    </MudButton>
+                                </MudStack>
+                            </MudAlert>
                             <MudGrid>
                                 <MudItem xs="12" md="6" Class="text-center">
                                     <MudText Typo="Typo.caption">

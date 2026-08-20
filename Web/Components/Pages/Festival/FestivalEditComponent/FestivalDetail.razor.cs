@@ -11,6 +11,7 @@ using HiSubmit.Client.Infrastructure.Managers.Festivals;
 using Hisubmit.Client.SharedModels.Constants.Storage;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
+using Microsoft.JSInterop;
 using MudBlazor;
 using System;
 using System.Collections.Generic;
@@ -30,6 +31,7 @@ public partial class FestivalDetail
     [Inject] private IFestivalManager FestivalManager { get; set; }
     [Inject] private IMapper Mapper { get; set; }
     [Inject] private ILocalStorageService localStorageService { get; set; }
+    [Inject] private IJSRuntime JSRuntime { get; set; }
 
     [Inject] private IFestivalQualifiersManager FestivalQualifiersManager { get; set; }
 
@@ -59,6 +61,10 @@ public partial class FestivalDetail
     private bool _processing { get; set; }
     public EditContext _EditForm { get; set; }
     public string Qualifyer { get; set; }
+    private string _filmFreewayUrlError;
+
+    private bool IsFilmFreewayUrlValid =>
+        TryGetFilmFreewayUri(_model.FilmFreewayUrl, out _);
 
     protected override async Task OnInitializedAsync()
     {
@@ -66,6 +72,8 @@ public partial class FestivalDetail
         _model.RewardLogoUploadRequest = new UploadRequest();
         // await LoadFestivalId();
         await LoadData();
+        _model.FilmFreewayUrl = await localStorageService.GetItemAsync<string>(
+            $"{StorageConstants.Local.FestivalFilmFreewayUrl}:{FestivalId}");
         _EditForm = new EditContext(_model);
         await base.OnInitializedAsync();
 
@@ -132,6 +140,9 @@ public partial class FestivalDetail
         if (_model.FestivalStatus == FestivalStatus.UnderInvestigation)
             return true;
 
+        if (!ValidateFilmFreewayUrl())
+            return false;
+
         if (!IsAdmin)
         {
             if (string.IsNullOrWhiteSpace(_model.LogoURL) &&
@@ -163,6 +174,9 @@ public partial class FestivalDetail
             _processing = false;
             if (result.Succeeded)
             {
+                await localStorageService.SetItemAsync(
+                    $"{StorageConstants.Local.FestivalFilmFreewayUrl}:{result.Data}",
+                    _model.FilmFreewayUrl?.Trim());
                 _snackBar.Add(result.Messages[0], Severity.Success);
                 _EditForm.MarkAsUnmodified();
                 FestivalId = result.Data;
@@ -177,6 +191,42 @@ public partial class FestivalDetail
 
         await ScrollService.ScrollToId("fes-from");
         return false;
+    }
+
+    private bool ValidateFilmFreewayUrl()
+    {
+        _filmFreewayUrlError = null;
+        if (string.IsNullOrWhiteSpace(_model.FilmFreewayUrl))
+            return true;
+
+        if (!TryGetFilmFreewayUri(_model.FilmFreewayUrl, out _))
+        {
+            _filmFreewayUrlError = "Use an HTTPS FilmFreeway URL such as https://filmfreeway.com/YourFestival.";
+            return false;
+        }
+
+        return true;
+    }
+
+    private static bool TryGetFilmFreewayUri(string value, out Uri uri)
+    {
+        if (!Uri.TryCreate(value?.Trim(), UriKind.Absolute, out uri))
+            return false;
+
+        return uri.Scheme == Uri.UriSchemeHttps &&
+               (string.Equals(uri.Host, "filmfreeway.com", StringComparison.OrdinalIgnoreCase) ||
+                string.Equals(uri.Host, "www.filmfreeway.com", StringComparison.OrdinalIgnoreCase)) &&
+               !string.IsNullOrWhiteSpace(uri.AbsolutePath) &&
+               uri.AbsolutePath != "/";
+    }
+
+    private async Task OpenFilmFreewayAsync()
+    {
+        if (!ValidateFilmFreewayUrl() ||
+            !TryGetFilmFreewayUri(_model.FilmFreewayUrl, out var uri))
+            return;
+
+        await JSRuntime.InvokeVoidAsync("window.open", uri.AbsoluteUri, "_blank", "noopener,noreferrer");
     }
 
     #region manage approved license  file

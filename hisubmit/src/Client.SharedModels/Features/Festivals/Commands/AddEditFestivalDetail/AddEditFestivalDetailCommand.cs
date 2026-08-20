@@ -40,6 +40,7 @@ public class AddEditFestivalDetailCommand
     public UploadRequest ApprovedLicenseUploadRequest { get; set; }
         
     public string ApprovedLicenseURL { get; set; }
+    public string FilmFreewayUrl { get; set; }
 
     public AddEditFestivalDetailCommand()
     {

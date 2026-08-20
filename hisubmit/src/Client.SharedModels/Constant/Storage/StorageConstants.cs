@@ -14,6 +14,7 @@ public static class StorageConstants
         public static readonly string AdminSelectedFestivalId = "admin-selected-festival-id";
         public static readonly string ExpireToken = "expire-token";
         public static readonly string EmailRegistered = "email-registered";
+        public static readonly string FestivalFilmFreewayUrl = "festival-filmfreeway-url";
     }
 
     public static class Server
