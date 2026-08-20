@@ -1674,6 +1674,20 @@ payment action is required, and links the user to the cart/receipts area and
 personal dashboard. This is UI-only and does not invoke payment processing or
 publish a payment event.
 
+### PayPal server verification checkpoint (2026-08-20)
+
+The paid-cart command now verifies a PayPal order server-side before marking
+the open cart as paid. Verification checks the configured PayPal environment,
+completed order status, exact configured currency, exact recalculated cart
+amount, returned order ID, and the PayPal custom cart ID. A previously recorded
+paid order or payment ID is rejected. Verification failures return a controlled
+failure and leave the cart unpaid.
+
+The PayPal API base URL is selected by `PayPal:Environment` (`Sandbox` by
+default, `Live` for production), and `PayPal:Currency` defaults to `USD`.
+PayPal credentials remain configuration secrets. Zero-total payment has its
+separate path and is not sent to PayPal verification.
+
 The referee dashboard and queue now use a correct empty-state condition:
 `RatedProject + NotRatedProject == 0`. They also make the active
 festival-scoped assignment context explicit in the page guidance and table.

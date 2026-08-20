@@ -1833,6 +1833,20 @@ data contract, privacy policy and pricing are approved.
 - No referee authorization, assignment query, or judging result behavior was
   changed.
 
+## Phase 3 PayPal verification checkpoint (2026-08-20)
+
+- `PaidCartCommand` now verifies the PayPal order with the server-side
+  `IPayPalService` before setting `Cart.Paid=true`.
+- Verification requires a completed order, exact configured currency and
+  recalculated cart amount, matching order ID, and PayPal `custom_id` equal to
+  the requested cart ID.
+- Already-recorded paid order IDs are rejected. Verification failures return a
+  controlled message and do not mark the cart paid.
+- `PayPal:Environment` selects Sandbox or Live API endpoints and
+  `PayPal:Currency` defaults to USD. Credentials remain configuration-only.
+- Zero-total payment remains on its existing separate path.
+- Build completed with 0 errors. No migration or production payment was run.
+
 ## Local database storage maintenance checkpoint (2026-08-20)
 
 - The FilmFreeway wizard draft-source option was removed after review. The

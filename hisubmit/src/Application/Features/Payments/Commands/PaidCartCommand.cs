@@ -7,6 +7,8 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Net.Http;
+using System.Text.Json;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -28,7 +30,8 @@ public class PaidCartCommandHandler(
     IUnitOfWork<int> unitOfWork,
     IMediator mediator,
     ICurrentUserService currentUserService,
-    IUserService userService)
+    IUserService userService,
+    IPayPalService payPalService)
     : IRequestHandler<PaidCartCommand, Result<CheckPaymentResponse>>
 {
     public async Task<Result<CheckPaymentResponse>> Handle(PaidCartCommand request, CancellationToken cancellationToken)
@@ -46,14 +49,6 @@ public class PaidCartCommandHandler(
 
         var realPrice = cartItemResponse.Data.Sum(p => p.GetRealPrice());
 
-        var siteCommission = await unitOfWork.Repository<SiteCommission>()
-            .Entities.FirstOrDefaultAsync(cancellationToken);
-
-        //todo 
-        //Add Verify In PayPal service  
-
-        //var verified = await payPalService.VerifyOrderAsync(request.OrderId, realPrice);
-
         var cart = await unitOfWork.Repository<Cart>()
             .Entities
             .Include(p => p.CartItems)
@@ -64,6 +59,40 @@ public class PaidCartCommandHandler(
 
         if (cart is null)
             return await Result<CheckPaymentResponse>.FailAsync("Your open cart was not found.");
+
+        if (string.IsNullOrWhiteSpace(request.OrderId))
+            return await Result<CheckPaymentResponse>.FailAsync("PayPal order reference is required.");
+
+        var duplicatePayment = await unitOfWork.Repository<Cart>()
+            .Entities
+            .AnyAsync(p => p.Paid &&
+                           (p.OrderId == request.OrderId ||
+                            (!string.IsNullOrWhiteSpace(request.PaymentId) &&
+                             p.PaymentId == request.PaymentId)),
+                cancellationToken);
+
+        if (duplicatePayment)
+            return await Result<CheckPaymentResponse>.FailAsync("This PayPal payment has already been recorded.");
+
+        try
+        {
+            var verifiedOrder = await payPalService.VerifyOrderAsync(request.OrderId, realPrice);
+            var verifiedPurchaseUnit = verifiedOrder.PurchaseUnits?.FirstOrDefault();
+            if (!string.Equals(verifiedOrder.Id, request.OrderId, StringComparison.OrdinalIgnoreCase) ||
+                !int.TryParse(verifiedPurchaseUnit?.CustomId, out var verifiedCartId) ||
+                verifiedCartId != request.CartId)
+                return await Result<CheckPaymentResponse>.FailAsync("PayPal order verification failed.");
+        }
+        catch (Exception exception) when (exception is HttpRequestException ||
+                                          exception is InvalidOperationException ||
+                                          exception is JsonException)
+        {
+            return await Result<CheckPaymentResponse>.FailAsync(
+                "PayPal payment verification failed. The cart was not marked as paid.");
+        }
+
+        var siteCommission = await unitOfWork.Repository<SiteCommission>()
+            .Entities.FirstOrDefaultAsync(cancellationToken);
         
         cart.CartDate=DateTime.Now;
         cart.Email = request.Email;
