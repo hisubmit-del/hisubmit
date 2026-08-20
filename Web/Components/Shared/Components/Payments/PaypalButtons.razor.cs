@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 using Hisubmit.Client.SharedModels.Features.Payments.Commands;
 using HiSubmit.Client.Infrastructure.Managers.Payments;
@@ -11,7 +12,7 @@ using MudBlazor;
 
 namespace Web.Components.Shared.Components.Payments;
 
-public partial class PaypalButtons
+public partial class PaypalButtons : IDisposable
 {
     #region Injects
 
@@ -48,6 +49,7 @@ public partial class PaypalButtons
     private decimal _previousAmount;
     private bool IsLoading { get; set; } = true;
     private DotNetObjectReference<PaypalButtons> _ref;
+    private readonly CancellationTokenSource _lifetime = new();
 
     private RenderFragment PaypalButtonSdk
     {
@@ -97,21 +99,33 @@ public partial class PaypalButtons
     {
         if (IsLoading && firstRender)
         {
-            await SetDotNetReference();
-            if (_previousAmount != Amount)
+            try
             {
-                await _jsRuntime.InvokeVoidAsync("RemoveButtonContainer", ContainerId);
-                IsLoading = true;
-                await RenderButton();
+                await SetDotNetReference();
+                if (_previousAmount != Amount)
+                {
+                    await _jsRuntime.InvokeVoidAsync("RemoveButtonContainer", ContainerId);
+                    IsLoading = true;
+                    await RenderButton(_lifetime.Token);
+                    IsLoading = false;
+                    _previousAmount = Amount;
+                }
+
+                await RenderButton(_lifetime.Token);
                 IsLoading = false;
                 _previousAmount = Amount;
             }
-
-            //IsLoading = false;
-            await RenderButton();
-            IsLoading = false;
-            _previousAmount = Amount;
-            StateHasChanged();
+            catch (JSDisconnectedException)
+            {
+                // A disposed Blazor Server circuit is a normal navigation/close
+                // path; it must not surface as an unhandled circuit exception.
+            }
+            catch (OperationCanceledException) when (_lifetime.IsCancellationRequested)
+            {
+                // Component disposal cancelled the pending SDK initialization.
+            }
+            if (!_lifetime.IsCancellationRequested)
+                StateHasChanged();
         }
 
         await base.OnAfterRenderAsync(firstRender);
@@ -119,14 +133,17 @@ public partial class PaypalButtons
 
     #endregion
 
-    private async Task RenderButton()
+    private async Task RenderButton(CancellationToken cancellationToken)
     {
         var res = false;
         while (!res)
         {
-            await Task.Delay(4000);
+            await Task.Delay(4000, cancellationToken);
             object[] parameters = { $"#{ContainerId}", "OnApprovedMethod", Amount, CostumeId };
-            res = await _jsRuntime.InvokeAsync<bool>("RenderPaypalButton", parameters);
+            res = await _jsRuntime.InvokeAsync<bool>(
+                "RenderPaypalButton",
+                cancellationToken,
+                parameters);
         }
     }
 
@@ -159,5 +176,12 @@ public partial class PaypalButtons
     {
         _ref = DotNetObjectReference.Create(this);
         await _jsRuntime.InvokeVoidAsync("GLOBAL.SetDotnetReferencePaypal", _ref);
+    }
+
+    public void Dispose()
+    {
+        _lifetime.Cancel();
+        _ref?.Dispose();
+        _lifetime.Dispose();
     }
 }
