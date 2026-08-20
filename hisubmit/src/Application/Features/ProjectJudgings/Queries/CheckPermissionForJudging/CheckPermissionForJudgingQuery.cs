@@ -50,7 +50,11 @@ namespace HiSubmit.Application.Features.ProjectJudgings.Queries.CheckPermissionF
                    .Include(p=>p.Submit).ThenInclude(p=>p.Project)
                    .Where(p => p.Submit.Project.URL == request.projectURL &&
                                p.UserId == currentUserId &&
-                               p.RefereeStatus == Domain.Enums.RefereeStatus.Default)
+                               p.RefereeStatus == Domain.Enums.RefereeStatus.Default &&
+                               p.Submit.Festival.FestivalSubUsers.Any(member =>
+                                   member.UserId == currentUserId &&
+                                   member.IsReferee &&
+                                   !member.IsRemoved))
                    .ProjectTo<ProjectJudgingDto>(_mapper.ConfigurationProvider)
                    .ToListAsync();
 

@@ -120,7 +120,8 @@ public partial class AddReferesToProject
             var response 
                 = await ProjectJudgingManager.GetAll(new GetAllProjectJudgingQuery
                 {
-                    SubmitId = SubmitId.First()
+                    SubmitId = SubmitId.First(),
+                    FestivalId = FestivalId
                 });
             if (response.Succeeded)
             {

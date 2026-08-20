@@ -150,6 +150,7 @@ BlazorHeroContext dbContext)
 
         var memberFestivalIds = await dbContext.FestivalSubUser
             .Where(member => member.UserId == userId &&
+                               !member.IsReferee &&
                                !member.IsRemoved &&
                                member.Festival.IsActive)
             .Select(member => member.FestivalId)

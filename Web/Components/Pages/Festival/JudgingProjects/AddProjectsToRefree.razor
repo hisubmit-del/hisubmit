@@ -9,6 +9,21 @@
 
    <MudContainer MaxWidth="MaxWidth.Large">
 
+    <MudText Typo="Typo.subtitle2" Class="mb-2">
+        @Localizer["Select submissions directly or assign every submission in one or more categories."]
+    </MudText>
+    <MudSelect T="int" MultiSelection="true" SelectAll="true"
+               SelectedValues="_selectedCategoryIds"
+               SelectedValuesChanged="OnCategoriesChanged"
+               Label="@Localizer["Submission categories"]"
+               Variant="Variant.Outlined"
+               Class="mb-3">
+        @foreach (var category in _categories)
+        {
+            <MudSelectItem T="int" Value="@category.Id">@category.Name</MudSelectItem>
+        }
+    </MudSelect>
+
     <MudTable MultiSelection="true" SelectedItems="selectedSubmits" FixedFooter="true"  FixedHeader="true" Height="300px" Elevation="25" Items="_pagedDate" TotalItems="_totalItems" ServerData="@(new Func<TableState,CancellationToken, Task<TableData<GetAllSubmitsResponse>>>(ServerReload))" Hover="true" Dense="true" Bordered="@_bordered" Striped="@_striped" @ref="_table">
         <ToolBarContent>
             <div class="justify-center mud-text-align-center">

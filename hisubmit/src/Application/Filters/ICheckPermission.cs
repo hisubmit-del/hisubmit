@@ -52,7 +52,12 @@ public class CheckPermission : ICheckPermission
             {
                 FestivalId = p.FestivalId,
                 JudgmentIds = p.ProjectJudgings
-                    .Where(judging => judging.RefereeStatus == RefereeStatus.Default)
+                    .Where(judging =>
+                        judging.RefereeStatus == RefereeStatus.Default &&
+                        p.Festival.FestivalSubUsers.Any(member =>
+                            member.UserId == _currentUserService.UserId &&
+                            member.IsReferee &&
+                            !member.IsRemoved))
                     .Select(judging => judging.UserId)
             })
             .ToListAsync();
@@ -60,9 +65,11 @@ public class CheckPermission : ICheckPermission
         var allowedFestivalIds = await _unitOfWork.Repository<Festival>()
             .Entities
             .Where(festival => festival.UserId == _currentUserService.UserId ||
-                               festival.FestivalSubUsers.Any(member =>
+                               (festival.IsActive &&
+                                festival.FestivalSubUsers.Any(member =>
                                    member.UserId == _currentUserService.UserId &&
-                                   !member.IsRemoved))
+                                   !member.IsReferee &&
+                                   !member.IsRemoved)))
             .Select(festival => festival.Id)
             .ToListAsync();
 

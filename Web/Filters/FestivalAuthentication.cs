@@ -18,18 +18,10 @@ public class FestivalAuthentication : Attribute, IAuthorizationFilter
             if (context.HttpContext.User.IsInRole(RoleConstants.AdministratorRole)) return;
 
             var claims = context.HttpContext.User.Claims;
-            var pathArray = context.HttpContext.Request.Path.Value?.Split('/');
 
-            if (pathArray != null && pathArray.Length > 4 &&
-                int.TryParse(pathArray[4], out var festivalId))
+            if (context.RouteData.Values.TryGetValue("festivalId", out var routeFestivalId) &&
+                int.TryParse(routeFestivalId?.ToString(), out var festivalId))
             {
-                var userFestivalId = context.HttpContext.User.Claims
-                    .FirstOrDefault(p => p.Type == ApplicationClaimTypes.FestivalId);
-
-                if (festivalId.ToString() == userFestivalId?.Value)
-                    return;
-
-
                 var festivalClaims = claims.FirstOrDefault(p => p.Type == ApplicationClaimTypes.FestivalPermission);
                 if (festivalClaims != null)
                 {

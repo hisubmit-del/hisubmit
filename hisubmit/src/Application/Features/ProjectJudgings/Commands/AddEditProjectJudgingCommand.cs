@@ -22,6 +22,7 @@ public record AddEditProjectJudgingCommand
     : IRequest<Result<int>>
 {
     public bool MultiProjectToMultiReferee { get; set; }
+    public List<int> DeadlineEventCategoryIds { get; set; } = [];
 }
 
 public class AddEditProjectJudgingCommandHandler :
@@ -45,11 +46,35 @@ public class AddEditProjectJudgingCommandHandler :
         (AddEditProjectJudgingCommand request, CancellationToken cancellationToken)
     {
         if (request.FestivalId <= 0 ||
-            request.SubmitsId is null || request.SubmitsId.Count == 0 ||
             request.UsersId is null || request.UsersId.Count == 0)
-            return await Result<int>.FailAsync(_localizer["A festival, at least one submission, and at least one referee are required"]);
+            return await Result<int>.FailAsync(_localizer["A festival and at least one referee are required"]);
 
-        var submitIds = request.SubmitsId.Distinct().ToList();
+        var submitIds = request.SubmitsId?.Where(id => id > 0).Distinct().ToList() ?? [];
+        var categoryIds = request.DeadlineEventCategoryIds?
+            .Where(id => id > 0)
+            .Distinct()
+            .ToList() ?? [];
+
+        if (categoryIds.Count > 0)
+        {
+            var categorySubmitIds = await _unitOfWork.Repository<SubmitDeadLineCategories>()
+                .Entities
+                .Where(link => categoryIds.Contains(link.DeadlineEventCategoryId) &&
+                               link.DeadlineEventCategory.DeadLine.FestivalId == request.FestivalId)
+                .Select(link => link.SubmitId)
+                .Distinct()
+                .ToListAsync(cancellationToken);
+
+            submitIds = submitIds
+                .Concat(categorySubmitIds)
+                .Distinct()
+                .ToList();
+        }
+
+        if (submitIds.Count == 0)
+            return await Result<int>.FailAsync(
+                _localizer["Select at least one submission or category"]);
+
         var submitsInFestival = await _unitOfWork.Repository<Submit>()
             .Entities
             .Where(p => submitIds.Contains(p.Id) && p.FestivalId == request.FestivalId)
@@ -85,7 +110,7 @@ public class AddEditProjectJudgingCommandHandler :
                 var dbProjectJudgings = _unitOfWork.Repository<ProjectJudging>()
                     .Entities.Where(p => p.UserId == refereeId && p.Submit.FestivalId == request.FestivalId);
             
-                foreach (var submitId in request.SubmitsId
+                foreach (var submitId in submitIds
                     .Where(submitId => !dbProjectJudgings
                                  .Any(projJud => projJud.SubmitId == submitId)))
                 {
@@ -109,7 +134,7 @@ public class AddEditProjectJudgingCommandHandler :
         }
         else
         {
-            var submitId = request.SubmitsId[0];
+            var submitId = submitIds[0];
             var dbProjectJudgings = _unitOfWork.Repository<ProjectJudging>()
                 .Entities.Where(p => p.SubmitId == submitId && 
                                      p.Submit.FestivalId == request.FestivalId);

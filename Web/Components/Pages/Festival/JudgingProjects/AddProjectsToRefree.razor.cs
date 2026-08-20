@@ -3,9 +3,11 @@ using Hisubmit.Client.SharedModels.Features.ProjectJudgings.Commands;
 using Hisubmit.Client.SharedModels.Features.ProjectJudgings.Queries.GetAll;
 using Hisubmit.Client.SharedModels.Features.Projects.Queries.GetAll;
 using Hisubmit.Client.SharedModels.Features.Submits.Queries.GetAllSubmitsQueries;
+using Hisubmit.Client.SharedModels.Features.Festivals.Queries.GetAllEventCategory;
 using HiSubmit.Client.Infrastructure.Managers.JudgingProjects;
 using HiSubmit.Client.Infrastructure.Managers.Projects;
 using HiSubmit.Client.Infrastructure.Managers.Submits;
+using HiSubmit.Client.Infrastructure.Managers.EventCategoris;
 using Hisubmit.Client.SharedModels.Enums;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
@@ -30,11 +32,15 @@ namespace Web.Components.Pages.Festival.JudgingProjects
         public IProjectManager ProjectManager { get; set; }
         [Inject]
         public ISubmitManager SubmitManager { get; set; }
+        [Inject]
+        public IEventCategoryManager EventCategoryManager { get; set; }
 
         public List<GetAllSubmitsResponse> Submits { get; set; }
 
         private bool hover = true;
         private HashSet<GetAllSubmitsResponse> selectedSubmits = new HashSet<GetAllSubmitsResponse>();
+        private List<GetAllEventCategoryResponse> _categories = new();
+        private HashSet<int> _selectedCategoryIds = new();
 
         //server load data and pagination
         public List<GetAllSubmitsResponse> _pagedDate { get; set; }
@@ -59,6 +65,18 @@ namespace Web.Components.Pages.Festival.JudgingProjects
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
           // await LoadSelectedProjects();
+        }
+
+        protected override async Task OnInitializedAsync()
+        {
+            var response = await EventCategoryManager.GetAllAsync(
+                new GetAllEventCategoryQuery { FestivalId = FestivalId });
+
+            if (response.Succeeded)
+                _categories = response.Data ?? new();
+            else
+                foreach (var message in response.Messages)
+                    _snackBar.Add(message, Severity.Error);
         }
 
         private async Task<TableData<GetAllSubmitsResponse>> ServerReload(TableState state ,System.Threading.CancellationToken  token)
@@ -131,13 +149,26 @@ namespace Web.Components.Pages.Festival.JudgingProjects
                 await _table.ReloadServerData();
         }
 
+        private void OnCategoriesChanged(IEnumerable<int> categoryIds)
+        {
+            _selectedCategoryIds = categoryIds?.ToHashSet() ?? new();
+        }
+
 
         private async Task AddToReferee()
         {
             _processing = true;
             var submitsId = selectedSubmits.Select(p => p.Id).ToList();
           
-            var response = await ProjectJudgingManager.AddJudging(new AddEditProjectJudgingCommand(submitsId,new List<string> { RefereeId},FestivalId,true)); 
+            var response = await ProjectJudgingManager.AddJudging(
+                new AddEditProjectJudgingCommand(
+                    submitsId,
+                    new List<string> { RefereeId },
+                    FestivalId,
+                    true)
+                {
+                    DeadlineEventCategoryIds = _selectedCategoryIds.ToList()
+                });
             if (response.Succeeded)
             {
                 _snackBar.Add(Localizer["Successfully added to Judge"], Severity.Success);

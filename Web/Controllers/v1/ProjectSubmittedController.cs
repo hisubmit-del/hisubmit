@@ -41,6 +41,7 @@ public class ProjectSubmittedController : BaseApiController<ProjectSubmittedCont
     /// <param name="command"></param>
     /// <returns></returns>
     [HttpPost("FinalResult")]
+    [Authorize]
     public async Task<IActionResult>FinalResult(AddEditFinalJudgingCommand command)
     {
         return Ok(await Mediator.Send(command));
@@ -53,6 +54,7 @@ public class ProjectSubmittedController : BaseApiController<ProjectSubmittedCont
     /// <param name="command"></param>
     /// <returns></returns>
     [HttpPost("WithDraw")]
+    [Authorize]
     public async Task<IActionResult> WithDrawProject(WithDrawProjectCommand command)
     {
         return Ok(await  Mediator.Send(command));

@@ -1615,3 +1615,37 @@ table cell padding, and safe wrapping for long labels and values.
 This block is intentionally at the true end of the stylesheet because the
 project contains older page-specific CSS. It is presentation-only and does
 not change APIs, permissions, persistence, or business rules.
+## Judging scope and result-state checkpoint (2026-08-20)
+
+Judging scope is bound to the exact submission festival period:
+
+```text
+Festival period -> Submit.FestivalId -> ProjectJudging -> referee
+```
+
+The referee read paths require an active assignment for the current user and
+an active, non-removed `FestivalSubUser` with `IsReferee=true` for that same
+festival. The next-period background job clones the festival record but does
+not clone `ProjectJudging` rows, so prior-period referee access is not carried
+into the new period.
+
+The final-result endpoint is authenticated and the Application handler permits
+only the administrator, festival/master owner, or active non-referee festival
+manager. Referees can submit their assigned judging form but cannot overwrite
+the festival's final result. Positive judging outcomes require a paid or
+in-consideration submission state. Withdrawal is authenticated and limited to
+the project owner or administrator.
+
+Referee assignment accepts explicit submission IDs and optional
+`DeadlineEventCategoryIds`. Category links are resolved only through deadlines
+belonging to the requested festival, after which the normal submission and
+active-referee checks run. This is additive and requires no migration.
+
+`SubmitStatus` is the registration/payment lifecycle, while `JudgingStatus` is
+the judging/selection outcome. They are intentionally kept separate and
+positive judging outcomes are rejected for unpaid or incomplete registrations.
+
+The current schema has no persisted automatic-selection criteria, rule
+version, flag, explanation, or audit-decision model. A festival-configurable
+automatic-selection panel therefore remains a documented contract/schema item;
+no speculative database change was introduced.

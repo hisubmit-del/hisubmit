@@ -1756,3 +1756,42 @@ data contract, privacy policy and pricing are approved.
   HTTP verification. This is recorded as an unresolved claims/permission
   integration issue for the security phase; no access was granted by
   assumption.
+## Judging scope and result-state checkpoint (2026-08-20)
+
+- A `Submit` belongs to exactly one festival period through
+  `Submit.FestivalId`. A work may still have multiple `Submit` rows, one for
+  each festival.
+- A `ProjectJudging` row belongs to one submission and one referee. Referee
+  read/detail/check-permission paths require both an active assignment for the
+  current user and an active, non-removed `FestivalSubUser` row with
+  `IsReferee=true` for the exact `Submit.FestivalId`. The legacy next-period
+  job does not copy `ProjectJudging` rows, so a previous-period referee is not
+  granted access to a new period automatically.
+- Festival owners and festival-master owners can manage their own draft
+  festival. In this project `Festival.IsActive` means published/confirmed
+  state; it must not be used to deny the owner access to a draft. Non-owner
+  festival members are restricted to active festivals and non-referee
+  memberships. A referee-only membership does not become manager authority.
+- Final submission result updates require an authenticated administrator,
+  festival/master owner, or active non-referee festival manager. Referees can
+  submit their assigned judging form but cannot overwrite the festival final
+  result.
+- Positive judging outcomes (`Selected`, `Finalist`, `SemiFinalist`,
+  `QuarterFinalist`, `Nominee`, `HonorableMention`, `AwardWinner`) require a
+  paid or in-consideration submission lifecycle state. Withdrawal is
+  authenticated and limited to the artist who owns the project or an
+  administrator.
+- Referee assignment accepts optional `DeadlineEventCategoryIds` in addition
+  to explicit submission IDs. Category links are resolved only when their
+  deadline belongs to the requested festival, then the resulting submission
+  IDs pass the same festival and active-referee validation. This is additive
+  and requires no migration.
+- Runtime verification on 2026-08-20 confirmed the owner allow/deny boundary,
+  an empty scoped referee queue, denial of an unassigned judging detail, and
+  denial of an artist final-result update. A temporary withdrawal test on
+  submission 5 was restored exactly to `SubmitStatus=Paid` and
+  `JudgingStatus=Selected`.
+- The current domain has no persisted model for automatic-selection criteria,
+  rule versions, flags, explanations, or audit decisions. A configurable
+  automatic-selection panel therefore requires an approved additive contract
+  and schema; no guessed table or field was added.

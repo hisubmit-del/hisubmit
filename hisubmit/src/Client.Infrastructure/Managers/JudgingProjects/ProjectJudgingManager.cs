@@ -32,13 +32,16 @@ namespace HiSubmit.Client.Infrastructure.Managers.JudgingProjects
 
         public async Task<IResult<int>> AddJudging(AddEditProjectJudgingCommand command)
         {
-            var response = await _httpClient.PostAsJsonAsync(_endPoint.GenerateUrl($"{0}/AddRefree"),command);
+            var response = await _httpClient.PostAsJsonAsync(
+                _endPoint.GenerateUrl($"{command.FestivalId}/AddRefree"),
+                command);
             return await response.ToResult<int>();
         }
 
         public async Task<PaginatedResult<GetAllProjectJudgingResponse>> GetAll(GetAllProjectJudgingQuery query)
         {
-            var response = await _httpClient.GetAsync(_endPoint.GenerateUrl($"{0}/ProjecJudgings", query));
+            var response = await _httpClient.GetAsync(
+                _endPoint.GenerateUrl($"{query.FestivalId ?? 0}/ProjecJudgings", query));
             return await response.ToPaginatedResult<GetAllProjectJudgingResponse>();
         }
     }

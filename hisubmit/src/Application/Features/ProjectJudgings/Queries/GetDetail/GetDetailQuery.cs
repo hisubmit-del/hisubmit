@@ -52,8 +52,15 @@ public class  GetProjectJudgingDetailQueryHandler:
         // }
         var dbProjectJudging = await _unitOfWork.Repository<ProjectJudging>()
             .Entities
+            .Include(p => p.Submit)
             .Where(judging => judging.Id == request.Id)
-            .Select(judging => new { judging.Id, judging.UserId, judging.RefereeStatus })
+            .Select(judging => new
+            {
+                judging.Id,
+                judging.UserId,
+                judging.RefereeStatus,
+                FestivalId = judging.Submit.FestivalId
+            })
             .FirstOrDefaultAsync(cancellationToken);
 
         if (dbProjectJudging == null)
@@ -64,6 +71,20 @@ public class  GetProjectJudgingDetailQueryHandler:
              (dbProjectJudging.UserId != _currentUserService.UserId ||
               dbProjectJudging.RefereeStatus != RefereeStatus.Default)))
             return await Result<GetProjectJudgingDetailResponse>.FailAsync("You do not have access to this judging assignment");
+
+        if (!_currentUserService.IsInRole(RoleConstants.AdministratorRole))
+        {
+            var activeReferee = await _unitOfWork.Repository<FestivalSubUser>()
+                .Entities
+                .AnyAsync(member => member.FestivalId == dbProjectJudging.FestivalId &&
+                                    member.UserId == _currentUserService.UserId &&
+                                    member.IsReferee &&
+                                    !member.IsRemoved, cancellationToken);
+
+            if (!activeReferee)
+                return await Result<GetProjectJudgingDetailResponse>
+                    .FailAsync("You are no longer an active referee for this festival");
+        }
 
         var projectJudging = await _unitOfWork.Repository<ProjectJudging>()
             .Entities

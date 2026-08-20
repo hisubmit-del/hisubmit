@@ -5,4 +5,5 @@ public record AddEditProjectJudgingCommand
    
 {
     public bool MultiProjectToMultiReferee { get; set; }
+    public List<int> DeadlineEventCategoryIds { get; set; } = [];
 }

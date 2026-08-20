@@ -37,6 +37,16 @@ namespace HiSubmit.Application.Features.ProjectJudgings.Queries.GetAll
         {
             if (request.GetCurrentUser)
             {
+                if (!currentUserService.IsAuthenticated ||
+                    string.IsNullOrWhiteSpace(currentUserService.UserId))
+                {
+                    return new PaginatedResult<GetAllProjectJudgingResponse>([])
+                    {
+                        Succeeded = false,
+                        Messages = ["You must be signed in to view judging assignments."]
+                    };
+                }
+
                 request.UserId = currentUserService.UserId;
             }
             var specification = new GetAllProjectJudgingFilterSpecification(request);
@@ -45,6 +55,11 @@ namespace HiSubmit.Application.Features.ProjectJudgings.Queries.GetAll
             .Include(p=>p.Submit).ThenInclude(p=>p.Project)
             .Include(p=>p.Submit).ThenInclude(p=>p.Festival)
             .Specify(specification)
+            .Where(p => !request.GetCurrentUser ||
+                        p.Submit.Festival.FestivalSubUsers.Any(member =>
+                            member.UserId == currentUserService.UserId &&
+                            member.IsReferee &&
+                            !member.IsRemoved))
             .ProjectTo<GetAllProjectJudgingResponse>(mapper.ConfigurationProvider)
             .ToPaginatedListAsync(request);
 

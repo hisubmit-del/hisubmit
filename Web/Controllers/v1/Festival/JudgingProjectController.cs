@@ -16,8 +16,11 @@ namespace Web.Controllers.v1.Festival
         /// <returns></returns>
         [HttpPost("AddRefree")]
         [FestivalAuthentication(Policy = Permissions.Submits.AddToReferee)]
-        public async Task<IActionResult> AddRefereeToProject(AddEditProjectJudgingCommand command)
+        public async Task<IActionResult> AddRefereeToProject(
+            AddEditProjectJudgingCommand command,
+            int festivalId)
         {
+            command = command with { FestivalId = festivalId };
             return Ok(await Mediator.Send(command));
         }
 
@@ -29,8 +32,11 @@ namespace Web.Controllers.v1.Festival
         /// <returns></returns>
         [HttpGet("ProjecJudgings")]
         [FestivalAuthentication(Policy = Permissions.Judging.View)]
-        public async Task<IActionResult> GetAllProjectJudgings([FromQuery]GetAllProjectJudgingQuery query)
+        public async Task<IActionResult> GetAllProjectJudgings(
+            [FromQuery] GetAllProjectJudgingQuery query,
+            int festivalId)
         {
+            query.FestivalId = festivalId;
             return Ok(await Mediator.Send(query));
         }
     }

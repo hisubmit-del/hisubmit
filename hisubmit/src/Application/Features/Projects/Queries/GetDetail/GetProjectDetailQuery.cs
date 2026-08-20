@@ -89,8 +89,13 @@ public class GetProjectDetailQueryHandler(
         var festivalIds = await unitOfWork.Repository<Festival>()
             .Entities
             .Where(festival => festival.UserId == currentUserId ||
-                               festival.FestivalSubUsers.Any(member =>
-                                   member.UserId == currentUserId && !member.IsRemoved))
+                               (festival.FestivalMaster != null &&
+                                festival.FestivalMaster.UserId == currentUserId) ||
+                               (festival.IsActive &&
+                                festival.FestivalSubUsers.Any(member =>
+                                   member.UserId == currentUserId &&
+                                   !member.IsReferee &&
+                                   !member.IsRemoved)))
             .Select(festival => festival.Id)
             .ToListAsync(cancellationToken);
 
@@ -98,7 +103,11 @@ public class GetProjectDetailQueryHandler(
             .Entities
             .Where(judging => judging.Submit.ProjectId == project.Id &&
                               judging.UserId == currentUserId &&
-                              judging.RefereeStatus == Domain.Enums.RefereeStatus.Default)
+                              judging.RefereeStatus == Domain.Enums.RefereeStatus.Default &&
+                              judging.Submit.Festival.FestivalSubUsers.Any(member =>
+                                  member.UserId == currentUserId &&
+                                  member.IsReferee &&
+                                  !member.IsRemoved))
             .Select(judging => judging.SubmitId)
             .ToListAsync(cancellationToken);
 
@@ -128,7 +137,11 @@ public class GetProjectDetailQueryHandler(
             .Where(judging => judging.Submit.ProjectId == project.Id &&
                               judging.RefereeStatus == Domain.Enums.RefereeStatus.Default &&
                               (isAdministrator ||
-                               judging.UserId == currentUserId ||
+                               (judging.UserId == currentUserId &&
+                                judging.Submit.Festival.FestivalSubUsers.Any(member =>
+                                    member.UserId == currentUserId &&
+                                    member.IsReferee &&
+                                    !member.IsRemoved)) ||
                                festivalIds.Contains(judging.Submit.FestivalId)));
 
         project.CanViewJudgingDetails = isAuthenticated &&
