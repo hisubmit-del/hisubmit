@@ -32,7 +32,9 @@ public class PaidZeroCartCommandHandler(IUnitOfWork<int> unitOfWork, IMediator m
         if (cart is null)
             return await Result.FailAsync("Your open cart was not found.");
 
-        if (cart.CartItems.Sum(p => p.Price) != 0)
+        // A cart can become free after a valid discount code is applied.
+        // Check the effective price rather than the original catalogue price.
+        if (cart.CartItems.Sum(p => p.GetRealPrice) != 0)
         {
             throw new BadRequestException();
         }

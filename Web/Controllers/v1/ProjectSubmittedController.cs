@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using HiSubmit.Application.Features.Reviews.Commands;
 using HiSubmit.Application.Features.Reviews.Queries;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Web.Controllers.v1;
 
@@ -16,6 +17,7 @@ public class ProjectSubmittedController : BaseApiController<ProjectSubmittedCont
     /// <param name="command"></param>
     /// <returns>submitted Id</returns>
     [HttpPost("Submit")]
+    [Authorize]
     public async Task<IActionResult> SubmitToFestival(AddSubmitCommand command)
     {
         return Ok(await Mediator.Send(command));

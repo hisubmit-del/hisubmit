@@ -1693,3 +1693,30 @@ data contract, privacy policy and pricing are approved.
 - No push, publish, database reset, or unrelated working-tree files were
   changed. Authenticated ticket purchase, payment completion, role switching,
   and cross-festival authorization still require dedicated browser tests.
+
+## Phase 1 critical endpoint checkpoint (2026-08-20)
+
+- Unauthenticated `POST /api/v1/ProjectSubmitted/Submit` previously returned
+  HTTP 200 with a validation message because the controller had no explicit
+  `[Authorize]`. The endpoint now requires authentication and returns HTTP 401
+  before request validation.
+- `PaidZeroCartCommandHandler` previously checked original cart prices only.
+  It now checks `CarTItem.GetRealPrice`, so a valid discount that reduces a
+  cart to zero can use the zero-payment path without changing the database
+  schema.
+- Local build completed with 0 errors and 1847 existing warnings, mostly
+  legacy MUD0002 analyzer warnings. No warnings were suppressed or removed in
+  this checkpoint.
+- After restart and successful migrations:
+  - unauthenticated project submission: HTTP 401;
+  - public ticket listing: HTTP 200 with valid data;
+  - guest cart listing: HTTP 200 with an empty successful result;
+  - unauthenticated ticket, badge, cart-discount, and payment commands:
+    HTTP 401.
+- Runtime logs still contain historical festival-update failures caused by
+  browser `data:image/...` values and earlier null-reference paths. The upload
+  guard changes are already present, but a new authenticated wizard request
+  is still required before declaring that workflow complete.
+- Phase 1 is not complete: authenticated submission, payment, ticket/product
+  purchase, role switching, and cross-festival authorization remain pending
+  dedicated tests.
