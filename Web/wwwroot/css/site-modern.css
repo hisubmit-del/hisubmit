@@ -4369,3 +4369,107 @@ a:hover {
         grid-template-columns: 1fr;
     }
 }
+
+/* Final global form rhythm and contrast contract.
+   Keep this block at the actual end so legacy page-specific rules cannot
+   reintroduce clipped text, low contrast, or inconsistent control spacing. */
+:where(.main-layout, .public-layout, .festival-main-layout, .dashboard-page-shell) {
+    color: var(--text-strong);
+}
+
+:where(.main-layout, .public-layout, .festival-main-layout, .dashboard-page-shell)
+    :where(.mud-card, .mud-paper, .mud-dialog, .mud-alert, .mud-expansion-panel) {
+    color: var(--text-strong);
+}
+
+:where(.main-layout, .public-layout, .festival-main-layout, .dashboard-page-shell)
+    :where(.mud-card-header, .mud-card-content, .mud-dialog-content, .mud-alert, .mud-expansion-panel-content) {
+    padding-block: clamp(.75rem, 1.7vw, 1.25rem);
+    padding-inline: clamp(.85rem, 2vw, 1.5rem);
+}
+
+:where(.main-layout, .public-layout, .festival-main-layout, .dashboard-page-shell)
+    :where(.mud-card-header, .mud-card-content, .mud-dialog-content, .mud-alert, .mud-expansion-panel-content)
+    :where(.mud-typography, label, p, li, td, th) {
+    color: var(--text-strong);
+    line-height: 1.55;
+    overflow-wrap: anywhere;
+}
+
+:where(.main-layout, .public-layout, .festival-main-layout, .dashboard-page-shell)
+    :where(.mud-input-label, .mud-input-slot, .mud-select-input, .mud-input-helper-text) {
+    color: var(--text-strong);
+}
+
+:where(.main-layout, .public-layout, .festival-main-layout, .dashboard-page-shell)
+    :where(.mud-input-control, .mud-select, .mud-autocomplete, .mud-picker) {
+    margin-block: .35rem;
+}
+
+:where(.main-layout, .public-layout, .festival-main-layout, .dashboard-page-shell)
+    :where(.mud-input-slot, .mud-select-input) {
+    min-height: 1.45rem;
+    padding-inline: .15rem;
+    overflow-wrap: anywhere;
+}
+
+:where(.main-layout, .public-layout, .festival-main-layout, .dashboard-page-shell)
+    :where(.mud-button-root, .mud-icon-button, .mud-chip, .mud-tab) {
+    line-height: 1.25;
+}
+
+:where(.main-layout, .public-layout, .festival-main-layout, .dashboard-page-shell)
+    :where(.mud-button-root, .mud-chip) {
+    white-space: normal;
+    overflow-wrap: anywhere;
+}
+
+:where(.main-layout, .public-layout, .festival-main-layout, .dashboard-page-shell)
+    :where(.mud-grid-item, .mud-table-cell, .mud-list-item, .mud-form) {
+    min-width: 0;
+}
+
+:where(.main-layout, .public-layout, .festival-main-layout, .dashboard-page-shell)
+    :where(.mud-checkbox, .mud-switch) {
+    margin: 0;
+    min-height: 2rem;
+}
+
+:where(.main-layout, .public-layout, .festival-main-layout, .dashboard-page-shell)
+    :where(.mud-checkbox-content, .mud-switch-label) {
+    padding-inline-start: .3rem;
+    color: var(--text-strong);
+    line-height: 1.4;
+}
+
+:where(.main-layout, .public-layout, .festival-main-layout, .dashboard-page-shell)
+    :where(.mud-table, .mud-simple-table) {
+    border-color: var(--border-soft);
+    background: var(--surface-card);
+}
+
+:where(.main-layout, .public-layout, .festival-main-layout, .dashboard-page-shell)
+    :where(.mud-table-head .mud-table-cell, .mud-table-cell) {
+    padding: .7rem .8rem;
+    white-space: normal;
+    overflow-wrap: anywhere;
+    vertical-align: middle;
+}
+
+:where(.main-layout, .public-layout, .festival-main-layout, .dashboard-page-shell)
+    :where(.mud-divider) {
+    margin-block: 1rem;
+    border-color: var(--border-soft);
+}
+
+@media (max-width: 767.98px) {
+    :where(.main-layout, .public-layout, .festival-main-layout, .dashboard-page-shell)
+        :where(.mud-card-header, .mud-card-content, .mud-dialog-content, .mud-alert) {
+        padding-inline: .85rem;
+    }
+
+    :where(.main-layout, .public-layout, .festival-main-layout, .dashboard-page-shell)
+        :where(.mud-button-group, .mud-button-root) {
+        gap: .35rem;
+    }
+}

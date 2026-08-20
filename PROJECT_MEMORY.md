@@ -1620,3 +1620,18 @@ data contract, privacy policy and pricing are approved.
   The mobile drawer remains the same navigation source, and the duplicate
   desktop cart link was removed because the account action already renders it.
 - Build verification: 0 errors. Existing MudBlazor analyzer warnings remain.
+
+## Global UI rhythm and readability checkpoint (2026-08-19)
+
+- Added a final scoped UI contract for the main, public, festival, and
+  dashboard layouts. It standardizes foreground contrast, card/dialog/alert
+  padding, input spacing, button line-height, table cell rhythm, checkbox and
+  switch spacing, and text wrapping.
+- The contract is appended at the actual end of `site-modern.css` so older
+  page-specific rules cannot silently override these readability defaults.
+- Long labels and table values now wrap instead of escaping their cards.
+  Compact controls keep their label close to the checkbox/switch and retain
+  a minimum touch target.
+- No business logic, permission, API, or database behavior changed.
+- Fast local build verification: 0 errors, 7 package warnings, 5.16 seconds
+  using `--no-restore --disable-build-servers`.

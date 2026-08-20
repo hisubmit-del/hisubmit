@@ -1603,3 +1603,15 @@ overflow-contained navigation region, and non-shrinkable account actions. At
 narrow desktop widths, navigation scrolls within its region instead of
 covering the profile/account controls. The mobile drawer continues to render
 the same primary links and account actions.
+
+### Global UI rhythm and readability
+
+The final block of `Web/wwwroot/css/site-modern.css` is the global visual
+contract for the main, public, festival, and dashboard layouts. It provides
+consistent text contrast, internal padding for cards/dialogs/alerts, input
+and control spacing, readable line-height, compact checkbox/switch labels,
+table cell padding, and safe wrapping for long labels and values.
+
+This block is intentionally at the true end of the stylesheet because the
+project contains older page-specific CSS. It is presentation-only and does
+not change APIs, permissions, persistence, or business rules.
