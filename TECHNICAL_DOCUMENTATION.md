@@ -1679,3 +1679,25 @@ The referee dashboard and queue now use a correct empty-state condition:
 festival-scoped assignment context explicit in the page guidance and table.
 This is a presentation correction; the existing server-side assignment and
 authorization checks remain unchanged.
+
+### Local database storage maintenance checkpoint (2026-08-20)
+
+The local SQL Server database was measured before maintenance:
+
+```text
+Database allocation: 528 MB
+Application data:     72 MB
+Transaction log:     456 MB
+```
+
+The large footprint was therefore transaction-log allocation, not table data.
+`database/maintenance/Optimize-HiSubmitDatabase.sql` was added as a repeatable
+maintenance script. It refreshes table statistics, rebuilds or reorganizes
+existing indexes when fragmentation and page-count thresholds justify it,
+normalizes log growth to fixed 64 MB increments, and shrinks a mostly-unused
+log to approximately 128 MB.
+
+The script was executed against the local `HiSubmitDB50` database. The result
+was 208 MB allocated (`72 MB` data and `136 MB` log). No application rows,
+audit rows, or Hangfire rows were deleted. Production execution still requires
+an approved backup and maintenance window.

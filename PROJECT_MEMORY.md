@@ -1832,3 +1832,21 @@ data contract, privacy policy and pricing are approved.
   and assigned date directly.
 - No referee authorization, assignment query, or judging result behavior was
   changed.
+
+## Local database storage maintenance checkpoint (2026-08-20)
+
+- The FilmFreeway wizard draft-source option was removed after review. The
+  festival wizard is back to its previous behavior; no FilmFreeway field,
+  local-storage key, or external-page action remains.
+- The local SQL Server measurement showed `HiSubmitDB50` allocated `528 MB`,
+  with only `72 MB` of application data and `456 MB` of transaction log.
+  The largest application table, `AuditTrails`, was approximately `1 MB`;
+  no data purge was justified.
+- Added `database/maintenance/Optimize-HiSubmitDatabase.sql`. It refreshes
+  statistics, maintains sufficiently large fragmented indexes, uses fixed
+  `64 MB` log growth, and conditionally shrinks an almost-unused log.
+- Executed the script against local `HiSubmitDB50`. The database is now
+  approximately `208 MB` allocated (`72 MB` data and `136 MB` log).
+- No production database was accessed or changed. Production maintenance
+  requires a verified backup, a maintenance window, and a reviewed recovery/
+  log-retention policy.
