@@ -238,8 +238,8 @@ namespace HiSubmit.Application.Features.Festivals.Commands.CreateFestival
             return updatedRewardLogoUrl;
         }
 
-        private static bool IsEmbeddedDataUrl(string value) =>
-            value.StartsWith("data:", System.StringComparison.OrdinalIgnoreCase);
+        private static bool IsEmbeddedDataUrl(string? value) =>
+            value?.StartsWith("data:", System.StringComparison.OrdinalIgnoreCase) == true;
 
         private void TryDeleteOldRewardLogoFile(string dbLogoUrl)
         {
