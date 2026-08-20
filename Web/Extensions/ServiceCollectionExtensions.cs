@@ -11,6 +11,7 @@ using HiSubmit.Application.Interfaces.Services;
 using HiSubmit.Application.Interfaces.Services.Account;
 using HiSubmit.Application.Interfaces.Services.Identity;
 using HiSubmit.Application.Jobs.Daily.Festivals;
+using HiSubmit.Application.Jobs.Monthly.Festivals;
 using HiSubmit.Application.Serialization.JsonConverters;
 using HiSubmit.Application.Serialization.Options;
 using HiSubmit.Application.Serialization.Serializers;
@@ -435,6 +436,7 @@ internal static class ServiceCollectionExtensions
     {
         service.AddScoped<IGoToNextPeriodOfFestival, GoToNextPeriodOfFestival>();
         service.AddScoped<IPublishFestivalNotificationNews, PublishFestivalNotificationNews>();
+        service.AddScoped<ICreateMonthlySettlementStatements, CreateMonthlySettlementStatements>();
         return service;
     }
 }

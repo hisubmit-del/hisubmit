@@ -1847,6 +1847,21 @@ data contract, privacy policy and pricing are approved.
 - Zero-total payment remains on its existing separate path.
 - Build completed with 0 errors. No migration or production payment was run.
 
+## Phase 3 monthly settlement automation checkpoint (2026-08-20)
+
+- The incomplete `GetAllFestivalIncomeQuery` no longer throws
+  `NotImplementedException`; it returns paid submission totals safely.
+- Added `CreateMonthlyFestivalSettlementStatements`, registered as a monthly
+  Hangfire recurring job. It creates the previous calendar month's pending
+  statement for each active festival and relies on the existing
+  festival/period duplicate guard.
+- This is statement preparation only. No automatic payout, real PayPal
+  transfer, migration, or production financial mutation was performed.
+- PayPal Payouts is technically possible, but requires PayPal approval/access,
+  a Business account, confirmed identity/email/bank account, sufficient
+  PayPal balance, recipient PayPal address/ID, idempotent payout tracking,
+  webhook reconciliation, and dispute/refund controls.
+
 ## Local database storage maintenance checkpoint (2026-08-20)
 
 - The FilmFreeway wizard draft-source option was removed after review. The

@@ -35,12 +35,21 @@ internal class GetAllFestivalIncomeQueryHandler :
     {
         var submits = await _unitOfWork.Repository<CarTItem>()
             .Entities
-            .Where(p => p.Submit.FestivalId == request.FestivalId
+            .Where(p => p.Cart.Paid &&
+                        p.Submit.FestivalId == request.FestivalId
                    && p.CartItemType == Domain.Enums.CartItemType.Submit)
             .ProjectTo<GetAllFestivalIncomeItem>(_mapper.ConfigurationProvider)
             .ToListAsync(cancellationToken);
 
-        throw new NotImplementedException();
+        var paidTotal = submits.Sum(item => item.Price);
+        return await Result<GetAllFestivalIncomeResponse>.SuccessAsync(
+            new GetAllFestivalIncomeResponse
+            {
+                FestivalId = request.FestivalId,
+                TotalPrice = paidTotal,
+                PaidTotlaPrice = paidTotal,
+                UnPaidTotalPrice = 0
+            });
 
     }
 }

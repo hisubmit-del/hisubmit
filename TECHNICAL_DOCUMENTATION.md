@@ -1688,6 +1688,21 @@ default, `Live` for production), and `PayPal:Currency` defaults to `USD`.
 PayPal credentials remain configuration secrets. Zero-total payment has its
 separate path and is not sent to PayPal verification.
 
+### Monthly settlement automation checkpoint (2026-08-20)
+
+The previously incomplete `GetAllFestivalIncomeQuery` no longer throws
+`NotImplementedException`; it returns paid submission income for the requested
+festival. A monthly Hangfire job,
+`CreateMonthlyFestivalSettlementStatements`, now creates the previous
+calendar month's pending settlement statement for every active festival. The
+statement is idempotent because the existing handler rejects duplicate
+festival/period pairs.
+
+This automation prepares statements; it does not send money. Automatic payment
+to festival owners requires a separate approved payout flow, recipient
+verification, payout idempotency key, webhook/status reconciliation, refund or
+dispute handling, and a confirmed PayPal Payouts-enabled business account.
+
 The referee dashboard and queue now use a correct empty-state condition:
 `RatedProject + NotRatedProject == 0`. They also make the active
 festival-scoped assignment context explicit in the page guidance and table.

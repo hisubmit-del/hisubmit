@@ -15,6 +15,7 @@ using HiSubmit.Client.Infrastructure.Services;
 using HiSubmit.Client.SharedModels.Constants.Application;
 using HiSubmit.Client.SharedModels.Constants.Role;
 using HiSubmit.Application.Jobs.Daily.Festivals;
+using HiSubmit.Application.Jobs.Monthly.Festivals;
 using HiSubmit.Infrastructure.Extensions;
 using HiSubmit.Infrastructure.Models.Identity;
 using Microsoft.AspNetCore.Components.Authorization;
@@ -297,6 +298,9 @@ using (var recurringJobScope = app.Services.CreateScope())
         .InvokeAsync();
     await recurringJobScope.ServiceProvider
         .GetRequiredService<IPublishFestivalNotificationNews>()
+        .InvokeAsync();
+    await recurringJobScope.ServiceProvider
+        .GetRequiredService<ICreateMonthlySettlementStatements>()
         .InvokeAsync();
 }
 
