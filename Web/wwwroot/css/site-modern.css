@@ -3280,10 +3280,87 @@ a:hover {
     padding: clamp(.75rem, 2vw, 1.25rem);
 }
 
-.cart-festival-group > .mud-image {
+.cart-festival-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    min-width: 0;
+    margin-bottom: 1rem;
+}
+
+.cart-festival-group > .mud-image,
+.cart-festival-header > .mud-image {
     flex: 0 0 auto;
     border-radius: var(--radius-sm);
     object-fit: cover;
+}
+
+.cart-festival-context {
+    min-width: 0;
+    flex: 1 1 auto;
+}
+
+.cart-festival-name,
+.cart-festival-categories,
+.cart-item-title,
+.cart-item-meta {
+    overflow-wrap: anywhere;
+    word-break: break-word;
+}
+
+.cart-festival-categories {
+    margin-top: .15rem;
+}
+
+.cart-items-table-wrap {
+    width: 100%;
+    min-width: 0;
+    overflow-x: auto;
+}
+
+.cart-items-table-wrap > .mud-table-container {
+    max-width: 100%;
+}
+
+.cart-items-table {
+    width: 100%;
+    min-width: 0;
+    table-layout: fixed;
+}
+
+.cart-items-table .cart-item-type-cell {
+    width: 7rem;
+}
+
+.cart-items-table .cart-item-price-cell {
+    width: 7rem;
+    text-align: end;
+}
+
+.cart-items-table .cart-item-action-cell {
+    width: 3.5rem;
+    text-align: center;
+}
+
+.cart-item-meta {
+    display: block;
+    margin-top: .2rem;
+    color: var(--text-muted);
+}
+
+.cart-discounted-price {
+    display: inline-block;
+    margin-inline-start: .35rem;
+    color: var(--color-success, #177245);
+    font-weight: 700;
+}
+
+.cart-festival-status {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: .6rem;
+    margin-top: .75rem;
 }
 
 .cart-festival-group > .mud-grid {
@@ -3291,13 +3368,10 @@ a:hover {
     flex: 1 1 auto;
 }
 
-.cart-items-table {
-    min-width: 36rem;
-}
-
 .cart-items-table td,
 .cart-items-table th {
     overflow-wrap: anywhere;
+    word-break: break-word;
     vertical-align: middle;
 }
 
@@ -4167,9 +4241,13 @@ a:hover {
         flex-direction: column;
     }
 
-    .cart-festival-group > .mud-image {
-        width: 100% !important;
-        height: 10rem !important;
+    .cart-festival-header {
+        width: 100%;
+    }
+
+    .cart-festival-header > .mud-image {
+        width: 5.5rem !important;
+        height: 5.5rem !important;
     }
 
     .cart-festival-group > .mud-grid {
@@ -4177,7 +4255,15 @@ a:hover {
     }
 
     .cart-items-table {
-        min-width: 30rem;
+        min-width: 0;
+    }
+
+    .cart-items-table .cart-item-type-cell {
+        width: 5.5rem;
+    }
+
+    .cart-items-table .cart-item-price-cell {
+        width: 5.5rem;
     }
 
     .mud-card-content,

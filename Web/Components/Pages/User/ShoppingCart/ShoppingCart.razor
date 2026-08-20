@@ -166,107 +166,106 @@
                             {
                                 foreach (var festivalGrouped in cartGrouped.GroupBy(p => p.FestivalId))
                                 {
-                                    <MudStack Row="true" Spacing="3" Class="cart-festival-group">
-                                        @if (festivalGrouped.Any(p => p.CartItemType is CartItemType.Submit
-                                                                        or CartItemType.Badge or CartItemType.Ticket))
-                                        {
-                                            <MudImage Src="@festivalGrouped.First().ImageUrl" Width="120"
-                                                      Height="120" Class="rounded" />
-                                            <MudText Typo="Typo.subtitle1">
-                                                <b>@(string.IsNullOrWhiteSpace(festivalGrouped.First().FestivalName) ? "Hisubmit" : festivalGrouped.First().FestivalName) </b>
-                                            </MudText>
-                                        }
-                                        else
-                                        {
-                                            <MudImage Src="@ClientAppConstants.SmallLogoUrl"
-                                                      Width="120" Height="120" />
-                                            <MudText Typo="Typo.subtitle1">
-                                                <b>@(string.IsNullOrWhiteSpace(festivalGrouped.First().FestivalName) ? "Hisubmit" : festivalGrouped.First().FestivalName) </b>
-                                            </MudText>
-                                        }
-                                        <MudGrid>
-                                            <MudItem xs="12" md="12">
-                                                <MudSimpleTable Dense="true" Bordered="true"
-                                                                Class="me-lg-4 cart-items-table">
-                                                    @foreach (var i in festivalGrouped)
-                                                    {
-                                                        <MudTr>
-                                                            <MudTd>
-                                                                @if (i.CartItemType == CartItemType.Submit)
-                                                                {
-                                                                    <MudText Typo="Typo.caption">@i.SubmitCategoriesName </MudText>
-                                                                }
-                                                                @if (i.CartItemType == CartItemType.ServiceFee)
-                                                                {
-                                                                    <MudText Typo="Typo.caption" Inline="false">Service fee </MudText>
-                                                                }
-                                                                @if (i.CartItemType == CartItemType.Product)
-                                                                {
-                                                                    <MudText Typo="Typo.caption" Inline="false">@i.ProductName</MudText>
-                                                                }
-                                                                @if (i.CartItemType == CartItemType.Ticket)
-                                                                {
-                                                                    <MudText Typo="Typo.caption" Inline="false">@i.SoldTicketName</MudText>
-                                                                }
-                                                                @if (i.CartItemType == CartItemType.Badge)
-                                                                {
-                                                                    <MudText Typo="Typo.caption" Inline="false">@i.SoldTicketName</MudText>
-                                                                }
-                                                            </MudTd>
-                                                            <MudTd>
-                                                                <MudChip T="string" Label="true" Size="Size.Small" Variant="Variant.Text"
-                                                                         Color="Color.Info">
-                                                                    @i.CartItemType
-                                                                </MudChip>
-                                                            </MudTd>
+                                    var festivalFirstItem = festivalGrouped.First();
+                                    <div class="cart-festival-group">
+                                        <div class="cart-festival-header">
+                                            @if (festivalGrouped.Any(p => p.CartItemType is CartItemType.Submit
+                                                                          or CartItemType.Badge or CartItemType.Ticket))
+                                            {
+                                                <MudImage Src="@festivalFirstItem.ImageUrl" Width="88"
+                                                          Height="88" Class="rounded" />
+                                            }
+                                            else
+                                            {
+                                                <MudImage Src="@ClientAppConstants.SmallLogoUrl"
+                                                          Width="88" Height="88" Class="rounded" />
+                                            }
+                                            <div class="cart-festival-context">
+                                                <MudText Typo="Typo.overline">Festival</MudText>
+                                                <MudText Typo="Typo.h6" Class="cart-festival-name">
+                                                    @(string.IsNullOrWhiteSpace(festivalFirstItem.FestivalName) ? "HiSubmit" : festivalFirstItem.FestivalName)
+                                                </MudText>
+                                                @if (GetFestivalCategories(festivalGrouped) is { Length: > 0 } categories)
+                                                {
+                                                    <MudText Typo="Typo.body2" Class="cart-festival-categories">
+                                                        <b>Categories:</b> @categories
+                                                    </MudText>
+                                                }
+                                                <MudText Typo="Typo.caption">
+                                                    @festivalGrouped.Count() item(s) · @festivalGrouped.Sum(p => p.GetRealPrice()).ToString("C2")
+                                                </MudText>
+                                            </div>
+                                        </div>
 
-                                                            <MudTd>
-                                                                @if (i.PriceAfterDiscount == null)
-                                                                {
-                                                                    <MudText Typo="Typo.caption">
-                                                                        @i.Price.ToString("C2")
-                                                                    </MudText>
-                                                                }
-                                                                else
-                                                                {
-                                                                    <MudText Typo="Typo.caption">
-                                                                        <del> @i.Price.ToString("C2")</del>
-                                                                        @i.PriceAfterDiscount.Value.ToString("C2")
-                                                                    </MudText>
-                                                                }
-                                                            </MudTd>
-                                                            <MudTd>
-                                                                @if (i.CanDelete)
-                                                                {
-                                                                    <MudIconButton Color="Color.Error"
-                                                                                   Icon="@Icons.Material.Filled.Delete"
-                                                                                   OnClick="() => DeleteItem(i)"
-                                                                                   Size="Size.Small" />
-                                                                }
-                                                                else
-                                                                {
-                                                                    <MudText Typo="Typo.caption">@i.SubmitTrackCode</MudText>
-                                                                }
-                                                            </MudTd>
-                                                        </MudTr>
-                                                    }
-                                                </MudSimpleTable>
-                                                <div class="mb-3">
-                                                    <MudChip T="string" Size="Size.Small" Label="true"
-                                                             Color="@(festivalGrouped.First().Paid ? Color.Success : Color.Warning)"
-                                                             Variant="Variant.Filled">
-                                                        @(festivalGrouped.First().Paid ? "Paid" : "UnPaid")
-                                                    </MudChip>
-                                                    @if (festivalGrouped.First().Paid)
-                                                    {
-                                                        <MudText Typo="Typo.body1">
-                                                            Paid Date:@festivalGrouped.First().PaidDate.ToLongDateTime()
-                                                        </MudText>
-                                                    }
-                                                </div>
-                                            </MudItem>
-                                        </MudGrid>
-                                    </MudStack>
+                                        <div class="cart-items-table-wrap">
+                                            <MudSimpleTable Dense="true" Bordered="true" Class="cart-items-table">
+                                                @foreach (var i in festivalGrouped)
+                                                {
+                                                    <MudTr>
+                                                        <MudTd Class="cart-item-main-cell">
+                                                            <MudText Typo="Typo.body2" Class="cart-item-title">@GetCartItemTitle(i)</MudText>
+                                                            @if (i.CartItemType == CartItemType.Submit &&
+                                                                 !string.IsNullOrWhiteSpace(i.SubmitCategoriesName))
+                                                            {
+                                                                <MudText Typo="Typo.caption" Class="cart-item-meta">
+                                                                    <b>Category:</b> @i.SubmitCategoriesName
+                                                                </MudText>
+                                                            }
+                                                            @if (i.CartItemType == CartItemType.Submit &&
+                                                                 !string.IsNullOrWhiteSpace(i.SubmitTrackCode))
+                                                            {
+                                                                <MudText Typo="Typo.caption" Class="cart-item-meta">
+                                                                    <b>Tracking:</b> @i.SubmitTrackCode
+                                                                </MudText>
+                                                            }
+                                                        </MudTd>
+                                                        <MudTd Class="cart-item-type-cell">
+                                                            <MudChip T="string" Label="true" Size="Size.Small" Variant="Variant.Text"
+                                                                     Color="Color.Info">
+                                                                @i.CartItemType
+                                                            </MudChip>
+                                                        </MudTd>
+                                                        <MudTd Class="cart-item-price-cell">
+                                                            @if (i.PriceAfterDiscount == null)
+                                                            {
+                                                                <MudText Typo="Typo.caption">@i.Price.ToString("C2")</MudText>
+                                                            }
+                                                            else
+                                                            {
+                                                                <MudText Typo="Typo.caption">
+                                                                    <del>@i.Price.ToString("C2")</del>
+                                                                    <span class="cart-discounted-price">@i.PriceAfterDiscount.Value.ToString("C2")</span>
+                                                                </MudText>
+                                                            }
+                                                        </MudTd>
+                                                        <MudTd Class="cart-item-action-cell">
+                                                            @if (i.CanDelete)
+                                                            {
+                                                                <MudIconButton Color="Color.Error"
+                                                                               Icon="@Icons.Material.Filled.Delete"
+                                                                               OnClick="() => DeleteItem(i)"
+                                                                               Size="Size.Small" />
+                                                            }
+                                                        </MudTd>
+                                                    </MudTr>
+                                                }
+                                            </MudSimpleTable>
+                                        </div>
+
+                                        <div class="cart-festival-status">
+                                            <MudChip T="string" Size="Size.Small" Label="true"
+                                                     Color="@(festivalFirstItem.Paid ? Color.Success : Color.Warning)"
+                                                     Variant="Variant.Filled">
+                                                @(festivalFirstItem.Paid ? "Paid" : "UnPaid")
+                                            </MudChip>
+                                            @if (festivalFirstItem.Paid)
+                                            {
+                                                <MudText Typo="Typo.caption">
+                                                    Paid date: @festivalFirstItem.PaidDate.ToLongDateString()
+                                                </MudText>
+                                            }
+                                        </div>
+                                    </div>
                                     <MudDivider />
                                 }
                             }

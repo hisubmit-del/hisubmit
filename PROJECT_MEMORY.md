@@ -1795,3 +1795,21 @@ data contract, privacy policy and pricing are approved.
   rule versions, flags, explanations, or audit decisions. A configurable
   automatic-selection panel therefore requires an approved additive contract
   and schema; no guessed table or field was added.
+
+## Payment page readability checkpoint (2026-08-20)
+
+- The authenticated cart/payment page was redesigned without changing payment
+  calculations, cart APIs, or database schema.
+- Each festival group now shows an explicit festival context, the grouped
+  category names for submission items, item count, and festival subtotal.
+- Submission rows now show project title, category, and tracking code when
+  available; product, ticket, badge, service-fee, and special-account titles
+  use the existing cart response title mapping.
+- The cart table no longer forces a large minimum width on mobile. Long
+  festival names, project names, category names, tracking codes, and prices
+  wrap within the card and the status/paid date are kept below the table.
+- Build verification completed with 0 errors after stopping the local Web
+  process that had locked its output assemblies. Responsive browser
+  verification was attempted after restart; the active local session exposed
+  an empty cart, so populated festival/category rendering remains a visual
+  follow-up with a seeded cart item.

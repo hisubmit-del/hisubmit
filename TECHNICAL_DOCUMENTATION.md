@@ -1649,3 +1649,21 @@ The current schema has no persisted automatic-selection criteria, rule
 version, flag, explanation, or audit-decision model. A festival-configurable
 automatic-selection panel therefore remains a documented contract/schema item;
 no speculative database change was introduced.
+
+### Payment page readability checkpoint (2026-08-20)
+
+`Web/Components/Pages/User/ShoppingCart/ShoppingCart.razor` keeps the existing
+cart and payment flow but presents each festival group as a bounded card. The
+card header includes the festival name, submission categories, item count, and
+festival subtotal. Submission rows expose the project title, category, and
+tracking code where available.
+
+The related rules in `Web/wwwroot/css/site-modern.css` use a fluid table width,
+wrapping for long values, a bounded table wrapper, and mobile-friendly column
+sizes. This prevents cart content from escaping the viewport without changing
+payment amounts, discount validation, or persistence behavior.
+
+Build verification after the change completed with 0 errors. A populated-cart
+browser visual check remains dependent on a local authenticated account with
+an active cart containing submission/category data; the available referee
+session currently exposes an empty cart.

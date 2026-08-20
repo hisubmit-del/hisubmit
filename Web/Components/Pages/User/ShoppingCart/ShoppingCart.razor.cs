@@ -149,6 +149,25 @@ public partial class ShoppingCart
 
     private string _discountCode = string.Empty;
     private bool _calculateDiscountProcessing;
+
+    private static string GetCartItemTitle(GetCartItemResponse item)
+    {
+        var title = item.GetTitle();
+        return string.IsNullOrWhiteSpace(title) ? "Cart item" : title;
+    }
+
+    private static string GetFestivalCategories(IEnumerable<GetCartItemResponse> items)
+    {
+        return string.Join(", ", items
+            .Where(item => item.CartItemType == Hisubmit.Client.SharedModels.Enums.CartItemType.Submit)
+            .Select(item => item.SubmitCategoriesName)
+            .Where(value => !string.IsNullOrWhiteSpace(value))
+            .SelectMany(value => value.Split(',', StringSplitOptions.RemoveEmptyEntries))
+            .Select(value => value.Trim())
+            .Where(value => value.Length > 0)
+            .Distinct(StringComparer.OrdinalIgnoreCase));
+    }
+
     private async Task AddDiscountCodes()
     {
         if(string.IsNullOrWhiteSpace(_discountCode))
