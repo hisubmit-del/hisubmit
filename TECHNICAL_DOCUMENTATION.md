@@ -1902,3 +1902,15 @@ The local release smoke pass verified:
 No authenticated artist, festival-manager, or administrator browser session was
 available for this pass. No credentials, payment details, or mutating form
 were entered. Role-specific UI verification remains a release prerequisite.
+
+## Dependency warning reduction checkpoint (2026-08-21)
+
+`MailKit` and `MimeKit` were upgraded from `3.3.0` to `4.17.0`, and
+`System.Linq.Dynamic.Core` was upgraded from `1.3.8` to `1.7.3`. The full
+`Web/Web.csproj` restore/build passed after these changes.
+
+The remaining package vulnerability report contains only `AutoMapper 13.0.1`.
+It was intentionally not changed to a major version in this checkpoint:
+AutoMapper is used by profiles, `ProjectTo`, and service registration in the
+Application, Infrastructure, and Client.Infrastructure projects. A separate
+compatibility branch/pass is required before changing that major dependency.

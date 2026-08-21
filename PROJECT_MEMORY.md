@@ -2019,3 +2019,13 @@ data contract, privacy policy and pricing are approved.
 - No authenticated festival-manager or administrator session was available
   in the browser, so no role was fabricated and no payment or mutating form
   was submitted.
+
+## Dependency warning reduction checkpoint (2026-08-21)
+
+- Upgraded `MailKit` and `MimeKit` from `3.3.0` to `4.17.0`.
+- Upgraded `System.Linq.Dynamic.Core` from `1.3.8` to `1.7.3`.
+- The full `Web/Web.csproj` build passed after restore and compilation.
+- Vulnerability scanning now reports only `AutoMapper 13.0.1` in the current
+  dependency graph. AutoMapper was not major-upgraded in this checkpoint
+  because the application uses profiles, `ProjectTo`, and registration APIs
+  across multiple projects; that upgrade needs a dedicated compatibility pass.
