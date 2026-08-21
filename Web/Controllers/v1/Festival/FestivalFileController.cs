@@ -4,6 +4,8 @@ using HiSubmit.Application.Features.Festivals.Queries.GetAllFestivalFile;
 using HiSubmit.Application.Features.Festivals.Queries.GetFestivalFileDetail;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
+using Hisubmit.Client.SharedModels.Contracts.Permission;
+using Web.Filters;
 
 namespace Web.Controllers.v1.Festival;
 
@@ -15,6 +17,7 @@ public class FestivalFileController : BaseFestivalController<FestivalFileControl
     /// <param name="query"></param>
     /// <returns>list of file </returns>
     [HttpGet("GetAll")]
+    [FestivalAuthentication(Policy = Permissions.Festival.View)]
     public async Task<IActionResult> GetAll([FromQuery] GetAllFestivalFileQuery query)
     {
         return Ok(await Mediator.Send(query));
@@ -26,6 +29,7 @@ public class FestivalFileController : BaseFestivalController<FestivalFileControl
     /// <param name="query"></param>
     /// <returns></returns>
     [HttpGet("Detail")]
+    [FestivalAuthentication(Policy = Permissions.Festival.View)]
     public async Task<IActionResult> GetDetail([FromQuery] GetFestivalFileDetailQuery query)
     {
         return Ok(await Mediator.Send(query));
@@ -37,6 +41,7 @@ public class FestivalFileController : BaseFestivalController<FestivalFileControl
     /// <param name="command"></param>
     /// <returns></returns>
     [HttpPost("Update")]
+    [FestivalAuthentication(Policy = Permissions.Festival.Edit)]
     public async Task<IActionResult> Update(AddEditFestivalFileCommand command)
     {
         return Ok(await Mediator.Send(command));
@@ -48,6 +53,7 @@ public class FestivalFileController : BaseFestivalController<FestivalFileControl
     /// <param name="command"></param>
     /// <returns></returns>
     [HttpDelete("Delete")]
+    [FestivalAuthentication(Policy = Permissions.Festival.Edit)]
     public async Task<IActionResult> Delete([FromQuery]DeleteFestivalFileCommand command)
     {
         return Ok(await Mediator.Send(command));

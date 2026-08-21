@@ -10,7 +10,8 @@ function Test-Endpoint {
     param(
         [string]$Name,
         [string]$Path,
-        [string]$Expected = "2xx"
+        [string]$Expected = "2xx",
+        [string]$Method = "Get"
     )
 
     $headers = @{}
@@ -19,7 +20,17 @@ function Test-Endpoint {
     }
 
     try {
-        $response = Invoke-WebRequest -Uri "$base$Path" -Headers $headers -UseBasicParsing
+        $requestArgs = @{
+            Uri = "$base$Path"
+            Headers = $headers
+            Method = $Method
+            UseBasicParsing = $true
+        }
+        if ($Method -in @("Post", "Put", "Patch")) {
+            $requestArgs.ContentType = "application/json"
+            $requestArgs.Body = "{}"
+        }
+        $response = Invoke-WebRequest @requestArgs
         $status = [int]$response.StatusCode
         if ($Expected -eq "2xx" -and ($status -lt 200 -or $status -ge 300)) {
             throw "Expected 2xx but received $status"
@@ -38,9 +49,27 @@ function Test-Endpoint {
 }
 
 $failed = $false
+for ($attempt = 1; $attempt -le 10; $attempt++) {
+    try {
+        $probe = Invoke-WebRequest -Uri "$base/" -UseBasicParsing -TimeoutSec 2
+        break
+    }
+    catch {
+        if ($attempt -eq 10) {
+            Write-Host "[FAIL] Local server did not become ready." -ForegroundColor Red
+            exit 1
+        }
+        Start-Sleep -Seconds 1
+    }
+}
+
 Test-Endpoint -Name "Public Gold pricing" -Path "/api/v1/Cart/SpecialAccountFee" -Expected "2xx"
 Test-Endpoint -Name "Unauthenticated cart access is protected" -Path "/api/v1/Cart/GetAll" -Expected "401"
 Test-Endpoint -Name "Unauthenticated Gold recommendations are protected" -Path "/api/v1/Project/GoldFestivalRecommendations" -Expected "401"
+Test-Endpoint -Name "Unauthenticated project mutation is protected" -Path "/api/v1/Project/UpdateDetail" -Expected "401" -Method "Post"
+Test-Endpoint -Name "Unauthenticated project specification is protected" -Path "/api/v1/ProjectSpecification/FilmSpecificationDetail" -Expected "401"
+Test-Endpoint -Name "Unauthenticated festival payment information is protected" -Path "/api/v1/FestivalPayments/1/GetPaymentInformation" -Expected "401"
+Test-Endpoint -Name "Unauthenticated festival files are protected" -Path "/api/v1/FestivalFile/1/GetAll" -Expected "401"
 
 if ($failed) {
     exit 1

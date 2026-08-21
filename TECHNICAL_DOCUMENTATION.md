@@ -1868,3 +1868,23 @@ pricing and verifies unauthenticated protection for cart and Gold
 recommendation endpoints. The script was syntax-checked and invoked during
 this checkpoint; endpoint execution requires the local web server to be
 running on the selected base URL.
+
+## Release security hardening checkpoint (2026-08-20)
+
+The festival payment and file surfaces now enforce the festival permission
+boundary at the controller:
+
+- payment information uses `Permissions.FestivalPayment.PaymentInformation`;
+- festival cart items, payment items, and demands use
+  `Permissions.FestivalPayment.CartItem`;
+- festival file reads use `Permissions.Festival.View`;
+- festival file update/delete uses `Permissions.Festival.Edit`.
+
+Project mutation and project-specification endpoints also require an
+authenticated user. These controller checks are an outer boundary; existing
+application handlers still validate project ownership and business rules.
+The smoke-test script includes unauthenticated requests for these routes and
+expects `401`. Local verification passed on August 20, 2026: public Gold
+pricing returned `200`, and all protected routes returned `401`. The script
+also now waits for the local server and sends the correct HTTP method for
+mutation checks.

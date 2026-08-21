@@ -73,6 +73,7 @@ public class FestivalPaymentsController : BaseFestivalController<FestivalPayment
     /// <param name="query"></param>
     /// <returns></returns>
     [HttpGet("CartItems")]
+    [FestivalAuthentication(Policy = Permissions.FestivalPayment.CartItem)]
     public async Task<IActionResult> GetFestivalCartItem([FromQuery] GetAllCartItemQuery query, int festivalId)
     {
         query.FestivalId = festivalId;
@@ -87,6 +88,7 @@ public class FestivalPaymentsController : BaseFestivalController<FestivalPayment
     /// <param name="festivalId"></param>
     /// <returns></returns>
     [HttpPost("UpdatePaymentInformation")]
+    [FestivalAuthentication(Policy = Permissions.FestivalPayment.PaymentInformation)]
     public async Task<IActionResult> UpdatePaymentInformation(AddEditFestivalPaymentInformationCommand command, int festivalId)
     {
         command.FestivalId = festivalId;
@@ -100,6 +102,7 @@ public class FestivalPaymentsController : BaseFestivalController<FestivalPayment
     /// <param name="festivalId"></param>
     /// <returns></returns>
     [HttpGet("GetPaymentInformation")]
+    [FestivalAuthentication(Policy = Permissions.FestivalPayment.PaymentInformation)]
     public async Task<IActionResult> GetPaymentInformation([FromQuery] GetFestivalPaymentInformationDetailQuery query, int festivalId)
     {
         query.FestivalId = festivalId;
@@ -112,6 +115,7 @@ public class FestivalPaymentsController : BaseFestivalController<FestivalPayment
     /// <param name="query"></param>
     /// <returns></returns>
     [HttpGet("AllFestivalPaymentItems")]
+    [FestivalAuthentication(Policy = Permissions.FestivalPayment.CartItem)]
     public async Task<IActionResult> GetFestivalPaymentItems([FromQuery] GetAllFestivalPaymentItemQuery query, int festivalId)
     {
         query.FestivalId = festivalId;
@@ -126,6 +130,7 @@ public class FestivalPaymentsController : BaseFestivalController<FestivalPayment
     /// <param name="festivalId"></param>
     /// <returns></returns>
     [HttpGet("DemandFestival")]
+    [FestivalAuthentication(Policy = Permissions.FestivalPayment.CartItem)]
     public async Task<IActionResult> GetDemandFestival([FromQuery] GetFestivalPaymentStateQuery query, int festivalId)
     {
         query.FestivalId = festivalId;

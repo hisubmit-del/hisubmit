@@ -1994,3 +1994,18 @@ data contract, privacy policy and pricing are approved.
   During this checkpoint the script was invoked successfully, but no local
   server was listening on `localhost:5120`, so endpoint results remain
   pending authenticated browser/local-server verification.
+
+## Release security hardening checkpoint (2026-08-20)
+
+- Festival payment information, payment items, demands, and festival cart
+  items now require the appropriate festival-scoped payment permission.
+- Festival files now require festival-scoped view permission for reads and
+  festival edit permission for update/delete operations.
+- Project mutations and project specification reads/updates now require an
+  authenticated user. Existing handler-level ownership checks remain the
+  authority for which project the user may access.
+- The smoke test now covers these newly protected routes and continues to
+  verify the public Gold pricing endpoint.
+- Local verification passed: Gold pricing returned `200`; unauthenticated
+  cart, Gold recommendations, project mutation, project specification,
+  festival payment information, and festival file routes returned `401`.

@@ -58,6 +58,7 @@ namespace Web.Controllers.v1.Project
         /// <param name="command"></param>
         /// <returns></returns>
         [HttpPost("Release")]
+        [Authorize]
         public async Task<IActionResult> Release(ReleaseProjectCommand command)
         {
             return Ok(await Mediator.Send(command));
@@ -83,6 +84,7 @@ namespace Web.Controllers.v1.Project
         /// <param name="command"></param>
         /// <returns></returns>
         [HttpPost("UpdateDetail")]
+        [Authorize]
         public async Task<IActionResult> UpdateProjectDetail(AddEditProjectDetailCommand command)
         {
             return Ok(await Mediator.Send(command));
@@ -95,6 +97,7 @@ namespace Web.Controllers.v1.Project
         /// <param name="command"></param>
         /// <returns></returns>
         [HttpPut("UpdateSubmitter")]
+        [Authorize]
         public async Task<IActionResult> UpdateSubmitter(EditProjectSubmitterInformationCommand command)
         {
             return Ok(await Mediator.Send(command));
@@ -107,6 +110,7 @@ namespace Web.Controllers.v1.Project
         /// <param name="command"></param>
         /// <returns></returns>
         [HttpPut("UpdateCredit")]
+        [Authorize]
         public async Task<IActionResult> UpdateCredit(UpdateProjectCreditsCommand command)
         {
             return Ok(await Mediator.Send(command));
@@ -131,6 +135,7 @@ namespace Web.Controllers.v1.Project
         /// <param name="command"></param>
         /// <returns></returns>
         [HttpPost("UpdateScreenAwards")]
+        [Authorize]
         public async Task<IActionResult> UpdateScreenAward(UpdateScreenWritingCommand command)
         {
             return Ok(await Mediator.Send(command));
@@ -154,6 +159,7 @@ namespace Web.Controllers.v1.Project
         /// <param name="command"></param>
         /// <returns></returns>
         [HttpPost("UpdateAwards")]
+        [Authorize]
         public async Task<IActionResult> UpdateScreenAward(UpdateAwardCommand command)
         {
             return Ok(await Mediator.Send(command));
@@ -177,6 +183,7 @@ namespace Web.Controllers.v1.Project
         /// <param name="command"></param>
         /// <returns></returns>
         [HttpPost("UpdateDistribuationInformation")]
+        [Authorize]
         public async Task<IActionResult> UpdateDistribuationInformation(UpdateDistributionInformationCommand command)
         {
             return Ok(await Mediator.Send(command));
@@ -202,6 +209,7 @@ namespace Web.Controllers.v1.Project
         /// <param name="request"></param>
         /// <returns></returns>
         [HttpPost("UpdateFileURL")]
+        [Authorize]
         public async Task<IActionResult> UpdateProjectFileURl(AddEditProjectFileUrlRequest request)
         {
             return Ok(await Mediator.Send(request));
@@ -216,6 +224,7 @@ namespace Web.Controllers.v1.Project
         ///<param name="file">file for updated</param>
         /// <returns></returns>
         [HttpPost("UploadFile")]
+        [Authorize]
         public async Task<IActionResult> UploadFile([FromQuery] int projectId, [FromQuery] int fregment, IFormFile file)
         {
             return Ok(await Mediator.Send(new UploadProjectFileCommand()
@@ -257,6 +266,7 @@ namespace Web.Controllers.v1.Project
         /// <param name="command"></param>
         /// <returns></returns>
         [HttpDelete("DeleteProjectFile")]
+        [Authorize]
         public async Task<IActionResult> DeleteProjectFile([FromQuery] DeleteProjectFilesCommand command)
         {
             return Ok(await Mediator.Send(command));
@@ -281,6 +291,7 @@ namespace Web.Controllers.v1.Project
         /// <param name="command"></param>
         /// <returns></returns>
         [HttpPost("AddProjectImage")]
+        [Authorize]
         public async Task<IActionResult> AddProjectImage(AddProjectImageCommand command)
         {
             return Ok(await Mediator.Send(command));
@@ -304,6 +315,7 @@ namespace Web.Controllers.v1.Project
         /// <param name="command"></param>
         /// <returns></returns>
         [HttpPost("UpdateProjectFileOrder")]
+        [Authorize]
         public async Task<IActionResult> UpdateProjectFileOrder(UpdateProjectFileOrderCommand command)
         {
             return Ok(await Mediator.Send(command));

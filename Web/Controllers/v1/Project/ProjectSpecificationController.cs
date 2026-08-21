@@ -7,6 +7,7 @@ using HiSubmit.Application.Features.Projects.Queries.GetFilmSpecificationDetail;
 using HiSubmit.Application.Features.Projects.Queries.GetMusicSpecificationDetail;
 using HiSubmit.Application.Features.Projects.Queries.GetVrXrSpecificationDetail;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using System.Threading.Tasks;
 
 namespace Web.Controllers.v1.Project
@@ -19,6 +20,7 @@ namespace Web.Controllers.v1.Project
         /// <param name="command"></param>
         /// <returns></returns>
         [HttpPut("UpdateFilmSpecification")]
+        [Authorize]
         public async Task<IActionResult> UpdateFilmSpecification(AddEditFilmSpecificationCommand command)
         {
             return Ok(await Mediator.Send(command));
@@ -31,6 +33,7 @@ namespace Web.Controllers.v1.Project
         /// <param name="query"></param>
         /// <returns></returns>
         [HttpGet("FilmSpecificationDetail")]
+        [Authorize]
         public async Task<IActionResult> GetFilmSpecification([FromQuery]GetFilmSpecificationDetailQuery query)
         {
             return Ok(await Mediator.Send(query));
@@ -43,6 +46,7 @@ namespace Web.Controllers.v1.Project
         /// <param name="command"></param>
         /// <returns></returns>
         [HttpPut("UpdateMusicSpecification")]
+        [Authorize]
         public async Task<IActionResult> UpdateMusicSpecification(AddEditMusicSpecificationCommand command)
         {
             return Ok(await Mediator.Send(command));
@@ -54,6 +58,7 @@ namespace Web.Controllers.v1.Project
         /// <param name="query"></param>
         /// <returns></returns>
         [HttpGet("MusicSpecificationDetail")]
+        [Authorize]
         public async Task<IActionResult> GetMusicSpecification([FromQuery]GetMusicSpecificationDetailQuery query)
         {
             return Ok(await Mediator.Send(query));
@@ -66,6 +71,7 @@ namespace Web.Controllers.v1.Project
         /// <param name="command"></param>
         /// <returns></returns>
         [HttpPut("UpdateScriptSpecification")]
+        [Authorize]
         public async Task<IActionResult> UpdateScriptSpecification(AddEditScriptSpecificationCommand command)
         {
             return Ok(await Mediator.Send(command));
@@ -77,6 +83,7 @@ namespace Web.Controllers.v1.Project
         /// <param name="query"></param>
         /// <returns></returns>
         [HttpGet("ScriptSpecificationDetail")]
+        [Authorize]
         public async Task<IActionResult> GetScriptSpecification([FromQuery] GetScriptSpecificationDetailQuery query)
         {
             return Ok(await Mediator.Send(query));
@@ -89,6 +96,7 @@ namespace Web.Controllers.v1.Project
         /// <param name="command"></param>
         /// <returns></returns>
         [HttpPut("UpdatePhotographySpecification")]
+        [Authorize]
         public async Task<IActionResult> UpdatePhotographySpecification(AddEditPhotographySpecificationCommand command)
         {
             return Ok(await Mediator.Send(command));
@@ -100,6 +108,7 @@ namespace Web.Controllers.v1.Project
         /// <param name="query"></param>
         /// <returns></returns>
         [HttpGet("PhotographySpecificationDetail")]
+        [Authorize]
         public async Task<IActionResult> GetPhotographySpecification([FromQuery] GetPhotographySpecificationDetailQuery query)
         {
             return Ok(await Mediator.Send(query));
@@ -112,6 +121,7 @@ namespace Web.Controllers.v1.Project
         /// <param name="command"></param>
         /// <returns></returns>
         [HttpPut("UpdateVrXrSpecification")]
+        [Authorize]
         public async Task<IActionResult> UpdateVrXrSpecification(AddEditVrXrSpecificationCommand command)
         {
             return Ok(await Mediator.Send(command));
@@ -123,6 +133,7 @@ namespace Web.Controllers.v1.Project
         /// <param name="query"></param>
         /// <returns></returns>
         [HttpGet("VrXrSpecificationDetail")]
+        [Authorize]
         public async Task<IActionResult> GetVrXrSpecification([FromQuery] GetVrXrSpecificationDetailQuery query)
         {
             return Ok(await Mediator.Send(query));
