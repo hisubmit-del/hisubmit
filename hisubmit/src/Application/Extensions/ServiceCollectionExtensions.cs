@@ -20,7 +20,7 @@ public static class ServiceCollectionExtensions
 {
     public static void AddApplicationLayer(this IServiceCollection services)
     {
-        services.AddAutoMapper(Assembly.GetExecutingAssembly());
+        services.AddAutoMapper(_ => { }, Assembly.GetExecutingAssembly());
         //services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
         services.AddScoped<IPaymentService, PaymentService>();
         services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly()));

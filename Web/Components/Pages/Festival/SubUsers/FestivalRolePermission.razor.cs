@@ -13,6 +13,7 @@ using Hisubmit.Client.SharedModels.CustomeAttribute;
 using HiSubmit.Client.SharedModels.Wrapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.Logging.Abstractions;
 using MudBlazor;
 
 namespace Web.Components.Pages.Festival.SubUsers
@@ -75,7 +76,8 @@ namespace Web.Components.Pages.Festival.SubUsers
 
         private async Task GetRolePermissionsAsync()
         {
-            _mapper = new MapperConfiguration(c => { c.AddProfile<RoleProfile>(); }).CreateMapper();
+            _mapper = new MapperConfiguration(c => { c.AddProfile<RoleProfile>(); },
+                NullLoggerFactory.Instance).CreateMapper();
             var roleId = Id;
             IResult<PermissionResponse> result;
 

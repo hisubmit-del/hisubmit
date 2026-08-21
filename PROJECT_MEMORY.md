@@ -2029,3 +2029,14 @@ data contract, privacy policy and pricing are approved.
   dependency graph. AutoMapper was not major-upgraded in this checkpoint
   because the application uses profiles, `ProjectTo`, and registration APIs
   across multiple projects; that upgrade needs a dedicated compatibility pass.
+
+## Dependency security closure checkpoint (2026-08-21)
+
+- Upgraded AutoMapper from `13.0.1` to `16.2.0` in Application,
+  Infrastructure, and Client.Infrastructure.
+- Updated all AutoMapper registration calls to the v16 configuration API.
+- Updated the two manual `MapperConfiguration` usages in role-permission
+  pages to provide `NullLoggerFactory`.
+- Full `Web/Web.csproj` build passed after the compatibility changes.
+- `dotnet list Web/Web.csproj package --vulnerable --include-transitive`
+  reports no vulnerable packages for the Web project.

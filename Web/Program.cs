@@ -70,7 +70,7 @@ services.AddCookieAuthentication(builder.Environment);
 services.AddScoped<IUserClaimsPrincipalFactory<BlazorHeroUser>, CustomClaimsPrincipalFactory>();
 
 services.AddApplicationLayer();
-services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+services.AddAutoMapper(_ => { }, AppDomain.CurrentDomain.GetAssemblies());
 services.AddApplicationServices();
 services.AddHttpContextAccessor();
 services.AddRepositories();

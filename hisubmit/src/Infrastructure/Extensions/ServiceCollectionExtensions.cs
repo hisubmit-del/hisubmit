@@ -21,7 +21,7 @@ namespace HiSubmit.Infrastructure.Extensions
     {
         public static void AddInfrastructureMappings(this IServiceCollection services)
         {
-            services.AddAutoMapper(Assembly.GetExecutingAssembly());
+            services.AddAutoMapper(_ => { }, Assembly.GetExecutingAssembly());
         }
 
         public static IServiceCollection AddRepositories(this IServiceCollection services)

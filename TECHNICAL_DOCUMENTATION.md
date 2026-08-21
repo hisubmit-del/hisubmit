@@ -1914,3 +1914,14 @@ It was intentionally not changed to a major version in this checkpoint:
 AutoMapper is used by profiles, `ProjectTo`, and service registration in the
 Application, Infrastructure, and Client.Infrastructure projects. A separate
 compatibility branch/pass is required before changing that major dependency.
+
+## Dependency security closure checkpoint (2026-08-21)
+
+AutoMapper was upgraded from `13.0.1` to `16.2.0` across the Application,
+Infrastructure, and Client.Infrastructure projects. Registration calls now use
+the v16 configuration overload, and the two manually-created role-permission
+mapper configurations provide `NullLoggerFactory`.
+
+The full Web build passed after the compatibility changes. A final
+`dotnet list Web/Web.csproj package --vulnerable --include-transitive` scan
+reported no vulnerable packages.

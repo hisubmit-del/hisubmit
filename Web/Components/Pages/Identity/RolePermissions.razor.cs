@@ -9,6 +9,7 @@ using Hisubmit.Client.SharedModels.Contracts.Permission;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.SignalR.Client;
+using Microsoft.Extensions.Logging.Abstractions;
 using MudBlazor;
 using System;
 using System.Collections.Generic;
@@ -74,7 +75,8 @@ namespace Web.Components.Pages.Identity
 
         private async Task GetRolePermissionsAsync()
         {
-            _mapper = new MapperConfiguration(c => { c.AddProfile<RoleProfile>(); }).CreateMapper();
+            _mapper = new MapperConfiguration(c => { c.AddProfile<RoleProfile>(); },
+                NullLoggerFactory.Instance).CreateMapper();
             var roleId = Id;
             IResult<PermissionResponse> result;
             if (PermissionType == PermissionType.Admin)
