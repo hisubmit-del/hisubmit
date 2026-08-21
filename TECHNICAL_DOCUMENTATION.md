@@ -1888,3 +1888,17 @@ expects `401`. Local verification passed on August 20, 2026: public Gold
 pricing returned `200`, and all protected routes returned `401`. The script
 also now waits for the local server and sends the correct HTTP method for
 mutation checks.
+
+## Authenticated release smoke checkpoint (2026-08-21)
+
+The local release smoke pass verified:
+
+- `/` and `/goldaccount`: `200`;
+- `/Account/Login`: `200`;
+- `/user/dashboard`: `302` to `/Account/Login?ReturnUrl=%2Fuser%2Fdashboard`;
+- `/festival/selection`: `302` to
+  `/Account/Login?ReturnUrl=%2Ffestival%2Fselection`.
+
+No authenticated artist, festival-manager, or administrator browser session was
+available for this pass. No credentials, payment details, or mutating form
+were entered. Role-specific UI verification remains a release prerequisite.

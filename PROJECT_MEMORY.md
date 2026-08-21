@@ -2009,3 +2009,13 @@ data contract, privacy policy and pricing are approved.
 - Local verification passed: Gold pricing returned `200`; unauthenticated
   cart, Gold recommendations, project mutation, project specification,
   festival payment information, and festival file routes returned `401`.
+
+## Authenticated release smoke checkpoint (2026-08-21)
+
+- Public `/` and `/goldaccount` rendered with `200`.
+- `/Account/Login` rendered with `200`.
+- Unauthenticated `/user/dashboard` and `/festival/selection` both returned
+  `302` to `/Account/Login` with the original route preserved in `ReturnUrl`.
+- No authenticated festival-manager or administrator session was available
+  in the browser, so no role was fabricated and no payment or mutating form
+  was submitted.
